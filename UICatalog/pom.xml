@@ -4,34 +4,29 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.robovm</groupId>
+  <parent>
+    <groupId>org.robovm</groupId>
+    <artifactId>robovm-samples-parent</artifactId>
+    <version>1.0</version>
+  </parent>
+
   <artifactId>robovm-samples-uicatalog</artifactId>
   <name>RoboVM version of Apple's UICatalog sample</name>
 
   <packaging>jar</packaging>
 
-  <version>1.0-SNAPSHOT</version>
-
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.robovm</groupId>
-        <artifactId>robovm-maven-plugin</artifactId>
-        <version>0.0.15-SNAPSHOT</version>
-      </plugin>
-    </plugins>
+    <sourceDirectory>src</sourceDirectory>
   </build>
 
   <dependencies>
     <dependency>
       <groupId>org.robovm</groupId>
       <artifactId>robovm-rt</artifactId>
-      <version>0.0.15-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
       <artifactId>robovm-cocoatouch</artifactId>
-      <version>0.0.15-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
