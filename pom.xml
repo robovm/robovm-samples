@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.robovm</groupId>
+  <artifactId>robovm-samples-parent</artifactId>
+  <name>RoboVM samples parent</name>
+
+  <packaging>pom</packaging>
+  <url>http://www.robovm.com</url>
+
+  <version>1.0</version>
+
+  <properties>
+     <robovm.version>0.0.15-SNAPSHOT</robovm.version>
+     <robovm.maven.version>0.0.15-SNAPSHOT</robovm.maven.version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.robovm</groupId>
+          <artifactId>robovm-maven-plugin</artifactId>
+          <version>${robovm.maven.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-rt</artifactId>
+        <version>${robovm.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-cocoatouch</artifactId>
+        <version>${robovm.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+</project>
