@@ -370,7 +370,8 @@ public class PickerViewController extends UIViewController {
 
     @Override
     public void viewWillDisappear(boolean animated) {
-        this.currentPicker.setHidden(animated);
+        super.viewWillDisappear(animated);
+        this.currentPicker.setHidden(true);
     }
 
     public class UIPickerViewDataSourceAdpt extends UIPickerViewDataSourceAdapter{
