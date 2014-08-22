@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.viewcontrollers;
+package org.robovm.samples.uicatalog.viewcontrollers;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,8 +53,8 @@ import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
-import org.robovm.sample.uicatalog.Constants;
-import org.robovm.sample.uicatalog.picker.CustomPickerDataSource;
+import org.robovm.samples.uicatalog.Constants;
+import org.robovm.samples.uicatalog.picker.CustomPickerDataSource;
 
 /**
  * The view controller for hosting the UIPickerView of this sample.

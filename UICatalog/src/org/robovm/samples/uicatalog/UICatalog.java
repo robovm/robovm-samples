@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's QuickContacts sample (v1.3)
+ * Portions of this code is based on Apple Inc's UICatalog sample (v2.11)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
-package com.robovm.sample.quickcontacts;
+
+package org.robovm.samples.uicatalog;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSDictionary;
@@ -27,10 +28,12 @@ import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
+import org.robovm.samples.uicatalog.viewcontrollers.MainViewController;
 
-import com.robovm.sample.quickcontacts.viewcontrollers.QuickContactsViewController;
-
-public class QuickContacts extends UIApplicationDelegateAdapter {
+/**
+ * Class which starts application.
+ */
+public class UICatalog extends UIApplicationDelegateAdapter {
 
     private UIWindow window = null;
 
@@ -41,7 +44,7 @@ public class QuickContacts extends UIApplicationDelegateAdapter {
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
         window.setBackgroundColor(UIColor.colorLightGray());
         UINavigationController navigationController = new UINavigationController(
-                application.addStrongRef(new QuickContactsViewController()));
+                application.addStrongRef(new MainViewController()));
         window.setRootViewController(navigationController);
         window.makeKeyAndVisible();
 
@@ -56,7 +59,7 @@ public class QuickContacts extends UIApplicationDelegateAdapter {
 
     public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, QuickContacts.class);
+        UIApplication.main(args, null, UICatalog.class);
         pool.close();
     }
     

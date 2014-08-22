@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.viewcontrollers;
+package org.robovm.samples.uicatalog.viewcontrollers;
 
 import java.util.LinkedList;
 
@@ -44,7 +44,7 @@ import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
-import org.robovm.sample.uicatalog.Constants;
+import org.robovm.samples.uicatalog.Constants;
 
 /**
  * The view controller for hosting the UITextField features of this sample. 

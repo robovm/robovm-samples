@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package com.robovm.sample.quickcontacts.viewcontrollers;
+package org.robovm.samples.quickcontacts.viewcontrollers;
 
 import java.io.File;
 
@@ -55,7 +55,6 @@ import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellAccessoryType;
-import org.robovm.apple.uikit.UITableViewCellSeparatorStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITableViewStyle;
@@ -303,7 +302,7 @@ public class QuickContactsViewController extends UITableViewController implement
 			ABPersonViewController picker = new ABPersonViewController();
 			picker.setPersonViewDelegate(this);
 			picker.setDisplayedPerson(person);
-			// Allow users to edit the person’s information
+			// Allow users to edit the person???s information
 			picker.setAllowsEditing(true);
 			this.getNavigationController().pushViewController(picker,true);
 		}

@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.viewcontrollers;
+package org.robovm.samples.uicatalog.viewcontrollers;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSDictionary;

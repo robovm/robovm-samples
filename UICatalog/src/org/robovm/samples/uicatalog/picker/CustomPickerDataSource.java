@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.picker;
+package org.robovm.samples.uicatalog.picker;
 
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.uikit.UIImage;

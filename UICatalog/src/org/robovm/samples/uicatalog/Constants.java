@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog;
+package org.robovm.samples.uicatalog;
 
 /**
  * constants used in view controllers

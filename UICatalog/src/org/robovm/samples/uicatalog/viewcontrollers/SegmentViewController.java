@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.viewcontrollers;
+package org.robovm.samples.uicatalog.viewcontrollers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +46,7 @@ import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
-import org.robovm.sample.uicatalog.Constants;
+import org.robovm.samples.uicatalog.Constants;
 
 /**
  * The view controller for hosting the UISegmentedControl features of this sample. 

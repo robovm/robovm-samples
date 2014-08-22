@@ -17,7 +17,7 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.sample.uicatalog.viewcontrollers;
+package org.robovm.samples.uicatalog.viewcontrollers;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSURL;
@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.apple.uikit.UIWebView;
 import org.robovm.apple.uikit.UIWebViewDelegateAdapter;
 import org.robovm.objc.annotation.Method;
-import org.robovm.sample.uicatalog.Constants;
+import org.robovm.samples.uicatalog.Constants;
 
 /**
  * The view controller for hosting the UIWebView feature of this sample. 
