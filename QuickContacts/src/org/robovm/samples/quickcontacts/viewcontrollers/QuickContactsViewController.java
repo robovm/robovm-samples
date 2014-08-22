@@ -154,14 +154,12 @@ public class QuickContactsViewController extends UITableViewController implement
 	/**
 	 * This method is called when the user has granted access to their address book data.
 	 */
+	@SuppressWarnings("unchecked")
 	private void accessGrantedForAddressBook() {
 	    // Load data from the plist file
 
 		String plist = NSBundle.getMainBundle().findResourcePath("Menu", "plist");
 		this.menuArray = (NSArray<NSDictionary<NSString, NSString>>) NSArray.read(new File(plist));
-		
-		System.err.println(this.menuArray);
-		
 		getTableView().reloadData();
 		
 	}
@@ -202,25 +200,18 @@ public class QuickContactsViewController extends UITableViewController implement
 		final String cellIdentifier = "CellID";
 		UITableViewCell aCell;
 		// Make the Display Picker and Create New Contact rows look like buttons
-		System.err.println(1);
 		int section = (int)NSIndexPathExtensions.getSection(indexPath);
 		if (NSIndexPathExtensions.getSection(indexPath) < 2) {
 	        aCell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
 	        aCell.getTextLabel().setTextAlignment(NSTextAlignment.Center);
 		} else {
 			aCell = new UITableViewCell(UITableViewCellStyle.Subtitle, cellIdentifier);
-			System.err.println(2);
 			aCell.setAccessoryType(UITableViewCellAccessoryType.DetailDisclosureButton);
-			System.err.println(3);
 			aCell.getDetailTextLabel().setNumberOfLines(0);
 	        // Display descriptions for the Edit Unknown Contact and Display and Edit Contact rows
-			System.err.println(4);
 	        aCell.getDetailTextLabel().setText(this.menuArray.get(section).get(new NSString("description")).toString()); //valueForKey:@"description"];
-	        System.err.println(5);
 		}
-		System.err.println(4);
 		aCell.getTextLabel().setText(this.menuArray.get(section).get(new NSString("title")).toString());
-		System.err.println(5);
 		return aCell;
 	}
 
