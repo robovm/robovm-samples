@@ -20,10 +20,16 @@
 package org.robovm.samples.quickcontacts.viewcontrollers;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.apache.harmony.security.x509.OtherName;
 import org.robovm.apple.addressbook.ABAddressBook;
 import org.robovm.apple.addressbook.ABMutableMultiValue;
 import org.robovm.apple.addressbook.ABPerson;
+import org.robovm.apple.addressbook.ABPersonAddress;
+import org.robovm.apple.addressbook.ABPersonProperty;
+import org.robovm.apple.addressbook.ABPropertyLabel;
 import org.robovm.apple.addressbook.ABPropertyType;
 import org.robovm.apple.addressbook.AddressBook;
 import org.robovm.apple.addressbookui.ABNewPersonViewController;
@@ -269,12 +275,12 @@ public class QuickContactsViewController extends UITableViewController implement
 	    picker.setPeoplePickerDelegate(this);
 	    
 		// Display only a person's phone, email, and birthdate
-		NSMutableArray<NSNumber> displayedItems = new NSMutableArray<NSNumber>();
-		displayedItems.add(NSNumber.valueOf(ABPerson.getPropertyType(AddressBook.ABPersonPhoneProperty()).value()));
-		displayedItems.add(NSNumber.valueOf(ABPerson.getPropertyType(AddressBook.ABPersonEmailProperty()).value()));
-		displayedItems.add(NSNumber.valueOf(ABPerson.getPropertyType(AddressBook.ABPersonBirthdayProperty()).value()));
+		List<ABPersonProperty> props = new LinkedList<ABPersonProperty>();
+		props.add(ABPersonProperty.Phone);
+		props.add(ABPersonProperty.Email);
+		props.add(ABPersonProperty.Birthday);
+		picker.setDisplayedProperties(props);
 		
-		picker.setDisplayedProperties(displayedItems);
 		// Show the picker
 	    this.presentViewController(picker, true, null);
 	}
@@ -316,13 +322,12 @@ public class QuickContactsViewController extends UITableViewController implement
 		ABPerson aContact = (ABPerson) CFType.Marshaler.toObject(ABPerson.class, ABPerson.create().getHandle(), 0);
 		CFError anError = null;
 		ABMutableMultiValue email = ABMutableMultiValue.create(ABPropertyType.MultiString);
-
 		CFString nameValue = new CFString("John-Appleseed@mac.com");
-		email.addValue(nameValue, AddressBook.ABOtherLabel());
+		email.addValueAndLabel(nameValue, ABPropertyLabel.Other.value().toString());
 		
 //		if (didAdd) {
 
-			aContact.setValue(AddressBook.ABPersonEmailProperty(), email);
+			aContact.setValue(ABPersonProperty.Email, email);
 			if (anError == null) { //@TODO fix this?
 				
 				ABUnknownPersonViewController picker = new ABUnknownPersonViewController();
@@ -377,22 +382,19 @@ public class QuickContactsViewController extends UITableViewController implement
 		return false;
 	}
 
-
 	@Override
 	public void didCancel(ABPeoplePickerNavigationController peoplePicker) {
 		this.dismissViewController(true, null);
 	}
 
-
 	@Override
-	public boolean shouldContinue(
+	public boolean shouldContinueAfterSelectingPerson(
 			ABPeoplePickerNavigationController peoplePicker, ABPerson person) {
 		return true;
 	}
 
-
 	@Override
-	public boolean shouldContinue(
+	public boolean shouldContinueAfterSelectingPerson(
 			ABPeoplePickerNavigationController peoplePicker, ABPerson person,
 			int property, int identifier) {
 		return false;
