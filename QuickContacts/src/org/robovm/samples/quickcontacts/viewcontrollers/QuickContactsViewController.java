@@ -295,7 +295,7 @@ public class QuickContactsViewController extends UITableViewController implement
 		NSArray<?> people = (NSArray<?>) this.addressBook.getPeople("Appleseed");
 		// Display "Appleseed" information if found in the address book 
 		if ((people != null) && !people.isEmpty()) {
-			ABPerson person = (ABPerson) CFType.Marshaler.toObject(ABPerson.class, people.get(0).getHandle(), 0);
+			ABPerson person = people.get(0).as(ABPerson.class);
 			ABPersonViewController picker = new ABPersonViewController();
 			picker.setPersonViewDelegate(this);
 			picker.setDisplayedPerson(person);
@@ -319,7 +319,7 @@ public class QuickContactsViewController extends UITableViewController implement
 	 * Called when users tap "Edit Unknown Contact" in the application. 
 	 */
 	private void showUnknownPersonViewController() {
-		ABPerson aContact = (ABPerson) CFType.Marshaler.toObject(ABPerson.class, ABPerson.create().getHandle(), 0);
+		ABPerson aContact = ABPerson.create();
 		CFError anError = null;
 		ABMutableMultiValue email = ABMutableMultiValue.create(ABPropertyType.MultiString);
 		CFString nameValue = new CFString("John-Appleseed@mac.com");
