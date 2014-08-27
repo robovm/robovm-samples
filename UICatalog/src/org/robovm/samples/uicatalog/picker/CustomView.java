@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,11 @@ public class CustomView extends UIView {
 
     private static final float VIEW_WIDTH = 200.0f;
     private static final float VIEW_HEIGHT = 44.0f;
-    private static final double LABLE_HEIGHT = 20;
+    private static final double LABEL_HEIGHT = 20;
     private static final double MARGIN_SIZE = 10;
 
     private UILabel titleLabel;
-    
+
     public static double getViewWidth() {
         return VIEW_WIDTH;
     }
@@ -48,41 +48,42 @@ public class CustomView extends UIView {
 
     public CustomView(String title, UIImage image) {
         super(new CGRect(0.0, 0.0, VIEW_WIDTH, VIEW_HEIGHT));
-        
-        double yCoord = (this.getBounds().size().height() - LABLE_HEIGHT) / 2;
-        titleLabel = new UILabel( new CGRect( MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
-                                                yCoord,
-                                                (this.getFrame().getWidth()) - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
-                                                LABLE_HEIGHT));
-        
+
+        double yCoord = (this.getBounds().size().height() - LABEL_HEIGHT) / 2;
+        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
+                yCoord, (this.getFrame().getWidth()) - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
+                LABEL_HEIGHT));
+
         titleLabel.setText(title.toString());
         titleLabel.setBackgroundColor(UIColor.colorClear());
         this.addSubview(this.titleLabel);
-        
+
         yCoord = (this.getBounds().size().height() - image.getSize().height()) / 2;
         UIImageView imageView = new UIImageView(new CGRect(MARGIN_SIZE,
-                                               yCoord,
-                                               image.getSize().width(),
-                                               image.getSize().height()));
-        
+                yCoord,
+                image.getSize().width(),
+                image.getSize().height()));
+
         imageView.setImage(image);
         this.addSubview(imageView);
     }
 
     /**
-     *  Enable accessibility for this view.
-     *  @return
+     * Enable accessibility for this view.
+     * 
+     * @return
      */
     boolean isAccessibilityElement() {
-            return true;
+        return true;
     }
 
     /**
      * Return a string that describes this view.
+     * 
      * @return
      */
     String accessibilityLabel() {
-            return titleLabel.getText();
+        return titleLabel.getText();
     }
-    
+
 }

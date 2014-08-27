@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,16 +40,16 @@ import org.robovm.rt.bro.annotation.MachineSizedSInt;
 /**
  * The application's main view controller (front page)
  */
-public class MainViewController extends UITableViewController{
+public class MainViewController extends UITableViewController {
 
     private LinkedList<MenuListItem> menuList = new LinkedList<MenuListItem>();
-    
+
     private final static String MY_CELL_IDENTIFIER = "MyTableViewCell";
-    
+
     /**
      * 
      */
-    private class MyTableViewCell extends UITableViewCell{
+    private class MyTableViewCell extends UITableViewCell {
 
         @Override
         protected long initWithStyle$reuseIdentifier$(
@@ -58,17 +58,15 @@ public class MainViewController extends UITableViewController{
         }
 
     }
-    
+
     /**
-     * Item storing meta data for menu items 
+     * Item storing meta data for menu items
      */
     private class MenuListItem {
         private String title;
         private String explanation;
         private UIViewController viewController;
-        
-        
-        
+
         public MenuListItem(String title, String explanation,
                 UIViewController viewController) {
             super();
@@ -76,38 +74,37 @@ public class MainViewController extends UITableViewController{
             this.explanation = explanation;
             this.viewController = viewController;
         }
-        
-        
+
         public String getTitle() {
             return title;
         }
-        
+
         public String getExplanation() {
             return explanation;
         }
-        
+
         public UIViewController getViewController() {
             return this.viewController;
         }
 
-        
     }
-    
+
     /**
-     *  construct the array of page descriptions we will use (each description is a dictionary)
+     * construct the array of page descriptions we will use (each description is
+     * a dictionary)
      */
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
+
         UIWindow window = new UIWindow(UIScreen.getMainScreen().getBounds());
         window.setBackgroundColor(UIColor.colorLightGray());
         window.makeKeyAndVisible();
 
-        //<rect key="frame" x="0.0" y="64" width="320" height="416"/>
+        // <rect key="frame" x="0.0" y="64" width="320" height="416"/>
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 416);
         setTableView(new UITableView(tableViewBounds));
-        
+
         // for showing various UIButtons:
         ButtonsViewController buttonsViewController = new ButtonsViewController();
         // for showing various UIControls:
@@ -130,27 +127,28 @@ public class MainViewController extends UITableViewController{
         ToolbarViewController toolbarViewController = new ToolbarViewController();
         // for showing various UIActionSheets and UIAlertViews:
         AlertsViewController alertsViewController = new AlertsViewController();
-        // for showing how to a use flip animation transition between two UIViews:
+        // for showing how to a use flip animation transition between two
+        // UIViews:
         PickerViewController pickerViewController = new PickerViewController();
-        
-        //Add items to list where they will be retrieved when to display
+
+        // Add items to list where they will be retrieved when to display
         menuList.add(new MenuListItem("ButtonsTitle", "Various uses of UIButton", buttonsViewController));
-        menuList.add(new MenuListItem("ControlsTitle","Various uses of UIControl", controlsViewController));
-        menuList.add(new MenuListItem("TextFieldTitle","Uses of UITextField", textfieldController));
-        menuList.add(new MenuListItem("SearchBar","Use of UISearchBar", searchBarViewController));
-        menuList.add(new MenuListItem("TextView","Use of UITextField", textViewController));
-        menuList.add(new MenuListItem("Pickers","Uses of UIDatePicker, UIPickerView", pickerViewController ));
-        menuList.add(new MenuListItem("Images","Use of UIWebView", imageViewController));
-        menuList.add(new MenuListItem("WebView","Various uses of UISegmentedControl", webViewController));
-        menuList.add(new MenuListItem("Segments","Various uses of UISegmentedControl", segments));
+        menuList.add(new MenuListItem("ControlsTitle", "Various uses of UIControl", controlsViewController));
+        menuList.add(new MenuListItem("TextFieldTitle", "Uses of UITextField", textfieldController));
+        menuList.add(new MenuListItem("SearchBar", "Use of UISearchBar", searchBarViewController));
+        menuList.add(new MenuListItem("TextView", "Use of UITextField", textViewController));
+        menuList.add(new MenuListItem("Pickers", "Uses of UIDatePicker, UIPickerView", pickerViewController));
+        menuList.add(new MenuListItem("Images", "Use of UIWebView", imageViewController));
+        menuList.add(new MenuListItem("WebView", "Various uses of UISegmentedControl", webViewController));
+        menuList.add(new MenuListItem("Segments", "Various uses of UISegmentedControl", segments));
         menuList.add(new MenuListItem("Toolbars", "Uses of UIToolbar", toolbarViewController));
         menuList.add(new MenuListItem("Alerts", "Various uses of UIAlertView, UIActionSheet", alertsViewController));
-        menuList.add(new MenuListItem("Transition","Shows UIViewAnimationTransitions", transitionController));
-        
-        UIBarButtonItem  temporaryBarButtonItem = new UIBarButtonItem();
+        menuList.add(new MenuListItem("Transition", "Shows UIViewAnimationTransitions", transitionController));
+
+        UIBarButtonItem temporaryBarButtonItem = new UIBarButtonItem();
         temporaryBarButtonItem.setTitle("Back");
         this.getNavigationItem().setBackBarButtonItem(temporaryBarButtonItem);
-        
+
         getTableView().registerReusableCellClass(ObjCClass.getByType(MyTableViewCell.class), MY_CELL_IDENTIFIER);
     }
 
@@ -158,11 +156,13 @@ public class MainViewController extends UITableViewController{
     public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
-        // this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+        // this UIViewController is about to re-appear, make sure we remove the
+        // current selection in our table view
         NSIndexPath tableSelection = this.getTableView().getIndexPathForSelectedRow();
         this.getTableView().deselectRow(tableSelection, false);
 
-        // some over view controller could have changed our nav bar tint color, so reset it here
+        // some over view controller could have changed our nav bar tint color,
+        // so reset it here
         this.getNavigationController().getNavigationBar().setTintColor(UIColor.colorDarkGray());
     }
 
@@ -172,14 +172,13 @@ public class MainViewController extends UITableViewController{
     @Override
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         MenuListItem item = menuList.get((int) NSIndexPathExtensions.getRow(indexPath));
-         
+
         UIViewController targetViewController = item.getViewController();
-        this.getNavigationController().pushViewController(targetViewController, true); 
+        this.getNavigationController().pushViewController(targetViewController, true);
     }
 
     @Override
-    public @MachineSizedSInt
-    long getNumberOfRowsInSection(UITableView tableView,
+    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
             @MachineSizedSInt long section) {
         return menuList.size();
     }
@@ -188,12 +187,11 @@ public class MainViewController extends UITableViewController{
     public UITableViewCell getRowCell(UITableView tableView,
             NSIndexPath indexPath) {
         UITableViewCell cell = getTableView().dequeueReusableCell(MY_CELL_IDENTIFIER, indexPath);
-        
+
         cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
         cell.getTextLabel().setText(menuList.get((int) NSIndexPathExtensions.getRow(indexPath)).getTitle());
         cell.getDetailTextLabel().setText(menuList.get((int) NSIndexPathExtensions.getRow(indexPath)).getExplanation());
         return cell;
     }
-    
-    
+
 }

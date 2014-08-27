@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,12 @@ import org.robovm.apple.uikit.UIPickerViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
 
 /**
- *  The data source for the Custom Picker that displays text and images.
+ * The data source for the Custom Picker that displays text and images.
  */
-public class CustomPickerDataSource extends UIPickerViewDelegateAdapter implements UIPickerViewDataSource{
+public class CustomPickerDataSource extends UIPickerViewDelegateAdapter implements UIPickerViewDataSource {
 
     NSArray<CustomView> customPickerArray = new NSArray<CustomView>();
-    
+
     /**
      * Creates a custom picker prepopulated with images
      */
@@ -45,10 +45,10 @@ public class CustomPickerDataSource extends UIPickerViewDelegateAdapter implemen
 
         NSArray<CustomView> timeArray = new NSArray<CustomView>(earlyMorningView, lateMorningView,
                 afternoonView, eveningView);
-        
+
         this.customPickerArray = timeArray;
     }
-    
+
     @Override
     public long getNumberOfComponents(UIPickerView pickerView) {
         return 1;
@@ -71,7 +71,7 @@ public class CustomPickerDataSource extends UIPickerViewDelegateAdapter implemen
 
     @Override
     public UIView getRowView(UIPickerView pickerView, long row, long component, UIView view) {
-        return customPickerArray.get((int)row);
+        return customPickerArray.get((int) row);
     }
 
 }

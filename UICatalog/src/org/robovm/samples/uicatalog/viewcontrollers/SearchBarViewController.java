@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,11 @@ import org.robovm.objc.annotation.Method;
 /**
  * The view controller for hosting the UIPickerView of this sample.
  */
-public class SearchBarViewController extends UIViewController{
+public class SearchBarViewController extends UIViewController {
 
     private UISearchBar mySearchBar;
-    private /*IBOutlet*/ UISegmentedControl contentOptions;
-    
-    
+    private/* IBOutlet */UISegmentedControl contentOptions;
+
     @Override
     @Method(selector = "viewDidLoad")
     public void viewDidLoad() {
@@ -54,10 +53,10 @@ public class SearchBarViewController extends UIViewController{
         setView(new UIView(new CGRect(0, 20, 320, 460)));
 
         setTitle("SearchBarTitle");
-        
+
         mySearchBar = new UISearchBar(new CGRect(0.0f, 65.0f, getView().getBounds().getWidth(), 44.0f));
 
-        mySearchBar.setDelegate(new UISearchBarDelegateAdapter(){
+        mySearchBar.setDelegate(new UISearchBarDelegateAdapter() {
 
             @Override
             public void searchButtonClicked(UISearchBar searchBar) {
@@ -66,39 +65,40 @@ public class SearchBarViewController extends UIViewController{
 
             @Override
             public void bookmarkButtonClicked(UISearchBar searchBar) {
-                
+
             }
 
             @Override
             public void cancelButtonClicked(UISearchBar searchBar) {
                 mySearchBar.resignFirstResponder();
             }
-            
+
         });
-        
+
         NSMutableArray<NSString> list = new NSMutableArray<NSString>();
         list.add(new NSString("Normal"));
         list.add(new NSString("Tinted"));
         list.add(new NSString("Background"));
-        
-        
-        //mySearchBar.addListener
+
+        // mySearchBar.addListener
         contentOptions = new UISegmentedControl(NSArray.toNSArray("Normal", "Tinted", "Background"));
         contentOptions.setFrame(new CGRect(34, 125, 252, 30));
-        
+
         mySearchBar.setShowsCancelButton(true);
         mySearchBar.setShowsBookmarkButton(true);
 
-        contentOptions.addTarget(this, Selector.register("contentChoice:") , UIControlEvents.ValueChanged);
+        contentOptions.addTarget(this, Selector.register("contentChoice:"), UIControlEvents.ValueChanged);
 
         getView().addSubview(mySearchBar);
         getView().addSubview(contentOptions);
         mySearchBar.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
-        
+
     }
 
     /**
-     * contentChoice - changes background of search bar depending on option selection
+     * contentChoice - changes background of search bar depending on option
+     * selection
+     * 
      * @param selectedSegmentIndex
      */
     @Method
@@ -122,5 +122,5 @@ public class SearchBarViewController extends UIViewController{
                     UISearchBarIcon.Bookmark, UIControlState.Highlighted);
         }
     }
-    
+
 }

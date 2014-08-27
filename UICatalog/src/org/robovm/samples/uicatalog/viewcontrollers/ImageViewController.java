@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,33 +38,33 @@ public class ImageViewController extends UIViewController {
     private static final float MAX_DURATION = 10.0f;
 
     private UIImageView imageView;
-    
+
     private UISlider slider;
-    
+
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
 
         imageView = new UIImageView(new CGRect(42, 70, 236, 174));
         slider = new UISlider(new CGRect(18, 398, 284, 23));
-        
+
         NSArray<UIImage> images = new NSArray<UIImage>(
                 UIImage.createFromBundle("scene1.jpg"),
                 UIImage.createFromBundle("scene2.jpg"),
                 UIImage.createFromBundle("scene3.jpg"),
                 UIImage.createFromBundle("scene4.jpg"),
                 UIImage.createFromBundle("scene5.jpg"));
-        
+
         this.imageView.setAnimationImages(images);
         UIImageView.setDurationForAnimation(5.0);
         this.imageView.setBackgroundColor(UIColor.colorBlack());
-        this.imageView.setAnimationDuration(5.0f); //sync with slider below
+        this.imageView.setAnimationDuration(5.0f); // sync with slider below
         this.imageView.stopAnimating();
-        
+
         this.slider.setMaximumValue(MIN_DURATION);
         this.slider.setMaximumValue(MAX_DURATION);
         slider.setValue(5.0f);
-        
+
         this.slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             public void onValueChanged(UIControl control) {
                 sliderAction();
@@ -75,7 +75,7 @@ public class ImageViewController extends UIViewController {
         this.getView().addSubview(slider);
 
     }
-    
+
     @Method
     private void sliderAction() {
         UISlider durationSlider = slider;
@@ -95,5 +95,5 @@ public class ImageViewController extends UIViewController {
         imageView.startAnimating();
         this.getNavigationController().getNavigationBar().setTintColor(UIColor.colorBlack());
     }
-    
+
 }

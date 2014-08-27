@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,9 +47,9 @@ import org.robovm.rt.bro.annotation.MachineSizedSInt;
 import org.robovm.samples.uicatalog.Constants;
 
 /**
- * The view controller for hosting the UITextField features of this sample. 
+ * The view controller for hosting the UITextField features of this sample.
  */
-public class TextFieldController extends UITableViewController{
+public class TextFieldController extends UITableViewController {
 
     // tableView cell id constants
     static String TEXT_FIELD_CELL_ID = "TextFieldCellID";
@@ -61,10 +61,10 @@ public class TextFieldController extends UITableViewController{
     private UITextField textFieldRounded;
     private UITextField textFieldSecure;
     private UITextField textFieldLeftView;
-    
+
     /**
-     * Adapter overloading default behaviour of shouldReturn
-     * to enable close-on-done when showing on screen keyboard
+     * Adapter overloading default behaviour of shouldReturn to enable
+     * close-on-done when showing on screen keyboard
      */
     private class TextFieldAdapter extends UITextFieldDelegateAdapter {
 
@@ -73,20 +73,20 @@ public class TextFieldController extends UITableViewController{
             textField.resignFirstResponder();
             return true;
         }
-        
+
     }
-    
+
     private LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
-    
+
     /**
      * Item storing TextField meta data
      */
     private class ListItem {
-        
+
         private String sectionTitle;
-        
+
         private String source;
-        
+
         private UIView view;
 
         public ListItem(String sectionTitle, String source,
@@ -108,33 +108,33 @@ public class TextFieldController extends UITableViewController{
         public UIView getView() {
             return view;
         }
-        
+
     }
-    
+
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
 
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 247);
         setTableView(new UITableView(tableViewBounds));
-        
+
         this.setTitle("TextFieldTitle");
         this.setEditing(false);
-        
+
         dataSourceArray.add(new ListItem("UITextField", "textFieldNormal", getTextFieldNormal()));
         dataSourceArray.add(new ListItem("UITextField Rounded", "textFieldRounded", getTextFieldRounded()));
         dataSourceArray.add(new ListItem("UITextField Secure", "textFieldSecure", getTextFieldSecure()));
         dataSourceArray.add(new ListItem("UITextField Left", "textFieldLeft", getTextFieldLeftView()));
-        
-        // register our cell IDs for later when we are asked for UITableViewCells
+
+        // register our cell IDs for later when we are asked for
+        // UITableViewCells
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), TEXT_FIELD_CELL_ID);
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), SOURCE_CELL_ID);
-        
+
     }
-    
+
     @Override
-    public @MachineSizedSInt
-    long getNumberOfSections(UITableView tableView) {
+    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) {
         // TODO Auto-generated method stub
         return this.dataSourceArray.size();
     }
@@ -142,46 +142,48 @@ public class TextFieldController extends UITableViewController{
     @Override
     public String getSectionHeaderTitle(UITableView tableView,
             @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return this.dataSourceArray.get((int) section).getSectionTitle();
     }
 
     @Override
-    public @MachineSizedSInt
-    long getNumberOfRowsInSection(UITableView tableView,
+    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
             @MachineSizedSInt long section) {
         return 2;
     }
 
     @Override
-    public @MachineSizedFloat
-    double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
+    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
         return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 22.0;
     }
-    
+
     @Override
     public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
-        
+
         UITableViewCell cell = null;
 
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
             cell = getTableView().dequeueReusableCell(TEXT_FIELD_CELL_ID, indexPath);
-            
+
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             UIView viewToRemove = null;
             viewToRemove = cell.getContentView().getViewWithTag(viewTag);
             if (viewToRemove != null) {
                 viewToRemove.removeFromSuperview();
             }
-            
-            UITextField textField = (UITextField) this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+
+            UITextField textField = (UITextField) this.dataSourceArray.get(
+                    (int) NSIndexPathExtensions.getSection(indexPath)).getView();
 
             CGRect newFrame = textField.getFrame();
-            newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth()-Constants.LEFT_MARGIN*2, cell.getContentView().getFrame().getHeight()));// CGRectGetWidth(cell.contentView.frame) - kLeftMargin*2;;
+            newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
+                    .getContentView().getFrame().getHeight()));// CGRectGetWidth(cell.contentView.frame)
+                                                               // -
+                                                               // kLeftMargin*2;;
             textField.setFrame(newFrame);
-            
+
             // if the cell is ever resized, keep the button over to the right
             textField.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin);
-            cell.getContentView().addSubview(textField);           
+            cell.getContentView().addSubview(textField);
         } else {
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -189,124 +191,155 @@ public class TextFieldController extends UITableViewController{
             cell.getTextLabel().setTextColor(UIColor.colorGray());
             cell.getTextLabel().setHighlightedTextColor(UIColor.colorBlack());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(
+                    this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
-        
+
         return cell;
     }
-    
+
     /**
      * Creates default text field
+     * 
      * @return
      */
     UITextField getTextFieldNormal() {
-        
+
         if (textFieldNormal == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0f, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0f, Constants.TEXT_FIELD_WIDTH,
+                    Constants.TEXT_FIELD_HEIGHT);
             textFieldNormal = new UITextField(frame);
-            
+
             textFieldNormal.setBorderStyle(UITextBorderStyle.Bezel);
             textFieldNormal.setTextColor(UIColor.colorGray());
-            
+
             textFieldNormal.setFont(UIFont.getSystemFont(17.0f));
             textFieldNormal.setPlaceholder("<enter text>");
             textFieldNormal.setBackgroundColor(UIColor.colorWhite());
-            
+
             textFieldNormal.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldNormal.setKeyboardType(UIKeyboardType.Default);
-            
+
             textFieldNormal.setReturnKeyType(UIReturnKeyType.Default);
             textFieldNormal.setClearButtonMode(UITextFieldViewMode.WhileEditing);
-            textFieldNormal.setTag(viewTag); // tag this control so we can remove it later for recycled cells
-            textFieldNormal.setDelegate(new TextFieldAdapter()); // let us be the delegate so we know when the keyboard's "Done" button is pressed
+            textFieldNormal.setTag(viewTag); // tag this control so we can
+                                             // remove it later for recycled
+                                             // cells
+            textFieldNormal.setDelegate(new TextFieldAdapter()); // let us be
+                                                                 // the delegate
+                                                                 // so we know
+                                                                 // when the
+                                                                 // keyboard's
+                                                                 // "Done"
+                                                                 // button is
+                                                                 // pressed
 
         }
         return textFieldNormal;
     }
-    
+
     /**
      * Create textfield with rounded corners
+     * 
      * @return
      */
     public UITextField getTextFieldRounded() {
         if (textFieldRounded == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
+                    Constants.TEXT_FIELD_HEIGHT);
             textFieldRounded = new UITextField(frame);
             textFieldRounded.setBorderStyle(UITextBorderStyle.RoundedRect);
             textFieldRounded.setTextColor(UIColor.colorBlack());
-            
+
             textFieldRounded.setFont(UIFont.getSystemFont(17.0f));
             textFieldRounded.setPlaceholder("<enter text>");
             textFieldRounded.setBackgroundColor(UIColor.colorWhite());
-            
+
             textFieldRounded.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldRounded.setKeyboardType(UIKeyboardType.Default);
-            
+
             textFieldRounded.setReturnKeyType(UIReturnKeyType.Default);
             textFieldRounded.setClearButtonMode(UITextFieldViewMode.WhileEditing);
-            textFieldRounded.setTag(viewTag); // tag this control so we can remove it later for recycled cells
-            textFieldRounded.setDelegate(new TextFieldAdapter()); // let us be the delegate so we know when the keyboard's "Done" button is pressed
+            textFieldRounded.setTag(viewTag); // tag this control so we can
+                                              // remove it later for recycled
+                                              // cells
+            textFieldRounded.setDelegate(new TextFieldAdapter()); // let us be
+                                                                  // the
+                                                                  // delegate so
+                                                                  // we know
+                                                                  // when the
+                                                                  // keyboard's
+                                                                  // "Done"
+                                                                  // button is
+                                                                  // pressed
 
         }
         return textFieldRounded;
     }
-    
+
     /**
      * Creates text field secure
+     * 
      * @return
      */
     public UITextField getTextFieldSecure() {
-        
+
         if (textFieldSecure == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
+                    Constants.TEXT_FIELD_HEIGHT);
             textFieldSecure = new UITextField(frame);
             textFieldSecure.setBorderStyle(UITextBorderStyle.Bezel);
             textFieldSecure.setTextColor(UIColor.colorBlack());
-            
+
             textFieldSecure.setFont(UIFont.getSystemFont(17.0f));
             textFieldSecure.setPlaceholder("<enter text>");
             textFieldSecure.setBackgroundColor(UIColor.colorWhite());
-            
-            //textFieldSecure.setAutocorrectionType(UITextAutocorrectionType.No);
+
+            // textFieldSecure.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldSecure.setKeyboardType(UIKeyboardType.Default);
-            
-            textFieldSecure.setReturnKeyType(UIReturnKeyType.Done);   
-            textFieldSecure.setSecureTextEntry(true);     // make the text entry secure (bullets)
-            
+
+            textFieldSecure.setReturnKeyType(UIReturnKeyType.Done);
+            textFieldSecure.setSecureTextEntry(true); // make the text entry
+                                                      // secure (bullets)
+
             textFieldSecure.setClearButtonMode(UITextFieldViewMode.WhileEditing);
-            textFieldSecure.setTag(viewTag); // tag this control so we can remove it later for recycled cells
+            textFieldSecure.setTag(viewTag); // tag this control so we can
+                                             // remove it later for recycled
+                                             // cells
             textFieldSecure.setDelegate(new TextFieldAdapter());
 
         }
         return textFieldSecure;
-    }    
+    }
 
     /**
      * Creates TextField with left view
+     * 
      * @return
      */
     UITextField getTextFieldLeftView() {
         if (textFieldLeftView == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
+                    Constants.TEXT_FIELD_HEIGHT);
             textFieldLeftView = new UITextField(frame);
- 
+
             textFieldLeftView.setBorderStyle(UITextBorderStyle.Bezel);
             textFieldLeftView.setTextColor(UIColor.colorBlack());
-            
+
             textFieldLeftView.setFont(UIFont.getSystemFont(17.0f));
             textFieldLeftView.setPlaceholder("<enter text>");
             textFieldLeftView.setBackgroundColor(UIColor.colorWhite());
-            
-            //textFieldLeftView.setAutocorrectionType(UITextAutocorrectionType.No);
+
+            // textFieldLeftView.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldLeftView.setKeyboardType(UIKeyboardType.Default);
             textFieldLeftView.setDelegate(new TextFieldAdapter());
-            
+
             textFieldLeftView.setReturnKeyType(UIReturnKeyType.Done);
             textFieldLeftView.setClearButtonMode(UITextFieldViewMode.WhileEditing);
-            
+
             textFieldLeftView.setTag(viewTag);
         }
         return textFieldLeftView;
     }
-    
+
 }

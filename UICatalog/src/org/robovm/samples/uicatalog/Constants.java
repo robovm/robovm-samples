@@ -25,13 +25,11 @@ package org.robovm.samples.uicatalog;
 public class Constants {
 
     public static final float LEFT_MARGIN = 20.0f;
-    public static final float TOP_MARGIN =  20.0f;
+    public static final float TOP_MARGIN = 20.0f;
     public static final float RIGHT_MARGIN = 20.0f;
     public static final float TWEEN_MARGIN = 6.0f;
 
-
     public static final float TEXT_FIELD_WIDTH = 260.0f;
     public static final float TEXT_FIELD_HEIGHT = 30.0f;
-    
-    
+
 }

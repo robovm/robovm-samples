@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,7 +55,7 @@ import org.robovm.rt.bro.annotation.MachineSizedSInt;
 /**
  * The view controller for hosting the UIControls features of this sample.
  */
-public class ControlsViewController extends UITableViewController{
+public class ControlsViewController extends UITableViewController {
 
     private final float SLIDER_HEIGHT = 7.0f;
     private final float PROGRESS_INDICATOR_SIZE = 40.0f;
@@ -64,7 +64,7 @@ public class ControlsViewController extends UITableViewController{
 
     final static String DISPLAY_CELL_ID = "DisplayCellID";
     final static String SOURCE_CELL_ID = "SourceCellID";
-    
+
     private UISwitch switchCtl;
     private UISlider sliderCtl;
     private UISlider customSlider;
@@ -77,21 +77,21 @@ public class ControlsViewController extends UITableViewController{
     private UIStepper stepper;
 
     private int viewTag = 1;
-    
+
     private LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
-    
+
     /**
      * List item which stores controls meta data
      *
      */
     private class ListItem {
-        
+
         private String sectionTitle;
-        
+
         private String label;
-        
+
         private String source;
-        
+
         private UIView view;
 
         public ListItem(String sectionTitle, String label, String source,
@@ -118,42 +118,42 @@ public class ControlsViewController extends UITableViewController{
         public UIView getView() {
             return view;
         }
-        
+
     }
-    
+
     /**
      * Setup view and load controls
      */
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
+
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 247);
         setTableView(new UITableView(tableViewBounds));
-        
+
         UIBarButtonItem tintButton = new UIBarButtonItem();
         tintButton.setTitle("Tinted");
         tintButton.setStyle(UIBarButtonItemStyle.Bordered);
         tintButton.setAction(Selector.register("tintAction"));
         tintButton.setTarget(this);
-        
+
         getNavigationItem().setRightBarButtonItem(tintButton);
-        
-        this.dataSourceArray.add(new ListItem("UISwitch", 
-                "Standard Switch", 
+
+        this.dataSourceArray.add(new ListItem("UISwitch",
+                "Standard Switch",
                 "switchCtl",
                 getSwitchCtl()));
-        
-        this.dataSourceArray.add(new ListItem("Standard Slider", 
-                "Standard Slider", 
+
+        this.dataSourceArray.add(new ListItem("Standard Slider",
+                "Standard Slider",
                 "switchCtl",
                 getSliderCtl()));
-        
+
         this.dataSourceArray.add(new ListItem("UISlider",
-                "Custom Slider", 
+                "Custom Slider",
                 "sliderCtl",
                 getCustomSlider()));
-        
+
         this.dataSourceArray.add(new ListItem("UIPageControl",
                 "Ten Pages",
                 "pageControl",
@@ -173,48 +173,45 @@ public class ControlsViewController extends UITableViewController{
                 "Stepper 1 to 10",
                 "progressInd",
                 getStepper()));
-        
-        
-        // register our cell IDs for later when we are asked for UITableViewCells
+
+        // register our cell IDs for later when we are asked for
+        // UITableViewCells
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), DISPLAY_CELL_ID);
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), SOURCE_CELL_ID);
-        
+
     }
-    
+
     @Override
-    public @MachineSizedSInt
-    long getNumberOfSections(UITableView tableView) {
+    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) {
         return this.dataSourceArray.size();
     }
 
     @Override
     public String getSectionHeaderTitle(UITableView tableView,
             @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return this.dataSourceArray.get((int) section).getSectionTitle();
     }
 
     @Override
-    public @MachineSizedSInt
-    long getNumberOfRowsInSection(UITableView tableView,
+    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
             @MachineSizedSInt long section) {
         return 2;
     }
 
     @Override
-    public @MachineSizedFloat
-    double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
+    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
         return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 38.0;
-    }    
-    
+    }
+
     @Override
     public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
-        
+
         UITableViewCell cell = null;
 
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
 
             cell = getTableView().dequeueReusableCell(DISPLAY_CELL_ID, indexPath);
-            
+
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             UIView viewToRemove = null;
             viewToRemove = cell.getContentView().getViewWithTag(viewTag);
@@ -222,18 +219,19 @@ public class ControlsViewController extends UITableViewController{
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
-            
-            UIView control = this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            cell.getTextLabel().setText(
+                    this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getLabel());
+
+            UIView control = this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getView();
 
             CGRect newFrame = control.getFrame();
             newFrame.origin().x(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
             control.setFrame(newFrame);
-            
+
             // if the cell is ever resized, keep the button over to the right
             control.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin);
             cell.getContentView().addSubview(control);
-            
+
         } else {
 
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
@@ -244,55 +242,60 @@ public class ControlsViewController extends UITableViewController{
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.colorBlack());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText( this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getSource());
 
         }
-        
+
         return cell;
     }
-    
+
     /**
      * create UISwitch
+     * 
      * @return UISwitch
      */
     public UISwitch getSwitchCtl() {
-        if(switchCtl == null) {
+        if (switchCtl == null) {
             CGRect frame = new CGRect(0.0, 12.0, 94.0, 27.0);
             switchCtl = new UISwitch(frame);
-            
+
             switchCtl.setBackgroundColor(UIColor.colorClear());
             switchCtl.setTag(viewTag);
         }
         return switchCtl;
     }
-    
+
     /**
      * create Slider
+     * 
      * @return new slider
      */
     public UISlider getSliderCtl() {
         if (sliderCtl == null) {
             CGRect frame = new CGRect(0.0, 12.0, 120.0, SLIDER_HEIGHT);
             sliderCtl = new UISlider(frame);
-            sliderCtl.addOnValueChangedListener(new UIControl.OnValueChangedListener(){
+            sliderCtl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
                 public void onValueChanged(UIControl control) {
                     System.err.println("Slider moved to:" + sliderCtl.getValue());
-                }                
+                }
             });
 
-            // in case the parent view draws with a custom color or gradient, use a transparent color
+            // in case the parent view draws with a custom color or gradient,
+            // use a transparent color
             sliderCtl.setBackgroundColor(UIColor.colorClear());
             sliderCtl.setMinimumValue(0.0f);
             sliderCtl.setMaximumValue(100.0f);
             sliderCtl.setContinuous(true);
-            sliderCtl.setValue(50.0f);   
-            sliderCtl.setTag(viewTag);      // tag this view for later so we can remove it from recycled table cells
+            sliderCtl.setValue(50.0f);
+            sliderCtl.setTag(viewTag); // tag this view for later so we can
+                                       // remove it from recycled table cells
         }
         return sliderCtl;
     }
-    
+
     /**
      * gets custom slider
+     * 
      * @return slider
      */
     private UISlider getCustomSlider() {
@@ -304,17 +307,18 @@ public class ControlsViewController extends UITableViewController{
                     System.err.println("custom slider moved to:" + customSlider.getValue());
                 }
             });
-            
-            // in case the parent view draws with a custom color or gradient, use a transparent color
+
+            // in case the parent view draws with a custom color or gradient,
+            // use a transparent color
             customSlider.setBackgroundColor(UIColor.colorClear());
- 
+
             UIImage stetchLeftTrack = UIImage.createFromBundle("orangeslide.png");
             stetchLeftTrack = stetchLeftTrack.newStretchable(10l, 0l);
-            
+
             UIImage stetchRightTrack = UIImage.createFromBundle("yellowslide.png");
             stetchRightTrack = stetchRightTrack.newStretchable(10l, 0l);
-            
-            customSlider.setThumbImage(UIImage.createFromBundle("slider_ball.png"),UIControlState.Normal);
+
+            customSlider.setThumbImage(UIImage.createFromBundle("slider_ball.png"), UIControlState.Normal);
             customSlider.setMinimumTrackImage(stetchLeftTrack, UIControlState.Normal);
             customSlider.setMaximumTrackImage(stetchRightTrack, UIControlState.Normal);
             customSlider.setMinimumValue(0.0f);
@@ -324,9 +328,10 @@ public class ControlsViewController extends UITableViewController{
         }
         return customSlider;
     }
-    
+
     /**
      * gets a page control
+     * 
      * @return page control
      */
     private UIPageControl getPageControl() {
@@ -339,31 +344,35 @@ public class ControlsViewController extends UITableViewController{
         }
         return pageControl;
     }
-    
+
     /**
      * gets a progress indicator
+     * 
      * @return progress indicator
      */
     private UIActivityIndicatorView getProgressInd() {
-        
-        if (this.progressInd == null){
+
+        if (this.progressInd == null) {
             CGRect frame = new CGRect(0.0, 12.0, PROGRESS_INDICATOR_SIZE, PROGRESS_INDICATOR_SIZE);
-            
+
             this.progressInd = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Gray);
             getProgressInd().setColor(progressInd.getColor());
             this.progressInd.setFrame(frame);
             getProgressInd().resizeToFit();
             getProgressInd().setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle.Gray);
-            
-            getProgressInd().setTag(viewTag);    // tag this view for later so we can remove it from recycled table cells
+
+            getProgressInd().setTag(viewTag); // tag this view for later so we
+                                              // can remove it from recycled
+                                              // table cells
             getProgressInd().startAnimating();
         }
-        
+
         return progressInd;
     }
-    
+
     /**
      * Returns progress bar
+     * 
      * @return UIProgressView
      */
     private UIProgressView getProgressBar() {
@@ -372,26 +381,29 @@ public class ControlsViewController extends UITableViewController{
             progressBar = new UIProgressView(frame);
             progressBar.setProgressViewStyle(UIProgressViewStyle.Default);
             progressBar.setProgress(0.5f);
-            progressBar.setTag(viewTag);    // tag this view for later so we can remove it from recycled table cells
+            progressBar.setTag(viewTag); // tag this view for later so we can
+                                         // remove it from recycled table cells
         }
         return progressBar;
     }
-    
+
     /**
      * Returns stepper
+     * 
      * @return stepper
      */
     private UIStepper getStepper() {
         if (stepper == null) {
             CGRect frame = new CGRect(0.0, 10.0, 0.0, 0.0);
             stepper = new UIStepper(frame);
-            stepper.resizeToFit();        // size the control to it's normal size
-            stepper.setTag(viewTag);     // tag this view for later so we can remove it from recycled table cells
+            stepper.resizeToFit(); // size the control to it's normal size
+            stepper.setTag(viewTag); // tag this view for later so we can remove
+                                     // it from recycled table cells
             stepper.setValue(0);
             stepper.setMinimumValue(0);
             stepper.setMaximumValue(10);
             stepper.setStepValue(1);
-            
+
             stepper.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
                 public void onValueChanged(UIControl control) {
                     System.out.println("Stepper value modified!:" + stepper.getValue());
@@ -400,7 +412,7 @@ public class ControlsViewController extends UITableViewController{
         }
         return stepper;
     }
-    
+
     /**
      * Performs a tint action on applicable controls.
      */
@@ -414,13 +426,14 @@ public class ControlsViewController extends UITableViewController{
         this.sliderCtl.setThumbTintColor(tintColor);
         this.switchCtl.setOnTintColor(tintColor);
         this.stepper.setTintColor(tintColor);
-        
+
         UIColor thumbTintColor = (this.switchCtl.getThumbTintColor() != null) ? null : UIColor.colorRed();
         this.switchCtl.setOnTintColor(tintColor);
         this.switchCtl.setThumbTintColor(thumbTintColor);
-        
-        UIColor progressIndColor = (this.getProgressInd().getColor() != progressIndSavedColor) ? this.progressIndSavedColor : UIColor.colorBlue();
+
+        UIColor progressIndColor = (this.getProgressInd().getColor() != progressIndSavedColor) ? this.progressIndSavedColor
+                : UIColor.colorBlue();
         this.progressInd.setColor(progressIndColor);
     }
-    
+
 }

@@ -40,26 +40,27 @@ import org.robovm.objc.annotation.Method;
 import org.robovm.samples.uicatalog.Constants;
 
 /**
- * The view controller for hosting the UIWebView feature of this sample. 
+ * The view controller for hosting the UIWebView feature of this sample.
  */
-public class WebViewController extends  UIViewController{
-    
+public class WebViewController extends UIViewController {
+
     private UIWebView myWebView;
 
     /**
-     * show url bar and load webview 
+     * show url bar and load webview
      */
     @Method
     public void viewDidLoad() {
         super.viewDidLoad();
         this.setTitle("");
-        
-        CGRect textFieldFrame = new CGRect(Constants.LEFT_MARGIN, Constants.TWEEN_MARGIN+70, getView().getBounds().getWidth()-Constants.LEFT_MARGIN*2.0, Constants.TEXT_FIELD_HEIGHT);
-        
+
+        CGRect textFieldFrame = new CGRect(Constants.LEFT_MARGIN, Constants.TWEEN_MARGIN + 70, getView().getBounds()
+                .getWidth() - Constants.LEFT_MARGIN * 2.0, Constants.TEXT_FIELD_HEIGHT);
+
         UITextField urlField = new UITextField(textFieldFrame);
         urlField.setBorderStyle(UITextBorderStyle.Bezel);
         urlField.setTextColor(UIColor.colorBlack());
-        
+
         urlField.setDelegate(new UITextFieldDelegateAdapter() {
 
             @Override
@@ -68,38 +69,42 @@ public class WebViewController extends  UIViewController{
                 myWebView.loadRequest(new NSURLRequest(new NSURL(textField.getText())));
                 return true;
             }
-            
+
         });
-        
+
         urlField.setPlaceholder("<enter a full URL>");
         urlField.setText("http://www.apple.com");
         urlField.setBackgroundColor(UIColor.colorWhite());
         urlField.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
-        //urlField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
         urlField.setReturnKeyType(UIReturnKeyType.Go);
         urlField.setKeyboardType(UIKeyboardType.URL);
         urlField.setAutocapitalizationType(UITextAutocapitalizationType.None);
         urlField.setAutocorrectionType(UITextAutocorrectionType.No);
         urlField.setClearButtonMode(UITextFieldViewMode.Always);
-        
+
         getView().addSubview(urlField);
-        
+
         // create the UIWebView
         CGRect webFrame = this.getView().getFrame();
-        webFrame.origin().y(webFrame.origin().y() + (Constants.TWEEN_MARGIN * 2.0) + Constants.TEXT_FIELD_HEIGHT+70);       // leave room for the URL input field
+        webFrame.origin().y(webFrame.origin().y() + (Constants.TWEEN_MARGIN * 2.0) + Constants.TEXT_FIELD_HEIGHT + 70); // leave
+                                                                                                                        // room
+                                                                                                                        // for
+                                                                                                                        // the
+                                                                                                                        // URL
+                                                                                                                        // input
+                                                                                                                        // field
         webFrame.size().height(webFrame.size().height() - 40.0);
-        
+
         myWebView = new UIWebView(webFrame);
         myWebView.setBackgroundColor(UIColor.colorWhite());
         myWebView.setScalesPageToFit(true);
         myWebView.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
-        //(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin);
-        myWebView.setDelegate(new WebViewDelegate());    
+        myWebView.setDelegate(new WebViewDelegate());
         getView().addSubview(myWebView);
-        
+
         myWebView.loadRequest(new NSURLRequest(new NSURL("http://www.apple.com/")));
     }
-    
+
     private class WebViewDelegate extends UIWebViewDelegateAdapter {
         @Override
         public void didStartLoad(UIWebView webView) {
@@ -111,19 +116,22 @@ public class WebViewController extends  UIViewController{
             UIApplication.getSharedApplication().setNetworkActivityIndicatorVisible(false);
         }
     }
-    
-    public void viewWillAppear(boolean animated){
+
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
-        
-        myWebView.setDelegate(new WebViewDelegate());     // setup the delegate as the web view is shown
+
+        myWebView.setDelegate(new WebViewDelegate()); // setup the delegate as
+                                                      // the web view is shown
     }
 
     public void viewWillDisappear(boolean animated) {
         super.viewWillDisappear(animated);
-        
-        myWebView.stopLoading();       // in case the web view is still loading its content
-        myWebView.setDelegate(null);  // disconnect the delegate as the webview is hidden
+
+        myWebView.stopLoading(); // in case the web view is still loading its
+                                 // content
+        myWebView.setDelegate(null); // disconnect the delegate as the webview
+                                     // is hidden
         UIApplication.getSharedApplication().setNetworkActivityIndicatorVisible(false);
     }
-    
+
 }

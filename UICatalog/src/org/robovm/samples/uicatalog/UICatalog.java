@@ -62,5 +62,5 @@ public class UICatalog extends UIApplicationDelegateAdapter {
         UIApplication.main(args, null, UICatalog.class);
         pool.close();
     }
-    
+
 }
