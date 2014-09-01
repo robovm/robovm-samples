@@ -51,7 +51,7 @@ To run on a connected device: Right-click the project. Choose *Run As -> iOS Dev
 ## Short description of each sample
 
 
-| Name              | Description | Used frameworks and technologies |
+| Name              | Description | Demonstrates |
 | ------------------| ----------- | ---------------------------------|
 | [QuickContacts](QuickContacts/)     | Port of Apple's [QuickContacts](https://developer.apple.com/library/ios/samplecode/QuickContacts/Introduction/Intro.html) sample | How to use the Address Book UI controllers and various properties. Shows how to browse a list of Address Book contacts, display and edit a contact record, create a new contact record, and update a partial contact record. |
 | [UICatalog](UICatalog/)         | Port of Apple's [UICatalog](https://developer.apple.com/library/ios/samplecode/UICatalog/Introduction/Intro.html) sample | How to create and customize user interface controls found in the UIKit framework, along with their various properties and styles. |
