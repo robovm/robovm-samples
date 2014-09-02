@@ -19,11 +19,10 @@
 
 package org.robovm.samples.helloworld;
 
-import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
-import org.robovm.apple.uikit.UIViewContentMode;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
 import org.robovm.samples.helloworld.viewcontrollers.MyViewController;
 
@@ -36,12 +35,8 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
         // Set up the view controller
         myViewController = new MyViewController();
 
-// UIApplication.getSharedApplication().setStatusBarStyle(UIStatusBarStyle.BlackOpaque);
-
-        // Create a new window with our specified viewport.
-        window = new UIWindow(new CGRect(0, 0, 320, 480));
-        // Scale the window contents to fill the entire screen, regardless of resolution.
-        window.setContentMode(UIViewContentMode.ScaleToFill);
+        // Create a new window at screen size.
+        window = new UIWindow(UIScreen.getMainScreen().getBounds());
         // Set our viewcontroller as the root controller for the window.
         window.setRootViewController(myViewController);
         // Make the window visible.
