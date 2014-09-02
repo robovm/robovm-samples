@@ -14,8 +14,8 @@
   <version>1.0</version>
 
   <properties>
-     <robovm.version>0.0.15-SNAPSHOT</robovm.version>
-     <robovm.maven.version>0.0.15-SNAPSHOT</robovm.maven.version>
+     <robovm.version>1.0.0-SNAPSHOT</robovm.version>
+     <robovm.maven.version>1.0.0-SNAPSHOT</robovm.maven.version>
   </properties>
 
   <build>
