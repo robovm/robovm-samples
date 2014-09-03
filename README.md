@@ -4,6 +4,10 @@ Each of the provided samples (unless otherwise noted in the sample's README.md) 
 
 ## Run using Gradle
 
+First, build the project:
+```
+./gradlew build
+```
 To run in the iPhone simulator:
 ```
 ./gradlew launchIPhoneSimulator
