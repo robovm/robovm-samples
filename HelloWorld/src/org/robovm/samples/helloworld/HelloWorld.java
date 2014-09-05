@@ -32,7 +32,7 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
 
     @Override
     public void didFinishLaunching (UIApplication application) {
-        // Set up the view controller
+        // Set up the view controller.
         myViewController = new MyViewController();
 
         // Create a new window at screen size.
