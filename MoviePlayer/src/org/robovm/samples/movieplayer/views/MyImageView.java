@@ -16,7 +16,7 @@
  * Portions of this code is based on Apple Inc's MoviePlayer sample (v1.5)
  * which is copyright (C) 2008-2014 Apple Inc.
  */
-package org.robovm.samples.movieplayer;
+package org.robovm.samples.movieplayer.views;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSSet;

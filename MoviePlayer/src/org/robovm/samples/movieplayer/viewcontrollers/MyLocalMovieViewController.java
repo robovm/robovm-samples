@@ -34,7 +34,7 @@ import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UITabBarItem;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewContentMode;
-import org.robovm.samples.movieplayer.MyImageView;
+import org.robovm.samples.movieplayer.views.MyImageView;
 
 public class MyLocalMovieViewController extends MyMovieViewController {
     private final MyImageView imageView;
