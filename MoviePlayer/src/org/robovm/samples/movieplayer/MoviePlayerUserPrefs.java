@@ -154,13 +154,13 @@ public class MoviePlayerUserPrefs {
     public static UIColor getBackgroundColor() {
         registerDefaults();
 
-        UIColor[] colors = new UIColor[] { UIColor.colorBlack(), UIColor.colorDarkGray(), UIColor.colorLightGray(),
-                UIColor.colorWhite(),
-                UIColor.colorGray(), UIColor.colorRed(), UIColor.colorGreen(), UIColor.colorBlue(),
-                UIColor.colorCyan(),
-                UIColor.colorYellow(), UIColor.colorMagenta(), UIColor.colorOrange(), UIColor.colorPurple(),
-                UIColor.colorBrown(),
-                UIColor.colorClear() };
+        UIColor[] colors = new UIColor[] { UIColor.black(), UIColor.darkGray(), UIColor.lightGray(),
+                UIColor.white(),
+                UIColor.gray(), UIColor.red(), UIColor.green(), UIColor.blue(),
+                UIColor.cyan(),
+                UIColor.yellow(), UIColor.magenta(), UIColor.orange(), UIColor.purple(),
+                UIColor.brown(),
+                UIColor.clear() };
 
         return colors[(int) NSUserDefaults.getStandardUserDefaults().getInteger(BACKGROUND_COLOR_KEY)];
     }

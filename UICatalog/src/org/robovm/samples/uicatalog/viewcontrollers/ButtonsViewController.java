@@ -49,9 +49,7 @@ import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
-/**
- * The table view controller for hosting the UIButton features of this sample.
- */
+/** The table view controller for hosting the UIButton features of this sample. */
 public class ButtonsViewController extends UITableViewController {
 
     private static final String DISPLAY_CELL_ID = "DisplayCellID";
@@ -71,23 +69,19 @@ public class ButtonsViewController extends UITableViewController {
     private UIButton infoDarkButtonType;
     private UIButton contactAddButtonType;
 
-    private LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
+    private final LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
 
-    /**
-     * List item which stores button meta data
-     *
-     */
+    /** List item which stores button meta data */
     private class ListItem {
-        private String sectionTitle;
+        private final String sectionTitle;
 
-        private String label;
+        private final String label;
 
-        private String source;
+        private final String source;
 
-        private UIView view;
+        private final UIView view;
 
-        public ListItem(String sectionTitle, String label, String source,
-                UIView view) {
+        public ListItem (String sectionTitle, String label, String source, UIView view) {
             super();
             this.sectionTitle = sectionTitle;
             this.label = label;
@@ -95,26 +89,26 @@ public class ButtonsViewController extends UITableViewController {
             this.view = view;
         }
 
-        public String getSectionTitle() {
+        public String getSectionTitle () {
             return sectionTitle;
         }
 
-        public String getLabel() {
+        public String getLabel () {
             return label;
         }
 
-        public String getSource() {
+        public String getSource () {
             return source;
         }
 
-        public UIView getView() {
+        public UIView getView () {
             return view;
         }
 
     }
 
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         // 320, 247
@@ -123,9 +117,11 @@ public class ButtonsViewController extends UITableViewController {
 
         dataSourceArray.add(new ListItem("UIButton", "Background Image", "grayButton", getGrayButton()));
         dataSourceArray.add(new ListItem("UIButton", "Button with Image", "imageButton", getImageButton()));
-        dataSourceArray.add(new ListItem("UIButtonTypeRoundedRect", "Rounded Button", "roundedButtonType", getRoundedButtonType()));
+        dataSourceArray
+            .add(new ListItem("UIButtonTypeRoundedRect", "Rounded Button", "roundedButtonType", getRoundedButtonType()));
         dataSourceArray.add(new ListItem("UIButtonTypeRoundedRect", "Attributet Text", "attrTextButton", getAttrTextButton()));
-        dataSourceArray.add(new ListItem("UIButtonTypeDetailDisclosure", "Detail Disclosure", "detailDisclosureButton", getDetailDisclosureButtonType()));
+        dataSourceArray.add(new ListItem("UIButtonTypeDetailDisclosure", "Detail Disclosure", "detailDisclosureButton",
+            getDetailDisclosureButtonType()));
         dataSourceArray.add(new ListItem("UIButtonTypeInfoLight", "Info Light", "attrTextButton", getInfoLightButtonType()));
         dataSourceArray.add(new ListItem("UIButtonTypeRoundDark", "Info Dark", "attrTextButton", getInfoDarkButtonType()));
         dataSourceArray.add(new ListItem("UIButtonTypeContactAdd", "Add Contact", "contactAddButton", getContactAddButtonType()));
@@ -138,29 +134,27 @@ public class ButtonsViewController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) {
+    public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
         return this.dataSourceArray.size();
     }
 
     @Override
-    public String getSectionHeaderTitle(UITableView tableView,
-            @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int) section).getSectionTitle();
+    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+        return this.dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
-            @MachineSizedSInt long section) {
+    public @MachineSizedSInt long getNumberOfRowsInSection (UITableView tableView, @MachineSizedSInt long section) {
         return 2;
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
+    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
         return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 38.0;
     }
 
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
 
         UITableViewCell cell = null;
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
@@ -172,10 +166,10 @@ public class ButtonsViewController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getLabel());
-            UIButton button = (UIButton) this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getView();
+            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            UIButton button = (UIButton)this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
             if (button == null) {
-                System.err.println(this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getLabel());
+                System.err.println(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
             }
 
             CGRect newFrame = button.getFrame();
@@ -190,37 +184,34 @@ public class ButtonsViewController extends UITableViewController {
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             cell.getTextLabel().setOpaque(false);
             cell.getTextLabel().setTextAlignment(NSTextAlignment.Center);
-            cell.getTextLabel().setTextColor(UIColor.colorGray());
+            cell.getTextLabel().setTextColor(UIColor.gray());
             cell.getTextLabel().setNumberOfLines(2);
-            cell.getTextLabel().setHighlightedTextColor(UIColor.colorBlack());
+            cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;
     }
 
-    /**
-     * Create button with provided parameters
+    /** Create button with provided parameters
      * 
      * @param title title of button
      * @param frame frame of button
      * @param image image in button
      * @param imagePressed state to show when image is pressed
      * @param darkTextColor should text of dark color be displayed
-     * @return a new UIButton
-     */
-    private static UIButton newButton(String title, CGRect frame, UIImage image, UIImage imagePressed,
-            boolean darkTextColor) {
+     * @return a new UIButton */
+    private static UIButton newButton (String title, CGRect frame, UIImage image, UIImage imagePressed, boolean darkTextColor) {
         UIButton button = new UIButton(frame);
         button.setContentVerticalAlignment(UIControlContentVerticalAlignment.Center);
         button.setContentHorizontalAlignment(UIControlContentHorizontalAlignment.Center);
 
         button.setTitle(title, UIControlState.Normal);
         if (darkTextColor) {
-            button.setTitleColor(UIColor.colorBlack(), UIControlState.Normal);
+            button.setTitleColor(UIColor.black(), UIControlState.Normal);
         } else {
-            button.setTitleColor(UIColor.colorWhite(), UIControlState.Normal);
+            button.setTitleColor(UIColor.white(), UIControlState.Normal);
         }
 
         UIImage newImage = image.newStretchable(12, 0);
@@ -234,17 +225,15 @@ public class ButtonsViewController extends UITableViewController {
 
         // in case the parent view draws with a custom color or gradient, use a
         // transparent color
-        button.setBackgroundColor(UIColor.colorClear());
+        button.setBackgroundColor(UIColor.clear());
 
         return button;
     }
 
-    /**
-     * create the UIButtons with various background images
+    /** create the UIButtons with various background images
      * 
-     * @return gray button
-     */
-    public UIButton getGrayButton() {
+     * @return gray button */
+    public UIButton getGrayButton () {
         if (grayButton == null) {
             UIImage buttonBackground = UIImage.createFromBundle("whiteButton.png");
             UIImage buttonBackgroundPressed = UIImage.createFromBundle("blueButton.png");
@@ -252,7 +241,8 @@ public class ButtonsViewController extends UITableViewController {
             CGRect frame = new CGRect(0.0, 5.0, stdButtonWidth, stdButtonHeight);
             grayButton = newButton("Gray", frame, buttonBackground, buttonBackgroundPressed, true);
             grayButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Gray button pressed!");
                 }
 
@@ -264,12 +254,10 @@ public class ButtonsViewController extends UITableViewController {
         return grayButton;
     }
 
-    /**
-     * create a UIButton with just an image instead of a title
+    /** create a UIButton with just an image instead of a title
      * 
-     * @return image button
-     */
-    public UIButton getImageButton() {
+     * @return image button */
+    public UIButton getImageButton () {
         if (imageButton == null) {
             UIImage buttonBackground = UIImage.createFromBundle("whiteButton.png");
             UIImage buttonBackgroundPressed = UIImage.createFromBundle("blueButton.png");
@@ -277,7 +265,8 @@ public class ButtonsViewController extends UITableViewController {
             CGRect frame = new CGRect(0.0, 5.0, stdButtonWidth, stdButtonHeight);
             imageButton = newButton("", frame, buttonBackground, buttonBackgroundPressed, true);
             imageButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Image button pressed");
                 }
             });
@@ -290,12 +279,10 @@ public class ButtonsViewController extends UITableViewController {
         return imageButton;
     }
 
-    /**
-     * create a UIButton with just an image instead of a title
+    /** create a UIButton with just an image instead of a title
      * 
-     * @return attributed text button
-     */
-    public UIButton getAttrTextButton() {
+     * @return attributed text button */
+    public UIButton getAttrTextButton () {
         if (attrTextButton == null) {
             // create a UIButton with attributed text for its title
             attrTextButton = UIButton.create(UIButtonType.RoundedRect);
@@ -304,19 +291,21 @@ public class ButtonsViewController extends UITableViewController {
             attrTextButton.setTitle("Rounded", UIControlState.Normal);
             attrTextButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
 
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("AttrButton pressed!");
                 }
             });
 
             // apply red text for normal state
             NSMutableAttributedString normalAttrString = new NSMutableAttributedString("Rounded");
-            normalAttrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.colorRed(), new NSRange(0, normalAttrString.getLength()));
+            normalAttrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.red(),
+                new NSRange(0, normalAttrString.getLength()));
             attrTextButton.setAttributedTitle(normalAttrString, UIControlState.Normal);
 
             // apply green text for pressed state
             NSMutableAttributedString highlightedAttrString = new NSMutableAttributedString("Rounded");
-            normalAttrString.addAttribute(new NSString("Green"), UIColor.colorGreen(), new NSRange(0, normalAttrString.getLength()));
+            normalAttrString.addAttribute(new NSString("Green"), UIColor.green(), new NSRange(0, normalAttrString.getLength()));
 
             attrTextButton.setAttributedTitle(highlightedAttrString, UIControlState.Highlighted);
             attrTextButton.setTag(viewTag); // tag this view for later so we can
@@ -326,18 +315,17 @@ public class ButtonsViewController extends UITableViewController {
         return attrTextButton;
     }
 
-    /**
-     * create a UIButton (UIButtonTypeRoundedRect)
+    /** create a UIButton (UIButtonTypeRoundedRect)
      * 
-     * @return Rounded UIButton
-     */
-    public UIButton getRoundedButtonType() {
+     * @return Rounded UIButton */
+    public UIButton getRoundedButtonType () {
         if (roundedButtonType == null) {
             roundedButtonType = UIButton.create(UIButtonType.RoundedRect);
             roundedButtonType.setFrame(new CGRect(0.0, 5.0, stdButtonWidth, stdButtonHeight));
             roundedButtonType.setTitle("Rounded", UIControlState.Normal);
             roundedButtonType.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Rounded pressed!");
                 }
             });
@@ -346,41 +334,39 @@ public class ButtonsViewController extends UITableViewController {
         return roundedButtonType;
     }
 
-    /**
-     * create a UIButton (UIButtonTypeDetailDisclosure)
+    /** create a UIButton (UIButtonTypeDetailDisclosure)
      * 
-     * @return Detail button
-     */
-    public UIButton getDetailDisclosureButtonType() {
+     * @return Detail button */
+    public UIButton getDetailDisclosureButtonType () {
         if (detailDisclosureButtonType == null) {
             detailDisclosureButtonType = UIButton.create(UIButtonType.DetailDisclosure);
             detailDisclosureButtonType.setFrame(new CGRect(0.0, 8.0, 25.0, 25.0));
             detailDisclosureButtonType.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Detailed description pressed!");
                 }
             });
             detailDisclosureButtonType.setTitle("Detail Disclosure", UIControlState.Normal);
-            detailDisclosureButtonType.setBackgroundColor(UIColor.colorClear());
+            detailDisclosureButtonType.setBackgroundColor(UIColor.clear());
             detailDisclosureButtonType.setTag(viewTag);
         }
 
         return detailDisclosureButtonType;
     }
 
-    /**
-     * create a UIButton (UIButtonTypeInfoDark)
+    /** create a UIButton (UIButtonTypeInfoDark)
      * 
-     * @return dark info button
-     */
-    public UIButton getInfoDarkButtonType() {
+     * @return dark info button */
+    public UIButton getInfoDarkButtonType () {
         if (infoDarkButtonType == null) {
             infoDarkButtonType = UIButton.create(UIButtonType.InfoDark);
             infoDarkButtonType.setFrame(new CGRect(0.0, 8.0, 25.0, 25.0));
             infoDarkButtonType.setTitle("Info Dark", UIControlState.Normal);
-            infoDarkButtonType.setBackgroundColor(UIColor.colorClear());
+            infoDarkButtonType.setBackgroundColor(UIColor.clear());
             infoDarkButtonType.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Click dark info Button!");
                 }
             });
@@ -389,40 +375,38 @@ public class ButtonsViewController extends UITableViewController {
         return infoDarkButtonType;
     }
 
-    /**
-     * create a UIButton (UIButtonTypeInfoLight)
+    /** create a UIButton (UIButtonTypeInfoLight)
      * 
-     * @return light info button
-     */
-    public UIButton getInfoLightButtonType() {
+     * @return light info button */
+    public UIButton getInfoLightButtonType () {
         if (infoLightButtonType == null) {
             infoLightButtonType = UIButton.create(UIButtonType.InfoLight);
             infoLightButtonType.setFrame(new CGRect(0.0, 8.0, 25.0, 25.0));
             infoLightButtonType.setTitle("Info Light", UIControlState.Normal);
-            infoLightButtonType.setBackgroundColor(UIColor.colorClear());
+            infoLightButtonType.setBackgroundColor(UIColor.clear());
             infoLightButtonType.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Click light info Button!");
                 }
             });
-            infoLightButtonType.setBackgroundColor(UIColor.colorGray());
+            infoLightButtonType.setBackgroundColor(UIColor.gray());
         }
         return infoLightButtonType;
     }
 
-    /**
-     * create a UIButton (UIButtonTypeContactAdd)
+    /** create a UIButton (UIButtonTypeContactAdd)
      * 
-     * @return UIButton contact add
-     */
-    public UIButton getContactAddButtonType() {
+     * @return UIButton contact add */
+    public UIButton getContactAddButtonType () {
         if (contactAddButtonType == null) {
             contactAddButtonType = UIButton.create(UIButtonType.ContactAdd);
             contactAddButtonType.setFrame(new CGRect(0.0, 8.0, 25.0, 25.0));
             contactAddButtonType.setTitle("Add Contact", UIControlState.Normal);
-            contactAddButtonType.setBackgroundColor(UIColor.colorClear());
+            contactAddButtonType.setBackgroundColor(UIColor.clear());
             contactAddButtonType.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-                public void onTouchUpInside(UIControl control, UIEvent event) {
+                @Override
+                public void onTouchUpInside (UIControl control, UIEvent event) {
                     System.out.println("Click contact add Button!");
                 }
             });

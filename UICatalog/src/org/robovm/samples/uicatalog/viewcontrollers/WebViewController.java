@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,32 +39,29 @@ import org.robovm.apple.uikit.UIWebViewDelegateAdapter;
 import org.robovm.objc.annotation.Method;
 import org.robovm.samples.uicatalog.Constants;
 
-/**
- * The view controller for hosting the UIWebView feature of this sample.
- */
+/** The view controller for hosting the UIWebView feature of this sample. */
 public class WebViewController extends UIViewController {
 
     private UIWebView myWebView;
 
-    /**
-     * show url bar and load webview
-     */
+    /** show url bar and load webview */
+    @Override
     @Method
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
         this.setTitle("");
 
-        CGRect textFieldFrame = new CGRect(Constants.LEFT_MARGIN, Constants.TWEEN_MARGIN + 70, getView().getBounds()
-                .getWidth() - Constants.LEFT_MARGIN * 2.0, Constants.TEXT_FIELD_HEIGHT);
+        CGRect textFieldFrame = new CGRect(Constants.LEFT_MARGIN, Constants.TWEEN_MARGIN + 70, getView().getBounds().getWidth()
+            - Constants.LEFT_MARGIN * 2.0, Constants.TEXT_FIELD_HEIGHT);
 
         UITextField urlField = new UITextField(textFieldFrame);
         urlField.setBorderStyle(UITextBorderStyle.Bezel);
-        urlField.setTextColor(UIColor.colorBlack());
+        urlField.setTextColor(UIColor.black());
 
         urlField.setDelegate(new UITextFieldDelegateAdapter() {
 
             @Override
-            public boolean shouldReturn(UITextField textField) {
+            public boolean shouldReturn (UITextField textField) {
                 textField.resignFirstResponder();
                 myWebView.loadRequest(new NSURLRequest(new NSURL(textField.getText())));
                 return true;
@@ -74,7 +71,7 @@ public class WebViewController extends UIViewController {
 
         urlField.setPlaceholder("<enter a full URL>");
         urlField.setText("http://www.apple.com");
-        urlField.setBackgroundColor(UIColor.colorWhite());
+        urlField.setBackgroundColor(UIColor.white());
         urlField.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
         urlField.setReturnKeyType(UIReturnKeyType.Go);
         urlField.setKeyboardType(UIKeyboardType.URL);
@@ -96,7 +93,7 @@ public class WebViewController extends UIViewController {
         webFrame.size().height(webFrame.size().height() - 40.0);
 
         myWebView = new UIWebView(webFrame);
-        myWebView.setBackgroundColor(UIColor.colorWhite());
+        myWebView.setBackgroundColor(UIColor.white());
         myWebView.setScalesPageToFit(true);
         myWebView.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
         myWebView.setDelegate(new WebViewDelegate());
@@ -107,24 +104,26 @@ public class WebViewController extends UIViewController {
 
     private class WebViewDelegate extends UIWebViewDelegateAdapter {
         @Override
-        public void didStartLoad(UIWebView webView) {
+        public void didStartLoad (UIWebView webView) {
             UIApplication.getSharedApplication().setNetworkActivityIndicatorVisible(true);
         }
 
         @Override
-        public void didFinishLoad(UIWebView webView) {
+        public void didFinishLoad (UIWebView webView) {
             UIApplication.getSharedApplication().setNetworkActivityIndicatorVisible(false);
         }
     }
 
-    public void viewWillAppear(boolean animated) {
+    @Override
+    public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
 
         myWebView.setDelegate(new WebViewDelegate()); // setup the delegate as
                                                       // the web view is shown
     }
 
-    public void viewWillDisappear(boolean animated) {
+    @Override
+    public void viewWillDisappear (boolean animated) {
         super.viewWillDisappear(animated);
 
         myWebView.stopLoading(); // in case the web view is still loading its

@@ -37,9 +37,7 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
 
-/**
- * The view controller for hosting the UIPickerView of this sample.
- */
+/** The view controller for hosting the UIPickerView of this sample. */
 public class SearchBarViewController extends UIViewController {
 
     private UISearchBar mySearchBar;
@@ -47,7 +45,7 @@ public class SearchBarViewController extends UIViewController {
 
     @Override
     @Method(selector = "viewDidLoad")
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         setView(new UIView(new CGRect(0, 20, 320, 460)));
@@ -59,17 +57,17 @@ public class SearchBarViewController extends UIViewController {
         mySearchBar.setDelegate(new UISearchBarDelegateAdapter() {
 
             @Override
-            public void searchButtonClicked(UISearchBar searchBar) {
+            public void searchButtonClicked (UISearchBar searchBar) {
                 mySearchBar.resignFirstResponder();
             }
 
             @Override
-            public void bookmarkButtonClicked(UISearchBar searchBar) {
+            public void bookmarkButtonClicked (UISearchBar searchBar) {
 
             }
 
             @Override
-            public void cancelButtonClicked(UISearchBar searchBar) {
+            public void cancelButtonClicked (UISearchBar searchBar) {
                 mySearchBar.resignFirstResponder();
             }
 
@@ -81,7 +79,7 @@ public class SearchBarViewController extends UIViewController {
         list.add(new NSString("Background"));
 
         // mySearchBar.addListener
-        contentOptions = new UISegmentedControl(NSArray.toNSArray("Normal", "Tinted", "Background"));
+        contentOptions = new UISegmentedControl(NSArray.fromStrings("Normal", "Tinted", "Background"));
         contentOptions.setFrame(new CGRect(34, 125, 252, 30));
 
         mySearchBar.setShowsCancelButton(true);
@@ -95,31 +93,28 @@ public class SearchBarViewController extends UIViewController {
 
     }
 
-    /**
-     * contentChoice - changes background of search bar depending on option
-     * selection
+    /** contentChoice - changes background of search bar depending on option selection
      * 
-     * @param selectedSegmentIndex
-     */
+     * @param selectedSegmentIndex */
     @Method
-    public void contentChoice(UISegmentedControl sender) {
+    public void contentChoice (UISegmentedControl sender) {
         mySearchBar.setTintColor(null);
         mySearchBar.setBackgroundImage(null);
         mySearchBar.setImageForSearchBarIcon(null, UISearchBarIcon.Bookmark, UIControlState.Normal);
 
         UISegmentedControl segControl = sender;
-        switch ((int) segControl.getSelectedSegment()) {
+        switch ((int)segControl.getSelectedSegment()) {
         case 1:
             // tinted background
-            mySearchBar.setTintColor(UIColor.colorBlue());
+            mySearchBar.setTintColor(UIColor.blue());
             break;
         case 2:
             // image background
             mySearchBar.setBackgroundImage(UIImage.createFromBundle("searchBarBackground"));
             mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImage"), UISearchBarIcon.Bookmark,
-                    UIControlState.Normal);
-            mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImageHighlighted"),
-                    UISearchBarIcon.Bookmark, UIControlState.Highlighted);
+                UIControlState.Normal);
+            mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImageHighlighted"), UISearchBarIcon.Bookmark,
+                UIControlState.Highlighted);
         }
     }
 

@@ -29,9 +29,7 @@ import org.robovm.apple.uikit.UISlider;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.Method;
 
-/**
- * The view controller for hosting the UIImageView containing multiple images.
- */
+/** The view controller for hosting the UIImageView containing multiple images. */
 public class ImageViewController extends UIViewController {
 
     private static final float MIN_DURATION = 0.0f;
@@ -42,22 +40,19 @@ public class ImageViewController extends UIViewController {
     private UISlider slider;
 
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         imageView = new UIImageView(new CGRect(42, 70, 236, 174));
         slider = new UISlider(new CGRect(18, 398, 284, 23));
 
-        NSArray<UIImage> images = new NSArray<UIImage>(
-                UIImage.createFromBundle("scene1.jpg"),
-                UIImage.createFromBundle("scene2.jpg"),
-                UIImage.createFromBundle("scene3.jpg"),
-                UIImage.createFromBundle("scene4.jpg"),
-                UIImage.createFromBundle("scene5.jpg"));
+        NSArray<UIImage> images = new NSArray<UIImage>(UIImage.createFromBundle("scene1.jpg"),
+            UIImage.createFromBundle("scene2.jpg"), UIImage.createFromBundle("scene3.jpg"),
+            UIImage.createFromBundle("scene4.jpg"), UIImage.createFromBundle("scene5.jpg"));
 
         this.imageView.setAnimationImages(images);
         UIImageView.setDurationForAnimation(5.0);
-        this.imageView.setBackgroundColor(UIColor.colorBlack());
+        this.imageView.setBackgroundColor(UIColor.black());
         this.imageView.setAnimationDuration(5.0f); // sync with slider below
         this.imageView.stopAnimating();
 
@@ -66,7 +61,8 @@ public class ImageViewController extends UIViewController {
         slider.setValue(5.0f);
 
         this.slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
-            public void onValueChanged(UIControl control) {
+            @Override
+            public void onValueChanged (UIControl control) {
                 sliderAction();
             }
         });
@@ -77,7 +73,7 @@ public class ImageViewController extends UIViewController {
     }
 
     @Method
-    private void sliderAction() {
+    private void sliderAction () {
         UISlider durationSlider = slider;
         this.imageView.setAnimationDuration(durationSlider.getValue());
         if (!this.imageView.isAnimating()) {
@@ -85,15 +81,17 @@ public class ImageViewController extends UIViewController {
         }
     }
 
-    public void viewWillDisappear(boolean animated) {
+    @Override
+    public void viewWillDisappear (boolean animated) {
         super.viewWillDisappear(animated);
         imageView.stopAnimating();
     }
 
-    public void viewWillAppear(boolean animated) {
+    @Override
+    public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
         imageView.startAnimating();
-        this.getNavigationController().getNavigationBar().setTintColor(UIColor.colorBlack());
+        this.getNavigationController().getNavigationBar().setTintColor(UIColor.black());
     }
 
 }

@@ -46,48 +46,42 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
 
-/**
- * The view controller for hosting the UITextView features of this sample.
- */
+/** The view controller for hosting the UITextView features of this sample. */
 public class TextViewController extends UIViewController {
     private UITextView textView;
 
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         this.setTitle("");
         this.setupTextView();
     }
 
-    /**
-     * setup components and load to UI
-     */
-    private void setupTextView() {
+    /** setup components and load to UI */
+    private void setupTextView () {
         getView().setFrame(new CGRect(0, 0, 320, 460));
         textView = new UITextView(getView().getFrame());
-        textView.setTextColor(UIColor.colorBlack());
+        textView.setTextColor(UIColor.black());
         textView.setFont(UIFont.getFont("Arial", 18.0));
         textView.setDelegate(new UITextViewDelegateAdapter() {
             @Override
-            public void didBeginEditing(UITextView textView) {
+            public void didBeginEditing (UITextView textView) {
                 Selector saveAction = Selector.register("saveAction");
                 UIBarButtonItem saveItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, null, saveAction);
                 saveItem.setTarget(TextViewController.this);
                 getNavigationItem().setRightBarButtonItem(saveItem);
             }
         });
-        textView.setBackgroundColor(UIColor.colorWhite());
+        textView.setBackgroundColor(UIColor.white());
         textView.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth.set(UIViewAutoresizing.FlexibleHeight));
 
         String textToAdd = "Now is the time for all good developers to come to serve their country.\n\nNow is the time for all good developers to come to serve their country.\r\rThis text view can also use attributed strings.";
         NSMutableAttributedString attrString = new NSMutableAttributedString(textToAdd);
-        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.colorRed(),
-                new NSRange(textToAdd.length() - 19, 19));
-        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.colorBlue(),
-                new NSRange(textToAdd.length() - 23, 3));
+        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.red(), new NSRange(textToAdd.length() - 19, 19));
+        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.blue(), new NSRange(textToAdd.length() - 23, 3));
         attrString.addAttribute(UIKit.UnderlineStyleAttributeName(), NSNumber.valueOf(1l),
-                new NSRange(textToAdd.length() - 23, 3));
+            new NSRange(textToAdd.length() - 23, 3));
         this.textView.setAttributedText(attrString);
 
         textView.setReturnKeyType(UIReturnKeyType.Default);
@@ -99,7 +93,7 @@ public class TextViewController extends UIViewController {
     }
 
     @Override
-    public void viewWillAppear(boolean animated) {
+    public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
         Selector willShow = Selector.register("keyboardWillShow:");
         Selector willHide = Selector.register("keyboardWillHide:");
@@ -108,42 +102,34 @@ public class TextViewController extends UIViewController {
         center.addObserver(this, willHide, UIKit.KeyboardWillHideNotification(), null);
     }
 
-    /**
-     * Called when to finish typing text/dismiss the keyboard by removing it as
-     * the first responder
-     */
+    /** Called when to finish typing text/dismiss the keyboard by removing it as the first responder */
     @Method(selector = "saveAction")
-    private void saveAction() {
+    private void saveAction () {
         this.textView.resignFirstResponder();
         this.getNavigationItem().setRightBarButtonItem(null); // this will
                                                               // remove the
                                                               // "save" button
     }
 
-    private boolean isPortrait(UIInterfaceOrientation orientation) {
+    private boolean isPortrait (UIInterfaceOrientation orientation) {
         return ((orientation == UIInterfaceOrientation.Portrait) || (orientation == UIInterfaceOrientation.PortraitUpsideDown));
     }
 
-    /**
-     * Modifies keyboards size to fit screen
+    /** Modifies keyboards size to fit screen
      * 
      * @param showKeyboard
-     * @param notificationInfo
-     */
-    private void adjustViewForKeyboardReveal(boolean showKeyboard, NSDictionary<NSString, ?> notificationInfo) {// notificationInfo:(NSDictionary
-                                                                                                                // *)notificationInfo
+     * @param notificationInfo */
+    private void adjustViewForKeyboardReveal (boolean showKeyboard, NSDictionary<NSString, ?> notificationInfo) {// notificationInfo:(NSDictionary
+                                                                                                                 // *)notificationInfo
         // the keyboard is showing so resize the table's height
 
-        CGRect keyboardRect = NSValueExtensions.getRectValue((NSValue) notificationInfo.get(UIKit
-                .KeyboardFrameEndUserInfoKey()));
-        double animationDuration = ((NSNumber) notificationInfo.get(UIKit.KeyboardAnimationDurationUserInfoKey()))
-                .doubleValue();
+        CGRect keyboardRect = NSValueExtensions.getRectValue((NSValue)notificationInfo.get(UIKit.KeyboardFrameEndUserInfoKey()));
+        double animationDuration = ((NSNumber)notificationInfo.get(UIKit.KeyboardAnimationDurationUserInfoKey())).doubleValue();
 
         CGRect frame = this.textView.getFrame();
 
         // the keyboard rect's width and height are reversed in landscape
-        double adjustDelta = isPortrait(this.getInterfaceOrientation()) ? keyboardRect.getHeight() : keyboardRect
-                .getWidth();
+        double adjustDelta = isPortrait(this.getInterfaceOrientation()) ? keyboardRect.getHeight() : keyboardRect.getWidth();
 
         if (showKeyboard) {
             frame.size().height(frame.size().height() - adjustDelta);
@@ -158,17 +144,17 @@ public class TextViewController extends UIViewController {
     }
 
     @Method
-    void keyboardWillShow(NSNotification aNotification) {
+    void keyboardWillShow (NSNotification aNotification) {
         adjustViewForKeyboardReveal(true, aNotification.getUserInfo());
     }
 
     @Method
-    void keyboardWillHide(NSNotification aNotification) {
+    void keyboardWillHide (NSNotification aNotification) {
         adjustViewForKeyboardReveal(false, aNotification.getUserInfo());
     }
 
     @Override
-    public void viewDidDisappear(boolean animated) {
+    public void viewDidDisappear (boolean animated) {
         super.viewDidDisappear(animated);
 
         NSNotificationCenter.getDefaultCenter().removeObserver(UIKit.KeyboardWillShowNotification());

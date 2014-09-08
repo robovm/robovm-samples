@@ -46,29 +46,25 @@ import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 import org.robovm.samples.uicatalog.Constants;
 
-/**
- * The view controller for hosting the UITextField features of this sample.
- */
+/** The view controller for hosting the UITextField features of this sample. */
 public class TextFieldController extends UITableViewController {
 
     // tableView cell id constants
     static String TEXT_FIELD_CELL_ID = "TextFieldCellID";
     static String SOURCE_CELL_ID = "SourceCellID";
 
-    private int viewTag = 1;
+    private final int viewTag = 1;
 
     private UITextField textFieldNormal;
     private UITextField textFieldRounded;
     private UITextField textFieldSecure;
     private UITextField textFieldLeftView;
 
-    /**
-     * Adapter overloading default behaviour of shouldReturn to enable
-     * close-on-done when showing on screen keyboard
-     */
+    /** Adapter overloading default behaviour of shouldReturn to enable close-on-done when showing on screen keyboard */
     private class TextFieldAdapter extends UITextFieldDelegateAdapter {
 
-        public boolean shouldReturn(UITextField textField) {
+        @Override
+        public boolean shouldReturn (UITextField textField) {
             // the user pressed the "Done" button, so dismiss the keyboard
             textField.resignFirstResponder();
             return true;
@@ -76,43 +72,40 @@ public class TextFieldController extends UITableViewController {
 
     }
 
-    private LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
+    private final LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
 
-    /**
-     * Item storing TextField meta data
-     */
+    /** Item storing TextField meta data */
     private class ListItem {
 
-        private String sectionTitle;
+        private final String sectionTitle;
 
-        private String source;
+        private final String source;
 
-        private UIView view;
+        private final UIView view;
 
-        public ListItem(String sectionTitle, String source,
-                UIView view) {
+        public ListItem (String sectionTitle, String source, UIView view) {
             super();
             this.sectionTitle = sectionTitle;
             this.source = source;
             this.view = view;
         }
 
-        public String getSectionTitle() {
+        public String getSectionTitle () {
             return sectionTitle;
         }
 
-        public String getSource() {
+        public String getSource () {
             return source;
         }
 
-        public UIView getView() {
+        public UIView getView () {
             return view;
         }
 
     }
 
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 247);
@@ -134,30 +127,27 @@ public class TextFieldController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) {
-        // TODO Auto-generated method stub
+    public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
         return this.dataSourceArray.size();
     }
 
     @Override
-    public String getSectionHeaderTitle(UITableView tableView,
-            @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int) section).getSectionTitle();
+    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+        return this.dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
-            @MachineSizedSInt long section) {
+    public @MachineSizedSInt long getNumberOfRowsInSection (UITableView tableView, @MachineSizedSInt long section) {
         return 2;
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
+    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
         return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 22.0;
     }
 
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
 
         UITableViewCell cell = null;
 
@@ -171,14 +161,12 @@ public class TextFieldController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            UITextField textField = (UITextField) this.dataSourceArray.get(
-                    (int) NSIndexPathExtensions.getSection(indexPath)).getView();
+            UITextField textField = (UITextField)this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath))
+                .getView();
 
             CGRect newFrame = textField.getFrame();
             newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
-                    .getContentView().getFrame().getHeight()));// CGRectGetWidth(cell.contentView.frame)
-                                                               // -
-                                                               // kLeftMargin*2;;
+                .getContentView().getFrame().getHeight()));
             textField.setFrame(newFrame);
 
             // if the cell is ever resized, keep the button over to the right
@@ -188,34 +176,30 @@ public class TextFieldController extends UITableViewController {
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             cell.getTextLabel().setTextAlignment(NSTextAlignment.Left);
-            cell.getTextLabel().setTextColor(UIColor.colorGray());
-            cell.getTextLabel().setHighlightedTextColor(UIColor.colorBlack());
+            cell.getTextLabel().setTextColor(UIColor.gray());
+            cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(
-                    this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;
     }
 
-    /**
-     * Creates default text field
+    /** Creates default text field
      * 
-     * @return
-     */
-    UITextField getTextFieldNormal() {
+     * @return */
+    UITextField getTextFieldNormal () {
 
         if (textFieldNormal == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0f, Constants.TEXT_FIELD_WIDTH,
-                    Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0f, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
             textFieldNormal = new UITextField(frame);
 
             textFieldNormal.setBorderStyle(UITextBorderStyle.Bezel);
-            textFieldNormal.setTextColor(UIColor.colorGray());
+            textFieldNormal.setTextColor(UIColor.gray());
 
             textFieldNormal.setFont(UIFont.getSystemFont(17.0f));
             textFieldNormal.setPlaceholder("<enter text>");
-            textFieldNormal.setBackgroundColor(UIColor.colorWhite());
+            textFieldNormal.setBackgroundColor(UIColor.white());
 
             textFieldNormal.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldNormal.setKeyboardType(UIKeyboardType.Default);
@@ -238,22 +222,19 @@ public class TextFieldController extends UITableViewController {
         return textFieldNormal;
     }
 
-    /**
-     * Create textfield with rounded corners
+    /** Create textfield with rounded corners
      * 
-     * @return
-     */
-    public UITextField getTextFieldRounded() {
+     * @return */
+    public UITextField getTextFieldRounded () {
         if (textFieldRounded == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
-                    Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
             textFieldRounded = new UITextField(frame);
             textFieldRounded.setBorderStyle(UITextBorderStyle.RoundedRect);
-            textFieldRounded.setTextColor(UIColor.colorBlack());
+            textFieldRounded.setTextColor(UIColor.black());
 
             textFieldRounded.setFont(UIFont.getSystemFont(17.0f));
             textFieldRounded.setPlaceholder("<enter text>");
-            textFieldRounded.setBackgroundColor(UIColor.colorWhite());
+            textFieldRounded.setBackgroundColor(UIColor.white());
 
             textFieldRounded.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldRounded.setKeyboardType(UIKeyboardType.Default);
@@ -277,23 +258,20 @@ public class TextFieldController extends UITableViewController {
         return textFieldRounded;
     }
 
-    /**
-     * Creates text field secure
+    /** Creates text field secure
      * 
-     * @return
-     */
-    public UITextField getTextFieldSecure() {
+     * @return */
+    public UITextField getTextFieldSecure () {
 
         if (textFieldSecure == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
-                    Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
             textFieldSecure = new UITextField(frame);
             textFieldSecure.setBorderStyle(UITextBorderStyle.Bezel);
-            textFieldSecure.setTextColor(UIColor.colorBlack());
+            textFieldSecure.setTextColor(UIColor.black());
 
             textFieldSecure.setFont(UIFont.getSystemFont(17.0f));
             textFieldSecure.setPlaceholder("<enter text>");
-            textFieldSecure.setBackgroundColor(UIColor.colorWhite());
+            textFieldSecure.setBackgroundColor(UIColor.white());
 
             // textFieldSecure.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldSecure.setKeyboardType(UIKeyboardType.Default);
@@ -312,23 +290,20 @@ public class TextFieldController extends UITableViewController {
         return textFieldSecure;
     }
 
-    /**
-     * Creates TextField with left view
+    /** Creates TextField with left view
      * 
-     * @return
-     */
-    UITextField getTextFieldLeftView() {
+     * @return */
+    UITextField getTextFieldLeftView () {
         if (textFieldLeftView == null) {
-            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH,
-                    Constants.TEXT_FIELD_HEIGHT);
+            CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
             textFieldLeftView = new UITextField(frame);
 
             textFieldLeftView.setBorderStyle(UITextBorderStyle.Bezel);
-            textFieldLeftView.setTextColor(UIColor.colorBlack());
+            textFieldLeftView.setTextColor(UIColor.black());
 
             textFieldLeftView.setFont(UIFont.getSystemFont(17.0f));
             textFieldLeftView.setPlaceholder("<enter text>");
-            textFieldLeftView.setBackgroundColor(UIColor.colorWhite());
+            textFieldLeftView.setBackgroundColor(UIColor.white());
 
             // textFieldLeftView.setAutocorrectionType(UITextAutocorrectionType.No);
             textFieldLeftView.setKeyboardType(UIKeyboardType.Default);

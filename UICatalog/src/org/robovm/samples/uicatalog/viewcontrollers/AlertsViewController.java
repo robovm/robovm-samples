@@ -40,56 +40,46 @@ import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
-/**
- * The view controller for hosting various kinds of alerts and action sheets
- *
- */
+/** The view controller for hosting various kinds of alerts and action sheets */
 public class AlertsViewController extends UITableViewController {
 
     private static String ALERT_CELL_ID = "AlertCellID";
     private static String SOURCE_CELL_ID = "SourceCellID";
 
-    private LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
+    private final LinkedList<ListItem> dataSourceArray = new LinkedList<ListItem>();
 
     private class ListItem {
-        private String sectionTitle;
-        private String label;
-        private String source;
+        private final String sectionTitle;
+        private final String label;
+        private final String source;
 
-        public ListItem(String sectionTitle, String label, String source) {
+        public ListItem (String sectionTitle, String label, String source) {
             super();
             this.sectionTitle = sectionTitle;
             this.label = label;
             this.source = source;
         }
 
-        public String getSectionTitle() {
+        public String getSectionTitle () {
             return sectionTitle;
         }
 
-        public String getLabel() {
+        public String getLabel () {
             return label;
         }
 
-        public String getSource() {
+        public String getSource () {
             return source;
         }
 
     }
 
-    enum AlertTableSections
-    {
-        UIAction_Simple_Section,
-        UIAction_OKCancel_Section,
-        UIAction_Custom_Section,
-        UIAlert_Simple_Section,
-        UIAlert_OKCancel_Section,
-        UIAlert_Custom_Section,
-        UIAlert_SecureText_Section
+    enum AlertTableSections {
+        UIAction_Simple_Section, UIAction_OKCancel_Section, UIAction_Custom_Section, UIAlert_Simple_Section, UIAlert_OKCancel_Section, UIAlert_Custom_Section, UIAlert_SecureText_Section
     };
 
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         this.setTitle("");
@@ -115,62 +105,50 @@ public class AlertsViewController extends UITableViewController {
     //
     // }
 
-    /**
-     * open a dialog with just an OK button
-     */
-    void dialogSimpleAction() {
+    /** open a dialog with just an OK button */
+    void dialogSimpleAction () {
 
-        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle",
-                new UIActionSheetDelegateAdapter() {
+        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle", new UIActionSheetDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIActionSheet actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Ok", null, new String[0]);
+        }, "Ok", null, new String[0]);
 
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
         actionSheet.showIn(this.getView()); // show from our table view (pops up
                                             // in the middle of the table)
     }
 
-    /**
-     * open a dialog with an OK and cancel button
-     */
-    private void dialogOKCancelAction() {
-        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle",
-                new UIActionSheetDelegateAdapter() {
+    /** open a dialog with an OK and cancel button */
+    private void dialogOKCancelAction () {
+        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle", new UIActionSheetDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIActionSheet actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Cancel", "Ok", new String[0]);
+        }, "Cancel", "Ok", new String[0]);
 
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
         actionSheet.showIn(this.getView()); // show from our table view (pops up
                                             // in the middle of the table)
     }
 
-    /**
-     * open a dialog with two custom buttons
-     */
-    private void dialogOtherAction() {
+    /** open a dialog with two custom buttons */
+    private void dialogOtherAction () {
         // open a dialog with two custom buttons
-        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle",
-                new UIActionSheetDelegateAdapter() {
+        UIActionSheet actionSheet = new UIActionSheet("UIActionSheetTitle", new UIActionSheetDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIActionSheet actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , null, null, new String[] { "ButtonTitle1", "ButtonTitle2" });
+        }, null, null, new String[] {"ButtonTitle1", "ButtonTitle2"});
 
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
         actionSheet.setDestructiveButtonIndex(1); // make the second button red
@@ -179,113 +157,94 @@ public class AlertsViewController extends UITableViewController {
                                             // in the middle of the table)
     }
 
-    /**
-     * open an alert with just an OK button
-     */
-    private void alertSimpleAction() {
+    /** open an alert with just an OK button */
+    private void alertSimpleAction () {
         // open an alert with just an OK button
 
-        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric",
-                new UIAlertViewDelegateAdapter() {
+        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric", new UIAlertViewDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIAlertView actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIAlertView actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Ok", new String[0]);
+        }, "Ok", new String[0]);
         alert.show();
     }
 
-    /**
-     * open a alert with an OK and cancel button
-     */
-    private void alertOKCancelAction() {
-        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric",
-                new UIAlertViewDelegateAdapter() {
+    /** open a alert with an OK and cancel button */
+    private void alertOKCancelAction () {
+        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric", new UIAlertViewDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIAlertView actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIAlertView actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Cancel", "Ok");
+        }, "Cancel", "Ok");
         alert.show();
     }
 
-    /**
-     * open an alert with two custom buttons
-     */
-    private void alertOtherAction() {
+    /** open an alert with two custom buttons */
+    private void alertOtherAction () {
         // open an alert with two custom buttons
 
-        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric",
-                new UIAlertViewDelegateAdapter() {
+        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric", new UIAlertViewDelegateAdapter() {
 
-                    public void clicked(UIAlertView actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIAlertView actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Cancel", new String[] { "ButtonTitle1", "ButtonTitle2" });
+        }, "Cancel", new String[] {"ButtonTitle1", "ButtonTitle2"});
         alert.show();
     }
 
-    /**
-     * open an alert with two custom buttons
-     */
-    private void alertSecureTextAction() {
+    /** open an alert with two custom buttons */
+    private void alertSecureTextAction () {
         // open an alert with two custom buttons
-        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric",
-                new UIAlertViewDelegateAdapter() {
+        UIAlertView alert = new UIAlertView("UIAlertViewTitle", "AlertViewMessageGeneric", new UIAlertViewDelegateAdapter() {
 
-                    @Override
-                    public void clicked(UIAlertView actionSheet, long buttonIndex) {
-                        System.err.println("ButtonIndex: " + buttonIndex);
-                    }
+            @Override
+            public void clicked (UIAlertView actionSheet, long buttonIndex) {
+                System.err.println("ButtonIndex: " + buttonIndex);
+            }
 
-                }
-                , "Cancel", "Ok");
+        }, "Cancel", "Ok");
         alert.setAlertViewStyle(UIAlertViewStyle.SecureTextInput);
         alert.show();
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) {
+    public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
         return this.dataSourceArray.size();
     }
 
     @Override
-    public String getSectionHeaderTitle(UITableView tableView,
-            @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int) section).getSectionTitle();
+    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+        return this.dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
-            @MachineSizedSInt long section) {
+    public @MachineSizedSInt long getNumberOfRowsInSection (UITableView tableView, @MachineSizedSInt long section) {
         return 2;
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) {
+    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
         return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 22.0;
     }
 
-    /**
-     * the table's selection has changed, show the alert or action sheet
-     */
+    /** the table's selection has changed, show the alert or action sheet */
     @Override
-    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
+    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
 
         NSIndexPath tableSelection = this.getTableView().getIndexPathForSelectedRow();
         this.getTableView().deselectRow(tableSelection, false);
 
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
 
-            switch ((int) NSIndexPathExtensions.getSection(indexPath)) {
+            switch ((int)NSIndexPathExtensions.getSection(indexPath)) {
             case 0:
                 this.dialogSimpleAction();
                 break;
@@ -318,24 +277,22 @@ public class AlertsViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
 
         UITableViewCell cell = null;
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
             cell = getTableView().dequeueReusableCell(ALERT_CELL_ID, indexPath);
-            cell.getTextLabel().setText(
-                    this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
         } else {
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             cell.getTextLabel().setOpaque(false);
             cell.getTextLabel().setTextAlignment(NSTextAlignment.Center);
-            cell.getTextLabel().setTextColor(UIColor.colorGray());
+            cell.getTextLabel().setTextColor(UIColor.gray());
             cell.getTextLabel().setNumberOfLines(2);
-            cell.getTextLabel().setHighlightedTextColor(UIColor.colorBlack());
+            cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(
-                    this.dataSourceArray.get((int) NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;

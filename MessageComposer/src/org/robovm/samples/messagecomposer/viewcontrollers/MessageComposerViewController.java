@@ -55,15 +55,15 @@ public class MessageComposerViewController extends UIViewController {
         super();
 
         UIView view = getView();
-        view.setBackgroundColor(UIColor.createFromWhiteAlpha(0.75, 1));
+        view.setBackgroundColor(UIColor.fromWhiteAlpha(0.75, 1));
 
         UIButton mailButton = UIButton.create(UIButtonType.RoundedRect);
         mailButton.setFrame(new CGRect(20, 197, 135, 37));
         mailButton.getTitleLabel().setFont(UIFont.getSystemFont(15));
         mailButton.setTitle("Compose Mail", UIControlState.Normal);
-        mailButton.setTitleColor(UIColor.createFromRGBA(0.19, 0.30, 0.52, 1), UIControlState.Normal);
-        mailButton.setTitleShadowColor(UIColor.createFromWhiteAlpha(0, 1), UIControlState.Normal);
-        mailButton.setTitleColor(UIColor.createFromRGBA(1, 1, 1, 1), UIControlState.Highlighted);
+        mailButton.setTitleColor(UIColor.fromRGBA(0.19, 0.30, 0.52, 1), UIControlState.Normal);
+        mailButton.setTitleShadowColor(UIColor.fromWhiteAlpha(0, 1), UIControlState.Normal);
+        mailButton.setTitleColor(UIColor.fromRGBA(1, 1, 1, 1), UIControlState.Highlighted);
         mailButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
             public void onTouchUpInside (UIControl control, UIEvent event) {
@@ -76,9 +76,9 @@ public class MessageComposerViewController extends UIViewController {
         smsButton.setFrame(new CGRect(163, 197, 137, 37));
         smsButton.getTitleLabel().setFont(UIFont.getSystemFont(15));
         smsButton.setTitle("Compose SMS", UIControlState.Normal);
-        smsButton.setTitleColor(UIColor.createFromRGBA(0.19, 0.30, 0.52, 1), UIControlState.Normal);
-        smsButton.setTitleShadowColor(UIColor.createFromWhiteAlpha(0, 1), UIControlState.Normal);
-        smsButton.setTitleColor(UIColor.createFromRGBA(1, 1, 1, 1), UIControlState.Highlighted);
+        smsButton.setTitleColor(UIColor.fromRGBA(0.19, 0.30, 0.52, 1), UIControlState.Normal);
+        smsButton.setTitleShadowColor(UIColor.fromWhiteAlpha(0, 1), UIControlState.Normal);
+        smsButton.setTitleColor(UIColor.fromRGBA(1, 1, 1, 1), UIControlState.Highlighted);
         smsButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
             public void onTouchUpInside (UIControl control, UIEvent event) {
@@ -92,7 +92,7 @@ public class MessageComposerViewController extends UIViewController {
         feedbackMsg.setLineBreakMode(NSLineBreakMode.TruncatingTail);
         feedbackMsg.setNumberOfLines(7);
         feedbackMsg.setFont(UIFont.getSystemFont(15));
-        feedbackMsg.setTextColor(UIColor.colorDarkText());
+        feedbackMsg.setTextColor(UIColor.darkText());
         view.addSubview(feedbackMsg);
     }
 
@@ -168,9 +168,9 @@ public class MessageComposerViewController extends UIViewController {
         picker.setSubject("Hello from California!");
 
         // Set up recipients
-        NSArray<NSString> toRecipients = NSArray.toNSArray("first@example.com");
-        NSArray<NSString> ccRecipients = NSArray.toNSArray("second@example.com", "third@example.com");
-        NSArray<NSString> bccRecipients = NSArray.toNSArray("fourth@example.com");
+        NSArray<NSString> toRecipients = NSArray.fromStrings("first@example.com");
+        NSArray<NSString> ccRecipients = NSArray.fromStrings("second@example.com", "third@example.com");
+        NSArray<NSString> bccRecipients = NSArray.fromStrings("fourth@example.com");
 
         picker.setToRecipients(toRecipients);
         picker.setCcRecipients(ccRecipients);

@@ -20,10 +20,9 @@
 package org.robovm.samples.movieplayer;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.foundation.NSDictionary;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
+import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITabBarController;
@@ -37,9 +36,9 @@ public class MoviePlayer extends UIApplicationDelegateAdapter {
     private UITabBarController tabBarController;
 
     @Override
-    public boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) {
+    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        window.setBackgroundColor(UIColor.colorWhite());
+        window.setBackgroundColor(UIColor.white());
         /* Setup a tab bar controller that handles our custom view controllers */
         tabBarController = new UITabBarController();
         tabBarController.addChildViewController(new MyStreamingMovieViewController());
@@ -50,8 +49,8 @@ public class MoviePlayer extends UIApplicationDelegateAdapter {
         window.makeKeyAndVisible();
 
         /*
-         * Retains the window object until the application is deallocated.
-         * Prevents Java GC from collecting the window object too early.
+         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
+         * early.
          */
         application.addStrongRef(window);
 
@@ -59,13 +58,12 @@ public class MoviePlayer extends UIApplicationDelegateAdapter {
     }
 
     @Override
-    public void willEnterForeground(UIApplication application) {
-        MyMovieViewController selectedViewController = (MyMovieViewController) tabBarController
-                .getSelectedViewController();
+    public void willEnterForeground (UIApplication application) {
+        MyMovieViewController selectedViewController = (MyMovieViewController)tabBarController.getSelectedViewController();
         selectedViewController.willEnterForeground();
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, MoviePlayer.class);
         pool.close();

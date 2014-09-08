@@ -26,9 +26,7 @@ import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIView;
 
-/**
- * The custom view holding the image and title for the custom picker.
- */
+/** The custom view holding the image and title for the custom picker. */
 public class CustomView extends UIView {
 
     private static final float VIEW_WIDTH = 200.0f;
@@ -36,53 +34,46 @@ public class CustomView extends UIView {
     private static final double LABEL_HEIGHT = 20;
     private static final double MARGIN_SIZE = 10;
 
-    private UILabel titleLabel;
+    private final UILabel titleLabel;
 
-    public static double getViewWidth() {
+    public static double getViewWidth () {
         return VIEW_WIDTH;
     }
 
-    public static double getViewHeight() {
+    public static double getViewHeight () {
         return VIEW_HEIGHT;
     }
 
-    public CustomView(String title, UIImage image) {
+    public CustomView (String title, UIImage image) {
         super(new CGRect(0.0, 0.0, VIEW_WIDTH, VIEW_HEIGHT));
 
         double yCoord = (this.getBounds().size().height() - LABEL_HEIGHT) / 2;
-        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
-                yCoord, (this.getFrame().getWidth()) - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE,
-                LABEL_HEIGHT));
+        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, yCoord,
+            (this.getFrame().getWidth()) - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, LABEL_HEIGHT));
 
         titleLabel.setText(title.toString());
-        titleLabel.setBackgroundColor(UIColor.colorClear());
+        titleLabel.setBackgroundColor(UIColor.clear());
         this.addSubview(this.titleLabel);
 
         yCoord = (this.getBounds().size().height() - image.getSize().height()) / 2;
-        UIImageView imageView = new UIImageView(new CGRect(MARGIN_SIZE,
-                yCoord,
-                image.getSize().width(),
-                image.getSize().height()));
+        UIImageView imageView = new UIImageView(
+            new CGRect(MARGIN_SIZE, yCoord, image.getSize().width(), image.getSize().height()));
 
         imageView.setImage(image);
         this.addSubview(imageView);
     }
 
-    /**
-     * Enable accessibility for this view.
+    /** Enable accessibility for this view.
      * 
-     * @return
-     */
-    boolean isAccessibilityElement() {
+     * @return */
+    boolean isAccessibilityElement () {
         return true;
     }
 
-    /**
-     * Return a string that describes this view.
+    /** Return a string that describes this view.
      * 
-     * @return
-     */
-    String accessibilityLabel() {
+     * @return */
+    String accessibilityLabel () {
         return titleLabel.getText();
     }
 

@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2014 Trillian Mobile AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,13 @@
  * Portions of this code is based on Apple Inc's QuickContacts sample (v1.3)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
+
 package org.robovm.samples.quickcontacts;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.foundation.NSDictionary;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
+import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
@@ -30,17 +30,15 @@ import org.robovm.apple.uikit.UIWindow;
 import org.robovm.samples.quickcontacts.viewcontrollers.QuickContactsViewController;
 
 public class QuickContacts extends UIApplicationDelegateAdapter {
-
     private UIWindow window = null;
 
     @Override
-    public boolean didFinishLaunching(UIApplication application,
-            NSDictionary<NSString, ?> launchOptions) {
+    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
 
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        window.setBackgroundColor(UIColor.colorLightGray());
+        window.setBackgroundColor(UIColor.lightGray());
         UINavigationController navigationController = new UINavigationController(
-                application.addStrongRef(new QuickContactsViewController()));
+            application.addStrongRef(new QuickContactsViewController()));
         window.setRootViewController(navigationController);
         window.makeKeyAndVisible();
 
@@ -53,10 +51,10 @@ public class QuickContacts extends UIApplicationDelegateAdapter {
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, QuickContacts.class);
         pool.close();
     }
-    
+
 }

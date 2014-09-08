@@ -31,7 +31,7 @@ public class GraphView extends UIView {
 
     public GraphView (CGRect bounds) {
         super(bounds);
-        setBackgroundColor(UIColor.colorWhite());
+        setBackgroundColor(UIColor.white());
     }
 
     public void updateHistory (double x, double y, double z) {

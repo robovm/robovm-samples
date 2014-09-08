@@ -85,7 +85,7 @@ public class MyViewController extends UIViewController {
         // Setup label.
         label = new UILabel(new CGRect(20, 104, 280, 44));
         label.setFont(UIFont.getFont("Helvetica", 24));
-        label.setTextColor(UIColor.colorWhite());
+        label.setTextColor(UIColor.white());
         label.setBaselineAdjustment(UIBaselineAdjustment.AlignCenters);
         label.setTextAlignment(NSTextAlignment.Center);
         // When the view first loads, display the placeholder text that's in the text field in the label.

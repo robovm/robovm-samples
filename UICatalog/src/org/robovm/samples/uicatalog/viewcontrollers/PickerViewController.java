@@ -55,10 +55,9 @@ import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
 import org.robovm.samples.uicatalog.Constants;
 import org.robovm.samples.uicatalog.picker.CustomPickerDataSource;
+import org.robovm.samples.uicatalog.picker.CustomView;
 
-/**
- * The view controller for hosting the UIPickerView of this sample.
- */
+/** The view controller for hosting the UIPickerView of this sample. */
 public class PickerViewController extends UIViewController {
 
     private static final float OPTIMUM_PICKER_HEIGHT = 216;
@@ -82,10 +81,8 @@ public class PickerViewController extends UIViewController {
     private UILabel segmentLabel;
     private UIToolbar toolbar;
 
-    /**
-     * Sets up UI components
-     */
-    private void initUI() {
+    /** Sets up UI components */
+    private void initUI () {
         setView(new UIView(new CGRect(0, 0, 320, 460)));
 
         scrollView = new UIScrollView(new CGRect(0, 0, 320, 416));
@@ -96,13 +93,11 @@ public class PickerViewController extends UIViewController {
 
         scrollView.addSubview(label);
 
-        pickerStyleSegmentedControl = new UISegmentedControl(NSArray.toNSArray("1", "2",
-                "3", "4"));
+        pickerStyleSegmentedControl = new UISegmentedControl(NSArray.fromStrings("1", "2", "3", "4"));
 
         pickerStyleSegmentedControl.setFrame(new CGRect(57, 266, 207, 30));
-        pickerStyleSegmentedControl.setTintColor(UIColor.createFromWhiteAlpha(0.3333333, 1.0));
-        pickerStyleSegmentedControl.addTarget(this, Selector.register("togglePickerStyle:"),
-                UIControlEvents.ValueChanged);
+        pickerStyleSegmentedControl.setTintColor(UIColor.fromWhiteAlpha(0.3333333, 1.0));
+        pickerStyleSegmentedControl.addTarget(this, Selector.register("togglePickerStyle:"), UIControlEvents.ValueChanged);
         pickerStyleSegmentedControl.setHidden(true);
 
         scrollView.addSubview(pickerStyleSegmentedControl);
@@ -111,9 +106,10 @@ public class PickerViewController extends UIViewController {
 
         buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null));
 
-        this.buttonBarSegmentedControl = new UISegmentedControl(NSArray.toNSArray("UIPicker", "UIDatePicker", "Custom"));
+        this.buttonBarSegmentedControl = new UISegmentedControl(NSArray.fromStrings("UIPicker", "UIDatePicker", "Custom"));
         this.buttonBarSegmentedControl.setFrame(new CGRect(11, 7, 299, 30));
-        this.buttonBarSegmentedControl.setAutoresizingMask(UIViewAutoresizing.FlexibleRightMargin.set(UIViewAutoresizing.FlexibleBottomMargin));
+        this.buttonBarSegmentedControl.setAutoresizingMask(UIViewAutoresizing.FlexibleRightMargin
+            .set(UIViewAutoresizing.FlexibleBottomMargin));
         this.buttonBarSegmentedControl.addTarget(this, Selector.register("togglePickers:"), UIControlEvents.ValueChanged);
         this.buttonBarSegmentedControl.setSelectedSegment(0);
 
@@ -124,13 +120,13 @@ public class PickerViewController extends UIViewController {
         buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null));
 
         this.toolbar = new UIToolbar(new CGRect(0.0, 416, 320, 44));
-        this.toolbar.setTintColor(UIColor.createFromWhiteAlpha(0.333333333333333, 1.0));
+        this.toolbar.setTintColor(UIColor.fromWhiteAlpha(0.333333333333333, 1.0));
         this.toolbar.setItems(new NSArray<UIBarButtonItem>(buttonItems));
 
         this.getView().addSubview(toolbar);
     }
 
-    private CGRect pickerFrameWithSize(CGSize size) {
+    private CGRect pickerFrameWithSize (CGSize size) {
         CGRect resultFrame;
         double height = size.height();
         double width = size.width();
@@ -150,13 +146,11 @@ public class PickerViewController extends UIViewController {
         return resultFrame;
     }
 
-    /**
-     * Creates standard picker
-     */
-    private void createPicker() {
+    /** Creates standard picker */
+    private void createPicker () {
 
-        pickerViewArray = new NSMutableArray<NSString>(NSArray.toNSArray("John Appleseed", "Serena Auroux",
-                "Susan Bean", "Luis Becerra", "Kate Bell", "Alain Briere"));
+        pickerViewArray = new NSMutableArray<NSString>(NSArray.fromStrings("John Appleseed", "Serena Auroux", "Susan Bean",
+            "Luis Becerra", "Kate Bell", "Alain Briere"));
 
         myPickerView = new UIPickerView(new CGRect(0, 0, 0, 0));
 
@@ -180,10 +174,8 @@ public class PickerViewController extends UIViewController {
         this.scrollView.addSubview(myPickerView);
     }
 
-    /**
-     * Creates date picker
-     */
-    private void createDatePicker() {
+    /** Creates date picker */
+    private void createDatePicker () {
         datePickerView = new UIDatePicker(new CGRect(0, 0, 0, 0));
         datePickerView.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
         datePickerView.setDatePickerMode(UIDatePickerMode.Date);
@@ -197,15 +189,14 @@ public class PickerViewController extends UIViewController {
         this.scrollView.addSubview(this.datePickerView);
     }
 
-    /**
-     * Creates a custom picker with images using custom constructs
+    /** Creates a custom picker with images using custom constructs
      * 
      * @see CustomPickerDataSource
-     * @see CustomView
-     */
-    private void createCustomPicker() {
+     * @see CustomView */
+    private void createCustomPicker () {
         customPickerView = new UIPickerView(new CGRect(0, 0, 0, 0));
-        this.customPickerView.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
+        this.customPickerView.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin
+            .set(UIViewAutoresizing.FlexibleRightMargin));
 
         // setup the data source and delegate for this picker
         this.customPickerDataSource = new CustomPickerDataSource();
@@ -225,11 +216,9 @@ public class PickerViewController extends UIViewController {
         scrollView.addSubview(customPickerView);
     }
 
-    /**
-     * load controls once view has been shown
-     */
+    /** load controls once view has been shown */
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         initUI();
@@ -239,8 +228,8 @@ public class PickerViewController extends UIViewController {
         // set the content size of our scroll view to match the entire screen,
         // this will allow the content to scroll in landscape
         //
-        this.scrollView.setContentSize(new CGSize(scrollView.getFrame().getWidth(),
-                (this.scrollView.getBounds().getHeight()) - this.getNavigationController().getNavigationBar().getFrame().getHeight()));
+        this.scrollView.setContentSize(new CGSize(scrollView.getFrame().getWidth(), (this.scrollView.getBounds().getHeight())
+            - this.getNavigationController().getNavigationBar().getFrame().getHeight()));
 
         // Create pickers
         createPicker();
@@ -250,13 +239,14 @@ public class PickerViewController extends UIViewController {
         showPicker(this.myPickerView);
 
         // label for picker selection output
-        CGRect labelFrame = new CGRect(Constants.LEFT_MARGIN, this.myPickerView.getFrame().getMaxY() + 10.0, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0), 14.0);
+        CGRect labelFrame = new CGRect(Constants.LEFT_MARGIN, this.myPickerView.getFrame().getMaxY() + 10.0, getView()
+            .getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0), 14.0);
 
         label = new UILabel(labelFrame);
         label.setFont(UIFont.getSystemFont(12.0));
         label.setTextAlignment(NSTextAlignment.Center);
-        label.setTextColor(UIColor.colorBlack());
-        label.setBackgroundColor(UIColor.colorClear());
+        label.setTextColor(UIColor.black());
+        label.setBackgroundColor(UIColor.clear());
         label.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
         scrollView.addSubview(label);
 
@@ -269,7 +259,7 @@ public class PickerViewController extends UIViewController {
         this.pickerStyleSegmentedControl.setSelectedSegment(1);
     }
 
-    private void showPicker(UIView picker) {
+    private void showPicker (UIView picker) {
         // hide the current picker and show the new one
         if (currentPicker != null) {
             currentPicker.setHidden(true);
@@ -280,16 +270,14 @@ public class PickerViewController extends UIViewController {
                                 // it later when another one is chosen
     }
 
-    /**
-     * for changing the date picker's style
+    /** for changing the date picker's style
      * 
-     * @param sender
-     */
+     * @param sender */
     @Method
-    private void togglePickerStyle(UISegmentedControl sender) {
+    private void togglePickerStyle (UISegmentedControl sender) {
         UISegmentedControl segControl = sender;
 
-        switch ((int) segControl.getSelectedSegment()) {
+        switch ((int)segControl.getSelectedSegment()) {
 
         case 0: // Time
             this.datePickerView.setDatePickerMode(UIDatePickerMode.Time);
@@ -316,22 +304,21 @@ public class PickerViewController extends UIViewController {
         this.datePickerView.setDate(today);
     }
 
-    /**
-     * for changing between UIPickerView, UIDatePickerView and custom picker
+    /** for changing between UIPickerView, UIDatePickerView and custom picker
      * 
-     * @param sender
-     */
+     * @param sender */
     @Method
-    private void togglePickers(UISegmentedControl sender) {
+    private void togglePickers (UISegmentedControl sender) {
         UISegmentedControl segControl = sender;
-        switch ((int) segControl.getSelectedSegment()) {
+        switch ((int)segControl.getSelectedSegment()) {
         case 0: // UIPickerView
             pickerStyleSegmentedControl.setHidden(true);
             segmentLabel.setHidden(true);
             showPicker(this.myPickerView);
 
             // report the selection to the UI label
-            String labelStr = String.format("%s - %d", this.pickerViewArray.get((int) myPickerView.getSelectedRow(0)), this.myPickerView.getSelectedRow(1));
+            String labelStr = String.format("%s - %d", this.pickerViewArray.get((int)myPickerView.getSelectedRow(0)),
+                this.myPickerView.getSelectedRow(1));
             this.label.setText(labelStr);
             break;
         case 1: // UIDatePicker
@@ -349,28 +336,29 @@ public class PickerViewController extends UIViewController {
         }
     }
 
-    public void pickerView(UIPickerView pickerView, long row, long component) {
+    public void pickerView (UIPickerView pickerView, long row, long component) {
         if (pickerView == this.myPickerView) { // don't show selection for the
                                                // custom picker
             // report the selection to the UI label
-            String labelStr = String.format("%@ - %d", this.pickerViewArray.get((int) myPickerView.getSelectedRow(0)), this.myPickerView.getSelectedRow(1));
+            String labelStr = String.format("%@ - %d", this.pickerViewArray.get((int)myPickerView.getSelectedRow(0)),
+                this.myPickerView.getSelectedRow(1));
             this.label.setText(labelStr);
         }
     }
 
     @Override
-    public void viewWillAppear(boolean animated) {
+    public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
         togglePickers(buttonBarSegmentedControl); // make sure the last picker
                                                   // is still showing
 
         // for aesthetic reasons (the background is black), make the nav bar
         // black for this particular page
-        this.getNavigationController().getNavigationBar().setTintColor(UIColor.colorBlack());
+        this.getNavigationController().getNavigationBar().setTintColor(UIColor.black());
     }
 
     @Override
-    public void viewWillDisappear(boolean animated) {
+    public void viewWillDisappear (boolean animated) {
         super.viewWillDisappear(animated);
         this.currentPicker.setHidden(true);
     }
@@ -378,12 +366,12 @@ public class PickerViewController extends UIViewController {
     public class UIPickerViewDataSourceAdpt extends UIPickerViewDataSourceAdapter {
 
         @Override
-        public long getNumberOfComponents(UIPickerView pickerView) {
+        public long getNumberOfComponents (UIPickerView pickerView) {
             return 2;
         }
 
         @Override
-        public long getNumberOfRows(UIPickerView pickerView, long component) {
+        public long getNumberOfRows (UIPickerView pickerView, long component) {
             return PickerViewController.this.pickerViewArray.size();
         }
 
@@ -392,7 +380,7 @@ public class PickerViewController extends UIViewController {
     public class UIPickerViewDel extends UIPickerViewDelegateAdapter {
 
         @Override
-        public void didSelectRow(UIPickerView pickerView, long row, long component) {
+        public void didSelectRow (UIPickerView pickerView, long row, long component) {
             if (pickerView == PickerViewController.this.myPickerView) { // don't
                                                                         // show
                                                                         // selection
@@ -401,13 +389,15 @@ public class PickerViewController extends UIViewController {
                                                                         // custom
                                                                         // picker
                 // report the selection to the UI label
-                String labelStr = String.format("%s - %d", PickerViewController.this.pickerViewArray.get((int) myPickerView.getSelectedRow(0)), PickerViewController.this.myPickerView.getSelectedRow(1));
+                String labelStr = String.format("%s - %d",
+                    PickerViewController.this.pickerViewArray.get((int)myPickerView.getSelectedRow(0)),
+                    PickerViewController.this.myPickerView.getSelectedRow(1));
                 PickerViewController.this.label.setText(labelStr);
             }
         }
 
         @Override
-        public double getComponentWidth(UIPickerView pickerView, long component) {
+        public double getComponentWidth (UIPickerView pickerView, long component) {
             double componentWidth = 0.0;
 
             if (component == 0) {
@@ -421,27 +411,27 @@ public class PickerViewController extends UIViewController {
         }
 
         @Override
-        public double getRowHeight(UIPickerView pickerView, long component) {
+        public double getRowHeight (UIPickerView pickerView, long component) {
             return 40.0;
         }
 
         @Override
-        public String getRowTitle(UIPickerView pickerView, long row, long component) {
+        public String getRowTitle (UIPickerView pickerView, long row, long component) {
             String returnStr = "";
 
             // note: for the custom picker we use custom views instead of titles
             if (pickerView == PickerViewController.this.myPickerView) {
                 if (component == 0) {
-                    returnStr = PickerViewController.this.pickerViewArray.get((int) row).toString();
+                    returnStr = PickerViewController.this.pickerViewArray.get((int)row).toString();
                 } else {
-                    returnStr = (String) String.valueOf(row);
+                    returnStr = String.valueOf(row);
                 }
             }
             return returnStr;
         }
 
         @Override
-        public NSAttributedString getAttributedRowTitle(UIPickerView pickerView, long row, long component) {
+        public NSAttributedString getAttributedRowTitle (UIPickerView pickerView, long row, long component) {
             NSMutableAttributedString attrTitle = null;
 
             // note: for the custom picker we use custom views instead of titles
@@ -449,16 +439,15 @@ public class PickerViewController extends UIViewController {
                 if (row == 0) {
                     String title;
                     if (component == 0) {
-                        title = pickerViewArray.get((int) row).toString();
+                        title = pickerViewArray.get((int)row).toString();
                     } else {
-                        title = (String) String.valueOf(row);
+                        title = String.valueOf(row);
                     }
 
                     // apply red text for normal state
                     attrTitle = new NSMutableAttributedString(title);
-                    attrTitle.addAttribute(UIKit.ForegroundColorAttributeName(),
-                            UIColor.colorRed(),
-                            new NSRange(0, attrTitle.getLength()));
+                    attrTitle.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.red(),
+                        new NSRange(0, attrTitle.getLength()));
                 }
             }
 

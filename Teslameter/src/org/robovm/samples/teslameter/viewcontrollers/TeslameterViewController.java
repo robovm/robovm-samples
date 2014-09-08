@@ -52,7 +52,7 @@ public class TeslameterViewController extends UIViewController {
         super();
 
         UIView view = getView();
-        view.setBackgroundColor(UIColor.createFromRGBA(0.01, 0.01, 0.01, 1));
+        view.setBackgroundColor(UIColor.fromRGBA(0.01, 0.01, 0.01, 1));
 
         UIImageView backgroundImageView = new UIImageView(UIImage.createFromBundle("Background.png"));
         backgroundImageView.setFrame(new CGRect(0, -20, 320, 480));
@@ -65,7 +65,7 @@ public class TeslameterViewController extends UIViewController {
         magnitudeLabel.setTextAlignment(NSTextAlignment.Right);
         magnitudeLabel.setLineBreakMode(NSLineBreakMode.TruncatingTail);
         magnitudeLabel.setFont(UIFont.getSystemFont(96));
-        magnitudeLabel.setTextColor(UIColor.colorBlack());
+        magnitudeLabel.setTextColor(UIColor.black());
         view.addSubview(magnitudeLabel);
 
         xLabel = new UILabel(new CGRect(20, 386, 71, 33));
@@ -73,7 +73,7 @@ public class TeslameterViewController extends UIViewController {
         xLabel.setTextAlignment(NSTextAlignment.Right);
         xLabel.setLineBreakMode(NSLineBreakMode.TruncatingTail);
         xLabel.setFont(UIFont.getFont("Helvetica-Bold", 18));
-        xLabel.setTextColor(UIColor.createFromRGBA(1, 0, 0, 1));
+        xLabel.setTextColor(UIColor.fromRGBA(1, 0, 0, 1));
         view.addSubview(xLabel);
 
         yLabel = new UILabel(new CGRect(120, 386, 74, 33));
@@ -81,7 +81,7 @@ public class TeslameterViewController extends UIViewController {
         yLabel.setTextAlignment(NSTextAlignment.Right);
         yLabel.setLineBreakMode(NSLineBreakMode.TruncatingTail);
         yLabel.setFont(UIFont.getFont("Helvetica-Bold", 18));
-        yLabel.setTextColor(UIColor.createFromRGBA(0.14, 0.77, 0.012, 1));
+        yLabel.setTextColor(UIColor.fromRGBA(0.14, 0.77, 0.012, 1));
         view.addSubview(yLabel);
 
         zLabel = new UILabel(new CGRect(224, 386, 75, 32));
@@ -89,7 +89,7 @@ public class TeslameterViewController extends UIViewController {
         zLabel.setTextAlignment(NSTextAlignment.Right);
         zLabel.setLineBreakMode(NSLineBreakMode.TruncatingTail);
         zLabel.setFont(UIFont.getFont("Helvetica-Bold", 18));
-        zLabel.setTextColor(UIColor.createFromRGBA(0.077, 0.065, 1, 1));
+        zLabel.setTextColor(UIColor.fromRGBA(0.077, 0.065, 1, 1));
         view.addSubview(zLabel);
 
         graphView = new GraphView(new CGRect(17, 199, 286, 134));
@@ -164,7 +164,7 @@ public class TeslameterViewController extends UIViewController {
     }
 
     @Override
-    public UIStatusBarStyle preferredStatusBarStyle () {
+    public UIStatusBarStyle getPreferredStatusBarStyle () {
         // Status bar text should be white.
         return UIStatusBarStyle.LightContent;
     }

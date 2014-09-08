@@ -37,12 +37,10 @@ import org.robovm.apple.uikit.UIWindow;
 import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
-/**
- * The application's main view controller (front page)
- */
+/** The application's main view controller (front page) */
 public class MainViewController extends UITableViewController {
 
-    private LinkedList<MenuListItem> menuList = new LinkedList<MenuListItem>();
+    private final LinkedList<MenuListItem> menuList = new LinkedList<MenuListItem>();
 
     private final static String MY_CELL_IDENTIFIER = "MyTableViewCell";
 
@@ -52,53 +50,46 @@ public class MainViewController extends UITableViewController {
     private class MyTableViewCell extends UITableViewCell {
 
         @Override
-        protected long initWithStyle$reuseIdentifier$(
-                UITableViewCellStyle style, String reuseIdentifier) {
+        protected long initWithStyle$reuseIdentifier$ (UITableViewCellStyle style, String reuseIdentifier) {
             return super.initWithStyle$reuseIdentifier$(UITableViewCellStyle.Subtitle, reuseIdentifier);
         }
 
     }
 
-    /**
-     * Item storing meta data for menu items
-     */
+    /** Item storing meta data for menu items */
     private class MenuListItem {
-        private String title;
-        private String explanation;
-        private UIViewController viewController;
+        private final String title;
+        private final String explanation;
+        private final UIViewController viewController;
 
-        public MenuListItem(String title, String explanation,
-                UIViewController viewController) {
+        public MenuListItem (String title, String explanation, UIViewController viewController) {
             super();
             this.title = title;
             this.explanation = explanation;
             this.viewController = viewController;
         }
 
-        public String getTitle() {
+        public String getTitle () {
             return title;
         }
 
-        public String getExplanation() {
+        public String getExplanation () {
             return explanation;
         }
 
-        public UIViewController getViewController() {
+        public UIViewController getViewController () {
             return this.viewController;
         }
 
     }
 
-    /**
-     * construct the array of page descriptions we will use (each description is
-     * a dictionary)
-     */
+    /** construct the array of page descriptions we will use (each description is a dictionary) */
     @Override
-    public void viewDidLoad() {
+    public void viewDidLoad () {
         super.viewDidLoad();
 
         UIWindow window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        window.setBackgroundColor(UIColor.colorLightGray());
+        window.setBackgroundColor(UIColor.lightGray());
         window.makeKeyAndVisible();
 
         // <rect key="frame" x="0.0" y="64" width="320" height="416"/>
@@ -153,7 +144,7 @@ public class MainViewController extends UITableViewController {
     }
 
     @Override
-    public void viewWillAppear(boolean animated) {
+    public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
 
         // this UIViewController is about to re-appear, make sure we remove the
@@ -163,34 +154,30 @@ public class MainViewController extends UITableViewController {
 
         // some over view controller could have changed our nav bar tint color,
         // so reset it here
-        this.getNavigationController().getNavigationBar().setTintColor(UIColor.colorDarkGray());
+        this.getNavigationController().getNavigationBar().setTintColor(UIColor.darkGray());
     }
 
-    /**
-     * the table's selection has changed, switch to that item's UIViewController
-     */
+    /** the table's selection has changed, switch to that item's UIViewController */
     @Override
-    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
-        MenuListItem item = menuList.get((int) NSIndexPathExtensions.getRow(indexPath));
+    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+        MenuListItem item = menuList.get((int)NSIndexPathExtensions.getRow(indexPath));
 
         UIViewController targetViewController = item.getViewController();
         this.getNavigationController().pushViewController(targetViewController, true);
     }
 
     @Override
-    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView,
-            @MachineSizedSInt long section) {
+    public @MachineSizedSInt long getNumberOfRowsInSection (UITableView tableView, @MachineSizedSInt long section) {
         return menuList.size();
     }
 
     @Override
-    public UITableViewCell getRowCell(UITableView tableView,
-            NSIndexPath indexPath) {
+    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = getTableView().dequeueReusableCell(MY_CELL_IDENTIFIER, indexPath);
 
         cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
-        cell.getTextLabel().setText(menuList.get((int) NSIndexPathExtensions.getRow(indexPath)).getTitle());
-        cell.getDetailTextLabel().setText(menuList.get((int) NSIndexPathExtensions.getRow(indexPath)).getExplanation());
+        cell.getTextLabel().setText(menuList.get((int)NSIndexPathExtensions.getRow(indexPath)).getTitle());
+        cell.getDetailTextLabel().setText(menuList.get((int)NSIndexPathExtensions.getRow(indexPath)).getExplanation());
         return cell;
     }
 
