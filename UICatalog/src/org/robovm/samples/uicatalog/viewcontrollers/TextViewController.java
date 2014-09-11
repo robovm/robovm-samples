@@ -20,20 +20,17 @@
 package org.robovm.samples.uicatalog.viewcontrollers;
 
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSMutableAttributedString;
-import org.robovm.apple.foundation.NSNotification;
 import org.robovm.apple.foundation.NSNotificationCenter;
 import org.robovm.apple.foundation.NSNumber;
+import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSRange;
-import org.robovm.apple.foundation.NSString;
-import org.robovm.apple.foundation.NSValue;
-import org.robovm.apple.uikit.NSValueExtensions;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonSystemItem;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIInterfaceOrientation;
+import org.robovm.apple.uikit.UIKeyboardAnimation;
 import org.robovm.apple.uikit.UIKeyboardType;
 import org.robovm.apple.uikit.UIKit;
 import org.robovm.apple.uikit.UIReturnKeyType;
@@ -43,12 +40,16 @@ import org.robovm.apple.uikit.UITextViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.apple.uikit.UIWindow;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
+import org.robovm.objc.block.VoidBlock1;
 
 /** The view controller for hosting the UITextView features of this sample. */
 public class TextViewController extends UIViewController {
     private UITextView textView;
+    private NSObject keyboardWillShowObserver;
+    private NSObject keyboardWillHideObserver;
 
     @Override
     public void viewDidLoad () {
@@ -95,36 +96,40 @@ public class TextViewController extends UIViewController {
     @Override
     public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
-        Selector willShow = Selector.register("keyboardWillShow:");
-        Selector willHide = Selector.register("keyboardWillHide:");
-        NSNotificationCenter center = NSNotificationCenter.getDefaultCenter();
-        center.addObserver(this, willShow, UIKit.KeyboardWillShowNotification(), null);
-        center.addObserver(this, willHide, UIKit.KeyboardWillHideNotification(), null);
+        keyboardWillShowObserver = UIWindow.Notifications.observeKeyboardWillShow(new VoidBlock1<UIKeyboardAnimation>() {
+            @Override
+            public void invoke (UIKeyboardAnimation a) {
+                adjustViewForKeyboardReveal(true, a);
+            }
+        });
+        keyboardWillHideObserver = UIWindow.Notifications.observeKeyboardWillHide(new VoidBlock1<UIKeyboardAnimation>() {
+            @Override
+            public void invoke (UIKeyboardAnimation a) {
+                adjustViewForKeyboardReveal(false, a);
+            }
+        });
     }
 
     /** Called when to finish typing text/dismiss the keyboard by removing it as the first responder */
     @Method(selector = "saveAction")
     private void saveAction () {
         this.textView.resignFirstResponder();
-        this.getNavigationItem().setRightBarButtonItem(null); // this will
-                                                              // remove the
-                                                              // "save" button
+        this.getNavigationItem().setRightBarButtonItem(null); // this will remove the "save" button
     }
 
     private boolean isPortrait (UIInterfaceOrientation orientation) {
         return ((orientation == UIInterfaceOrientation.Portrait) || (orientation == UIInterfaceOrientation.PortraitUpsideDown));
     }
 
-    /** Modifies keyboards size to fit screen
+    /** Modifies keyboards size to fit screen.
      * 
      * @param showKeyboard
      * @param notificationInfo */
-    private void adjustViewForKeyboardReveal (boolean showKeyboard, NSDictionary<NSString, ?> notificationInfo) {// notificationInfo:(NSDictionary
-                                                                                                                 // *)notificationInfo
+    private void adjustViewForKeyboardReveal (boolean showKeyboard, UIKeyboardAnimation animation) {
         // the keyboard is showing so resize the table's height
 
-        CGRect keyboardRect = NSValueExtensions.getRectValue((NSValue)notificationInfo.get(UIKit.KeyboardFrameEndUserInfoKey()));
-        double animationDuration = ((NSNumber)notificationInfo.get(UIKit.KeyboardAnimationDurationUserInfoKey())).doubleValue();
+        CGRect keyboardRect = animation.getEndFrame();
+        double animationDuration = animation.getAnimationDuration();
 
         CGRect frame = this.textView.getFrame();
 
@@ -143,23 +148,11 @@ public class TextViewController extends UIViewController {
         UIView.commitAnimations();
     }
 
-    @Method
-    void keyboardWillShow (NSNotification aNotification) {
-        adjustViewForKeyboardReveal(true, aNotification.getUserInfo());
-    }
-
-    @Method
-    void keyboardWillHide (NSNotification aNotification) {
-        adjustViewForKeyboardReveal(false, aNotification.getUserInfo());
-    }
-
     @Override
     public void viewDidDisappear (boolean animated) {
         super.viewDidDisappear(animated);
 
-        NSNotificationCenter.getDefaultCenter().removeObserver(UIKit.KeyboardWillShowNotification());
-        NSNotificationCenter.getDefaultCenter().removeObserver(UIKit.KeyboardWillHideNotification());
-
+        NSNotificationCenter.getDefaultCenter().removeObserver(keyboardWillShowObserver);
+        NSNotificationCenter.getDefaultCenter().removeObserver(keyboardWillHideObserver);
     }
-
 }

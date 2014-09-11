@@ -284,7 +284,7 @@ public class ToolbarViewController extends UIViewController {
         customItem1.setTarget(ToolbarViewController.this);
 
         UIImage baseImage = UIImage.createFromBundle("whiteButton.png");
-        UIImage backroundImage = baseImage.newStretchable(12, 0);
+        UIImage backroundImage = baseImage.createStretchable(12, 0);
         customItem1.setBackgroundImage(backroundImage, UIControlState.Normal, UIBarMetrics.Default);
 
         NSMutableDictionary<NSString, UIColor> textAttributes = new NSMutableDictionary<NSString, UIColor>();

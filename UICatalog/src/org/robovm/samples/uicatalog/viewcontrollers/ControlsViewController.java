@@ -277,10 +277,10 @@ public class ControlsViewController extends UITableViewController {
             customSlider.setBackgroundColor(UIColor.clear());
 
             UIImage stetchLeftTrack = UIImage.createFromBundle("orangeslide.png");
-            stetchLeftTrack = stetchLeftTrack.newStretchable(10l, 0l);
+            stetchLeftTrack = stetchLeftTrack.createStretchable(10l, 0l);
 
             UIImage stetchRightTrack = UIImage.createFromBundle("yellowslide.png");
-            stetchRightTrack = stetchRightTrack.newStretchable(10l, 0l);
+            stetchRightTrack = stetchRightTrack.createStretchable(10l, 0l);
 
             customSlider.setThumbImage(UIImage.createFromBundle("slider_ball.png"), UIControlState.Normal);
             customSlider.setMinimumTrackImage(stetchLeftTrack, UIControlState.Normal);

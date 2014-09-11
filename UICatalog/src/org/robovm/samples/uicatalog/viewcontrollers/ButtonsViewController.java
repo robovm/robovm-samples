@@ -214,10 +214,10 @@ public class ButtonsViewController extends UITableViewController {
             button.setTitleColor(UIColor.white(), UIControlState.Normal);
         }
 
-        UIImage newImage = image.newStretchable(12, 0);
+        UIImage newImage = image.createStretchable(12, 0);
         button.setBackgroundImage(newImage, UIControlState.Normal);
 
-        UIImage newPressedImage = imagePressed.newStretchable(12, 0);
+        UIImage newPressedImage = imagePressed.createStretchable(12, 0);
         button.setBackgroundImage(newPressedImage, UIControlState.Highlighted);
 
         // button.addTarget:target action:selector
