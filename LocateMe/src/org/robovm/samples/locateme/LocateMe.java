@@ -31,19 +31,29 @@ import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITabBarController;
 import org.robovm.apple.uikit.UIWindow;
 import org.robovm.samples.locateme.viewcontrollers.GetLocationViewController;
+import org.robovm.samples.locateme.viewcontrollers.TrackLocationViewController;
 
 public class LocateMe extends UIApplicationDelegateAdapter {
     private UIWindow window;
     private UITabBarController tabBarController;
+    private GetLocationViewController getLocationViewController;
+    private TrackLocationViewController trackLocationViewController;
 
     @Override
     public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
         tabBarController = new UITabBarController();
 
-        UINavigationController getLocationController = new UINavigationController(new GetLocationViewController());
+        getLocationViewController = new GetLocationViewController();
+        UINavigationController getLocationController = new UINavigationController(getLocationViewController);
         getLocationController.getTabBarItem().setTitle("Get Location");
         getLocationController.getTabBarItem().setImage(UIImage.createFromBundle("pin.png"));
         tabBarController.addChildViewController(getLocationController);
+
+        trackLocationViewController = new TrackLocationViewController();
+        UINavigationController trackLocationController = new UINavigationController(trackLocationViewController);
+        trackLocationController.getTabBarItem().setTitle("Track Location");
+        trackLocationController.getTabBarItem().setImage(UIImage.createFromBundle("bullseye.png"));
+        tabBarController.addChildViewController(trackLocationController);
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());

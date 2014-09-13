@@ -139,6 +139,7 @@ public class GetLocationViewController extends UIViewController {
         startButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
             public void onTouchUpInside (UIControl control, UIEvent event) {
+                setupViewController.configure(false);
                 getNavigationController().presentViewController(setupNavigationController, true, null);
             }
         });
@@ -204,7 +205,7 @@ public class GetLocationViewController extends UIViewController {
                             StatusCellActivityIndicatorTag);
                     }
                     cell.getTextLabel().setText(stateString);
-                    if (stateString.equals(Str.getLocalizedString("Updating"))) {
+                    if (stateString != null && stateString.equals(Str.getLocalizedString("Updating"))) {
                         if (!activityIndicator.isAnimating()) activityIndicator.startAnimating();
                     } else {
                         if (activityIndicator.isAnimating()) activityIndicator.stopAnimating();
@@ -272,9 +273,9 @@ public class GetLocationViewController extends UIViewController {
         locationMeasurements.clear();
         UIView.beginAnimations("Reset", null);
         UIView.setDurationForAnimation(0.6);
-        startButton.setAlpha(1.0);
-        descriptionLabel.setAlpha(1.0);
-        tableView.setAlpha(0.0);
+        startButton.setAlpha(1);
+        descriptionLabel.setAlpha(1);
+        tableView.setAlpha(0);
         getNavigationItem().setLeftBarButtonItem(null, true);
         UIView.commitAnimations();
     }
@@ -330,7 +331,7 @@ public class GetLocationViewController extends UIViewController {
                 // The location "unknown" error simply means the manager is currently unable to get the location.
                 // We can ignore this error for the scenario of getting a single location fix, because we already have a
                 // timeout that will stop the location manager to save power.
-                if (error.getCode() == CLError.LocationUnknown.value()) {
+                if (error.getCode() != CLError.LocationUnknown.value()) {
                     stopUpdatingLocation(Str.getLocalizedString("Error"));
                 }
             }

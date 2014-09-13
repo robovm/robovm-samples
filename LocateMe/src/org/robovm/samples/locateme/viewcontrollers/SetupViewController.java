@@ -65,6 +65,11 @@ public class SetupViewController extends UIViewController {
 
     private UIPickerView accuracyPicker;
     private UISlider slider;
+    private UILabel sliderLabel;
+    private UILabel label1;
+    private UILabel label2;
+    private UILabel label3;
+    private UILabel label4;
 
     public SetupViewController () {
         super();
@@ -132,17 +137,13 @@ public class SetupViewController extends UIViewController {
         desiredAccuracyLabel.setTextColor(UIColor.white());
         view.addSubview(desiredAccuracyLabel);
 
-        UILabel timeoutLabel = new UILabel(new CGRect(20, 328, 158, 21));
-        timeoutLabel.setText("Timeout (seconds):");
-        timeoutLabel.setFont(UIFont.getFont("Helvetica-Bold", 17));
-        timeoutLabel.setTextColor(UIColor.white());
-        view.addSubview(timeoutLabel);
+        sliderLabel = new UILabel(new CGRect(20, 328, 196, 21));
+        sliderLabel.setFont(UIFont.getFont("Helvetica-Bold", 17));
+        sliderLabel.setTextColor(UIColor.white());
+        view.addSubview(sliderLabel);
 
         slider = new UISlider(new CGRect(18, 370, 284, 23));
         slider.setMultipleTouchEnabled(true);
-        slider.setMinimumValue(15);
-        slider.setMaximumValue(60);
-        slider.setValue(45, false);
         slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
@@ -155,29 +156,42 @@ public class SetupViewController extends UIViewController {
         });
         view.addSubview(slider);
 
-        UILabel label60 = new UILabel(new CGRect(284, 400, 16, 18));
-        label60.setText("60");
-        label60.setFont(UIFont.getSystemFont(14));
-        label60.setTextColor(UIColor.white());
-        view.addSubview(label60);
+        label4 = new UILabel(new CGRect(284, 400, 32, 18));
+        label4.setFont(UIFont.getSystemFont(14));
+        label4.setTextColor(UIColor.white());
+        view.addSubview(label4);
 
-        UILabel label45 = new UILabel(new CGRect(196, 400, 16, 18));
-        label45.setText("45");
-        label45.setFont(UIFont.getSystemFont(14));
-        label45.setTextColor(UIColor.white());
-        view.addSubview(label45);
+        label3 = new UILabel(new CGRect(196, 400, 32, 18));
+        label3.setFont(UIFont.getSystemFont(14));
+        label3.setTextColor(UIColor.white());
+        view.addSubview(label3);
 
-        UILabel label30 = new UILabel(new CGRect(108, 400, 16, 18));
-        label30.setText("30");
-        label30.setFont(UIFont.getSystemFont(14));
-        label30.setTextColor(UIColor.white());
-        view.addSubview(label30);
+        label2 = new UILabel(new CGRect(108, 400, 32, 18));
+        label2.setFont(UIFont.getSystemFont(14));
+        label2.setTextColor(UIColor.white());
+        view.addSubview(label2);
 
-        UILabel label15 = new UILabel(new CGRect(20, 400, 16, 18));
-        label15.setText("15");
-        label15.setFont(UIFont.getSystemFont(14));
-        label15.setTextColor(UIColor.white());
-        view.addSubview(label15);
+        label1 = new UILabel(new CGRect(20, 400, 32, 18));
+        label1.setFont(UIFont.getSystemFont(14));
+        label1.setTextColor(UIColor.white());
+        view.addSubview(label1);
+
+        if (configureForTracking) {
+            sliderLabel.setText("Distance Filter (meters):");
+            label1.setText("1");
+            label2.setText("10");
+            label3.setText("100");
+            label4.setText("1000");
+        } else {
+            sliderLabel.setText("Timeout (seconds):");
+            slider.setMinimumValue(0);
+            slider.setMaximumValue(3);
+            slider.setValue(2, false);
+            label1.setText("15");
+            label2.setText("30");
+            label3.setText("45");
+            label4.setText("60");
+        }
     }
 
     @Override
@@ -192,5 +206,9 @@ public class SetupViewController extends UIViewController {
 
     public void setDelegate (SetupViewControllerDelegate delegate) {
         this.delegate = delegate;
+    }
+
+    public void configure (boolean tracking) {
+        configureForTracking = tracking;
     }
 }
