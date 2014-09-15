@@ -34,7 +34,6 @@ public class QuickContacts extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
-
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
         window.setBackgroundColor(UIColor.lightGray());
         UINavigationController navigationController = new UINavigationController(
@@ -42,11 +41,11 @@ public class QuickContacts extends UIApplicationDelegateAdapter {
         window.setRootViewController(navigationController);
         window.makeKeyAndVisible();
 
-        // Ties UIWindow instance together with UIApplication object on the
-        // Objective C side of things
-        // Basically meaning that it wont be GC:ed on the java side until it is
-        // on the Objective C side
-        application.addStrongRef(window);
+        /*
+         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
+         * early.
+         */
+        addStrongRef(window);
 
         return true;
     }

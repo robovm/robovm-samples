@@ -74,7 +74,7 @@ public class LocateMe extends UIApplicationDelegateAdapter {
          * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
          * early.
          */
-        application.addStrongRef(window);
+        addStrongRef(window);
 
         return true;
     }
