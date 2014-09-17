@@ -25,7 +25,7 @@ import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSMutableAttributedString;
 import org.robovm.apple.foundation.NSRange;
-import org.robovm.apple.foundation.NSString;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIButton;
@@ -38,7 +38,6 @@ import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIImage;
-import org.robovm.apple.uikit.UIKit;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
@@ -299,13 +298,13 @@ public class ButtonsViewController extends UITableViewController {
 
             // apply red text for normal state
             NSMutableAttributedString normalAttrString = new NSMutableAttributedString("Rounded");
-            normalAttrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.red(),
-                new NSRange(0, normalAttrString.getLength()));
+            normalAttrString.addAttributes(new NSAttributedStringAttributes().setForegroundColor(UIColor.red()), new NSRange(0,
+                normalAttrString.getLength()));
             attrTextButton.setAttributedTitle(normalAttrString, UIControlState.Normal);
 
             // apply green text for pressed state
             NSMutableAttributedString highlightedAttrString = new NSMutableAttributedString("Rounded");
-            normalAttrString.addAttribute(new NSString("Green"), UIColor.green(), new NSRange(0, normalAttrString.getLength()));
+            normalAttrString.addAttribute("Green", UIColor.green(), new NSRange(0, normalAttrString.getLength()));
 
             attrTextButton.setAttributedTitle(highlightedAttrString, UIControlState.Highlighted);
             attrTextButton.setTag(viewTag); // tag this view for later so we can

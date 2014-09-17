@@ -25,6 +25,7 @@ import org.robovm.apple.foundation.NSNotificationCenter;
 import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSRange;
+import org.robovm.apple.uikit.NSAttributedStringAttribute;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonSystemItem;
 import org.robovm.apple.uikit.UIColor;
@@ -32,7 +33,6 @@ import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIInterfaceOrientation;
 import org.robovm.apple.uikit.UIKeyboardAnimation;
 import org.robovm.apple.uikit.UIKeyboardType;
-import org.robovm.apple.uikit.UIKit;
 import org.robovm.apple.uikit.UIReturnKeyType;
 import org.robovm.apple.uikit.UITextAutocorrectionType;
 import org.robovm.apple.uikit.UITextView;
@@ -41,8 +41,6 @@ import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.objc.Selector;
-import org.robovm.objc.annotation.Method;
 import org.robovm.objc.block.VoidBlock1;
 
 /** The view controller for hosting the UITextView features of this sample. */
@@ -68,9 +66,14 @@ public class TextViewController extends UIViewController {
         textView.setDelegate(new UITextViewDelegateAdapter() {
             @Override
             public void didBeginEditing (UITextView textView) {
-                Selector saveAction = Selector.register("saveAction");
-                UIBarButtonItem saveItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, null, saveAction);
-                saveItem.setTarget(TextViewController.this);
+                UIBarButtonItem saveItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, new UIBarButtonItem.OnClickListener() {
+                    @Override
+                    public void onClick (UIBarButtonItem barButtonItem) {
+                        /** Called when to finish typing text/dismiss the keyboard by removing it as the first responder */
+                        TextViewController.this.textView.resignFirstResponder();
+                        getNavigationItem().setRightBarButtonItem(null); // this will remove the "save" button
+                    }
+                });
                 getNavigationItem().setRightBarButtonItem(saveItem);
             }
         });
@@ -79,10 +82,12 @@ public class TextViewController extends UIViewController {
 
         String textToAdd = "Now is the time for all good developers to come to serve their country.\n\nNow is the time for all good developers to come to serve their country.\r\rThis text view can also use attributed strings.";
         NSMutableAttributedString attrString = new NSMutableAttributedString(textToAdd);
-        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.red(), new NSRange(textToAdd.length() - 19, 19));
-        attrString.addAttribute(UIKit.ForegroundColorAttributeName(), UIColor.blue(), new NSRange(textToAdd.length() - 23, 3));
-        attrString.addAttribute(UIKit.UnderlineStyleAttributeName(), NSNumber.valueOf(1l),
-            new NSRange(textToAdd.length() - 23, 3));
+        attrString.addAttribute(NSAttributedStringAttribute.ForegroundColor, UIColor.red(), new NSRange(textToAdd.length() - 19,
+            19));
+        attrString.addAttribute(NSAttributedStringAttribute.ForegroundColor, UIColor.blue(), new NSRange(textToAdd.length() - 23,
+            3));
+        attrString.addAttribute(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf(1l), new NSRange(
+            textToAdd.length() - 23, 3));
         this.textView.setAttributedText(attrString);
 
         textView.setReturnKeyType(UIReturnKeyType.Default);
@@ -108,13 +113,6 @@ public class TextViewController extends UIViewController {
                 adjustViewForKeyboardReveal(false, a);
             }
         });
-    }
-
-    /** Called when to finish typing text/dismiss the keyboard by removing it as the first responder */
-    @Method(selector = "saveAction")
-    private void saveAction () {
-        this.textView.resignFirstResponder();
-        this.getNavigationItem().setRightBarButtonItem(null); // this will remove the "save" button
     }
 
     private boolean isPortrait (UIInterfaceOrientation orientation) {

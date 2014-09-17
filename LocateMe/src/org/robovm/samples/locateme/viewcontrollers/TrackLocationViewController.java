@@ -101,7 +101,7 @@ public class TrackLocationViewController extends UIViewController {
         setEdgesForExtendedLayout(UIRectEdge.None);
 
         UIView view = getView();
-        view.setBackgroundColor(UIColor.groupTableViewBackgroundColor());
+        view.setBackgroundColor(UIColor.groupTableViewBackground());
 
         /*
          * The table view has two sections. The first has 1 row which displays status information. The second has a row for each

@@ -24,7 +24,7 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSMutableArray;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIControlEvents;
+import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UISearchBar;
@@ -34,8 +34,6 @@ import org.robovm.apple.uikit.UISegmentedControl;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.objc.Selector;
-import org.robovm.objc.annotation.Method;
 
 /** The view controller for hosting the UIPickerView of this sample. */
 public class SearchBarViewController extends UIViewController {
@@ -44,7 +42,6 @@ public class SearchBarViewController extends UIViewController {
     private/* IBOutlet */UISegmentedControl contentOptions;
 
     @Override
-    @Method(selector = "viewDidLoad")
     public void viewDidLoad () {
         super.viewDidLoad();
 
@@ -85,37 +82,36 @@ public class SearchBarViewController extends UIViewController {
         mySearchBar.setShowsCancelButton(true);
         mySearchBar.setShowsBookmarkButton(true);
 
-        contentOptions.addTarget(this, Selector.register("contentChoice:"), UIControlEvents.ValueChanged);
+        contentOptions.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+            /** contentChoice - changes background of search bar depending on option selection
+             * 
+             * @param selectedSegmentIndex */
+            @Override
+            public void onValueChanged (UIControl control) {
+                mySearchBar.setTintColor(null);
+                mySearchBar.setBackgroundImage(null);
+                mySearchBar.setImageForSearchBarIcon(null, UISearchBarIcon.Bookmark, UIControlState.Normal);
+
+                UISegmentedControl segControl = (UISegmentedControl)control;
+                switch ((int)segControl.getSelectedSegment()) {
+                case 1:
+                    // tinted background
+                    mySearchBar.setTintColor(UIColor.blue());
+                    break;
+                case 2:
+                    // image background
+                    mySearchBar.setBackgroundImage(UIImage.createFromBundle("searchBarBackground"));
+                    mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImage"), UISearchBarIcon.Bookmark,
+                        UIControlState.Normal);
+                    mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImageHighlighted"),
+                        UISearchBarIcon.Bookmark, UIControlState.Highlighted);
+                }
+            }
+        });
 
         getView().addSubview(mySearchBar);
         getView().addSubview(contentOptions);
         mySearchBar.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth);
 
     }
-
-    /** contentChoice - changes background of search bar depending on option selection
-     * 
-     * @param selectedSegmentIndex */
-    @Method
-    public void contentChoice (UISegmentedControl sender) {
-        mySearchBar.setTintColor(null);
-        mySearchBar.setBackgroundImage(null);
-        mySearchBar.setImageForSearchBarIcon(null, UISearchBarIcon.Bookmark, UIControlState.Normal);
-
-        UISegmentedControl segControl = sender;
-        switch ((int)segControl.getSelectedSegment()) {
-        case 1:
-            // tinted background
-            mySearchBar.setTintColor(UIColor.blue());
-            break;
-        case 2:
-            // image background
-            mySearchBar.setBackgroundImage(UIImage.createFromBundle("searchBarBackground"));
-            mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImage"), UISearchBarIcon.Bookmark,
-                UIControlState.Normal);
-            mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImageHighlighted"), UISearchBarIcon.Bookmark,
-                UIControlState.Highlighted);
-        }
-    }
-
 }

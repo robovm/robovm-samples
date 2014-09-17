@@ -47,7 +47,6 @@ import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.objc.ObjCClass;
-import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.Method;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
@@ -126,8 +125,8 @@ public class ControlsViewController extends UITableViewController {
         UIBarButtonItem tintButton = new UIBarButtonItem();
         tintButton.setTitle("Tinted");
         tintButton.setStyle(UIBarButtonItemStyle.Bordered);
-        tintButton.setAction(Selector.register("tintAction"));
-        tintButton.setTarget(this);
+// tintButton.setAction(Selector.register("tintAction")); TODO
+// tintButton.setTarget(this);
 
         getNavigationItem().setRightBarButtonItem(tintButton);
 

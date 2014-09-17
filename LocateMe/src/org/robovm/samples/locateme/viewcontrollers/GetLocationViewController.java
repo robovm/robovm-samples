@@ -105,7 +105,7 @@ public class GetLocationViewController extends UIViewController {
         setEdgesForExtendedLayout(UIRectEdge.None);
 
         UIView view = getView();
-        view.setBackgroundColor(UIColor.groupTableViewBackgroundColor());
+        view.setBackgroundColor(UIColor.groupTableViewBackground());
 
         /*
          * The table view has three sections. The first has 1 row which displays status information. The second has 1 row which

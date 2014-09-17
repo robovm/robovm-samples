@@ -26,9 +26,9 @@ import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSMutableArray;
-import org.robovm.apple.foundation.NSMutableDictionary;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonItemStyle;
 import org.robovm.apple.uikit.UIBarButtonSystemItem;
@@ -40,7 +40,6 @@ import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIImage;
-import org.robovm.apple.uikit.UIKit;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIPickerView;
 import org.robovm.apple.uikit.UIPickerViewDataSourceAdapter;
@@ -51,12 +50,9 @@ import org.robovm.apple.uikit.UISwitch;
 import org.robovm.apple.uikit.UIToolbar;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.objc.Selector;
-import org.robovm.objc.annotation.Method;
 
 /** The view controller for hosting the UIToolbar and UIBarButtonItem features of this sample. */
 public class ToolbarViewController extends UIViewController {
-
     private UIScrollView scrollView;
 
     private UISegmentedControl barStyleSegControl;
@@ -75,8 +71,14 @@ public class ToolbarViewController extends UIViewController {
 
     private double savedContentHightSize;
 
-    private void initUI () {
+    private final UIBarButtonItem.OnClickListener action = new UIBarButtonItem.OnClickListener() {
+        @Override
+        public void onClick (UIBarButtonItem barButtonItem) {
+            System.err.println("action!");
+        }
+    };
 
+    private void initUI () {
         this.scrollView = new UIScrollView(new CGRect(0, 0, 320, 460));
 
         UILabel barLabel = new UILabel(new CGRect(20, 86 + 60, 280, 21));
@@ -265,8 +267,7 @@ public class ToolbarViewController extends UIViewController {
         UIBarButtonItemStyle style = UIBarButtonItemStyle.valueOf(this.buttonItemStyleSegControl.getSelectedSegment());
 
         // create the system-defined "OK or Done" button
-        UIBarButtonItem systemItem = new UIBarButtonItem(this.currentSystemItem, null, Selector.register("action:"));
-        systemItem.setTarget(ToolbarViewController.this);
+        UIBarButtonItem systemItem = new UIBarButtonItem(this.currentSystemItem, action);
         systemItem.setStyle(style);
 
         // flex item used to separate the left groups items and right grouped
@@ -274,24 +275,21 @@ public class ToolbarViewController extends UIViewController {
         UIBarButtonItem flexItem = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
 
         // create a special tab bar item with a custom image and title
-        UIBarButtonItem infoItem = new UIBarButtonItem(UIImage.createFromBundle("segment_tools.png"), style, null,
-            Selector.register("action:"));
+        UIBarButtonItem infoItem = new UIBarButtonItem(UIImage.createFromBundle("segment_tools.png"), style, action);
 
         // create a custom button with a background image with black text for
         // its title:
-        UIBarButtonItem customItem1 = new UIBarButtonItem("Item1", UIBarButtonItemStyle.Bordered, null,
-            Selector.register("action:"));
-        customItem1.setTarget(ToolbarViewController.this);
+        UIBarButtonItem customItem1 = new UIBarButtonItem("Item1", UIBarButtonItemStyle.Bordered, action);
 
         UIImage baseImage = UIImage.createFromBundle("whiteButton.png");
         UIImage backroundImage = baseImage.createStretchable(12, 0);
         customItem1.setBackgroundImage(backroundImage, UIControlState.Normal, UIBarMetrics.Default);
 
-        NSMutableDictionary<NSString, UIColor> textAttributes = new NSMutableDictionary<NSString, UIColor>();
-        textAttributes.put(UIKit.ForegroundColorAttributeName(), UIColor.black());
+        NSAttributedStringAttributes textAttributes = new NSAttributedStringAttributes();
+        textAttributes.setForegroundColor(UIColor.black());
         customItem1.setTitleTextAttributes(textAttributes, UIControlState.Normal);
 
-        UIBarButtonItem customItem2 = new UIBarButtonItem("Item2", style, null, Selector.register("action:"));
+        UIBarButtonItem customItem2 = new UIBarButtonItem("Item2", style, action);
 
         List<UIBarButtonItem> buttonSet = new LinkedList<UIBarButtonItem>();
         buttonSet.add(systemItem);
@@ -302,11 +300,6 @@ public class ToolbarViewController extends UIViewController {
 
         NSMutableArray<UIBarButtonItem> array = new NSMutableArray<UIBarButtonItem>(buttonSet);
         toolbar.setItems(array, false);
-    }
-
-    @Method
-    private void action (NSObject sender) {
-        System.err.println("action!");
     }
 
     @Override
