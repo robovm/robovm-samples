@@ -1,0 +1,17 @@
+<config>
+    <executableName>${app.executable}</executableName>
+    <mainClass>${app.mainclass}</mainClass>
+    <os>ios</os>
+    <arch>thumbv7</arch>
+    <resources>
+        <resource>
+            <directory>resources</directory>
+        </resource>
+    </resources>
+    <target>ios</target>
+    <iosInfoPList>Info.plist.xml</iosInfoPList>
+    <frameworks>
+        <framework>CoreLocation</framework>
+        <framework>MapKit</framework>
+    </frameworks>
+</config>
