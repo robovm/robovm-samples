@@ -31,12 +31,10 @@ import org.robovm.objc.annotation.Method;
 
 /** The view controller for hosting the UIImageView containing multiple images. */
 public class ImageViewController extends UIViewController {
-
     private static final float MIN_DURATION = 0.0f;
     private static final float MAX_DURATION = 10.0f;
 
     private UIImageView imageView;
-
     private UISlider slider;
 
     @Override
@@ -46,37 +44,36 @@ public class ImageViewController extends UIViewController {
         imageView = new UIImageView(new CGRect(42, 70, 236, 174));
         slider = new UISlider(new CGRect(18, 398, 284, 23));
 
-        NSArray<UIImage> images = new NSArray<UIImage>(UIImage.createFromBundle("scene1.jpg"),
-            UIImage.createFromBundle("scene2.jpg"), UIImage.createFromBundle("scene3.jpg"),
-            UIImage.createFromBundle("scene4.jpg"), UIImage.createFromBundle("scene5.jpg"));
+        NSArray<UIImage> images = new NSArray<UIImage>(UIImage.create("scene1.jpg"), UIImage.create("scene2.jpg"),
+            UIImage.create("scene3.jpg"), UIImage.create("scene4.jpg"), UIImage.create("scene5.jpg"));
 
-        this.imageView.setAnimationImages(images);
+        imageView.setAnimationImages(images);
         UIImageView.setDurationForAnimation(5.0);
-        this.imageView.setBackgroundColor(UIColor.black());
-        this.imageView.setAnimationDuration(5.0f); // sync with slider below
-        this.imageView.stopAnimating();
+        imageView.setBackgroundColor(UIColor.black());
+        imageView.setAnimationDuration(5.0f); // sync with slider below
+        imageView.stopAnimating();
 
-        this.slider.setMaximumValue(MIN_DURATION);
-        this.slider.setMaximumValue(MAX_DURATION);
+        slider.setMaximumValue(MIN_DURATION);
+        slider.setMaximumValue(MAX_DURATION);
         slider.setValue(5.0f);
 
-        this.slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+        slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
                 sliderAction();
             }
         });
 
-        this.getView().addSubview(imageView);
-        this.getView().addSubview(slider);
+        getView().addSubview(imageView);
+        getView().addSubview(slider);
 
     }
 
     @Method
     private void sliderAction () {
         UISlider durationSlider = slider;
-        this.imageView.setAnimationDuration(durationSlider.getValue());
-        if (!this.imageView.isAnimating()) {
+        imageView.setAnimationDuration(durationSlider.getValue());
+        if (!imageView.isAnimating()) {
             imageView.startAnimating();
         }
     }
@@ -91,7 +88,7 @@ public class ImageViewController extends UIViewController {
     public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
         imageView.startAnimating();
-        this.getNavigationController().getNavigationBar().setTintColor(UIColor.black());
+        getNavigationController().getNavigationBar().setTintColor(UIColor.black());
     }
 
 }

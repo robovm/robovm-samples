@@ -49,7 +49,7 @@ public class WebViewController extends UIViewController {
     @Method
     public void viewDidLoad () {
         super.viewDidLoad();
-        this.setTitle("");
+        setTitle("");
 
         CGRect textFieldFrame = new CGRect(Constants.LEFT_MARGIN, Constants.TWEEN_MARGIN + 70, getView().getBounds().getWidth()
             - Constants.LEFT_MARGIN * 2.0, Constants.TEXT_FIELD_HEIGHT);
@@ -57,16 +57,13 @@ public class WebViewController extends UIViewController {
         UITextField urlField = new UITextField(textFieldFrame);
         urlField.setBorderStyle(UITextBorderStyle.Bezel);
         urlField.setTextColor(UIColor.black());
-
         urlField.setDelegate(new UITextFieldDelegateAdapter() {
-
             @Override
             public boolean shouldReturn (UITextField textField) {
                 textField.resignFirstResponder();
                 myWebView.loadRequest(new NSURLRequest(new NSURL(textField.getText())));
                 return true;
             }
-
         });
 
         urlField.setPlaceholder("<enter a full URL>");
@@ -82,7 +79,7 @@ public class WebViewController extends UIViewController {
         getView().addSubview(urlField);
 
         // create the UIWebView
-        CGRect webFrame = this.getView().getFrame();
+        CGRect webFrame = getView().getFrame();
         webFrame.origin().y(webFrame.origin().y() + (Constants.TWEEN_MARGIN * 2.0) + Constants.TEXT_FIELD_HEIGHT + 70); // leave
                                                                                                                         // room
                                                                                                                         // for

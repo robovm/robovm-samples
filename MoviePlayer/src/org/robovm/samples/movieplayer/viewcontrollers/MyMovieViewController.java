@@ -62,7 +62,7 @@ public class MyMovieViewController extends UIViewController {
     public MyMovieViewController () {
         super();
 
-        movieBackgroundImageView = new UIImageView(UIImage.createFromBundle("images/movieBackground.jpg"));
+        movieBackgroundImageView = new UIImageView(UIImage.create("images/movieBackground.jpg"));
         movieBackgroundImageView.setFrame(new CGRect(0, 0, 240, 128));
 
         backgroundView = new UIView(new CGRect(0, 0, 320, 460));

@@ -46,13 +46,13 @@ public class LocateMe extends UIApplicationDelegateAdapter {
         getLocationViewController = new GetLocationViewController();
         UINavigationController getLocationController = new UINavigationController(getLocationViewController);
         getLocationController.getTabBarItem().setTitle("Get Location");
-        getLocationController.getTabBarItem().setImage(UIImage.createFromBundle("pin.png"));
+        getLocationController.getTabBarItem().setImage(UIImage.create("pin.png"));
         tabBarController.addChildViewController(getLocationController);
 
         trackLocationViewController = new TrackLocationViewController();
         UINavigationController trackLocationController = new UINavigationController(trackLocationViewController);
         trackLocationController.getTabBarItem().setTitle("Track Location");
-        trackLocationController.getTabBarItem().setImage(UIImage.createFromBundle("bullseye.png"));
+        trackLocationController.getTabBarItem().setImage(UIImage.create("bullseye.png"));
         tabBarController.addChildViewController(trackLocationController);
 
         // Create a new window at screen size.

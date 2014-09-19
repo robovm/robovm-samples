@@ -111,8 +111,8 @@ public class TextFieldController extends UITableViewController {
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 247);
         setTableView(new UITableView(tableViewBounds));
 
-        this.setTitle("TextFieldTitle");
-        this.setEditing(false);
+        setTitle("TextFieldTitle");
+        setEditing(false);
 
         dataSourceArray.add(new ListItem("UITextField", "textFieldNormal", getTextFieldNormal()));
         dataSourceArray.add(new ListItem("UITextField Rounded", "textFieldRounded", getTextFieldRounded()));
@@ -128,12 +128,12 @@ public class TextFieldController extends UITableViewController {
 
     @Override
     public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
-        return this.dataSourceArray.size();
+        return dataSourceArray.size();
     }
 
     @Override
     public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
@@ -161,8 +161,7 @@ public class TextFieldController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            UITextField textField = (UITextField)this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath))
-                .getView();
+            UITextField textField = (UITextField)dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
 
             CGRect newFrame = textField.getFrame();
             newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
@@ -179,7 +178,7 @@ public class TextFieldController extends UITableViewController {
             cell.getTextLabel().setTextColor(UIColor.gray());
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;

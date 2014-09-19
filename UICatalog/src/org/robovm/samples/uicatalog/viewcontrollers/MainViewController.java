@@ -39,21 +39,14 @@ import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
 /** The application's main view controller (front page) */
 public class MainViewController extends UITableViewController {
-
+    private final static String MY_CELL_IDENTIFIER = "MyTableViewCell";
     private final LinkedList<MenuListItem> menuList = new LinkedList<MenuListItem>();
 
-    private final static String MY_CELL_IDENTIFIER = "MyTableViewCell";
-
-    /**
-     * 
-     */
     private class MyTableViewCell extends UITableViewCell {
-
         @Override
         protected long initWithStyle$reuseIdentifier$ (UITableViewCellStyle style, String reuseIdentifier) {
             return super.initWithStyle$reuseIdentifier$(UITableViewCellStyle.Subtitle, reuseIdentifier);
         }
-
     }
 
     /** Item storing meta data for menu items */
@@ -78,7 +71,7 @@ public class MainViewController extends UITableViewController {
         }
 
         public UIViewController getViewController () {
-            return this.viewController;
+            return viewController;
         }
 
     }
@@ -138,7 +131,7 @@ public class MainViewController extends UITableViewController {
 
         UIBarButtonItem temporaryBarButtonItem = new UIBarButtonItem();
         temporaryBarButtonItem.setTitle("Back");
-        this.getNavigationItem().setBackBarButtonItem(temporaryBarButtonItem);
+        getNavigationItem().setBackBarButtonItem(temporaryBarButtonItem);
 
         getTableView().registerReusableCellClass(ObjCClass.getByType(MyTableViewCell.class), MY_CELL_IDENTIFIER);
     }
@@ -149,12 +142,12 @@ public class MainViewController extends UITableViewController {
 
         // this UIViewController is about to re-appear, make sure we remove the
         // current selection in our table view
-        NSIndexPath tableSelection = this.getTableView().getIndexPathForSelectedRow();
-        this.getTableView().deselectRow(tableSelection, false);
+        NSIndexPath tableSelection = getTableView().getIndexPathForSelectedRow();
+        getTableView().deselectRow(tableSelection, false);
 
         // some over view controller could have changed our nav bar tint color,
         // so reset it here
-        this.getNavigationController().getNavigationBar().setTintColor(UIColor.darkGray());
+        getNavigationController().getNavigationBar().setTintColor(UIColor.darkGray());
     }
 
     /** the table's selection has changed, switch to that item's UIViewController */
@@ -163,7 +156,7 @@ public class MainViewController extends UITableViewController {
         MenuListItem item = menuList.get((int)NSIndexPathExtensions.getRow(indexPath));
 
         UIViewController targetViewController = item.getViewController();
-        this.getNavigationController().pushViewController(targetViewController, true);
+        getNavigationController().pushViewController(targetViewController, true);
     }
 
     @Override

@@ -85,24 +85,24 @@ public class SegmentViewController extends UIViewController {
         optionArray.add(new NSString("Tools"));
 
         double yPlacement = Constants.TOP_MARGIN;
-        CGRect frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
+        CGRect frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth()
             - (Constants.RIGHT_MARGIN * 2.0), LabelHeight);
 
-        this.scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentedControl:"));
+        scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentedControl:"));
 
         Set<UIImage> images = new HashSet<UIImage>();
 
-        images.add(UIImage.createFromBundle("segment_check.png"));
-        images.add(UIImage.createFromBundle("segment_search.png"));
-        images.add(UIImage.createFromBundle("segment_tools.png"));
+        images.add(UIImage.create("segment_check.png"));
+        images.add(UIImage.create("segment_search.png"));
+        images.add(UIImage.create("segment_tools.png"));
 
         NSArray<UIImage> imageArray = new NSArray<UIImage>(images);
         UISegmentedControl segmentedControl = new UISegmentedControl(imageArray);
 
         yPlacement += Constants.TWEEN_MARGIN + LabelHeight;
 
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
-            - (Constants.RIGHT_MARGIN * 2.0), SegmentedControlHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
+            SegmentedControlHeight);
         segmentedControl.setFrame(frame);
         segmentedControl.addOnValueChangedListener(segmentAction);
         segmentedControl.setControlStyle(UISegmentedControlStyle.Plain);
@@ -113,15 +113,15 @@ public class SegmentViewController extends UIViewController {
 
         // label
         yPlacement += (Constants.TWEEN_MARGIN * 2.0) + SegmentedControlHeight;
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
-            - (Constants.RIGHT_MARGIN * 2.0), LabelHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
+            LabelHeight);
 
-        this.scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBordered:"));
+        scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBordered:"));
 
         segmentedControl = new UISegmentedControl(optionArray);// initWithItems:segmentTextContent];
         yPlacement += Constants.TWEEN_MARGIN + LabelHeight;
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
-            - (Constants.RIGHT_MARGIN * 2.0), SegmentedControlHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
+            SegmentedControlHeight);
         segmentedControl.setFrame(frame);
         segmentedControl.addOnValueChangedListener(segmentAction);
         segmentedControl.setControlStyle(UISegmentedControlStyle.Plain);
@@ -134,12 +134,12 @@ public class SegmentViewController extends UIViewController {
         frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
             LabelHeight);
 
-        this.scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar:"));
+        scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar:"));
 
         yPlacement += Constants.TWEEN_MARGIN + LabelHeight;
         segmentedControl = new UISegmentedControl(optionArray);
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
-            - (Constants.RIGHT_MARGIN * 2.0), SegmentedControlHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
+            SegmentedControlHeight);
 
         segmentedControl.setFrame(frame);
         segmentedControl.addOnValueChangedListener(segmentAction);
@@ -147,44 +147,44 @@ public class SegmentViewController extends UIViewController {
         segmentedControl.setSelectedSegment(1);
         segmentedControl.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
 
-        this.scrollView.addSubview(segmentedControl);
+        scrollView.addSubview(segmentedControl);
 
         yPlacement += (Constants.TWEEN_MARGIN * 2.0) + SegmentedControlHeight;
         frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - Constants.RIGHT_MARGIN * 2.0,
             LabelHeight);
-        this.scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar: tint"));
+        scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar: tint"));
         segmentedControl = new UISegmentedControl(optionArray);
 
         segmentedControl = new UISegmentedControl(optionArray);
         yPlacement += Constants.TWEEN_MARGIN + LabelHeight;
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth() - Constants.RIGHT_MARGIN
-            * 2.0, SegmentedControlHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - Constants.RIGHT_MARGIN * 2.0,
+            SegmentedControlHeight);
         segmentedControl.setFrame(frame);
         segmentedControl.addOnValueChangedListener(segmentAction);
         segmentedControl.setControlStyle(UISegmentedControlStyle.Bar);
         segmentedControl.setTintColor(new UIColor(0.7, 0.171, 0.1, 1.0));
         segmentedControl.setSelectedSegment(1);
         segmentedControl.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
-        this.scrollView.addSubview(segmentedControl);
+        scrollView.addSubview(segmentedControl);
 
         yPlacement += Constants.TWEEN_MARGIN * 2.0 + SegmentedControlHeight;
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth() - Constants.RIGHT_MARGIN
-            * 2.0, LabelHeight);
-        this.scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar: image"));
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - Constants.RIGHT_MARGIN * 2.0,
+            LabelHeight);
+        scrollView.addSubview(SegmentViewController.createLabel(frame, "UISegmentControlStyleBar: image"));
 
         segmentedControl = new UISegmentedControl(optionArray);
         yPlacement += Constants.TWEEN_MARGIN + LabelHeight;
-        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, this.getView().getBounds().getWidth()
-            - (Constants.RIGHT_MARGIN * 2.0), SegmentedControlHeight);
+        frame = new CGRect(Constants.LEFT_MARGIN, yPlacement, getView().getBounds().getWidth() - (Constants.RIGHT_MARGIN * 2.0),
+            SegmentedControlHeight);
         segmentedControl.setFrame(frame);
 
         segmentedControl.addOnValueChangedListener(segmentAction);
         segmentedControl.setControlStyle(UISegmentedControlStyle.Bar);
         segmentedControl.setSelectedSegment(1);
         segmentedControl.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
-        segmentedControl.setBackgroundImage(UIImage.createFromBundle("segmentedBackground.png"), UIControlState.Normal,
+        segmentedControl.setBackgroundImage(UIImage.create("segmentedBackground.png"), UIControlState.Normal,
             UIBarMetrics.Default);
-        segmentedControl.setDividerImage(UIImage.createFromBundle("divider.png"), UIControlState.Normal, UIControlState.Normal,
+        segmentedControl.setDividerImage(UIImage.create("divider.png"), UIControlState.Normal, UIControlState.Normal,
             UIBarMetrics.Default);
 
         NSAttributedStringAttributes textAttributes = new NSAttributedStringAttributes();
@@ -197,20 +197,20 @@ public class SegmentViewController extends UIViewController {
         textHighlightedAttributes.setFont(UIFont.getBoldSystemFont(13.0));
         segmentedControl.setTitleTextAttributes(textHighlightedAttributes, UIControlState.Highlighted);
 
-        this.scrollView.addSubview(segmentedControl);
-        this.getView().addSubview(this.scrollView);
+        scrollView.addSubview(segmentedControl);
+        getView().addSubview(scrollView);
     }
 
     @Override
     public void viewDidLoad () {
         super.viewDidLoad();
-        this.setTitle("SegmentTitle");
+        setTitle("SegmentTitle");
 
-        this.setView(new UIView(new CGRect(0, 0, 320, 460)));
-        this.scrollView = new UIScrollView(new CGRect(0, 0, 320, 460));
-        this.scrollView.setContentSize(new CGSize(this.scrollView.getFrame().getWidth(), this.scrollView.getFrame().getHeight()
-            - this.getNavigationController().getNavigationBar().getFrame().getHeight() + 80));
+        setView(new UIView(new CGRect(0, 0, 320, 460)));
+        scrollView = new UIScrollView(new CGRect(0, 0, 320, 460));
+        scrollView.setContentSize(new CGSize(scrollView.getFrame().getWidth(), scrollView.getFrame().getHeight()
+            - getNavigationController().getNavigationBar().getFrame().getHeight() + 80));
 
-        this.createControls(); // create the showcase of segment controls
+        createControls(); // create the showcase of segment controls
     }
 }

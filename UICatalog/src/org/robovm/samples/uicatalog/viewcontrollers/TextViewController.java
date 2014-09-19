@@ -53,8 +53,8 @@ public class TextViewController extends UIViewController {
     public void viewDidLoad () {
         super.viewDidLoad();
 
-        this.setTitle("");
-        this.setupTextView();
+        setTitle("");
+        setupTextView();
     }
 
     /** setup components and load to UI */
@@ -88,7 +88,7 @@ public class TextViewController extends UIViewController {
             3));
         attrString.addAttribute(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf(1l), new NSRange(
             textToAdd.length() - 23, 3));
-        this.textView.setAttributedText(attrString);
+        textView.setAttributedText(attrString);
 
         textView.setReturnKeyType(UIReturnKeyType.Default);
         textView.setKeyboardType(UIKeyboardType.Default);
@@ -129,10 +129,10 @@ public class TextViewController extends UIViewController {
         CGRect keyboardRect = animation.getEndFrame();
         double animationDuration = animation.getAnimationDuration();
 
-        CGRect frame = this.textView.getFrame();
+        CGRect frame = textView.getFrame();
 
         // the keyboard rect's width and height are reversed in landscape
-        double adjustDelta = isPortrait(this.getInterfaceOrientation()) ? keyboardRect.getHeight() : keyboardRect.getWidth();
+        double adjustDelta = isPortrait(getInterfaceOrientation()) ? keyboardRect.getHeight() : keyboardRect.getWidth();
 
         if (showKeyboard) {
             frame.size().height(frame.size().height() - adjustDelta);
@@ -142,7 +142,7 @@ public class TextViewController extends UIViewController {
 
         UIView.beginAnimations("ResizeForKeyboard", null);
         UIView.setDurationForAnimation(animationDuration);
-        this.textView.setFrame(frame);
+        textView.setFrame(frame);
         UIView.commitAnimations();
     }
 

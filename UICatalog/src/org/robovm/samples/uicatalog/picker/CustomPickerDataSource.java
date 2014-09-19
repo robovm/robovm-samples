@@ -26,52 +26,47 @@ import org.robovm.apple.uikit.UIPickerViewDataSource;
 import org.robovm.apple.uikit.UIPickerViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
 
-/**
- * The data source for the Custom Picker that displays text and images.
- */
+/** The data source for the Custom Picker that displays text and images. */
 public class CustomPickerDataSource extends UIPickerViewDelegateAdapter implements UIPickerViewDataSource {
 
     NSArray<CustomView> customPickerArray = new NSArray<CustomView>();
 
-    /**
-     * Creates a custom picker prepopulated with images
-     */
-    public CustomPickerDataSource() {
+    /** Creates a custom picker prepopulated with images */
+    public CustomPickerDataSource () {
 
-        CustomView earlyMorningView = new CustomView("Early Morning", UIImage.createFromBundle("12-6AM.png"));
-        CustomView lateMorningView = new CustomView("Late Morning", UIImage.createFromBundle("6-12AM.png"));
-        CustomView afternoonView = new CustomView("Afternoon", UIImage.createFromBundle("12-6PM.png"));
-        CustomView eveningView = new CustomView("Evening", UIImage.createFromBundle("6-12PM.png"));
+        CustomView earlyMorningView = new CustomView("Early Morning", UIImage.create("12-6AM.png"));
+        CustomView lateMorningView = new CustomView("Late Morning", UIImage.create("6-12AM.png"));
+        CustomView afternoonView = new CustomView("Afternoon", UIImage.create("12-6PM.png"));
+        CustomView eveningView = new CustomView("Evening", UIImage.create("6-12PM.png"));
 
-        NSArray<CustomView> timeArray = new NSArray<CustomView>(earlyMorningView, lateMorningView,
-                afternoonView, eveningView);
+        NSArray<CustomView> timeArray = new NSArray<CustomView>(earlyMorningView, lateMorningView, afternoonView, eveningView);
 
-        this.customPickerArray = timeArray;
+        customPickerArray = timeArray;
     }
 
     @Override
-    public long getNumberOfComponents(UIPickerView pickerView) {
+    public long getNumberOfComponents (UIPickerView pickerView) {
         return 1;
     }
 
     @Override
-    public long getNumberOfRows(UIPickerView pickerView, long component) {
-        return this.customPickerArray.size();
+    public long getNumberOfRows (UIPickerView pickerView, long component) {
+        return customPickerArray.size();
     }
 
     @Override
-    public double getComponentWidth(UIPickerView pickerView, long component) {
+    public double getComponentWidth (UIPickerView pickerView, long component) {
         return CustomView.getViewWidth();
     }
 
     @Override
-    public double getRowHeight(UIPickerView pickerView, long component) {
+    public double getRowHeight (UIPickerView pickerView, long component) {
         return CustomView.getViewHeight();
     }
 
     @Override
-    public UIView getRowView(UIPickerView pickerView, long row, long component, UIView view) {
-        return customPickerArray.get((int) row);
+    public UIView getRowView (UIPickerView pickerView, long row, long component, UIView view) {
+        return customPickerArray.get((int)row);
     }
 
 }

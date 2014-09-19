@@ -57,7 +57,6 @@ import org.robovm.samples.uicatalog.picker.CustomView;
 
 /** The view controller for hosting the UIPickerView of this sample. */
 public class PickerViewController extends UIViewController {
-
     private static final float OPTIMUM_PICKER_HEIGHT = 216;
     private static final float OPTIMUM_PICKER_WIDTH = 320;
 

@@ -39,20 +39,17 @@ import org.robovm.apple.uikit.UIViewController;
 public class SearchBarViewController extends UIViewController {
 
     private UISearchBar mySearchBar;
-    private/* IBOutlet */UISegmentedControl contentOptions;
+    private UISegmentedControl contentOptions;
 
     @Override
     public void viewDidLoad () {
         super.viewDidLoad();
 
         setView(new UIView(new CGRect(0, 20, 320, 460)));
-
         setTitle("SearchBarTitle");
 
         mySearchBar = new UISearchBar(new CGRect(0.0f, 65.0f, getView().getBounds().getWidth(), 44.0f));
-
         mySearchBar.setDelegate(new UISearchBarDelegateAdapter() {
-
             @Override
             public void searchButtonClicked (UISearchBar searchBar) {
                 mySearchBar.resignFirstResponder();
@@ -100,11 +97,11 @@ public class SearchBarViewController extends UIViewController {
                     break;
                 case 2:
                     // image background
-                    mySearchBar.setBackgroundImage(UIImage.createFromBundle("searchBarBackground"));
-                    mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImage"), UISearchBarIcon.Bookmark,
+                    mySearchBar.setBackgroundImage(UIImage.create("searchBarBackground"));
+                    mySearchBar.setImageForSearchBarIcon(UIImage.create("bookmarkImage"), UISearchBarIcon.Bookmark,
                         UIControlState.Normal);
-                    mySearchBar.setImageForSearchBarIcon(UIImage.createFromBundle("bookmarkImageHighlighted"),
-                        UISearchBarIcon.Bookmark, UIControlState.Highlighted);
+                    mySearchBar.setImageForSearchBarIcon(UIImage.create("bookmarkImageHighlighted"), UISearchBarIcon.Bookmark,
+                        UIControlState.Highlighted);
                 }
             }
         });

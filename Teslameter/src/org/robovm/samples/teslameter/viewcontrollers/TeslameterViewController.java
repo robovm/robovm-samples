@@ -54,7 +54,7 @@ public class TeslameterViewController extends UIViewController {
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromRGBA(0.01, 0.01, 0.01, 1));
 
-        UIImageView backgroundImageView = new UIImageView(UIImage.createFromBundle("Background.png"));
+        UIImageView backgroundImageView = new UIImageView(UIImage.create("Background.png"));
         backgroundImageView.setFrame(new CGRect(0, -20, 320, 480));
         backgroundImageView.setContentMode(UIViewContentMode.Center);
         view.addSubview(backgroundImageView);

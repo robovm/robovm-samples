@@ -73,11 +73,8 @@ public class ButtonsViewController extends UITableViewController {
     /** List item which stores button meta data */
     private class ListItem {
         private final String sectionTitle;
-
         private final String label;
-
         private final String source;
-
         private final UIView view;
 
         public ListItem (String sectionTitle, String label, String source, UIView view) {
@@ -103,14 +100,12 @@ public class ButtonsViewController extends UITableViewController {
         public UIView getView () {
             return view;
         }
-
     }
 
     @Override
     public void viewDidLoad () {
         super.viewDidLoad();
 
-        // 320, 247
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 247);
         setTableView(new UITableView(tableViewBounds));
 
@@ -125,8 +120,7 @@ public class ButtonsViewController extends UITableViewController {
         dataSourceArray.add(new ListItem("UIButtonTypeRoundDark", "Info Dark", "attrTextButton", getInfoDarkButtonType()));
         dataSourceArray.add(new ListItem("UIButtonTypeContactAdd", "Add Contact", "contactAddButton", getContactAddButtonType()));
 
-        // register our cell IDs for later when we are asked for
-        // UITableViewCells
+        // register our cell IDs for later when we are asked for UITableViewCells
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), DISPLAY_CELL_ID);
         getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), SOURCE_CELL_ID);
 
@@ -134,12 +128,12 @@ public class ButtonsViewController extends UITableViewController {
 
     @Override
     public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
-        return this.dataSourceArray.size();
+        return dataSourceArray.size();
     }
 
     @Override
     public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
@@ -165,10 +159,10 @@ public class ButtonsViewController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
-            UIButton button = (UIButton)this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            UIButton button = (UIButton)dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
             if (button == null) {
-                System.err.println(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+                System.err.println(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
             }
 
             CGRect newFrame = button.getFrame();
@@ -187,7 +181,7 @@ public class ButtonsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;
@@ -234,8 +228,8 @@ public class ButtonsViewController extends UITableViewController {
      * @return gray button */
     public UIButton getGrayButton () {
         if (grayButton == null) {
-            UIImage buttonBackground = UIImage.createFromBundle("whiteButton.png");
-            UIImage buttonBackgroundPressed = UIImage.createFromBundle("blueButton.png");
+            UIImage buttonBackground = UIImage.create("whiteButton.png");
+            UIImage buttonBackgroundPressed = UIImage.create("blueButton.png");
 
             CGRect frame = new CGRect(0.0, 5.0, stdButtonWidth, stdButtonHeight);
             grayButton = newButton("Gray", frame, buttonBackground, buttonBackgroundPressed, true);
@@ -258,8 +252,8 @@ public class ButtonsViewController extends UITableViewController {
      * @return image button */
     public UIButton getImageButton () {
         if (imageButton == null) {
-            UIImage buttonBackground = UIImage.createFromBundle("whiteButton.png");
-            UIImage buttonBackgroundPressed = UIImage.createFromBundle("blueButton.png");
+            UIImage buttonBackground = UIImage.create("whiteButton.png");
+            UIImage buttonBackgroundPressed = UIImage.create("blueButton.png");
 
             CGRect frame = new CGRect(0.0, 5.0, stdButtonWidth, stdButtonHeight);
             imageButton = newButton("", frame, buttonBackground, buttonBackgroundPressed, true);
@@ -270,7 +264,7 @@ public class ButtonsViewController extends UITableViewController {
                 }
             });
 
-            imageButton.setImage(UIImage.createFromBundle("UIButton_custom.png"), UIControlState.Normal);
+            imageButton.setImage(UIImage.create("UIButton_custom.png"), UIControlState.Normal);
             imageButton.setAccessibilityIdentifier("ArrowButton");
             imageButton.setTag(viewTag);
         }

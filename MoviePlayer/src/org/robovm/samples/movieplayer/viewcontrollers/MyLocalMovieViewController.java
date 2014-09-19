@@ -50,7 +50,7 @@ public class MyLocalMovieViewController extends MyMovieViewController {
         imageView = new MyImageView(new CGRect(57, 59, 205, 135));
         imageView.setMovieViewController(this);
         imageView.setUserInteractionEnabled(true);
-        imageView.setImage(UIImage.createFromBundle("images/preview.jpg"));
+        imageView.setImage(UIImage.create("images/preview.jpg"));
         imageView.setContentMode(UIViewContentMode.ScaleAspectFit);
         view.addSubview(imageView);
 
@@ -67,7 +67,7 @@ public class MyLocalMovieViewController extends MyMovieViewController {
         });
         view.addSubview(playButton);
 
-        setTabBarItem(new UITabBarItem("Local", UIImage.createFromBundle("images/local.png"), 0));
+        setTabBarItem(new UITabBarItem("Local", UIImage.create("images/local.png"), 0));
     }
 
     /** Returns a URL to a local movie in the app bundle. */

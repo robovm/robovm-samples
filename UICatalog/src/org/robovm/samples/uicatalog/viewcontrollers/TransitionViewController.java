@@ -35,7 +35,6 @@ import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAnimationTransition;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.objc.annotation.Method;
 
 /** The view controller for showing transitions with UIView. */
 public class TransitionViewController extends UIViewController {
@@ -62,14 +61,48 @@ public class TransitionViewController extends UIViewController {
         flipItem = new UIBarButtonItem();
         flipItem.setTitle("Flip Image");
         flipItem.setStyle(UIBarButtonItemStyle.Bordered);
-// flipItem.setAction(Selector.register("flipAction")); TODO
-// flipItem.setTarget(TransitionViewController.this);
+        flipItem.setOnClickListener(new UIBarButtonItem.OnClickListener() {
+            @Override
+            public void onClick (UIBarButtonItem barButtonItem) {
+                UIView.beginAnimations(null, null);
+                UIView.setDurationForAnimation(transitionDuration);
+
+                UIView.setAnimationTransition(mainView.getSuperview() != null ? UIViewAnimationTransition.FlipFromLeft
+                    : UIViewAnimationTransition.FlipFromRight, containerView, true);
+                if (flipToView.getSuperview() != null) {
+                    flipToView.removeFromSuperview();
+                    containerView.addSubview(mainView);
+                } else {
+                    mainView.removeFromSuperview();
+                    containerView.addSubview(flipToView);
+                }
+                UIView.commitAnimations();
+            }
+        });
 
         curlItem = new UIBarButtonItem();
         curlItem.setTitle("Curl Image");
         curlItem.setStyle(UIBarButtonItemStyle.Bordered);
-// curlItem.setAction(Selector.register("curlAction"));
-// curlItem.setTarget(TransitionViewController.this);
+        curlItem.setOnClickListener(new UIBarButtonItem.OnClickListener() {
+            @Override
+            public void onClick (UIBarButtonItem barButtonItem) {
+                UIView.beginAnimations(null, null);
+                UIView.setDurationForAnimation(transitionDuration);
+
+                UIView.setAnimationTransition((mainView.getSuperview() != null ? UIViewAnimationTransition.CurlUp
+                    : UIViewAnimationTransition.CurlDown), containerView, false);
+
+                if (flipToView.getSuperview() != null) {
+                    flipToView.removeFromSuperview();
+                    containerView.addSubview(mainView);
+                } else {
+                    mainView.removeFromSuperview();
+                    containerView.addSubview(flipToView);
+                }
+
+                UIView.commitAnimations();
+            }
+        });
 
         // create the container view which we will use for transition animation
         // (centered horizontally)
@@ -82,14 +115,14 @@ public class TransitionViewController extends UIViewController {
         // create the initial image view
         frame = new CGRect(0.0, 0.0, imageWidth, imageHeight);
         mainView = new UIImageView(frame);
-        mainView.setImage(UIImage.createFromBundle("scene1.jpg"));
+        mainView.setImage(UIImage.create("scene1.jpg"));
         containerView.addSubview(mainView);
 
         // create the alternate image view (to transition between), we don't add
         // it as a subview yet
         CGRect imageFrame = new CGRect(0.0, 0.0, imageWidth, imageHeight);
         flipToView = new UIImageView(imageFrame);
-        flipToView.setImage(UIImage.createFromBundle("scene2.jpg"));
+        flipToView.setImage(UIImage.create("scene2.jpg"));
         toolBar = new UIToolbar(new CGRect(0, 416, 320, 44));
 
         UIBarButtonItem flexSpace1 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
@@ -117,43 +150,4 @@ public class TransitionViewController extends UIViewController {
         // black for this particular page
         getNavigationController().getNavigationBar().setTintColor(UIColor.black());
     }
-
-    /** Curls image */
-    @Method
-    public void curlAction () {
-        UIView.beginAnimations(null, null);
-        UIView.setDurationForAnimation(transitionDuration);
-
-        UIView.setAnimationTransition((mainView.getSuperview() != null ? UIViewAnimationTransition.CurlUp
-            : UIViewAnimationTransition.CurlDown), containerView, false);
-
-        if (flipToView.getSuperview() != null) {
-            flipToView.removeFromSuperview();
-            containerView.addSubview(mainView);
-        } else {
-            mainView.removeFromSuperview();
-            containerView.addSubview(flipToView);
-        }
-
-        UIView.commitAnimations();
-    }
-
-    /** Flips image */
-    @Method
-    public void flipAction () {
-        UIView.beginAnimations(null, null);
-        UIView.setDurationForAnimation(transitionDuration);
-
-        UIView.setAnimationTransition(mainView.getSuperview() != null ? UIViewAnimationTransition.FlipFromLeft
-            : UIViewAnimationTransition.FlipFromRight, containerView, true);
-        if (flipToView.getSuperview() != null) {
-            flipToView.removeFromSuperview();
-            containerView.addSubview(mainView);
-        } else {
-            mainView.removeFromSuperview();
-            containerView.addSubview(flipToView);
-        }
-        UIView.commitAnimations();
-    }
-
 }

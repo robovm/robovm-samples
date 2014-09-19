@@ -48,7 +48,7 @@ public class MyViewController extends UIViewController {
 
     private void setupViews () {
         // Setup background.
-        UIImageView background = new UIImageView(UIImage.createFromBundle("Background.png"));
+        UIImageView background = new UIImageView(UIImage.create("Background.png"));
         background.setFrame(new CGRect(0, 0, 320, 480));
         background.setContentMode(UIViewContentMode.Center);
         background.setUserInteractionEnabled(false);

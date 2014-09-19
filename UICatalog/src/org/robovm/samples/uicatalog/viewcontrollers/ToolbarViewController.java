@@ -79,32 +79,32 @@ public class ToolbarViewController extends UIViewController {
     };
 
     private void initUI () {
-        this.scrollView = new UIScrollView(new CGRect(0, 0, 320, 460));
+        scrollView = new UIScrollView(new CGRect(0, 0, 320, 460));
 
         UILabel barLabel = new UILabel(new CGRect(20, 86 + 60, 280, 21));
         barLabel.setText("Button Style");
         barLabel.setFont(UIFont.getBoldSystemFont(12));
 
-        this.barStyleSegControl = new UISegmentedControl(new CGRect(20, 23 + 60, 280, 30));
-        this.barStyleSegControl = new UISegmentedControl(new CGRect(20, 23, 280, 30));
-        this.barStyleSegControl.insertSegment("Default", 0, false);
-        this.barStyleSegControl.insertSegment("Black", 1, false);
-        this.barStyleSegControl.insertSegment("Translucent", 2, false);
-        this.barStyleSegControl.setSelectedSegment(0);
-        this.barStyleSegControl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+        barStyleSegControl = new UISegmentedControl(new CGRect(20, 23 + 60, 280, 30));
+        barStyleSegControl = new UISegmentedControl(new CGRect(20, 23, 280, 30));
+        barStyleSegControl.insertSegment("Default", 0, false);
+        barStyleSegControl.insertSegment("Black", 1, false);
+        barStyleSegControl.insertSegment("Translucent", 2, false);
+        barStyleSegControl.setSelectedSegment(0);
+        barStyleSegControl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
                 toggleBarStyle(control);
             }
         });
 
-        this.scrollView.addSubview(barLabel);
-        this.scrollView.addSubview(barStyleSegControl);
+        scrollView.addSubview(barLabel);
+        scrollView.addSubview(barStyleSegControl);
 
         UILabel tintLabel = new UILabel(new CGRect(30, 57 + 60, 48, 21));
         tintLabel.setText("Tint:");
-        this.tintSwitch = new UISwitch(new CGRect(64, 56 + 55, 94, 27));
-        this.tintSwitch.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+        tintSwitch = new UISwitch(new CGRect(64, 56 + 55, 94, 27));
+        tintSwitch.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
                 toggleTintColor(control);
@@ -113,32 +113,32 @@ public class ToolbarViewController extends UIViewController {
         tintLabel.setFont(UIFont.getBoldSystemFont(12));
 
         scrollView.addSubview(tintLabel);
-        scrollView.addSubview(this.tintSwitch);
+        scrollView.addSubview(tintSwitch);
 
-        this.imageSwitchLabel = new UILabel(new CGRect(150, 57 + 60, 40, 21));
-        this.imageSwitchLabel.setText("Image:");
-        this.imageSwitch = new UISwitch(new CGRect(200, 56 + 55, 94, 27));
-        this.imageSwitch.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+        imageSwitchLabel = new UILabel(new CGRect(150, 57 + 60, 40, 21));
+        imageSwitchLabel.setText("Image:");
+        imageSwitch = new UISwitch(new CGRect(200, 56 + 55, 94, 27));
+        imageSwitch.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
                 toggleImage(control);
             }
         });
-        this.imageSwitchLabel.setFont(UIFont.getBoldSystemFont(12));
+        imageSwitchLabel.setFont(UIFont.getBoldSystemFont(12));
 
-        scrollView.addSubview(this.imageSwitchLabel);
-        scrollView.addSubview(this.imageSwitch);
+        scrollView.addSubview(imageSwitchLabel);
+        scrollView.addSubview(imageSwitch);
 
         UILabel buttonLabel = new UILabel(new CGRect(20, 5, 280, 21));
         buttonLabel.setText("Bar Style:");
         buttonLabel.setFont(UIFont.getBoldSystemFont(12));
 
-        this.buttonItemStyleSegControl = new UISegmentedControl(new CGRect(20, 103 + 60, 280, 30));
-        this.buttonItemStyleSegControl.insertSegment("Plain", 0, false);
-        this.buttonItemStyleSegControl.insertSegment("Bordered", 1, false);
-        this.buttonItemStyleSegControl.insertSegment("Done", 2, false);
-        this.buttonItemStyleSegControl.setSelectedSegment(0);
-        this.buttonItemStyleSegControl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
+        buttonItemStyleSegControl = new UISegmentedControl(new CGRect(20, 103 + 60, 280, 30));
+        buttonItemStyleSegControl.insertSegment("Plain", 0, false);
+        buttonItemStyleSegControl.insertSegment("Bordered", 1, false);
+        buttonItemStyleSegControl.insertSegment("Done", 2, false);
+        buttonItemStyleSegControl.setSelectedSegment(0);
+        buttonItemStyleSegControl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
                 toggleStyle(control);
@@ -146,7 +146,7 @@ public class ToolbarViewController extends UIViewController {
         });
 
         scrollView.addSubview(buttonLabel);
-        scrollView.addSubview(this.buttonItemStyleSegControl);
+        scrollView.addSubview(buttonItemStyleSegControl);
 
         systemButtonPicker = new UIPickerView(new CGRect(0, 159 + 120, 320, 216));
         systemButtonPicker.setDelegate(new UIPickerViewDelegateAdapter() {
@@ -203,7 +203,7 @@ public class ToolbarViewController extends UIViewController {
 
         initUI();
 
-        this.setTitle("");
+        setTitle("");
 
         // create the UIToolbar at the bottom of the view controller
         //
@@ -211,44 +211,44 @@ public class ToolbarViewController extends UIViewController {
         // toolbar.setS
 
         toolbar.setBarStyle(UIBarStyle.Default);
-        this.adjustToolbarSize();
+        adjustToolbarSize();
 
-        // this.systemButtonPicker = new UIPickerView(new CGRect(0, 159, 320,
+        // systemButtonPicker = new UIPickerView(new CGRect(0, 159, 320,
         // 216));
         // size up the toolbar and set its frame
-        this.toolbar.setFrame(new CGRect(this.getView().getBounds().getMinX(), this.getView().getBounds().getMinY()
-            + this.getView().getBounds().getHeight() - this.toolbar.getFrame().getHeight(),
-            this.getView().getBounds().getWidth(), this.toolbar.getFrame().getHeight()));
+        toolbar.setFrame(new CGRect(getView().getBounds().getMinX(), getView().getBounds().getMinY()
+            + getView().getBounds().getHeight() - toolbar.getFrame().getHeight(), getView().getBounds().getWidth(), toolbar
+            .getFrame().getHeight()));
 
         // make so the toolbar stays to the bottom and keep the width matching
         // the device's screen width
-        this.toolbar.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth.set(UIViewAutoresizing.FlexibleTopMargin));
+        toolbar.setAutoresizingMask(UIViewAutoresizing.FlexibleWidth.set(UIViewAutoresizing.FlexibleTopMargin));
 
-        this.getView().addSubview(this.toolbar);
+        getView().addSubview(toolbar);
 
         currentSystemItem = UIBarButtonSystemItem.Done;
-        this.createToolbarItems();
+        createToolbarItems();
 
         // remember our scroll view's content height (a fixed size) later when
         // we set its content size in viewWillAppear
-        this.savedContentHightSize = this.scrollView.getFrame().size().height()
-            - this.getNavigationController().getNavigationBar().getFrame().getHeight() - this.toolbar.getFrame().size().height();
+        savedContentHightSize = scrollView.getFrame().size().height()
+            - getNavigationController().getNavigationBar().getFrame().getHeight() - toolbar.getFrame().size().height();
 
-        // @TODO check this....
-        getView().addSubview(this.systemButtonPicker);
+        // @TODO check ...
+        getView().addSubview(systemButtonPicker);
 
     }
 
     /** adjusts toolbar to fit screen */
     private void adjustToolbarSize () {
         // size up the toolbar and set its frame
-        this.toolbar.resizeToFit();
+        toolbar.resizeToFit();
 
         // since the toolbar may have adjusted its height, it's origin will have
         // to be adjusted too
-        CGRect mainViewBounds = this.getView().getBounds();
-        this.toolbar.setFrame(new CGRect(mainViewBounds.getMinX(), mainViewBounds.getMinY() + mainViewBounds.getHeight()
-            - this.toolbar.getBounds().getHeight(), mainViewBounds.getWidth(), this.toolbar.getFrame().getHeight()));
+        CGRect mainViewBounds = getView().getBounds();
+        toolbar.setFrame(new CGRect(mainViewBounds.getMinX(), mainViewBounds.getMinY() + mainViewBounds.getHeight()
+            - toolbar.getBounds().getHeight(), mainViewBounds.getWidth(), toolbar.getFrame().getHeight()));
     }
 
     // return the picker frame based on its size, positioned at the bottom of
@@ -262,12 +262,12 @@ public class ToolbarViewController extends UIViewController {
 
     /** Creates toolbar with associated buttons */
     private void createToolbarItems () {
-        this.scrollView.addSubview(this.buttonItemStyleSegControl);
+        scrollView.addSubview(buttonItemStyleSegControl);
 
-        UIBarButtonItemStyle style = UIBarButtonItemStyle.valueOf(this.buttonItemStyleSegControl.getSelectedSegment());
+        UIBarButtonItemStyle style = UIBarButtonItemStyle.valueOf(buttonItemStyleSegControl.getSelectedSegment());
 
         // create the system-defined "OK or Done" button
-        UIBarButtonItem systemItem = new UIBarButtonItem(this.currentSystemItem, action);
+        UIBarButtonItem systemItem = new UIBarButtonItem(currentSystemItem, action);
         systemItem.setStyle(style);
 
         // flex item used to separate the left groups items and right grouped
@@ -275,13 +275,13 @@ public class ToolbarViewController extends UIViewController {
         UIBarButtonItem flexItem = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
 
         // create a special tab bar item with a custom image and title
-        UIBarButtonItem infoItem = new UIBarButtonItem(UIImage.createFromBundle("segment_tools.png"), style, action);
+        UIBarButtonItem infoItem = new UIBarButtonItem(UIImage.create("segment_tools.png"), style, action);
 
         // create a custom button with a background image with black text for
         // its title:
         UIBarButtonItem customItem1 = new UIBarButtonItem("Item1", UIBarButtonItemStyle.Bordered, action);
 
-        UIImage baseImage = UIImage.createFromBundle("whiteButton.png");
+        UIImage baseImage = UIImage.create("whiteButton.png");
         UIImage backroundImage = baseImage.createStretchable(12, 0);
         customItem1.setBackgroundImage(backroundImage, UIControlState.Normal, UIBarMetrics.Default);
 
@@ -305,18 +305,18 @@ public class ToolbarViewController extends UIViewController {
     @Override
     public void viewWillAppear (boolean animated) {
         super.viewWillAppear(animated);
-        this.adjustToolbarSize();
+        adjustToolbarSize();
 
         // adjust the scroll view's height since the toolbar may have been
         // resized
-        double adjustedHeight = this.getView().getBounds().getHeight() - this.toolbar.getFrame().getHeight();
-        CGRect newFrame = this.scrollView.getFrame();
+        double adjustedHeight = getView().getBounds().getHeight() - toolbar.getFrame().getHeight();
+        CGRect newFrame = scrollView.getFrame();
         newFrame.size().height(adjustedHeight);
-        this.scrollView.setFrame(newFrame);
+        scrollView.setFrame(newFrame);
 
         // finally set the content size so that it scrolls in landscape but not
         // in portrait
-        this.scrollView.setContentSize(new CGSize(this.scrollView.getFrame().getWidth(), this.savedContentHightSize));
+        scrollView.setContentSize(new CGSize(scrollView.getFrame().getWidth(), savedContentHightSize));
     }
 
     /** Toggles styles of UIBarButtons
@@ -340,7 +340,7 @@ public class ToolbarViewController extends UIViewController {
         }
 
         // change all necessary bar button items to the given style
-        NSArray<UIBarButtonItem> toolbarItems = this.toolbar.getItems();
+        NSArray<UIBarButtonItem> toolbarItems = toolbar.getItems();
         for (int i = 0; i < toolbarItems.size(); i++) {
             // skip setting the style of image-based UIBarButtonItems
             UIBarButtonItem item = toolbarItems.get(i);
@@ -363,13 +363,13 @@ public class ToolbarViewController extends UIViewController {
     private void toggleBarStyle (NSObject sender) {
         switch ((int)((UISegmentedControl)sender).getSelectedSegment()) {
         case 0:
-            this.toolbar.setBarStyle(UIBarStyle.Default);
+            toolbar.setBarStyle(UIBarStyle.Default);
             break;
         case 1:
-            this.toolbar.setBarStyle(UIBarStyle.BlackOpaque);
+            toolbar.setBarStyle(UIBarStyle.BlackOpaque);
             break;
         case 2:
-            this.toolbar.setBarStyle(UIBarStyle.BlackTranslucent);
+            toolbar.setBarStyle(UIBarStyle.BlackTranslucent);
             break;
         }
     }
@@ -380,22 +380,22 @@ public class ToolbarViewController extends UIViewController {
     private void toggleTintColor (NSObject sender) {
         UISwitch switchCtl = (UISwitch)sender;
         if (switchCtl.isOn()) {
-            this.toolbar.setTintColor(UIColor.red());
-            this.imageSwitch.setEnabled(false);
-            this.barStyleSegControl.setEnabled(false);
-            this.imageSwitch.setAlpha(0.5);
-            this.barStyleSegControl.setAlpha(0.50);
+            toolbar.setTintColor(UIColor.red());
+            imageSwitch.setEnabled(false);
+            barStyleSegControl.setEnabled(false);
+            imageSwitch.setAlpha(0.5);
+            barStyleSegControl.setAlpha(0.50);
 
         } else {
-            if (this.imageSwitch.isOn()) {
-                this.imageSwitch.setEnabled(false);
-                this.barStyleSegControl.setEnabled(false);
+            if (imageSwitch.isOn()) {
+                imageSwitch.setEnabled(false);
+                barStyleSegControl.setEnabled(false);
             } else {
-                this.imageSwitch.setEnabled(true);
-                this.barStyleSegControl.setEnabled(true);
-                this.toolbar.setTintColor(null); // no color
-                this.imageSwitch.setAlpha(1.0);
-                this.barStyleSegControl.setAlpha(1.0);
+                imageSwitch.setEnabled(true);
+                barStyleSegControl.setEnabled(true);
+                toolbar.setTintColor(null); // no color
+                imageSwitch.setAlpha(1.0);
+                barStyleSegControl.setAlpha(1.0);
             }
         }
     }
@@ -407,21 +407,20 @@ public class ToolbarViewController extends UIViewController {
         UISwitch switchCtl = (UISwitch)sender;
 
         if (switchCtl.isOn()) {
-            this.toolbar.setBackgroundImage(UIImage.createFromBundle("toolbarBackground.png"), UIBarPosition.Bottom,
-                UIBarMetrics.Default);
+            toolbar.setBackgroundImage(UIImage.create("toolbarBackground.png"), UIBarPosition.Bottom, UIBarMetrics.Default);
 
-            this.tintSwitch.setEnabled(false);
-            this.barStyleSegControl.setEnabled(false);
-            this.tintSwitch.setAlpha(0.5f);
-            this.barStyleSegControl.setAlpha(0.5f);
+            tintSwitch.setEnabled(false);
+            barStyleSegControl.setEnabled(false);
+            tintSwitch.setAlpha(0.5f);
+            barStyleSegControl.setAlpha(0.5f);
         } else {
 
-            this.toolbar.setBackgroundImage(null, UIBarPosition.Bottom, UIBarMetrics.Default);
+            toolbar.setBackgroundImage(null, UIBarPosition.Bottom, UIBarMetrics.Default);
 
-            this.tintSwitch.setEnabled(true);
-            this.barStyleSegControl.setEnabled(true);
-            this.tintSwitch.setAlpha(1.0);
-            this.barStyleSegControl.setAlpha(1.0);
+            tintSwitch.setEnabled(true);
+            barStyleSegControl.setEnabled(true);
+            tintSwitch.setAlpha(1.0);
+            barStyleSegControl.setAlpha(1.0);
         }
     }
 

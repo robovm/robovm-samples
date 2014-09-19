@@ -47,20 +47,20 @@ public class CustomView extends UIView {
     public CustomView (String title, UIImage image) {
         super(new CGRect(0.0, 0.0, VIEW_WIDTH, VIEW_HEIGHT));
 
-        double yCoord = (this.getBounds().size().height() - LABEL_HEIGHT) / 2;
-        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, yCoord,
-            (this.getFrame().getWidth()) - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, LABEL_HEIGHT));
+        double yCoord = (getBounds().size().height() - LABEL_HEIGHT) / 2;
+        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, yCoord, (getFrame().getWidth())
+            - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, LABEL_HEIGHT));
 
         titleLabel.setText(title.toString());
         titleLabel.setBackgroundColor(UIColor.clear());
-        this.addSubview(this.titleLabel);
+        addSubview(titleLabel);
 
-        yCoord = (this.getBounds().size().height() - image.getSize().height()) / 2;
+        yCoord = (getBounds().size().height() - image.getSize().height()) / 2;
         UIImageView imageView = new UIImageView(
             new CGRect(MARGIN_SIZE, yCoord, image.getSize().width(), image.getSize().height()));
 
         imageView.setImage(image);
-        this.addSubview(imageView);
+        addSubview(imageView);
     }
 
     /** Enable accessibility for this view.

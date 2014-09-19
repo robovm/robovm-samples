@@ -71,7 +71,6 @@ public class AlertsViewController extends UITableViewController {
         public String getSource () {
             return source;
         }
-
     }
 
     enum AlertTableSections {
@@ -82,15 +81,15 @@ public class AlertsViewController extends UITableViewController {
     public void viewDidLoad () {
         super.viewDidLoad();
 
-        this.setTitle("");
+        setTitle("");
 
-        this.dataSourceArray.add(new ListItem("UIActionSheet", "Show Simple", "dialogSimpleAction"));
-        this.dataSourceArray.add(new ListItem("UIActionSheet", "Show OK-Cancel", "dialogOKCancelAction"));
-        this.dataSourceArray.add(new ListItem("UIActionSheet", "Show Customized", "dialogOtherAction"));
-        this.dataSourceArray.add(new ListItem("UIAlertView", "Show Simple", "alertSimpleAction"));
-        this.dataSourceArray.add(new ListItem("UIAlertView", "Show OK-Cancel", "alertOKCancelAction"));
-        this.dataSourceArray.add(new ListItem("UIAlertView", "Show Custom", "alertOtherAction"));
-        this.dataSourceArray.add(new ListItem("UIAlertView", "Secure Text Input", "alertSecureTextAction"));
+        dataSourceArray.add(new ListItem("UIActionSheet", "Show Simple", "dialogSimpleAction"));
+        dataSourceArray.add(new ListItem("UIActionSheet", "Show OK-Cancel", "dialogOKCancelAction"));
+        dataSourceArray.add(new ListItem("UIActionSheet", "Show Customized", "dialogOtherAction"));
+        dataSourceArray.add(new ListItem("UIAlertView", "Show Simple", "alertSimpleAction"));
+        dataSourceArray.add(new ListItem("UIAlertView", "Show OK-Cancel", "alertOKCancelAction"));
+        dataSourceArray.add(new ListItem("UIAlertView", "Show Custom", "alertOtherAction"));
+        dataSourceArray.add(new ListItem("UIAlertView", "Secure Text Input", "alertSecureTextAction"));
 
         // register our cell IDs for later when we are asked for
         // UITableViewCells
@@ -118,8 +117,8 @@ public class AlertsViewController extends UITableViewController {
         }, "Ok", null, new String[0]);
 
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
-        actionSheet.showIn(this.getView()); // show from our table view (pops up
-                                            // in the middle of the table)
+        actionSheet.showIn(getView()); // show from our table view (pops up
+                                       // in the middle of the table)
     }
 
     /** open a dialog with an OK and cancel button */
@@ -134,8 +133,8 @@ public class AlertsViewController extends UITableViewController {
         }, "Cancel", "Ok", new String[0]);
 
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
-        actionSheet.showIn(this.getView()); // show from our table view (pops up
-                                            // in the middle of the table)
+        actionSheet.showIn(getView()); // show from our table view (pops up
+                                       // in the middle of the table)
     }
 
     /** open a dialog with two custom buttons */
@@ -153,8 +152,8 @@ public class AlertsViewController extends UITableViewController {
         actionSheet.setActionSheetStyle(UIActionSheetStyle.Default);
         actionSheet.setDestructiveButtonIndex(1); // make the second button red
                                                   // (destructive)
-        actionSheet.showIn(this.getView()); // show from our table view (pops up
-                                            // in the middle of the table)
+        actionSheet.showIn(getView()); // show from our table view (pops up
+                                       // in the middle of the table)
     }
 
     /** open an alert with just an OK button */
@@ -217,12 +216,12 @@ public class AlertsViewController extends UITableViewController {
 
     @Override
     public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
-        return this.dataSourceArray.size();
+        return dataSourceArray.size();
     }
 
     @Override
     public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
@@ -239,38 +238,38 @@ public class AlertsViewController extends UITableViewController {
     @Override
     public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
 
-        NSIndexPath tableSelection = this.getTableView().getIndexPathForSelectedRow();
-        this.getTableView().deselectRow(tableSelection, false);
+        NSIndexPath tableSelection = getTableView().getIndexPathForSelectedRow();
+        getTableView().deselectRow(tableSelection, false);
 
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
 
             switch ((int)NSIndexPathExtensions.getSection(indexPath)) {
             case 0:
-                this.dialogSimpleAction();
+                dialogSimpleAction();
                 break;
 
             case 1:
-                this.dialogOKCancelAction();
+                dialogOKCancelAction();
                 break;
 
             case 2:
-                this.dialogOtherAction();
+                dialogOtherAction();
                 break;
 
             case 3:
-                this.alertSimpleAction();
+                alertSimpleAction();
                 break;
 
             case 4:
-                this.alertOKCancelAction();
+                alertOKCancelAction();
                 break;
 
             case 5:
-                this.alertOtherAction();
+                alertOtherAction();
                 break;
 
             case 6:
-                this.alertSecureTextAction();
+                alertSecureTextAction();
                 break;
             }
         }
@@ -282,7 +281,7 @@ public class AlertsViewController extends UITableViewController {
         UITableViewCell cell = null;
         if (NSIndexPathExtensions.getRow(indexPath) == 0) {
             cell = getTableView().dequeueReusableCell(ALERT_CELL_ID, indexPath);
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
         } else {
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -292,7 +291,7 @@ public class AlertsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
         }
 
         return cell;

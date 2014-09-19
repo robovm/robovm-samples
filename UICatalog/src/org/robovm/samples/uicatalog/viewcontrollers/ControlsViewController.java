@@ -47,7 +47,6 @@ import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.objc.ObjCClass;
-import org.robovm.objc.annotation.Method;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
@@ -79,13 +78,9 @@ public class ControlsViewController extends UITableViewController {
 
     /** List item which stores controls meta data */
     private class ListItem {
-
         private final String sectionTitle;
-
         private final String label;
-
         private final String source;
-
         private final UIView view;
 
         public ListItem (String sectionTitle, String label, String source, UIView view) {
@@ -111,7 +106,6 @@ public class ControlsViewController extends UITableViewController {
         public UIView getView () {
             return view;
         }
-
     }
 
     /** Setup view and load controls */
@@ -125,24 +119,44 @@ public class ControlsViewController extends UITableViewController {
         UIBarButtonItem tintButton = new UIBarButtonItem();
         tintButton.setTitle("Tinted");
         tintButton.setStyle(UIBarButtonItemStyle.Bordered);
-// tintButton.setAction(Selector.register("tintAction")); TODO
-// tintButton.setTarget(this);
+        tintButton.setOnClickListener(new UIBarButtonItem.OnClickListener() {
+            /** Performs a tint action on applicable controls. */
+            @Override
+            public void onClick (UIBarButtonItem barButtonItem) {
+                UIColor tintColor = (getProgressBar().getProgressTintColor() != null) ? null : UIColor.blue();
+
+                getProgressBar().setProgressTintColor(tintColor);
+                getProgressBar().setTrackTintColor(tintColor);
+                sliderCtl.setMinimumTrackTintColor(tintColor);
+                sliderCtl.setThumbTintColor(tintColor);
+                switchCtl.setOnTintColor(tintColor);
+                stepper.setTintColor(tintColor);
+
+                UIColor thumbTintColor = (switchCtl.getThumbTintColor() != null) ? null : UIColor.red();
+                switchCtl.setOnTintColor(tintColor);
+                switchCtl.setThumbTintColor(thumbTintColor);
+
+                UIColor progressIndColor = (getProgressInd().getColor() != progressIndSavedColor) ? progressIndSavedColor
+                    : UIColor.blue();
+                progressInd.setColor(progressIndColor);
+            }
+        });
 
         getNavigationItem().setRightBarButtonItem(tintButton);
 
-        this.dataSourceArray.add(new ListItem("UISwitch", "Standard Switch", "switchCtl", getSwitchCtl()));
+        dataSourceArray.add(new ListItem("UISwitch", "Standard Switch", "switchCtl", getSwitchCtl()));
 
-        this.dataSourceArray.add(new ListItem("Standard Slider", "Standard Slider", "switchCtl", getSliderCtl()));
+        dataSourceArray.add(new ListItem("Standard Slider", "Standard Slider", "switchCtl", getSliderCtl()));
 
-        this.dataSourceArray.add(new ListItem("UISlider", "Custom Slider", "sliderCtl", getCustomSlider()));
+        dataSourceArray.add(new ListItem("UISlider", "Custom Slider", "sliderCtl", getCustomSlider()));
 
-        this.dataSourceArray.add(new ListItem("UIPageControl", "Ten Pages", "pageControl", getPageControl()));
+        dataSourceArray.add(new ListItem("UIPageControl", "Ten Pages", "pageControl", getPageControl()));
 
-        this.dataSourceArray.add(new ListItem("UIActivityIndicatorView", "Style Gray", "progressInd", getProgressInd()));
+        dataSourceArray.add(new ListItem("UIActivityIndicatorView", "Style Gray", "progressInd", getProgressInd()));
 
-        this.dataSourceArray.add(new ListItem("UIProgressView", "Style Default", "progressInd", getProgressBar()));
+        dataSourceArray.add(new ListItem("UIProgressView", "Style Default", "progressInd", getProgressBar()));
 
-        this.dataSourceArray.add(new ListItem("UIStepper", "Stepper 1 to 10", "progressInd", getStepper()));
+        dataSourceArray.add(new ListItem("UIStepper", "Stepper 1 to 10", "progressInd", getStepper()));
 
         // register our cell IDs for later when we are asked for
         // UITableViewCells
@@ -153,12 +167,12 @@ public class ControlsViewController extends UITableViewController {
 
     @Override
     public @MachineSizedSInt long getNumberOfSections (UITableView tableView) {
-        return this.dataSourceArray.size();
+        return dataSourceArray.size();
     }
 
     @Override
     public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
-        return this.dataSourceArray.get((int)section).getSectionTitle();
+        return dataSourceArray.get((int)section).getSectionTitle();
     }
 
     @Override
@@ -187,9 +201,9 @@ public class ControlsViewController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
 
-            UIView control = this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            UIView control = dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
 
             CGRect newFrame = control.getFrame();
             newFrame.origin().x(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
@@ -209,7 +223,7 @@ public class ControlsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(this.dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
 
         }
 
@@ -275,13 +289,13 @@ public class ControlsViewController extends UITableViewController {
             // use a transparent color
             customSlider.setBackgroundColor(UIColor.clear());
 
-            UIImage stetchLeftTrack = UIImage.createFromBundle("orangeslide.png");
+            UIImage stetchLeftTrack = UIImage.create("orangeslide.png");
             stetchLeftTrack = stetchLeftTrack.createStretchable(10l, 0l);
 
-            UIImage stetchRightTrack = UIImage.createFromBundle("yellowslide.png");
+            UIImage stetchRightTrack = UIImage.create("yellowslide.png");
             stetchRightTrack = stetchRightTrack.createStretchable(10l, 0l);
 
-            customSlider.setThumbImage(UIImage.createFromBundle("slider_ball.png"), UIControlState.Normal);
+            customSlider.setThumbImage(UIImage.create("slider_ball.png"), UIControlState.Normal);
             customSlider.setMinimumTrackImage(stetchLeftTrack, UIControlState.Normal);
             customSlider.setMaximumTrackImage(stetchRightTrack, UIControlState.Normal);
             customSlider.setMinimumValue(0.0f);
@@ -311,12 +325,12 @@ public class ControlsViewController extends UITableViewController {
      * @return progress indicator */
     private UIActivityIndicatorView getProgressInd () {
 
-        if (this.progressInd == null) {
+        if (progressInd == null) {
             CGRect frame = new CGRect(0.0, 12.0, PROGRESS_INDICATOR_SIZE, PROGRESS_INDICATOR_SIZE);
 
-            this.progressInd = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Gray);
+            progressInd = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Gray);
             getProgressInd().setColor(progressInd.getColor());
-            this.progressInd.setFrame(frame);
+            progressInd.setFrame(frame);
             getProgressInd().resizeToFit();
             getProgressInd().setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle.Gray);
 
@@ -368,26 +382,4 @@ public class ControlsViewController extends UITableViewController {
         }
         return stepper;
     }
-
-    /** Performs a tint action on applicable controls. */
-    @Method
-    private void tintAction () {
-        UIColor tintColor = (this.getProgressBar().getProgressTintColor() != null) ? null : UIColor.blue();
-
-        this.getProgressBar().setProgressTintColor(tintColor);
-        this.getProgressBar().setTrackTintColor(tintColor);
-        this.sliderCtl.setMinimumTrackTintColor(tintColor);
-        this.sliderCtl.setThumbTintColor(tintColor);
-        this.switchCtl.setOnTintColor(tintColor);
-        this.stepper.setTintColor(tintColor);
-
-        UIColor thumbTintColor = (this.switchCtl.getThumbTintColor() != null) ? null : UIColor.red();
-        this.switchCtl.setOnTintColor(tintColor);
-        this.switchCtl.setThumbTintColor(thumbTintColor);
-
-        UIColor progressIndColor = (this.getProgressInd().getColor() != progressIndSavedColor) ? this.progressIndSavedColor
-            : UIColor.blue();
-        this.progressInd.setColor(progressIndColor);
-    }
-
 }

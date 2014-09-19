@@ -96,7 +96,7 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
         });
         view.addSubview(movieURLTextField);
 
-        setTabBarItem(new UITabBarItem("Streaming", UIImage.createFromBundle("images/streaming.png"), 0));
+        setTabBarItem(new UITabBarItem("Streaming", UIImage.create("images/streaming.png"), 0));
     }
 
     public void playStreamingMovie () {

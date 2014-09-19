@@ -22,6 +22,7 @@ package org.robovm.samples.locateme.viewcontrollers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
@@ -29,7 +30,6 @@ import org.robovm.apple.corelocation.CLError;
 import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
-import org.robovm.apple.dispatch.Dispatch;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
@@ -343,9 +343,8 @@ public class GetLocationViewController extends UIViewController {
         locationManager.startUpdatingLocation();
 
         canTimeOut = true;
-        DispatchQueue.after(
-            Dispatch.time(Dispatch.TIME_NOW, (long)(setupInfo.get(SetupViewController.SETUP_INFO_KEY_TIMEOUT) * 1000000000)),
-            DispatchQueue.getMainQueue(), new Runnable() {
+        DispatchQueue.getMainQueue().after(Math.round(setupInfo.get(SetupViewController.SETUP_INFO_KEY_TIMEOUT)),
+            TimeUnit.SECONDS, new Runnable() {
                 @Override
                 public void run () {
                     if (canTimeOut) {
