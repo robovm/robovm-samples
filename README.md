@@ -57,6 +57,8 @@ To run on a connected device: Right-click the project. Choose *Run As -> iOS Dev
 
 | Name              | Description | Demonstrates |
 | ------------------| ----------- | ---------------------------------|
+| [BatteryStatus](BatteryStatus/)     | Port of Apple's [BatteryStatus](https://developer.apple.com/library/ios/samplecode/BatteryStatus/Introduction/Intro.html) sample | How to use the battery status properties and notifications provided via the iOS SDK. |
+| [CurrentAddress](CurrentAddress/)     | Port of Apple's [CurrentAddress](https://developer.apple.com/library/ios/samplecode/CurrentAddress/Introduction/Intro.html) sample | How to use MapKit, displaying a map view and setting its region to current location. |
 | [HelloWorld](HelloWorld/)     | Port of Apple's [HelloWorld](https://developer.apple.com/library/ios/samplecode/HelloWorld_iPhone/Introduction/Intro.html) sample | How to use a keyboard to enter text into a text field and how to display the text in a label. |
 | [LaunchMe](LaunchMe/)     | Port of Apple's [LaunchMe](https://developer.apple.com/library/ios/samplecode/LaunchMe/Introduction/Intro.html) sample | How to implement a custom URL scheme to allow other applications to interact with your application. Shows how to handle an incoming URL request by overriding UIApplicationDelegate.openURL to properly parse and extract information from the requested URL before updating the user interface. |
 | [LocateMe](LocateMe/)     | Port of Apple's [LocateMe](https://developer.apple.com/library/ios/samplecode/LocateMe/Introduction/Intro.html) sample | How to get the user's location and how to track changes to the user's location. |
