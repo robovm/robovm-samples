@@ -22,6 +22,7 @@ package org.robovm.samples.helloworld;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
+import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
 import org.robovm.samples.helloworld.viewcontrollers.MyViewController;
@@ -31,7 +32,7 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
     private MyViewController myViewController;
 
     @Override
-    public void didFinishLaunching (UIApplication application) {
+    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
         myViewController = new MyViewController();
 
@@ -47,6 +48,8 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
          * early.
          */
         addStrongRef(window);
+
+        return true;
     }
 
     public static void main (String[] args) {
