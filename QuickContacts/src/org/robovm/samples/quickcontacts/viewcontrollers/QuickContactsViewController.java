@@ -257,7 +257,7 @@ public class QuickContactsViewController extends UITableViewController implement
      * Shows an alert, otherwise. */
     private void showPersonViewController () {
         // Search for the person named "Appleseed" in the address book
-        NSArray<?> people = this.addressBook.getPeople("Appleseed");
+        List<ABPerson> people = this.addressBook.getPeople("Appleseed");
         // Display "Appleseed" information if found in the address book
         if ((people != null) && !people.isEmpty()) {
             ABPerson person = people.get(0).as(ABPerson.class);
