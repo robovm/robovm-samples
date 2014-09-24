@@ -24,11 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.robovm.apple.addressbook.ABAddressBook;
-import org.robovm.apple.addressbook.ABMutableMultiValue;
 import org.robovm.apple.addressbook.ABPerson;
+import org.robovm.apple.addressbook.ABPersonEmailAddress;
 import org.robovm.apple.addressbook.ABPersonProperty;
 import org.robovm.apple.addressbook.ABPropertyLabel;
-import org.robovm.apple.addressbook.ABPropertyType;
 import org.robovm.apple.addressbookui.ABNewPersonViewController;
 import org.robovm.apple.addressbookui.ABNewPersonViewControllerDelegate;
 import org.robovm.apple.addressbookui.ABPeoplePickerNavigationController;
@@ -37,7 +36,6 @@ import org.robovm.apple.addressbookui.ABPersonViewController;
 import org.robovm.apple.addressbookui.ABPersonViewControllerDelegate;
 import org.robovm.apple.addressbookui.ABUnknownPersonViewController;
 import org.robovm.apple.addressbookui.ABUnknownPersonViewControllerDelegate;
-import org.robovm.apple.corefoundation.CFString;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
@@ -47,7 +45,6 @@ import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIAlertView;
 import org.robovm.apple.uikit.UINavigationController;
@@ -71,7 +68,6 @@ public class QuickContactsViewController extends UITableViewController implement
     private NSArray<NSDictionary<NSString, NSString>> menuArray;
 
     enum TableRowSelected {
-
         UIDisplayPickerRow, UICreateNewContactRow, UIDisplayContactRow, UIEditUnknownContactRow;
 
         static TableRowSelected[] values;
@@ -88,16 +84,17 @@ public class QuickContactsViewController extends UITableViewController implement
     private void initUI () {
         CGRect frame = new CGRect(0, 0, 320, 568);
         UITableView tableView = new UITableView(frame, UITableViewStyle.Grouped);
-        setTableView(tableView);
-        getTableView().setOpaque(false);
-        getTableView().setClearsContextBeforeDrawing(false);
-        getTableView().setContentMode(UIViewContentMode.ScaleToFill);
-        getTableView().setAlwaysBounceVertical(true);
+        tableView.setOpaque(false);
+        tableView.setClearsContextBeforeDrawing(false);
+        tableView.setContentMode(UIViewContentMode.ScaleToFill);
+        tableView.setAlwaysBounceVertical(true);
 
         UITableViewCell cell = new UITableViewCell(new CGRect());
         cell.setFrame(new CGRect(0, 119, 320, 44));
         cell.getContentView().setFrame(new CGRect(0.0, 0.0, 320, 43));
-        getTableView().addSubview(cell);
+        tableView.addSubview(cell);
+
+        setTableView(tableView);
     }
 
     /** Implement viewDidLoad to do additional setup after loading the view, typically from a nib. */
@@ -108,17 +105,16 @@ public class QuickContactsViewController extends UITableViewController implement
 
         // Create an address book object
         NSDictionary<NSString, NSObject> options = new NSDictionary<NSString, NSObject>();
-        this.addressBook = ABAddressBook.create(options);
-        this.menuArray = new NSArray<>();
-        this.checkAddressBookAccess();
+        addressBook = ABAddressBook.create(options);
+        menuArray = new NSArray<>();
+        checkAddressBookAccess();
     }
 
     /** Checks current access status of current device's address book */
     private void checkAddressBookAccess () {
-
         switch (ABAddressBook.getAuthorizationStatus()) {
         case Authorized:
-            this.accessGrantedForAddressBook();
+            accessGrantedForAddressBook();
             break;
         case NotDetermined:
             requestAddressBookAccess();
@@ -140,14 +136,13 @@ public class QuickContactsViewController extends UITableViewController implement
         // Load data from the plist file
 
         String plist = NSBundle.getMainBundle().findResourcePath("Menu", "plist");
-        this.menuArray = (NSArray<NSDictionary<NSString, NSString>>)NSArray.read(new File(plist));
+        menuArray = (NSArray<NSDictionary<NSString, NSString>>)NSArray.read(new File(plist));
         getTableView().reloadData();
 
     }
 
     /** Requests access to current device's address book */
     private void requestAddressBookAccess () {
-
         ABAddressBook.RequestAccessCompletionHandler handler = new ABAddressBook.RequestAccessCompletionHandler() {
             @Override
             public void requestAccess (boolean granted, NSError error) {
@@ -157,17 +152,16 @@ public class QuickContactsViewController extends UITableViewController implement
                         public void run () {
                             accessGrantedForAddressBook();
                         }
-
                     });
                 }
             }
         };
-        this.addressBook.requestAccess(handler);
+        addressBook.requestAccess(handler);
     }
 
     @Override
     public long getNumberOfSections (UITableView tableView) {
-        return this.menuArray.size();
+        return menuArray.size();
     }
 
     @Override
@@ -180,8 +174,8 @@ public class QuickContactsViewController extends UITableViewController implement
         final String cellIdentifier = "CellID";
         UITableViewCell aCell;
         // Make the Display Picker and Create New Contact rows look like buttons
-        int section = (int)NSIndexPathExtensions.getSection(indexPath);
-        if (NSIndexPathExtensions.getSection(indexPath) < 2) {
+        int section = (int)indexPath.getSection();
+        if (section < 2) {
             aCell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
             aCell.getTextLabel().setTextAlignment(NSTextAlignment.Center);
         } else {
@@ -190,39 +184,38 @@ public class QuickContactsViewController extends UITableViewController implement
             aCell.getDetailTextLabel().setNumberOfLines(0);
             // Display descriptions for the Edit Unknown Contact and Display and
             // Edit Contact rows
-            aCell.getDetailTextLabel().setText(this.menuArray.get(section).get(new NSString("description")).toString()); // valueForKey:@"description"];
+            aCell.getDetailTextLabel().setText(menuArray.get(section).get(new NSString("description")).toString());
         }
-        aCell.getTextLabel().setText(this.menuArray.get(section).get(new NSString("title")).toString());
+        aCell.getTextLabel().setText(menuArray.get(section).get(new NSString("title")).toString());
         return aCell;
     }
 
     @Override
     public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
-
-        int section = (int)NSIndexPathExtensions.getSection(indexPath);
+        int section = (int)indexPath.getSection();
         switch (TableRowSelected.toTableRowSelected(section)) {
         case UIDisplayPickerRow:
-            this.showPeoplePickerController();
+            showPeoplePickerController();
             break;
         case UICreateNewContactRow:
-            this.showNewPersonViewController();
+            showNewPersonViewController();
             break;
         case UIDisplayContactRow:
-            this.showPersonViewController();
+            showPersonViewController();
             break;
         case UIEditUnknownContactRow:
-            this.showUnknownPersonViewController();
+            showUnknownPersonViewController();
             break;
         default:
-            this.showPeoplePickerController();
+            showPeoplePickerController();
             break;
         }
     }
 
-    /** Change the height if Edit Unknown Contact is the row selected */
+    /** Change the height if "Edit Unknown Contact" is the row selected */
     @Override
     public double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
-        return (NSIndexPathExtensions.getSection(indexPath) == TableRowSelected.UIEditUnknownContactRow.ordinal()) ? UI_EDIT_UNKNOWN_CONTACT_ROW_HEIGHT
+        return (indexPath.getSection() == TableRowSelected.UIEditUnknownContactRow.ordinal()) ? UI_EDIT_UNKNOWN_CONTACT_ROW_HEIGHT
             : getTableView().getRowHeight();
     }
 
@@ -232,7 +225,7 @@ public class QuickContactsViewController extends UITableViewController implement
         picker.setNewPersonViewDelegate(this);
 
         UINavigationController navigation = new UINavigationController(picker);
-        this.presentViewController(navigation, true, null);
+        presentViewController(navigation, true, null);
     }
 
     /** Called when users tap "Display Picker" in the application. Displays a list of contacts and allows users to select a contact
@@ -249,24 +242,24 @@ public class QuickContactsViewController extends UITableViewController implement
         picker.setDisplayedProperties(props);
 
         // Show the picker
-        this.presentViewController(picker, true, null);
+        presentViewController(picker, true, null);
     }
 
-    /** Called when users tap "Display and Edit Contact" in the application. Searches for a contact named "Appleseed" in in the
+    /** Called when users tap "Display and Edit Contact" in the application. Searches for a contact named "Appleseed" in the
      * address book. Displays and allows editing of all information associated with that contact if the search is successful.
      * Shows an alert, otherwise. */
     private void showPersonViewController () {
         // Search for the person named "Appleseed" in the address book
-        NSArray<?> people = this.addressBook.getPeople("Appleseed");
+        List<ABPerson> people = addressBook.getPeople("Appleseed");
         // Display "Appleseed" information if found in the address book
         if ((people != null) && !people.isEmpty()) {
-            ABPerson person = people.get(0).as(ABPerson.class);
+            ABPerson person = people.get(0);
             ABPersonViewController picker = new ABPersonViewController();
             picker.setPersonViewDelegate(this);
             picker.setDisplayedPerson(person);
             // Allow users to edit the person???s information
             picker.setAllowsEditing(true);
-            this.getNavigationController().pushViewController(picker, true);
+            getNavigationController().pushViewController(picker, true);
         } else {
             // Show an alert if "Appleseed" is not in Contacts
             UIAlertView alert = new UIAlertView("Error", "Could not find Appleseed in the Contacts application", null, "Cancel",
@@ -278,10 +271,7 @@ public class QuickContactsViewController extends UITableViewController implement
     /** Called when users tap "Edit Unknown Contact" in the application. */
     private void showUnknownPersonViewController () {
         ABPerson aContact = ABPerson.create();
-        ABMutableMultiValue email = ABMutableMultiValue.create(ABPropertyType.MultiString);
-        CFString nameValue = new CFString("John-Appleseed@mac.com");
-        email.addValueAndLabel(nameValue, ABPropertyLabel.Other.value().toString());
-        aContact.setValue(ABPersonProperty.Email, email);
+        aContact.addEmailAddress(new ABPersonEmailAddress("John-Appleseed@mac.com", ABPropertyLabel.Other));
 
         ABUnknownPersonViewController picker = new ABUnknownPersonViewController();
         picker.setUnknownPersonViewDelegate(this);
@@ -292,12 +282,12 @@ public class QuickContactsViewController extends UITableViewController implement
         picker.setTitle("John Appleseed");
         picker.setMessage("Company, Inc");
 
-        this.getNavigationController().pushViewController(picker, true);
+        getNavigationController().pushViewController(picker, true);
     }
 
     @Override
     public void didResolveToPerson (ABUnknownPersonViewController unknownCardViewController, ABPerson person) {
-        this.getNavigationController().popViewController(true);
+        getNavigationController().popViewController(true);
     }
 
     @Override
@@ -308,7 +298,7 @@ public class QuickContactsViewController extends UITableViewController implement
 
     @Override
     public void didComplete (ABNewPersonViewController newPersonView, ABPerson person) {
-        this.dismissViewController(true, null);
+        dismissViewController(true, null);
     }
 
     @Override
@@ -319,7 +309,7 @@ public class QuickContactsViewController extends UITableViewController implement
 
     @Override
     public void didCancel (ABPeoplePickerNavigationController peoplePicker) {
-        this.dismissViewController(true, null);
+        dismissViewController(true, null);
     }
 
     @Override
@@ -332,5 +322,4 @@ public class QuickContactsViewController extends UITableViewController implement
         int property, int identifier) {
         return false;
     }
-
 }
