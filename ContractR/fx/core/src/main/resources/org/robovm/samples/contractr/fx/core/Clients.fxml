@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<HBox prefHeight="480.0" prefWidth="640.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.robovm.samples.contractr.fx.core.ClientsController">
+ <children>
+    <VBox prefHeight="200.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
+       <children>
+          <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+              <Button fx:id="addButton" mnemonicParsing="false" text="Add" />
+            </items>
+          </ToolBar>
+          <ListView fx:id="clientsList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+       </children>
+    </VBox>
+      <VBox fx:id="addEditPane" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+         <children>
+          <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+              <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+            </items>
+          </ToolBar>
+            <HBox prefWidth="200.0">
+               <children>
+                <Label text="Name" />
+                <TextField fx:id="nameTextField" alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox fx:id="hourlyRateContainer" prefWidth="200.0">
+               <children>
+                <Label text="Hourly rate" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+  </children>
+</HBox>

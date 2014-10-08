@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="StartColor">#93c623</color>
+    <color name="StartColorPressed">#ffcaff1e</color>
+
+    <color name="StopColor">#ff0000</color>
+    <color name="StopColorPressed">#ffffbbc7</color>
+
+</resources>
