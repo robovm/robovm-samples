@@ -17,10 +17,9 @@
   
   <modules>
     <module>core</module>
-<!--     <module>ios</module>
+    <module>ios</module>
     <module>fx/core</module>
     <module>fx/desktop</module>
-    -->
   </modules>
 
 </project>
