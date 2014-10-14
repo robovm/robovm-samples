@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.robovm.eclipse.ROBOVM_CONTAINER"/>
+	<classpathentry kind="con" path="org.robovm.eclipse.ROBOVM_COCOA_TOUCH_CONTAINER"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/ContractR-core"/>
+	<classpathentry kind="lib" path="lib/compat-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
+	<classpathentry kind="lib" path="lib/aalto-xml-0.9.9.jar"/>
+	<classpathentry kind="lib" path="lib/stax2-api-3.1.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ContractR-fx-core"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
