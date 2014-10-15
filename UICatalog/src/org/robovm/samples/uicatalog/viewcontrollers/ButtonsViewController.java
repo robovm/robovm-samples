@@ -293,12 +293,12 @@ public class ButtonsViewController extends UITableViewController {
             // apply red text for normal state
             NSMutableAttributedString normalAttrString = new NSMutableAttributedString("Rounded");
             normalAttrString.addAttributes(new NSAttributedStringAttributes().setForegroundColor(UIColor.red()), new NSRange(0,
-                normalAttrString.getLength()));
+                normalAttrString.length()));
             attrTextButton.setAttributedTitle(normalAttrString, UIControlState.Normal);
 
             // apply green text for pressed state
             NSMutableAttributedString highlightedAttrString = new NSMutableAttributedString("Rounded");
-            normalAttrString.addAttribute("Green", UIColor.green(), new NSRange(0, normalAttrString.getLength()));
+            normalAttrString.addAttribute("Green", UIColor.green(), new NSRange(0, normalAttrString.length()));
 
             attrTextButton.setAttributedTitle(highlightedAttrString, UIControlState.Highlighted);
             attrTextButton.setTag(viewTag); // tag this view for later so we can

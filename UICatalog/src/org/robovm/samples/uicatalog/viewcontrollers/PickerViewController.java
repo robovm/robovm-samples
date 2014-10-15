@@ -444,7 +444,7 @@ public class PickerViewController extends UIViewController {
                     // apply red text for normal state
                     attrTitle = new NSMutableAttributedString(title);
                     attrTitle.addAttribute(NSAttributedStringAttribute.ForegroundColor, UIColor.red(),
-                        new NSRange(0, attrTitle.getLength()));
+                        new NSRange(0, attrTitle.length()));
                 }
             }
 

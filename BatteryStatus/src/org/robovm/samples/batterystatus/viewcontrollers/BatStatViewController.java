@@ -208,7 +208,7 @@ public class BatStatViewController extends UITableViewController {
             }
 
             NSNumber levelObj = NSNumber.valueOf(batteryLevel);
-            levelLabel.setText(numberFormatter.stringFromNumber$(levelObj));
+            levelLabel.setText(numberFormatter.format(levelObj));
         }
     }
 

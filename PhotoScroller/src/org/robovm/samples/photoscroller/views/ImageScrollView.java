@@ -38,7 +38,6 @@ import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIScrollView;
 import org.robovm.apple.uikit.UIScrollViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.rt.bro.ptr.MachineSizedUIntPtr;
 
 public class ImageScrollView extends UIScrollView {
     private static final boolean TILE_IMAGES = true; // turn on to use tiled images, if off, we use whole images
@@ -240,8 +239,8 @@ public class ImageScrollView extends UIScrollView {
         if (imageData == null) {
             String path = NSBundle.getMainBundle().findResourcePath("ImageData", "plist");
             NSData plistData = NSData.read(new File(path));
-            imageData = (NSArray<?>)NSPropertyListSerialization.propertyListFromData$mutabilityOption$format$errorDescription$(
-                plistData, NSPropertyListMutabilityOptions.Immutable, new MachineSizedUIntPtr(), new NSString.NSStringPtr());
+            imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData,
+                NSPropertyListMutabilityOptions.Immutable);
 
             if (imageData == null) {
                 System.err.println("Unable to read image data: "); // TODO error
