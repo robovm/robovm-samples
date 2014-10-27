@@ -41,16 +41,16 @@ public class TasksViewController extends ListViewController {
     private final ClientModel clientModel;
     private final TaskModel taskModel;
     private final org.robovm.apple.uikit.NSAttributedStringAttributes strikeThroughAttrs;
-    
-    public TasksViewController(ClientModel clientModel, TaskModel taskModel, 
+
+    public TasksViewController(ClientModel clientModel, TaskModel taskModel,
             AddTaskViewController addTaskViewController,
             EditTaskViewController editTaskViewController) {
-        
+
         this.clientModel = clientModel;
         this.taskModel = taskModel;
         this.addTaskViewController = addTaskViewController;
         this.editTaskViewController = editTaskViewController;
-        
+
         this.strikeThroughAttrs = new NSAttributedStringAttributes();
         this.strikeThroughAttrs.setStrikethroughStyle(NSUnderlineStyle.StyleSingle);
     }
@@ -58,7 +58,7 @@ public class TasksViewController extends ListViewController {
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
+
         getNavigationItem().setTitle("Tasks");
     }
 
@@ -81,12 +81,12 @@ public class TasksViewController extends ListViewController {
         Task task = taskModel.getForClient(client, false).get(row);
         taskModel.delete(task);
         getTableView().deleteRows(
-                new NSArray<>(NSIndexPathExtensions.createIndexPathForRowInSection(row, section)), 
+                new NSArray<>(NSIndexPathExtensions.createIndexPathForRowInSection(row, section)),
                 UITableViewRowAnimation.Automatic);
     }
-    
+
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         int section = (int) NSIndexPathExtensions.getSection(indexPath);
         int row = (int) NSIndexPathExtensions.getRow(indexPath);
         UITableViewCell cell = tableView.dequeueReusableCell("cell");
@@ -94,7 +94,7 @@ public class TasksViewController extends ListViewController {
             cell = new UITableViewCell(UITableViewCellStyle.Value1, "cell");
             cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
         }
-        Client client = clientModel.get((int) section);
+        Client client = clientModel.get(section);
         Task task = taskModel.getForClient(client, false).get(row);
         String title = task.getTitle();
         if (task.isFinished()) {
@@ -108,7 +108,7 @@ public class TasksViewController extends ListViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle(UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         Client client = clientModel.get((int) section);
         return client.getName();
     }
@@ -117,7 +117,7 @@ public class TasksViewController extends ListViewController {
     public long getNumberOfSections(UITableView tableView) {
         return clientModel.count();
     }
-    
+
     @Override
     public long getNumberOfRowsInSection(UITableView tableView, long section) {
         Client client = clientModel.get((int) section);

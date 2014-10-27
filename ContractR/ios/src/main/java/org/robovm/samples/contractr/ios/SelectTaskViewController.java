@@ -38,7 +38,7 @@ public class SelectTaskViewController extends UITableViewController {
     private final TaskModel taskModel;
     private final Runnable onDone;
     private Task selectedTask;
-    
+
     public SelectTaskViewController(ClientModel clientModel, TaskModel taskModel, Runnable onDone) {
         this.clientModel = clientModel;
         this.taskModel = taskModel;
@@ -48,26 +48,28 @@ public class SelectTaskViewController extends UITableViewController {
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
-        getNavigationItem().setLeftBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Cancel, new OnClickListener() {
-            public void onClick(UIBarButtonItem barButtonItem) {
-                selectedTask = null;
-                dismissViewController(true, null);
-            }
-        }));
+
+        getNavigationItem().setLeftBarButtonItem(
+                new UIBarButtonItem(UIBarButtonSystemItem.Cancel, new OnClickListener() {
+                    @Override
+                    public void onClick(UIBarButtonItem barButtonItem) {
+                        selectedTask = null;
+                        dismissViewController(true, null);
+                    }
+                }));
     }
-    
+
     @Override
     public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
         selectedTask = null;
         getTableView().reloadData();
     }
-    
+
     public Task getSelectedTask() {
         return selectedTask;
     }
-    
+
     @Override
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         int section = (int) NSIndexPathExtensions.getSection(indexPath);
@@ -77,9 +79,9 @@ public class SelectTaskViewController extends UITableViewController {
         onDone.run();
         dismissViewController(true, null);
     }
-    
+
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         int section = (int) NSIndexPathExtensions.getSection(indexPath);
         int row = (int) NSIndexPathExtensions.getRow(indexPath);
         UITableViewCell cell = tableView.dequeueReusableCell("cell");
@@ -95,7 +97,7 @@ public class SelectTaskViewController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle(UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         Client client = clientModel.get((int) section);
         return client.getName();
     }
@@ -104,7 +106,7 @@ public class SelectTaskViewController extends UITableViewController {
     public long getNumberOfSections(UITableView tableView) {
         return clientModel.count();
     }
-    
+
     @Override
     public long getNumberOfRowsInSection(UITableView tableView, long section) {
         Client client = clientModel.get((int) section);

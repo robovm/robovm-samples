@@ -25,7 +25,6 @@ import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.foundation.NSURL;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIColor;
@@ -33,6 +32,7 @@ import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIFont;
+import org.robovm.apple.uikit.UIGestureRecognizer;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImagePickerController;
 import org.robovm.apple.uikit.UIImagePickerControllerCameraCaptureMode;
@@ -51,10 +51,7 @@ import org.robovm.apple.uikit.UIVideo;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAnimationOptions;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.objc.Selector;
-import org.robovm.objc.annotation.Method;
 import org.robovm.objc.block.VoidBooleanBlock;
-import org.robovm.rt.bro.ptr.VoidPtr;
 
 public class RootViewController extends UIViewController {
     private UIButton cameraSelectionButton;
@@ -130,7 +127,18 @@ public class RootViewController extends UIViewController {
 
         createImagePicker();
 
-        recordGestureRecognizer = new UITapGestureRecognizer(this, Selector.register("toggleVideoRecording"));
+        recordGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+            @Override
+            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                if (!recording) {
+                    recording = true;
+                    startRecording();
+                } else {
+                    recording = false;
+                    stopRecording();
+                }
+            }
+        });
         recordGestureRecognizer.setNumberOfTapsRequired(2);
 
         cameraOverlayView.addGestureRecognizer(recordGestureRecognizer);
@@ -190,26 +198,19 @@ public class RootViewController extends UIViewController {
 
                 boolean okToSaveVideo = UIVideo.isCompatibleWithSavedPhotosAlbum(new File(videoURL.getPath()));
                 if (okToSaveVideo) {
-                    UIVideo.saveToPhotosAlbum(new File(videoURL.getPath()), RootViewController.this,
-                        Selector.register("video:didFinishSavingWithError:contextInfo:"), null);
+                    UIVideo.saveToPhotosAlbum(new File(videoURL.getPath()), new UIVideo.VideoSaveListener() {
+                        @Override
+                        public void didFinishSaving (String videoPath, NSError error) {
+                            showControls();
+                        }
+                    });
                 } else {
-                    videoDidFinishSaving(null, null, null);
+                    showControls();
                 }
 
             }
         });
         imagePicker.setWantsFullScreenLayout(true);
-    }
-
-    @Method(selector = "toggleVideoRecording")
-    private void toggleVideoRecording () {
-        if (!recording) {
-            recording = true;
-            startRecording();
-        } else {
-            recording = false;
-            stopRecording();
-        }
     }
 
     private void changeVideoQuality () {
@@ -279,9 +280,7 @@ public class RootViewController extends UIViewController {
         imagePicker.stopVideoCapture();
     }
 
-    @Method(selector = "video:didFinishSavingWithError:contextInfo:")
-    private void videoDidFinishSaving (NSString videoPath, NSError error, VoidPtr contextInfo) {
-        // Show controls
+    private void showControls () {
         UIView.animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, new Runnable() {
             @Override
             public void run () {

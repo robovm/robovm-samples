@@ -65,7 +65,7 @@ public class ElementsSortedByStateDataSource extends ElementsDataSource {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         // set the element for this cell as specified by the datasource. The atomicElementForIndexPath: is declared
         // as part of the ElementsDataSource Protocol and will return the appropriate element for the index row
@@ -97,7 +97,7 @@ public class ElementsSortedByStateDataSource extends ElementsDataSource {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, long section) {
+    public String getTitleForHeader (UITableView tableView, long section) {
         // this table has multiple sections. One for each physical state
 
         // [solid, liquid, gas, artificial]

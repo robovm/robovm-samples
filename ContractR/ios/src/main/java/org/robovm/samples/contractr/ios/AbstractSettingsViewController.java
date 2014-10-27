@@ -42,28 +42,30 @@ import org.robovm.apple.uikit.UIView;
 public abstract class AbstractSettingsViewController extends UITableViewController {
 
     private List<UITableViewCell> cells;
-    
+
     public AbstractSettingsViewController() {
         super(UITableViewStyle.Grouped);
     }
-    
+
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
 
-        getNavigationItem().setRightBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Done, new OnClickListener() {
-            public void onClick(UIBarButtonItem barButtonItem) {
-                onSave();
-            }
-        }));
+        getNavigationItem().setRightBarButtonItem(
+                new UIBarButtonItem(UIBarButtonSystemItem.Done, new OnClickListener() {
+                    @Override
+                    public void onClick(UIBarButtonItem barButtonItem) {
+                        onSave();
+                    }
+                }));
     }
 
     protected abstract void onSave();
-    
-    protected void setCells(UITableViewCell ... cells) {
+
+    protected void setCells(UITableViewCell... cells) {
         this.cells = new ArrayList<>(Arrays.asList(cells));
     }
-    
+
     protected UITableViewCell cell(String label, UIView view) {
         UITableViewCell cell = new UITableViewCell(UITableViewCellStyle.Value1, null);
         UILabel labelView = cell.getTextLabel();
@@ -73,47 +75,47 @@ public abstract class AbstractSettingsViewController extends UITableViewControll
 
         labelView.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.setTranslatesAutoresizingMaskIntoConstraints(false);
-        
+
         // labelView.left = contentView.left + 15
         contentView.addConstraint(NSLayoutConstraint.create(
-                labelView, NSLayoutAttribute.Left, 
-                NSLayoutRelation.Equal, 
-                contentView, NSLayoutAttribute.Left, 
+                labelView, NSLayoutAttribute.Left,
+                NSLayoutRelation.Equal,
+                contentView, NSLayoutAttribute.Left,
                 1, 15));
         // view.right = contentView.right - 15
         contentView.addConstraint(NSLayoutConstraint.create(
-                view, NSLayoutAttribute.Right, 
-                NSLayoutRelation.Equal, 
-                contentView, NSLayoutAttribute.Right, 
+                view, NSLayoutAttribute.Right,
+                NSLayoutRelation.Equal,
+                contentView, NSLayoutAttribute.Right,
                 1, -15));
         // view.centerY = contentView.centerY
         contentView.addConstraint(NSLayoutConstraint.create(
-                view, NSLayoutAttribute.CenterY, 
-                NSLayoutRelation.Equal, 
-                contentView, NSLayoutAttribute.CenterY, 
+                view, NSLayoutAttribute.CenterY,
+                NSLayoutRelation.Equal,
+                contentView, NSLayoutAttribute.CenterY,
                 1, 0));
         if (view instanceof UITextField) {
             // view.left = labelView.right + 15
             contentView.addConstraint(NSLayoutConstraint.create(
-                    view, NSLayoutAttribute.Left, 
-                    NSLayoutRelation.Equal, 
-                    labelView, NSLayoutAttribute.Right, 
+                    view, NSLayoutAttribute.Left,
+                    NSLayoutRelation.Equal,
+                    labelView, NSLayoutAttribute.Right,
                     1, 15));
         }
         return cell;
     }
 
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         int row = (int) NSIndexPathExtensions.getRow(indexPath);
         return cells.get(row);
     }
-    
+
     @Override
     public long getNumberOfSections(UITableView tableView) {
         return 1;
     }
-    
+
     @Override
     public long getNumberOfRowsInSection(UITableView tableView, long section) {
         return cells.size();

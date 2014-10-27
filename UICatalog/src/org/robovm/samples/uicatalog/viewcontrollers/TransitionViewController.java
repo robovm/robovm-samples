@@ -65,7 +65,7 @@ public class TransitionViewController extends UIViewController {
             @Override
             public void onClick (UIBarButtonItem barButtonItem) {
                 UIView.beginAnimations(null, null);
-                UIView.setDurationForAnimation(transitionDuration);
+                UIView.setAnimationDurationInSeconds(transitionDuration);
 
                 UIView.setAnimationTransition(mainView.getSuperview() != null ? UIViewAnimationTransition.FlipFromLeft
                     : UIViewAnimationTransition.FlipFromRight, containerView, true);
@@ -87,7 +87,7 @@ public class TransitionViewController extends UIViewController {
             @Override
             public void onClick (UIBarButtonItem barButtonItem) {
                 UIView.beginAnimations(null, null);
-                UIView.setDurationForAnimation(transitionDuration);
+                UIView.setAnimationDurationInSeconds(transitionDuration);
 
                 UIView.setAnimationTransition((mainView.getSuperview() != null ? UIViewAnimationTransition.CurlUp
                     : UIViewAnimationTransition.CurlDown), containerView, false);
@@ -125,8 +125,8 @@ public class TransitionViewController extends UIViewController {
         flipToView.setImage(UIImage.create("scene2.jpg"));
         toolBar = new UIToolbar(new CGRect(0, 416, 320, 44));
 
-        UIBarButtonItem flexSpace1 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
-        UIBarButtonItem flexSpace2 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
+        UIBarButtonItem flexSpace1 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null);
+        UIBarButtonItem flexSpace2 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null);
 
         List<UIBarButtonItem> items = new LinkedList<UIBarButtonItem>();
         items.add(flexSpace1);

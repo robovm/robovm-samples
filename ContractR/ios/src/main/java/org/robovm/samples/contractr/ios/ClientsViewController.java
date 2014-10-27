@@ -34,10 +34,10 @@ public class ClientsViewController extends ListViewController {
     private final AddClientViewController addClientViewController;
     private final EditClientViewController editClientViewController;
     private final ClientModel clientModel;
-    
+
     public ClientsViewController(ClientModel clientModel, AddClientViewController addClientViewController,
             EditClientViewController editClientViewController) {
-        
+
         this.clientModel = clientModel;
         this.addClientViewController = addClientViewController;
         this.editClientViewController = editClientViewController;
@@ -46,7 +46,7 @@ public class ClientsViewController extends ListViewController {
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
+
         getNavigationItem().setTitle("Clients");
     }
 
@@ -67,12 +67,12 @@ public class ClientsViewController extends ListViewController {
         Client client = clientModel.get(row);
         clientModel.delete(client);
         getTableView().deleteRows(
-                new NSArray<>(NSIndexPathExtensions.createIndexPathForRowInSection(row, section)), 
+                new NSArray<>(NSIndexPathExtensions.createIndexPathForRowInSection(row, section)),
                 UITableViewRowAnimation.Automatic);
     }
-    
+
     @Override
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = tableView.dequeueReusableCell("cell");
         if (cell == null) {
             cell = new UITableViewCell(UITableViewCellStyle.Value1, "cell");

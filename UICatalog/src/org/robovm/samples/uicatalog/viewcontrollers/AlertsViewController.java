@@ -22,7 +22,6 @@ package org.robovm.samples.uicatalog.viewcontrollers;
 import java.util.LinkedList;
 
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIActionSheet;
 import org.robovm.apple.uikit.UIActionSheetDelegateAdapter;
@@ -220,7 +219,7 @@ public class AlertsViewController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+    public String getTitleForHeader (UITableView tableView, @MachineSizedSInt long section) {
         return dataSourceArray.get((int)section).getSectionTitle();
     }
 
@@ -230,8 +229,8 @@ public class AlertsViewController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
-        return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 22.0;
+    public @MachineSizedFloat double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
+        return (indexPath.getRow() == 0) ? 50.0 : 22.0;
     }
 
     /** the table's selection has changed, show the alert or action sheet */
@@ -241,33 +240,26 @@ public class AlertsViewController extends UITableViewController {
         NSIndexPath tableSelection = getTableView().getIndexPathForSelectedRow();
         getTableView().deselectRow(tableSelection, false);
 
-        if (NSIndexPathExtensions.getRow(indexPath) == 0) {
-
-            switch ((int)NSIndexPathExtensions.getSection(indexPath)) {
+        if (indexPath.getRow() == 0) {
+            switch ((int)indexPath.getSection()) {
             case 0:
                 dialogSimpleAction();
                 break;
-
             case 1:
                 dialogOKCancelAction();
                 break;
-
             case 2:
                 dialogOtherAction();
                 break;
-
             case 3:
                 alertSimpleAction();
                 break;
-
             case 4:
                 alertOKCancelAction();
                 break;
-
             case 5:
                 alertOtherAction();
                 break;
-
             case 6:
                 alertSecureTextAction();
                 break;
@@ -276,12 +268,11 @@ public class AlertsViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
-
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = null;
-        if (NSIndexPathExtensions.getRow(indexPath) == 0) {
+        if (indexPath.getRow() == 0) {
             cell = getTableView().dequeueReusableCell(ALERT_CELL_ID, indexPath);
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getLabel());
         } else {
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -291,7 +282,7 @@ public class AlertsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getSource());
         }
 
         return cell;

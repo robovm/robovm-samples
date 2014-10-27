@@ -170,7 +170,7 @@ public class PickerViewController extends UIViewController {
 
         List<UIBarButtonItem> buttonItems = new LinkedList<UIBarButtonItem>();
 
-        buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null));
+        buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null));
 
         buttonBarSegmentedControl = new UISegmentedControl(NSArray.fromStrings("UIPicker", "UIDatePicker", "Custom"));
         buttonBarSegmentedControl.setFrame(new CGRect(11, 7, 299, 30));
@@ -179,11 +179,11 @@ public class PickerViewController extends UIViewController {
         buttonBarSegmentedControl.addOnValueChangedListener(togglePickers);
         buttonBarSegmentedControl.setSelectedSegment(0);
 
-        UIBarButtonItem plainButton = new UIBarButtonItem("", UIBarButtonItemStyle.Plain, null, null);
+        UIBarButtonItem plainButton = new UIBarButtonItem("", UIBarButtonItemStyle.Plain, null);
         plainButton.setCustomView(buttonBarSegmentedControl);
 
         buttonItems.add(plainButton);
-        buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null));
+        buttonItems.add(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null));
 
         toolbar = new UIToolbar(new CGRect(0.0, 416, 320, 44));
         toolbar.setTintColor(UIColor.fromWhiteAlpha(0.333333333333333, 1.0));
@@ -220,7 +220,7 @@ public class PickerViewController extends UIViewController {
 
         myPickerView = new UIPickerView(new CGRect(0, 0, 0, 0));
 
-        myPickerView.resizeToFit();
+        myPickerView.sizeToFit();
 
         CGSize pickerSize = myPickerView.getFrame().size();
         myPickerView.setFrame(pickerFrameWithSize(pickerSize));
@@ -246,7 +246,7 @@ public class PickerViewController extends UIViewController {
         datePickerView.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
         datePickerView.setDatePickerMode(UIDatePickerMode.Date);
 
-        datePickerView.resizeToFit();
+        datePickerView.sizeToFit();
         CGSize pickerSize = datePickerView.getFrame().size();
         datePickerView.setFrame(pickerFrameWithSize(pickerSize));
 
@@ -271,7 +271,7 @@ public class PickerViewController extends UIViewController {
         // note we are using CGRectZero for the dimensions of our picker view,
         // this is because picker views have a built in optimum size,
         // you just need to set the correct origin in your view.
-        customPickerView.resizeToFit();
+        customPickerView.sizeToFit();
         CGSize pickerSize = customPickerView.getFrame().size();
         customPickerView.setFrame(pickerFrameWithSize(pickerSize));
         customPickerView.setShowsSelectionIndicator(true);

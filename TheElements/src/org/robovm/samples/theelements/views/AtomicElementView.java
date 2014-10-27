@@ -37,8 +37,6 @@ import org.robovm.apple.uikit.UIGestureRecognizer;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UITapGestureRecognizer;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.objc.Selector;
-import org.robovm.objc.annotation.Method;
 import org.robovm.samples.theelements.model.AtomicElement;
 import org.robovm.samples.theelements.viewcontrollers.AtomicElementViewController;
 
@@ -58,20 +56,20 @@ public class AtomicElementView extends UIView {
         setBackgroundColor(UIColor.clear());
 
         // attach a tap gesture recognizer to this view so it can flip
-        UITapGestureRecognizer tapGestureRecognizer = new UITapGestureRecognizer(this, Selector.register("tapAction:"));
+        UITapGestureRecognizer tapGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+            @Override
+            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                // when a tap gesture occurs tell the view controller to flip this view to the
+                // back and show the AtomicElementFlippedView instead
+                viewController.flipCurrentView();
+            }
+        });
         addGestureRecognizer(tapGestureRecognizer);
     }
 
     @Override
     public boolean canBecomeFirstResponder () {
         return true;
-    }
-
-    @Method(selector = "tapAction:")
-    private void tapAction (UIGestureRecognizer gestureRecognizer) {
-        // when a tap gesture occurs tell the view controller to flip this view to the
-        // back and show the AtomicElementFlippedView instead
-        viewController.flipCurrentView();
     }
 
     @Override

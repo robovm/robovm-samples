@@ -141,7 +141,7 @@ public class TextViewController extends UIViewController {
         }
 
         UIView.beginAnimations("ResizeForKeyboard", null);
-        UIView.setDurationForAnimation(animationDuration);
+        UIView.setAnimationDurationInSeconds(animationDuration);
         textView.setFrame(frame);
         UIView.commitAnimations();
     }

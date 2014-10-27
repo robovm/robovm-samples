@@ -116,7 +116,7 @@ public class AtomicElementViewController extends UIViewController {
 
         // setup the animation group
         UIView.beginAnimations(null, null);
-        UIView.setDurationForAnimation(FLIP_TRANSITION_DURATION);
+        UIView.setAnimationDurationInSeconds(FLIP_TRANSITION_DURATION);
         UIView.setAnimationDelegate(this);
         UIView.setAnimationDidStopSelector(Selector.register("myTransitionDidStop:finished:context:"));
 
@@ -144,7 +144,7 @@ public class AtomicElementViewController extends UIViewController {
 
         // swap the nav bar button views
         UIView.beginAnimations(null, null);
-        UIView.setDurationForAnimation(FLIP_TRANSITION_DURATION);
+        UIView.setAnimationDurationInSeconds(FLIP_TRANSITION_DURATION);
         UIView.setAnimationDelegate(this);
         UIView.setAnimationDidStopSelector(Selector.register("myTransitionDidStop:finished:context:"));
 

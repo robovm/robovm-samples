@@ -60,7 +60,7 @@ public class PlaceMarkViewController extends UITableViewController {
             }
 
             @Override
-            public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
                 if (indexPath.getSection() == 0) {
                     switch ((int)indexPath.getRow()) {
                     case 0:

@@ -60,7 +60,7 @@ public class ElementsSortedByAtomicNumberDataSource extends ElementsDataSource {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         cell.setElement(getAtomicElement(indexPath));
 

@@ -242,7 +242,7 @@ public class ToolbarViewController extends UIViewController {
     /** adjusts toolbar to fit screen */
     private void adjustToolbarSize () {
         // size up the toolbar and set its frame
-        toolbar.resizeToFit();
+        toolbar.sizeToFit();
 
         // since the toolbar may have adjusted its height, it's origin will have
         // to be adjusted too
@@ -272,7 +272,7 @@ public class ToolbarViewController extends UIViewController {
 
         // flex item used to separate the left groups items and right grouped
         // items
-        UIBarButtonItem flexItem = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null, null);
+        UIBarButtonItem flexItem = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null);
 
         // create a special tab bar item with a custom image and title
         UIBarButtonItem infoItem = new UIBarButtonItem(UIImage.create("segment_tools.png"), style, action);

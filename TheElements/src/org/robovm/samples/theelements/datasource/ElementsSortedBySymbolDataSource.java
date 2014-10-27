@@ -70,7 +70,7 @@ public class ElementsSortedBySymbolDataSource extends ElementsDataSource {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         // set the element for this cell as specified by the datasource. The atomicElementForIndexPath: is declared
         // as part of the ElementsDataSource Protocol and will return the appropriate element for the index row

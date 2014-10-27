@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
@@ -132,7 +131,7 @@ public class TextFieldController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+    public String getTitleForHeader (UITableView tableView, @MachineSizedSInt long section) {
         return dataSourceArray.get((int)section).getSectionTitle();
     }
 
@@ -142,16 +141,15 @@ public class TextFieldController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
-        return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 22.0;
+    public @MachineSizedFloat double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
+        return (indexPath.getRow() == 0) ? 50.0 : 22.0;
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
-
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = null;
 
-        if (NSIndexPathExtensions.getRow(indexPath) == 0) {
+        if (indexPath.getRow() == 0) {
             cell = getTableView().dequeueReusableCell(TEXT_FIELD_CELL_ID, indexPath);
 
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -161,7 +159,7 @@ public class TextFieldController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            UITextField textField = (UITextField)dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            UITextField textField = (UITextField)dataSourceArray.get((int)indexPath.getSection()).getView();
 
             CGRect newFrame = textField.getFrame();
             newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
@@ -178,7 +176,7 @@ public class TextFieldController extends UITableViewController {
             cell.getTextLabel().setTextColor(UIColor.gray());
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getSource());
         }
 
         return cell;
@@ -188,7 +186,6 @@ public class TextFieldController extends UITableViewController {
      * 
      * @return */
     UITextField getTextFieldNormal () {
-
         if (textFieldNormal == null) {
             CGRect frame = new CGRect(Constants.LEFT_MARGIN, 4.0f, Constants.TEXT_FIELD_WIDTH, Constants.TEXT_FIELD_HEIGHT);
             textFieldNormal = new UITextField(frame);

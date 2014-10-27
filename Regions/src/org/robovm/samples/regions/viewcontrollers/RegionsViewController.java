@@ -168,7 +168,7 @@ public class RegionsViewController extends UIViewController {
             }
 
             @Override
-            public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
                 final String cellIdentifier = "Cell";
                 UITableViewCell cell = tableView.dequeueReusableCell(cellIdentifier);
 
@@ -185,7 +185,7 @@ public class RegionsViewController extends UIViewController {
         });
         updatesTableView.setDelegate(new UITableViewDelegateAdapter() {
             @Override
-            public double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
+            public double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
                 return 60;
             }
         });

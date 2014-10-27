@@ -61,7 +61,7 @@ public class ElementsSortedByNameDataSource extends ElementsDataSource {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         cell.setElement(getAtomicElement(indexPath));
         return cell;
@@ -101,7 +101,7 @@ public class ElementsSortedByNameDataSource extends ElementsDataSource {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, long section) {
+    public String getTitleForHeader (UITableView tableView, long section) {
         // this table has multiple sections. One for each unique character that an element begins with
         // [A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,R,S,T,U,V,X,Y,Z]
         // return the letter that represents the requested section

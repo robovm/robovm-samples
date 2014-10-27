@@ -35,7 +35,6 @@ import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIActivityIndicatorViewStyle;
@@ -152,7 +151,7 @@ public class GetLocationViewController extends UIViewController {
             }
 
             @Override
-            public String getSectionHeaderTitle (UITableView tableView, long section) {
+            public String getTitleForHeader (UITableView tableView, long section) {
                 switch ((int)section) {
                 case 0:
                     return Str.getLocalizedString("Status");
@@ -176,9 +175,9 @@ public class GetLocationViewController extends UIViewController {
             }
 
             @Override
-            public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
                 UITableViewCell cell;
-                switch ((int)NSIndexPathExtensions.getSection(indexPath)) {
+                switch ((int)indexPath.getSection()) {
                 case 0:
                     /*
                      * The cell for the status row uses the cell style "Value1", which has a label on the left side of the cell
@@ -238,7 +237,7 @@ public class GetLocationViewController extends UIViewController {
                         cell = new UITableViewCell(UITableViewCellStyle.Subtitle, OtherMeasurementsCellID);
                         cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
                     }
-                    CLLocation location = locationMeasurements.get((int)NSIndexPathExtensions.getRow(indexPath));
+                    CLLocation location = locationMeasurements.get((int)indexPath.getRow());
                     cell.getTextLabel().setText(Str.getLocalizedCoordinateString(location));
                     cell.getDetailTextLabel().setText(dateFormatter.format(location.getTimestamp()));
                     return cell;
@@ -250,7 +249,7 @@ public class GetLocationViewController extends UIViewController {
              * section of the table view. */
             @Override
             public NSIndexPath willSelectRow (UITableView tableView, NSIndexPath indexPath) {
-                return (NSIndexPathExtensions.getSection(indexPath) == 0) ? null : indexPath;
+                return (indexPath.getSection() == 0) ? null : indexPath;
             }
 
             /** Delegate method invoked after the user selects a row. Selecting a row containing a location object will navigate to
@@ -258,7 +257,7 @@ public class GetLocationViewController extends UIViewController {
             @Override
             public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
                 tableView.deselectRow(indexPath, true);
-                CLLocation location = locationMeasurements.get((int)NSIndexPathExtensions.getRow(indexPath));
+                CLLocation location = locationMeasurements.get((int)indexPath.getRow());
                 locationDetailViewController.setLocation(location);
                 getNavigationController().pushViewController(locationDetailViewController, true);
             }
@@ -272,7 +271,7 @@ public class GetLocationViewController extends UIViewController {
         bestEffortAtLocation = null;
         locationMeasurements.clear();
         UIView.beginAnimations("Reset", null);
-        UIView.setDurationForAnimation(0.6);
+        UIView.setAnimationDurationInSeconds(0.6);
         startButton.setAlpha(1);
         descriptionLabel.setAlpha(1);
         tableView.setAlpha(0);

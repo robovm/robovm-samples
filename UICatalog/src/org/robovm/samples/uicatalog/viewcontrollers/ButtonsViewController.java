@@ -26,7 +26,6 @@ import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSMutableAttributedString;
 import org.robovm.apple.foundation.NSRange;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIButtonType;
@@ -132,7 +131,7 @@ public class ButtonsViewController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+    public String getTitleForHeader (UITableView tableView, @MachineSizedSInt long section) {
         return dataSourceArray.get((int)section).getSectionTitle();
     }
 
@@ -142,15 +141,14 @@ public class ButtonsViewController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
-        return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 38.0;
+    public @MachineSizedFloat double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
+        return (indexPath.getRow() == 0) ? 50.0 : 38.0;
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
-
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = null;
-        if (NSIndexPathExtensions.getRow(indexPath) == 0) {
+        if (indexPath.getRow() == 0) {
             cell = getTableView().dequeueReusableCell(DISPLAY_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             UIView viewToRemove = null;
@@ -159,10 +157,10 @@ public class ButtonsViewController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
-            UIButton button = (UIButton)dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getLabel());
+            UIButton button = (UIButton)dataSourceArray.get((int)indexPath.getSection()).getView();
             if (button == null) {
-                System.err.println(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+                System.err.println(dataSourceArray.get((int)indexPath.getSection()).getLabel());
             }
 
             CGRect newFrame = button.getFrame();
@@ -181,7 +179,7 @@ public class ButtonsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getSource());
         }
 
         return cell;

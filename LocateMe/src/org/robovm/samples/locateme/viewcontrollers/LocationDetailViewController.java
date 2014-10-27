@@ -23,7 +23,6 @@ import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
@@ -61,7 +60,7 @@ public class LocationDetailViewController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, long section) {
+    public String getTitleForHeader (UITableView tableView, long section) {
         switch ((int)section) {
         case 0:
             return Str.getLocalizedString("Attributes");
@@ -73,15 +72,15 @@ public class LocationDetailViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         final String locationAttributeCellID = "LocationAttributeCellID";
         UITableViewCell cell = tableView.dequeueReusableCell(locationAttributeCellID);
         if (cell == null) {
             cell = new UITableViewCell(UITableViewCellStyle.Value2, locationAttributeCellID);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
         }
-        int section = (int)NSIndexPathExtensions.getSection(indexPath);
-        int row = (int)NSIndexPathExtensions.getRow(indexPath);
+        int section = (int)indexPath.getSection();
+        int row = (int)indexPath.getRow();
         if (section == 0) {
             switch (row) {
             case 0:

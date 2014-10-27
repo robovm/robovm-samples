@@ -23,7 +23,6 @@ import java.util.LinkedList;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIScreen;
@@ -153,7 +152,7 @@ public class MainViewController extends UITableViewController {
     /** the table's selection has changed, switch to that item's UIViewController */
     @Override
     public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
-        MenuListItem item = menuList.get((int)NSIndexPathExtensions.getRow(indexPath));
+        MenuListItem item = menuList.get((int)indexPath.getRow());
 
         UIViewController targetViewController = item.getViewController();
         getNavigationController().pushViewController(targetViewController, true);
@@ -165,12 +164,12 @@ public class MainViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = getTableView().dequeueReusableCell(MY_CELL_IDENTIFIER, indexPath);
 
         cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
-        cell.getTextLabel().setText(menuList.get((int)NSIndexPathExtensions.getRow(indexPath)).getTitle());
-        cell.getDetailTextLabel().setText(menuList.get((int)NSIndexPathExtensions.getRow(indexPath)).getExplanation());
+        cell.getTextLabel().setText(menuList.get((int)indexPath.getRow()).getTitle());
+        cell.getDetailTextLabel().setText(menuList.get((int)indexPath.getRow()).getExplanation());
         return cell;
     }
 

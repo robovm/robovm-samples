@@ -48,7 +48,7 @@ public class ImageViewController extends UIViewController {
             UIImage.create("scene3.jpg"), UIImage.create("scene4.jpg"), UIImage.create("scene5.jpg"));
 
         imageView.setAnimationImages(images);
-        UIImageView.setDurationForAnimation(5.0);
+        UIImageView.setAnimationDurationInSeconds(5.0);
         imageView.setBackgroundColor(UIColor.black());
         imageView.setAnimationDuration(5.0f); // sync with slider below
         imageView.stopAnimating();

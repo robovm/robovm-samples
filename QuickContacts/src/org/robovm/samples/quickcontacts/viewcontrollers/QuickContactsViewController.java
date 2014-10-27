@@ -170,7 +170,7 @@ public class QuickContactsViewController extends UITableViewController implement
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         final String cellIdentifier = "CellID";
         UITableViewCell aCell;
         // Make the Display Picker and Create New Contact rows look like buttons
@@ -214,7 +214,7 @@ public class QuickContactsViewController extends UITableViewController implement
 
     /** Change the height if "Edit Unknown Contact" is the row selected */
     @Override
-    public double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
+    public double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
         return (indexPath.getSection() == TableRowSelected.UIEditUnknownContactRow.ordinal()) ? UI_EDIT_UNKNOWN_CONTACT_ROW_HEIGHT
             : getTableView().getRowHeight();
     }

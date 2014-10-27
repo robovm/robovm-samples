@@ -69,7 +69,7 @@ public class APLMoveMeView extends UIView {
         }
 
         // Animate the first touch.
-        CGPoint touchPoint = touch.getLocation(this);
+        CGPoint touchPoint = touch.getLocationInView(this);
         animateFirstTouch(touchPoint);
     }
 
@@ -79,7 +79,7 @@ public class APLMoveMeView extends UIView {
 
         // If the touch was in the placardView, move the placardView to its location.
         if (touch.getView() == placardView) {
-            CGPoint location = touch.getLocation(this);
+            CGPoint location = touch.getLocationInView(this);
             placardView.setCenter(location);
             return;
         }

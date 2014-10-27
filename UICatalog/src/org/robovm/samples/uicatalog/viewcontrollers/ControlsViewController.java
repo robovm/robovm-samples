@@ -23,7 +23,6 @@ import java.util.LinkedList;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIActivityIndicatorViewStyle;
@@ -171,7 +170,7 @@ public class ControlsViewController extends UITableViewController {
     }
 
     @Override
-    public String getSectionHeaderTitle (UITableView tableView, @MachineSizedSInt long section) {
+    public String getTitleForHeader (UITableView tableView, @MachineSizedSInt long section) {
         return dataSourceArray.get((int)section).getSectionTitle();
     }
 
@@ -181,17 +180,15 @@ public class ControlsViewController extends UITableViewController {
     }
 
     @Override
-    public @MachineSizedFloat double getRowHeight (UITableView tableView, NSIndexPath indexPath) {
-        return (NSIndexPathExtensions.getRow(indexPath) == 0) ? 50.0 : 38.0;
+    public @MachineSizedFloat double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
+        return (indexPath.getRow() == 0) ? 50.0 : 38.0;
     }
 
     @Override
-    public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
-
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = null;
 
-        if (NSIndexPathExtensions.getRow(indexPath) == 0) {
-
+        if (indexPath.getRow() == 0) {
             cell = getTableView().dequeueReusableCell(DISPLAY_CELL_ID, indexPath);
 
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -201,9 +198,9 @@ public class ControlsViewController extends UITableViewController {
                 viewToRemove.removeFromSuperview();
             }
 
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getLabel());
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getLabel());
 
-            UIView control = dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getView();
+            UIView control = dataSourceArray.get((int)indexPath.getSection()).getView();
 
             CGRect newFrame = control.getFrame();
             newFrame.origin().x(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
@@ -212,9 +209,7 @@ public class ControlsViewController extends UITableViewController {
             // if the cell is ever resized, keep the button over to the right
             control.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin);
             cell.getContentView().addSubview(control);
-
         } else {
-
             cell = getTableView().dequeueReusableCell(SOURCE_CELL_ID, indexPath);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             cell.getTextLabel().setOpaque(false);
@@ -223,8 +218,7 @@ public class ControlsViewController extends UITableViewController {
             cell.getTextLabel().setNumberOfLines(2);
             cell.getTextLabel().setHighlightedTextColor(UIColor.black());
             cell.getTextLabel().setFont(UIFont.getSystemFont(12.0));
-            cell.getTextLabel().setText(dataSourceArray.get((int)NSIndexPathExtensions.getSection(indexPath)).getSource());
-
+            cell.getTextLabel().setText(dataSourceArray.get((int)indexPath.getSection()).getSource());
         }
 
         return cell;
@@ -331,7 +325,7 @@ public class ControlsViewController extends UITableViewController {
             progressInd = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Gray);
             getProgressInd().setColor(progressInd.getColor());
             progressInd.setFrame(frame);
-            getProgressInd().resizeToFit();
+            getProgressInd().sizeToFit();
             getProgressInd().setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle.Gray);
 
             getProgressInd().setTag(viewTag); // tag this view for later so we
@@ -365,7 +359,7 @@ public class ControlsViewController extends UITableViewController {
         if (stepper == null) {
             CGRect frame = new CGRect(0.0, 10.0, 0.0, 0.0);
             stepper = new UIStepper(frame);
-            stepper.resizeToFit(); // size the control to it's normal size
+            stepper.sizeToFit(); // size the control to it's normal size
             stepper.setTag(viewTag); // tag this view for later so we can remove
                                      // it from recycled table cells
             stepper.setValue(0);

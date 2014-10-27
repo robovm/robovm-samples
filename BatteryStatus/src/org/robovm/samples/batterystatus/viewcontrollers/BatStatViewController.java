@@ -25,7 +25,6 @@ import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.foundation.NSNumberFormatter;
 import org.robovm.apple.foundation.NSNumberFormatterStyle;
 import org.robovm.apple.foundation.NSString;
-import org.robovm.apple.uikit.NSIndexPathExtensions;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIDevice;
@@ -82,10 +81,10 @@ public class BatStatViewController extends UITableViewController {
             }
 
             @Override
-            public UITableViewCell getRowCell (UITableView tableView, NSIndexPath indexPath) {
+            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
                 UIView contentView;
 
-                switch ((int)NSIndexPathExtensions.getSection(indexPath)) {
+                switch ((int)indexPath.getSection()) {
                 case 0:
                     UITableViewCell switchCell = new UITableViewCell(new CGRect(0, 99, 320, 44));
                     contentView = switchCell.getContentView();
@@ -119,7 +118,7 @@ public class BatStatViewController extends UITableViewController {
 
                     return levelCell;
                 default:
-                    switch ((int)NSIndexPathExtensions.getRow(indexPath)) {
+                    switch ((int)indexPath.getRow()) {
                     case 0:
                         unknownCell = new UITableViewCell(new CGRect(0, 265, 320, 44));
                         contentView = unknownCell.getContentView();
@@ -165,7 +164,7 @@ public class BatStatViewController extends UITableViewController {
             }
 
             @Override
-            public String getSectionHeaderTitle (UITableView tableView, long section) {
+            public String getTitleForHeader (UITableView tableView, long section) {
                 switch ((int)section) {
                 case 2:
                     return "Battery State";

@@ -32,24 +32,27 @@ public abstract class ListViewController extends UITableViewController {
 
     private UIBarButtonItem editBarButtonItem;
     private UIBarButtonItem doneBarButtonItem;
-    
+
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
-        getNavigationItem().setRightBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Add, 
-            new OnClickListener() {
-                public void onClick(UIBarButtonItem barButtonItem) {
-                    onAdd();
-                }
-            }));
-        
+
+        getNavigationItem().setRightBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Add,
+                new OnClickListener() {
+                    @Override
+                    public void onClick(UIBarButtonItem barButtonItem) {
+                        onAdd();
+                    }
+                }));
+
         editBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Edit, new OnClickListener() {
+            @Override
             public void onClick(UIBarButtonItem barButtonItem) {
                 setEditing(true, true);
             }
         });
         doneBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, new OnClickListener() {
+            @Override
             public void onClick(UIBarButtonItem barButtonItem) {
                 setEditing(false, true);
             }
@@ -66,11 +69,11 @@ public abstract class ListViewController extends UITableViewController {
         }
         super.setEditing(editing, animated);
     }
-    
+
     @Override
     public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
-        
+
         getTableView().reloadData();
         setEditing(false);
     }
@@ -83,7 +86,7 @@ public abstract class ListViewController extends UITableViewController {
 
     @Override
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
-        onEdit((int) NSIndexPathExtensions.getSection(indexPath), 
+        onEdit((int) NSIndexPathExtensions.getSection(indexPath),
                 (int) NSIndexPathExtensions.getRow(indexPath));
     }
 
@@ -91,13 +94,13 @@ public abstract class ListViewController extends UITableViewController {
     public long getNumberOfSections(UITableView tableView) {
         return 1;
     }
-    
+
     @Override
-    public void commitRowEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle,
+    public void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle,
             NSIndexPath indexPath) {
-        
+
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            onDelete((int) NSIndexPathExtensions.getSection(indexPath), 
+            onDelete((int) NSIndexPathExtensions.getSection(indexPath),
                     (int) NSIndexPathExtensions.getRow(indexPath));
         }
     }
