@@ -51,7 +51,6 @@ public class APLMoveMeView extends UIView {
 
         placardView = new APLPlacardView();
         addSubview(placardView);
-
     }
 
     @Override

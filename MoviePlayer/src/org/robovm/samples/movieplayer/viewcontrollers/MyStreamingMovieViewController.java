@@ -47,8 +47,6 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
     private final UIButton playButton;
 
     public MyStreamingMovieViewController () {
-        super();
-
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.66, 1));
 

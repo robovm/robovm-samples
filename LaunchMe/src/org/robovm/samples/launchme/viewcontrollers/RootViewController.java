@@ -15,7 +15,9 @@ import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIFont;
+import org.robovm.apple.uikit.UIGestureRecognizer;
 import org.robovm.apple.uikit.UILabel;
+import org.robovm.apple.uikit.UIMenuController;
 import org.robovm.apple.uikit.UISlider;
 import org.robovm.apple.uikit.UITapGestureRecognizer;
 import org.robovm.apple.uikit.UITextAutocapitalizationType;
@@ -36,8 +38,6 @@ public class RootViewController extends UIViewController {
     private UIColor selectedColor;
 
     public RootViewController () {
-        super();
-
         UIView view = getView();
         view.setBackgroundColor(UIColor.white());
 
@@ -104,7 +104,16 @@ public class RootViewController extends UIViewController {
         urlField.setBackgroundColor(UIColor.white());
         urlField.setFont(UIFont.getSystemFont(17));
         urlField.setAutocapitalizationType(UITextAutocapitalizationType.Sentences);
-        urlField.addGestureRecognizer(new UITapGestureRecognizer()); // TODO [self.urlField selectAll:self];
+        urlField.addGestureRecognizer(new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+            @Override
+            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                // Select the url.
+                urlField.setSelectedRange(new NSRange(0, urlField.getText().length()));
+                // Show the copy menu.
+                UIMenuController.getSharedMenuController().setTargetRect(urlField.getBounds(), urlField);
+                UIMenuController.getSharedMenuController().setMenuVisible(true, true);
+            }
+        }));
         view.addSubview(urlField);
 
         UILabel urlLabel = new UILabel(new CGRect(20, 127, 85, 36));

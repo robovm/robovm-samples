@@ -29,15 +29,11 @@ public class RegionAnnotation extends MKAnnotationAdapter {
     private double radius;
     private final String title;
 
-    public RegionAnnotation () {
-        title = "Monitored Region";
-    }
-
     public RegionAnnotation (CLRegion region) {
         this.region = region;
         coordinate = region.getCenter();
         radius = region.getRadius();
-        title = "MonitoredRegion";
+        title = "Monitored Region";
     }
 
     public void setRadius (double radius) {

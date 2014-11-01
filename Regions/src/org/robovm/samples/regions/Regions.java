@@ -62,6 +62,7 @@ public class Regions extends UIApplicationDelegateAdapter {
         // Reset the icon badge number to zero.
         UIApplication.getSharedApplication().setApplicationIconBadgeNumber(0);
 
+        if (rootViewController == null) return;
         if (CLLocationManager.isSignificantLocationChangeMonitoringAvailable()) {
             // Stop normal location updates and start significant location change updates for battery efficiency.
             rootViewController.getLocationManager().stopUpdatingLocation();

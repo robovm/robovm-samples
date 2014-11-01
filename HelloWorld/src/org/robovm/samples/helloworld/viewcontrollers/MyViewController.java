@@ -22,9 +22,7 @@ package org.robovm.samples.helloworld.viewcontrollers;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSSet;
 import org.robovm.apple.uikit.NSTextAlignment;
-import org.robovm.apple.uikit.UIBaselineAdjustment;
 import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIControlContentVerticalAlignment;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIImage;
@@ -32,13 +30,13 @@ import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UIKeyboardType;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIReturnKeyType;
-import org.robovm.apple.uikit.UITextAutocapitalizationType;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITextBorderStyle;
 import org.robovm.apple.uikit.UITextField;
 import org.robovm.apple.uikit.UITextFieldDelegateAdapter;
 import org.robovm.apple.uikit.UITextFieldViewMode;
 import org.robovm.apple.uikit.UITouch;
-import org.robovm.apple.uikit.UIViewContentMode;
+import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
 
 public class MyViewController extends UIViewController {
@@ -46,24 +44,19 @@ public class MyViewController extends UIViewController {
     private UILabel label;
     private String string;
 
-    private void setupViews () {
+    public MyViewController () {
+        UIView view = getView();
+
         // Setup background.
         UIImageView background = new UIImageView(UIImage.create("Background.png"));
-        background.setFrame(new CGRect(0, 0, 320, 480));
-        background.setContentMode(UIViewContentMode.Center);
-        background.setUserInteractionEnabled(false);
-        getView().addSubview(background);
+        background.setFrame(UIScreen.getMainScreen().getApplicationFrame());
+        view.addSubview(background);
 
         // Setup textfield.
         textField = new UITextField(new CGRect(44, 32, 232, 31));
-        textField.setContentVerticalAlignment(UIControlContentVerticalAlignment.Center);
         textField.setBorderStyle(UITextBorderStyle.RoundedRect);
         textField.setPlaceholder("Hello, World!");
-        textField.setFont(UIFont.getFont("Helvetica", 17));
         textField.setClearsOnBeginEditing(true);
-        textField.setAdjustsFontSizeToFitWidth(true);
-        textField.setMinimumFontSize(17);
-        textField.setAutocapitalizationType(UITextAutocapitalizationType.Words);
         textField.setKeyboardType(UIKeyboardType.ASCIICapable);
         textField.setReturnKeyType(UIReturnKeyType.Done);
         // When the user starts typing, show the clear button in the text field.
@@ -80,22 +73,16 @@ public class MyViewController extends UIViewController {
                 return true;
             }
         });
-        getView().addSubview(textField);
+        view.addSubview(textField);
 
         // Setup label.
         label = new UILabel(new CGRect(20, 104, 280, 44));
-        label.setFont(UIFont.getFont("Helvetica", 24));
+        label.setFont(UIFont.getSystemFont(24));
         label.setTextColor(UIColor.white());
-        label.setBaselineAdjustment(UIBaselineAdjustment.AlignCenters);
         label.setTextAlignment(NSTextAlignment.Center);
         // When the view first loads, display the placeholder text that's in the text field in the label.
         label.setText(textField.getPlaceholder());
-        getView().addSubview(label);
-    }
-
-    @Override
-    public void viewDidLoad () {
-        setupViews();
+        view.addSubview(label);
     }
 
     @Override

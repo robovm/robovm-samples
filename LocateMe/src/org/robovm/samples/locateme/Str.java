@@ -20,11 +20,11 @@
 package org.robovm.samples.locateme;
 
 import org.robovm.apple.corelocation.CLLocation;
-import org.robovm.apple.foundation.NSBundle;
+import org.robovm.apple.foundation.NSString;
 
 public class Str {
     public static String getLocalizedString (String key) {
-        return NSBundle.getMainBundle().getLocalizedString(key, "", null);
+        return NSString.getLocalizedString(key);
     }
 
     public static String getLocalizedCoordinateString (CLLocation location) {

@@ -26,12 +26,9 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.samples.moveme.views.APLMoveMeView;
 
 public class APLViewController extends UIViewController {
-    private APLMoveMeView moveMeView;
+    private final APLMoveMeView moveMeView;
 
-    @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
-
+    public APLViewController () {
         moveMeView = new APLMoveMeView();
 
         // Load the display strings.

@@ -29,9 +29,11 @@ import org.robovm.apple.corelocation.CLLocationCoordinate2D;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.corelocation.CLRegion;
+import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSDate;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
+import org.robovm.apple.foundation.NSOperationQueue;
 import org.robovm.apple.foundation.NSSet;
 import org.robovm.apple.mapkit.MKAnnotation;
 import org.robovm.apple.mapkit.MKAnnotationView;
@@ -54,15 +56,16 @@ import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIInterfaceOrientation;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UISegmentedControl;
 import org.robovm.apple.uikit.UISegmentedControlStyle;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
-import org.robovm.apple.uikit.UITableViewCellSeparatorStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewDataSourceAdapter;
 import org.robovm.apple.uikit.UITableViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
+import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.samples.regions.RegionAnnotation;
 import org.robovm.samples.regions.views.RegionAnnotationView;
@@ -70,65 +73,10 @@ import org.robovm.samples.regions.views.RegionAnnotationView;
 public class RegionsViewController extends UIViewController {
     private MKMapView regionsMapView;
     private UITableView updatesTableView;
-    private List<String> updateEvents;
+    private final List<String> updateEvents = new ArrayList<String>();
     private CLLocationManager locationManager;
 
-    @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
-
-        setupUI();
-
-        // Create empty array to add region events to.
-        updateEvents = new ArrayList<String>();
-
-        // Create location manager with filters set for battery efficiency.
-        locationManager = new CLLocationManager();
-        locationManager.setDelegate(new CLLocationManagerDelegateAdapter() {
-            @Override
-            public void didFail (CLLocationManager manager, NSError error) {
-                System.err.println("didFail: " + error);
-            }
-
-            @Override
-            public void didUpdateToLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
-                System.err.println(String.format("didUpdateToLocation %s from %s", newLocation, oldLocation));
-
-                // Work around a bug in MapKit where user location is not initially zoomed to.
-                if (oldLocation == null) {
-                    // Zoom to the current user location.
-                    MKCoordinateRegion userLocation = MKCoordinateRegion.create(newLocation.getCoordinate(), 1500, 1500);
-                    regionsMapView.setRegion(userLocation, true);
-                }
-            }
-
-            @Override
-            public void didEnterRegion (CLLocationManager manager, CLRegion region) {
-                String event = String.format("didEnterRegion %s at %s", region.getIdentifier(), NSDate.now());
-                update(event);
-            }
-
-            @Override
-            public void didExitRegion (CLLocationManager manager, CLRegion region) {
-                String event = String.format("didExitRegion %s at %s", region.getIdentifier(), NSDate.now());
-                update(event);
-            }
-
-            @Override
-            public void monitoringDidFail (CLLocationManager manager, CLRegion region, NSError error) {
-                String event = String.format("monitoringDidFailForRegion %s: %s", region.getIdentifier(), error);
-                update(event);
-            }
-
-        });
-        locationManager.setDistanceFilter(CLLocationAccuracy.HundredMeters);
-        locationManager.setDesiredAccuracy(CLLocationAccuracy.Best);
-
-        // Start updating location changes.
-        locationManager.startUpdatingLocation();
-    }
-
-    private void setupUI () {
+    public RegionsViewController () {
         UISegmentedControl switchButton = new UISegmentedControl(new CGRect(96, 7, 128, 30));
         switchButton.setControlStyle(UISegmentedControlStyle.Bar);
         switchButton.insertSegment("Map", 0, false);
@@ -152,9 +100,9 @@ public class RegionsViewController extends UIViewController {
 
         UIView view = getView();
 
-        updatesTableView = new UITableView(new CGRect(0, 44, 320, 416));
-        updatesTableView.setAlwaysBounceVertical(true);
-        updatesTableView.setSeparatorStyle(UITableViewCellSeparatorStyle.SingleLine);
+        updatesTableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame());
+        updatesTableView.setAutoresizingMask(UIViewAutoresizing.with(UIViewAutoresizing.FlexibleWidth,
+            UIViewAutoresizing.FlexibleHeight));
         updatesTableView.setHidden(true);
         updatesTableView.setDataSource(new UITableViewDataSourceAdapter() {
             @Override
@@ -191,8 +139,9 @@ public class RegionsViewController extends UIViewController {
         });
         view.addSubview(updatesTableView);
 
-        regionsMapView = new MKMapView();
-        regionsMapView.setFrame(new CGRect(0, 44, 320, 416));
+        regionsMapView = new MKMapView(UIScreen.getMainScreen().getApplicationFrame());
+        regionsMapView.setAutoresizingMask(UIViewAutoresizing.with(UIViewAutoresizing.FlexibleWidth,
+            UIViewAutoresizing.FlexibleHeight));
         regionsMapView.setShowsUserLocation(true);
         regionsMapView.setDelegate(new MKMapViewDelegateAdapter() {
             @Override
@@ -205,22 +154,25 @@ public class RegionsViewController extends UIViewController {
                         .dequeueReusableAnnotationView(annotationIdentifier);
 
                     if (regionView == null) {
-                        regionView = new RegionAnnotationView(currentAnnotation);
-                        regionView.setMap(regionsMapView);
+                        if (currentAnnotation.getCoordinate() != null) {
+                            regionView = new RegionAnnotationView(currentAnnotation);
+                            regionView.setMap(regionsMapView);
 
-                        // Create a button for the left callout accessory view of each annotation to remove the annotation and
-// region being monitored.
-                        UIButton removeRegionButton = UIButton.create(UIButtonType.Custom);
-                        removeRegionButton.setFrame(new CGRect(0, 0, 25, 25));
-                        removeRegionButton.setImage(UIImage.create("RemoveRegion"), UIControlState.Normal);
+                            // Create a button for the left callout accessory view of each annotation to remove the annotation and
+                            // region being monitored.
+                            UIButton removeRegionButton = UIButton.create(UIButtonType.Custom);
+                            removeRegionButton.setFrame(new CGRect(0, 0, 25, 25));
+                            removeRegionButton.setImage(UIImage.create("RemoveRegion"), UIControlState.Normal);
 
-                        regionView.setLeftCalloutAccessoryView(removeRegionButton);
+                            regionView.setLeftCalloutAccessoryView(removeRegionButton);
+                            // Update or add the overlay displaying the radius of the region around the annotation.
+                            regionView.updateRadiusOverlay();
+                        }
                     } else {
                         regionView.setAnnotation(annotation);
+                        // Update or add the overlay displaying the radius of the region around the annotation.
+                        regionView.updateRadiusOverlay();
                     }
-
-                    // Update or add the overlay displaying the radius of the region around the annotation.
-                    regionView.updateRadiusOverlay();
 
                     return regionView;
                 }
@@ -272,17 +224,75 @@ public class RegionsViewController extends UIViewController {
             }
 
             @Override
-            public void calloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control) {
-                RegionAnnotationView regionView = (RegionAnnotationView)view;
-                RegionAnnotation regionAnnotation = (RegionAnnotation)regionView.getAnnotation();
+            public void calloutAccessoryControlTapped (MKMapView mapView, final MKAnnotationView view, UIControl control) {
+                NSOperationQueue.getMainQueue().addOperation(new Runnable() {
+                    @Override
+                    public void run () {
+                        // Stop monitoring the region, remove the radius overlay, and finally remove the annotation from the map.
+                        RegionAnnotationView regionView = (RegionAnnotationView)view;
+                        RegionAnnotation regionAnnotation = (RegionAnnotation)regionView.getAnnotation();
 
-                // Stop monitoring the region, remove the radius overlay, and finally remove the annotation from the map.
-                locationManager.stopMonitoring(regionAnnotation.getRegion());
-                regionView.removeRadiusOverlay();
-                regionsMapView.removeAnnotation(regionAnnotation);
+                        locationManager.stopMonitoring(regionAnnotation.getRegion());
+                        regionView.removeRadiusOverlay();
+                        regionsMapView.removeAnnotation(regionAnnotation);
+                    }
+                });
             }
         });
         view.addSubview(regionsMapView);
+    }
+
+    @Override
+    public void viewDidLoad () {
+        super.viewDidLoad();
+
+        // Create location manager with filters set for battery efficiency.
+        locationManager = new CLLocationManager();
+        if (Foundation.getMajorSystemVersion() >= 8) {
+            locationManager.requestAlwaysAuthorization();
+        }
+        locationManager.setDelegate(new CLLocationManagerDelegateAdapter() {
+            @Override
+            public void didFail (CLLocationManager manager, NSError error) {
+                System.err.println("didFail: " + error);
+            }
+
+            @Override
+            public void didUpdateToLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
+                System.err.println(String.format("didUpdateToLocation %s from %s", newLocation, oldLocation));
+
+                // Work around a bug in MapKit where user location is not initially zoomed to.
+                if (oldLocation == null) {
+                    // Zoom to the current user location.
+                    MKCoordinateRegion userLocation = MKCoordinateRegion.create(newLocation.getCoordinate(), 1500, 1500);
+                    regionsMapView.setRegion(userLocation, true);
+                }
+            }
+
+            @Override
+            public void didEnterRegion (CLLocationManager manager, CLRegion region) {
+                String event = String.format("didEnterRegion %s at %s", region.getIdentifier(), NSDate.now());
+                update(event);
+            }
+
+            @Override
+            public void didExitRegion (CLLocationManager manager, CLRegion region) {
+                String event = String.format("didExitRegion %s at %s", region.getIdentifier(), NSDate.now());
+                update(event);
+            }
+
+            @Override
+            public void monitoringDidFail (CLLocationManager manager, CLRegion region, NSError error) {
+                String event = String.format("monitoringDidFailForRegion %s: %s", region.getIdentifier(), error);
+                update(event);
+            }
+
+        });
+        locationManager.setDistanceFilter(CLLocationAccuracy.HundredMeters);
+        locationManager.setDesiredAccuracy(CLLocationAccuracy.Best);
+
+        // Start updating location changes.
+        locationManager.startUpdatingLocation();
     }
 
     @Override

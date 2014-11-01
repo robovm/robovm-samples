@@ -31,13 +31,12 @@ import org.robovm.apple.uikit.UIDevice;
 import org.robovm.apple.uikit.UIDeviceBatteryState;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UILabel;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UISwitch;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellAccessoryType;
-import org.robovm.apple.uikit.UITableViewCellSeparatorStyle;
 import org.robovm.apple.uikit.UITableViewController;
-import org.robovm.apple.uikit.UITableViewDataSourceAdapter;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.apple.uikit.UIView;
 
@@ -52,145 +51,21 @@ public class BatStatViewController extends UITableViewController {
     private UITableViewCell fullCell;
 
     public BatStatViewController () {
-        super();
-
         getNavigationItem().setTitle("Battery Status");
 
-        UITableView tableView = new UITableView(new CGRect(0, 0, 320, 568), UITableViewStyle.Grouped);
-        tableView.setAlwaysBounceVertical(true);
-        tableView.setSeparatorStyle(UITableViewCellSeparatorStyle.SingleLineEtched);
-        tableView.setRowHeight(44);
-        tableView.setSectionHeaderHeight(20);
-        tableView.setSectionFooterHeight(10);
+        UITableView tableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame(), UITableViewStyle.Grouped);
         tableView.setBackgroundColor(UIColor.groupTableViewBackground());
-        tableView.setDataSource(new UITableViewDataSourceAdapter() {
-            @Override
-            public long getNumberOfSections (UITableView tableView) {
-                return 3;
-            }
-
-            @Override
-            public long getNumberOfRowsInSection (UITableView tableView, long section) {
-                switch ((int)section) {
-                case 0:
-                case 1:
-                    return 1;
-                default:
-                    return 4;
-                }
-            }
-
-            @Override
-            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
-                UIView contentView;
-
-                switch ((int)indexPath.getSection()) {
-                case 0:
-                    UITableViewCell switchCell = new UITableViewCell(new CGRect(0, 99, 320, 44));
-                    contentView = switchCell.getContentView();
-
-                    UILabel monitoringLabel = new UILabel(new CGRect(20, 11, 83, 21));
-                    monitoringLabel.setText("Monitoring");
-                    monitoringLabel.setFont(UIFont.getSystemFont(17));
-                    monitoringLabel.setTextColor(UIColor.darkText());
-                    contentView.addSubview(monitoringLabel);
-
-                    monitorSwitch = new UISwitch(new CGRect(251, 6, 51, 31));
-                    monitorSwitch.setOn(true);
-                    monitorSwitch.addOnValueChangedListener(switchAction);
-                    contentView.addSubview(monitorSwitch);
-
-                    return switchCell;
-                case 1:
-                    UITableViewCell levelCell = new UITableViewCell(new CGRect(0, 173, 320, 44));
-                    contentView = levelCell.getContentView();
-
-                    UILabel levelCaptionLabel = new UILabel(new CGRect(20, 11, 42, 21));
-                    levelCaptionLabel.setText("Level");
-                    levelCaptionLabel.setFont(UIFont.getSystemFont(17));
-                    levelCaptionLabel.setTextColor(UIColor.darkText());
-                    contentView.addSubview(levelCaptionLabel);
-
-                    levelLabel = new UILabel(new CGRect(220, 11, 80, 21));
-                    levelLabel.setFont(UIFont.getSystemFont(17));
-                    levelLabel.setTextColor(UIColor.darkText());
-                    contentView.addSubview(levelLabel);
-
-                    return levelCell;
-                default:
-                    switch ((int)indexPath.getRow()) {
-                    case 0:
-                        unknownCell = new UITableViewCell(new CGRect(0, 265, 320, 44));
-                        contentView = unknownCell.getContentView();
-
-                        UILabel unknownLabel = new UILabel(new CGRect(20, 11, 80, 21));
-                        unknownLabel.setText("Unknown");
-                        unknownLabel.setFont(UIFont.getSystemFont(17));
-                        contentView.addSubview(unknownLabel);
-
-                        return unknownCell;
-                    case 1:
-                        unpluggedCell = new UITableViewCell(new CGRect(0, 309, 320, 44));
-                        contentView = unpluggedCell.getContentView();
-
-                        UILabel unpluggedLabel = new UILabel(new CGRect(20, 11, 90, 21));
-                        unpluggedLabel.setText("Unplugged");
-                        unpluggedLabel.setFont(UIFont.getSystemFont(17));
-                        contentView.addSubview(unpluggedLabel);
-
-                        return unpluggedCell;
-                    case 2:
-                        chargingCell = new UITableViewCell(new CGRect(0, 353, 320, 44));
-                        contentView = chargingCell.getContentView();
-
-                        UILabel chargingLabel = new UILabel(new CGRect(20, 11, 74, 21));
-                        chargingLabel.setText("Charging");
-                        chargingLabel.setFont(UIFont.getSystemFont(17));
-                        contentView.addSubview(chargingLabel);
-
-                        return chargingCell;
-                    default:
-                        fullCell = new UITableViewCell(new CGRect(0, 397, 320, 44));
-                        contentView = fullCell.getContentView();
-
-                        UILabel fullLabel = new UILabel(new CGRect(20, 11, 42, 21));
-                        fullLabel.setText("Full");
-                        fullLabel.setFont(UIFont.getSystemFont(17));
-                        contentView.addSubview(fullLabel);
-
-                        return fullCell;
-                    }
-                }
-            }
-
-            @Override
-            public String getTitleForHeader (UITableView tableView, long section) {
-                switch ((int)section) {
-                case 2:
-                    return "Battery State";
-                default:
-                    return null;
-                }
-            }
-        });
+        tableView.setDataSource(this);
+        setTableView(tableView);
 
         switchAction = new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
-                if (((UISwitch)control).isOn()) {
-                    UIDevice.getCurrentDevice().setBatteryMonitoringEnabled(true);
-                    // The UI will be updated as a result of the first UIDeviceBatteryStateDidChangeNotification notification.
-                    // Note that enabling monitoring only triggers a UIDeviceBatteryStateDidChangeNotification;
-                    // a UIDeviceBatteryLevelDidChangeNotification is not sent.
-                } else {
-                    UIDevice.getCurrentDevice().setBatteryMonitoringEnabled(false);
-
-                    updateBatteryLevel();
-                    updateBatteryState();
-                }
+                UIDevice.getCurrentDevice().setBatteryMonitoringEnabled(((UISwitch)control).isOn());
+                updateBatteryLevel();
+                updateBatteryState();
             }
         };
-        setTableView(tableView);
     }
 
     private void updateBatteryLevel () {
@@ -249,7 +124,118 @@ public class BatStatViewController extends UITableViewController {
 
     @Override
     public void viewDidLayoutSubviews () {
-        super.viewDidLayoutSubviews();
-        switchAction.onValueChanged(monitorSwitch);
+        // Enable battery monitoring.
+        UIDevice.getCurrentDevice().setBatteryMonitoringEnabled(true);
+        updateBatteryLevel();
+        updateBatteryState();
+    }
+
+    @Override
+    public long getNumberOfSections (UITableView tableView) {
+        return 3;
+    }
+
+    @Override
+    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+        switch ((int)section) {
+        case 0:
+        case 1:
+            return 1;
+        default:
+            return 4;
+        }
+    }
+
+    @Override
+    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+        UIView contentView;
+
+        switch ((int)indexPath.getSection()) {
+        case 0:
+            UITableViewCell switchCell = new UITableViewCell(new CGRect(0, 99, 320, 44));
+            contentView = switchCell.getContentView();
+
+            UILabel monitoringLabel = new UILabel(new CGRect(20, 11, 83, 21));
+            monitoringLabel.setText("Monitoring");
+            monitoringLabel.setFont(UIFont.getSystemFont(17));
+            monitoringLabel.setTextColor(UIColor.darkText());
+            contentView.addSubview(monitoringLabel);
+
+            monitorSwitch = new UISwitch(new CGRect(251, 6, 51, 31));
+            monitorSwitch.setOn(true);
+            monitorSwitch.addOnValueChangedListener(switchAction);
+            contentView.addSubview(monitorSwitch);
+
+            return switchCell;
+        case 1:
+            UITableViewCell levelCell = new UITableViewCell(new CGRect(0, 173, 320, 44));
+            contentView = levelCell.getContentView();
+
+            UILabel levelCaptionLabel = new UILabel(new CGRect(20, 11, 42, 21));
+            levelCaptionLabel.setText("Level");
+            levelCaptionLabel.setFont(UIFont.getSystemFont(17));
+            levelCaptionLabel.setTextColor(UIColor.darkText());
+            contentView.addSubview(levelCaptionLabel);
+
+            levelLabel = new UILabel(new CGRect(220, 11, 80, 21));
+            levelLabel.setFont(UIFont.getSystemFont(17));
+            levelLabel.setTextColor(UIColor.darkText());
+            contentView.addSubview(levelLabel);
+
+            return levelCell;
+        default:
+            switch ((int)indexPath.getRow()) {
+            case 0:
+                unknownCell = new UITableViewCell(new CGRect(0, 265, 320, 44));
+                contentView = unknownCell.getContentView();
+
+                UILabel unknownLabel = new UILabel(new CGRect(20, 11, 80, 21));
+                unknownLabel.setText("Unknown");
+                unknownLabel.setFont(UIFont.getSystemFont(17));
+                contentView.addSubview(unknownLabel);
+
+                return unknownCell;
+            case 1:
+                unpluggedCell = new UITableViewCell(new CGRect(0, 309, 320, 44));
+                contentView = unpluggedCell.getContentView();
+
+                UILabel unpluggedLabel = new UILabel(new CGRect(20, 11, 90, 21));
+                unpluggedLabel.setText("Unplugged");
+                unpluggedLabel.setFont(UIFont.getSystemFont(17));
+                contentView.addSubview(unpluggedLabel);
+
+                return unpluggedCell;
+            case 2:
+                chargingCell = new UITableViewCell(new CGRect(0, 353, 320, 44));
+                contentView = chargingCell.getContentView();
+
+                UILabel chargingLabel = new UILabel(new CGRect(20, 11, 74, 21));
+                chargingLabel.setText("Charging");
+                chargingLabel.setFont(UIFont.getSystemFont(17));
+                contentView.addSubview(chargingLabel);
+
+                return chargingCell;
+            default:
+                fullCell = new UITableViewCell(new CGRect(0, 397, 320, 44));
+                contentView = fullCell.getContentView();
+
+                UILabel fullLabel = new UILabel(new CGRect(20, 11, 42, 21));
+                fullLabel.setText("Full");
+                fullLabel.setFont(UIFont.getSystemFont(17));
+                contentView.addSubview(fullLabel);
+
+                return fullCell;
+            }
+        }
+    }
+
+    @Override
+    public String getTitleForHeader (UITableView tableView, long section) {
+        switch ((int)section) {
+        case 2:
+            return "Battery State";
+        default:
+            return null;
+        }
     }
 }

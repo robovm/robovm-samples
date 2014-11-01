@@ -27,11 +27,10 @@ import org.robovm.apple.mapkit.MKMapView;
 import org.robovm.apple.mapkit.MKOverlay;
 import org.robovm.apple.mapkit.MKPinAnnotationColor;
 import org.robovm.apple.mapkit.MKPinAnnotationView;
-import org.robovm.objc.ObjCClass;
 import org.robovm.samples.regions.RegionAnnotation;
 
 public class RegionAnnotationView extends MKPinAnnotationView {
-    private final MKCircle radiusOverlay;
+    private MKCircle radiusOverlay;
     private boolean isRadiusUpdated;
     private MKMapView map;
     private RegionAnnotation annotation;
@@ -46,13 +45,16 @@ public class RegionAnnotationView extends MKPinAnnotationView {
         setAnimatesDrop(true);
         this.annotation = annotation;
         setPinColor(MKPinAnnotationColor.Purple);
-        radiusOverlay = MKCircle.create(annotation.getCoordinate(), annotation.getRadius());
+
+        if (annotation.getCoordinate() != null) {
+            radiusOverlay = MKCircle.create(annotation.getCoordinate(), annotation.getRadius());
+        }
     }
 
     public void removeRadiusOverlay () {
         // Find the overlay for this annotation view and remove it if it has the same coordinates.
         for (NSObject overlay : map.getOverlays()) {
-            if (overlay.isKindOfClass(ObjCClass.getByType(MKCircle.class))) {
+            if (overlay instanceof MKCircle) {
                 MKCircle circleOverlay = (MKCircle)overlay;
                 CLLocationCoordinate2D coord = circleOverlay.getCoordinate();
 

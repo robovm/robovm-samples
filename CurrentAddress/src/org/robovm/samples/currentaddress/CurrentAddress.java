@@ -19,10 +19,13 @@
 
 package org.robovm.samples.currentaddress;
 
+import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSAutoreleasePool;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
+import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
@@ -38,6 +41,13 @@ public class CurrentAddress extends UIApplicationDelegateAdapter {
         // Set up the view controller.
         mapViewController = new MapViewController();
         navigationController = new UINavigationController(mapViewController);
+        if (Foundation.getMajorSystemVersion() >= 7) {
+            navigationController.getNavigationBar().setBarTintColor(UIColor.black());
+        } else {
+            navigationController.getNavigationBar().setTintColor(UIColor.black());
+        }
+        navigationController.getNavigationBar().setTitleTextAttributes(
+            new NSAttributedStringAttributes().setForegroundColor(UIColor.white()));
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());

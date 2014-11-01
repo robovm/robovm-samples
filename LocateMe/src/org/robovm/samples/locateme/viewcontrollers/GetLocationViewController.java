@@ -20,6 +20,7 @@
 package org.robovm.samples.locateme.viewcontrollers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -31,10 +32,14 @@ import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.dispatch.DispatchQueue;
+import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
+import org.robovm.apple.foundation.NSObjectProtocol;
+import org.robovm.apple.uikit.NSLayoutConstraint;
+import org.robovm.apple.uikit.NSLayoutFormatOptions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIActivityIndicatorViewStyle;
@@ -50,11 +55,11 @@ import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIRectEdge;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellAccessoryType;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
-import org.robovm.apple.uikit.UITableViewCellSeparatorStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewDataSourceAdapter;
 import org.robovm.apple.uikit.UITableViewDelegateAdapter;
@@ -80,8 +85,6 @@ public class GetLocationViewController extends UIViewController {
     private UIButton startButton;
 
     public GetLocationViewController () {
-        super();
-
         setupViewController = new SetupViewController();
         setupViewController.setDelegate(new SetupViewControllerDelegate() {
             @Override
@@ -96,10 +99,7 @@ public class GetLocationViewController extends UIViewController {
         dateFormatter = new NSDateFormatter();
         dateFormatter.setDateStyle(NSDateFormatterStyle.Medium);
         dateFormatter.setTimeStyle(NSDateFormatterStyle.Long);
-    }
 
-    @Override
-    public void viewDidLoad () {
         setTitle("Get Location");
         setEdgesForExtendedLayout(UIRectEdge.None);
 
@@ -111,30 +111,26 @@ public class GetLocationViewController extends UIViewController {
          * displays the most accurate valid location measurement received. The third has a row for each valid location object
          * received (including the one displayed in the second section) from the location manager.
          */
-        tableView = new UITableView(new CGRect(0, 0, 320, 460), UITableViewStyle.Grouped);
+        tableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame(), UITableViewStyle.Grouped);
         tableView.setAlpha(0);
-        tableView.setBouncesZoom(false);
-        tableView.setSeparatorStyle(UITableViewCellSeparatorStyle.SingleLine);
-        tableView.setRowHeight(44);
-        tableView.setSectionIndexMinimumDisplayRowCount(0);
-        tableView.setSectionHeaderHeight(10);
-        tableView.setSectionFooterHeight(10);
         view.addSubview(tableView);
 
-        descriptionLabel = new UILabel(new CGRect(7, 30, 306, 150));
+        descriptionLabel = new UILabel();
         descriptionLabel
             .setText("This approach attempts to acquire a location measurement that meets a minimum accuracy. A timeout is specified to avoid unnecessarily wasting power, in case a sufficiently accurate measurement cannot be acquired.");
         descriptionLabel.setFont(UIFont.getSystemFont(17));
         descriptionLabel.setTextColor(UIColor.black());
         descriptionLabel.setNumberOfLines(19);
         descriptionLabel.setTextAlignment(NSTextAlignment.Center);
+        descriptionLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.addSubview(descriptionLabel);
 
-        startButton = new UIButton(new CGRect(124, 195, 72, 37));
-        startButton.getTitleLabel().setFont(UIFont.getFont("Helvetica-Bold", 15));
+        startButton = new UIButton();
+        startButton.getTitleLabel().setFont(UIFont.getBoldSystemFont(15));
         startButton.setTitle("Start", UIControlState.Normal);
         startButton.setTitleColor(UIColor.black(), UIControlState.Normal);
         startButton.setTitleShadowColor(UIColor.gray(), UIControlState.Normal);
+        startButton.setTranslatesAutoresizingMaskIntoConstraints(false);
         startButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
             public void onTouchUpInside (UIControl control, UIEvent event) {
@@ -143,6 +139,17 @@ public class GetLocationViewController extends UIViewController {
             }
         });
         view.addSubview(startButton);
+
+        // Layout
+        Map<String, NSObjectProtocol> views = new HashMap<>();
+        views.put("top", getTopLayoutGuide());
+        views.put("desc", descriptionLabel);
+        views.put("start", startButton);
+
+        view.addConstraints(NSLayoutConstraint.create("H:|-20-[desc]-20-|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|-(<=100)-[start(>=50)]-(<=100)-|", NSLayoutFormatOptions.None, null,
+            views));
+        view.addConstraints(NSLayoutConstraint.create("V:[top]-20-[desc(187)]-[start]", NSLayoutFormatOptions.None, null, views));
 
         tableView.setDataSource(new UITableViewDataSourceAdapter() {
             @Override
@@ -287,6 +294,9 @@ public class GetLocationViewController extends UIViewController {
         tableView.setAlpha(1);
         // Create the manager object
         locationManager = new CLLocationManager();
+        if (Foundation.getMajorSystemVersion() >= 8) {
+            locationManager.requestAlwaysAuthorization();
+        }
         locationManager.setDelegate(new CLLocationManagerDelegateAdapter() {
             /** We want to get and store a location measurement that meets the desired accuracy. For this example, we are going to
              * use horizontal accuracy as the deciding factor. In other cases, you may wish to use vertical accuracy, or both
@@ -356,6 +366,7 @@ public class GetLocationViewController extends UIViewController {
     }
 
     private void stopUpdatingLocation (String state) {
+        canTimeOut = false;
         stateString = state;
         tableView.reloadData();
         locationManager.stopUpdatingLocation();

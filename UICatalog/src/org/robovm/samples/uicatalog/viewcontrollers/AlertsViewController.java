@@ -35,7 +35,6 @@ import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
 import org.robovm.apple.uikit.UITableViewController;
-import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
@@ -92,8 +91,8 @@ public class AlertsViewController extends UITableViewController {
 
         // register our cell IDs for later when we are asked for
         // UITableViewCells
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), ALERT_CELL_ID);
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), SOURCE_CELL_ID);
+        getTableView().registerReusableCellClass(UITableViewCell.class, ALERT_CELL_ID);
+        getTableView().registerReusableCellClass(UITableViewCell.class, SOURCE_CELL_ID);
 
     }
 

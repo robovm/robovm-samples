@@ -45,7 +45,6 @@ import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAutoresizing;
-import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedFloat;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
@@ -159,8 +158,8 @@ public class ControlsViewController extends UITableViewController {
 
         // register our cell IDs for later when we are asked for
         // UITableViewCells
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), DISPLAY_CELL_ID);
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), SOURCE_CELL_ID);
+        getTableView().registerReusableCellClass(UITableViewCell.class, DISPLAY_CELL_ID);
+        getTableView().registerReusableCellClass(UITableViewCell.class, SOURCE_CELL_ID);
 
     }
 

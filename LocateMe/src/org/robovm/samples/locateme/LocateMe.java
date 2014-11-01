@@ -36,7 +36,9 @@ import org.robovm.samples.locateme.viewcontrollers.TrackLocationViewController;
 public class LocateMe extends UIApplicationDelegateAdapter {
     private UIWindow window;
     private UITabBarController tabBarController;
+    private UINavigationController getLocationNavController;
     private GetLocationViewController getLocationViewController;
+    private UINavigationController trackLocationNavController;
     private TrackLocationViewController trackLocationViewController;
 
     @Override
@@ -44,16 +46,16 @@ public class LocateMe extends UIApplicationDelegateAdapter {
         tabBarController = new UITabBarController();
 
         getLocationViewController = new GetLocationViewController();
-        UINavigationController getLocationController = new UINavigationController(getLocationViewController);
-        getLocationController.getTabBarItem().setTitle("Get Location");
-        getLocationController.getTabBarItem().setImage(UIImage.create("pin.png"));
-        tabBarController.addChildViewController(getLocationController);
+        getLocationNavController = new UINavigationController(getLocationViewController);
+        getLocationNavController.getTabBarItem().setTitle("Get Location");
+        getLocationNavController.getTabBarItem().setImage(UIImage.create("pin.png"));
+        tabBarController.addChildViewController(getLocationNavController);
 
         trackLocationViewController = new TrackLocationViewController();
-        UINavigationController trackLocationController = new UINavigationController(trackLocationViewController);
-        trackLocationController.getTabBarItem().setTitle("Track Location");
-        trackLocationController.getTabBarItem().setImage(UIImage.create("bullseye.png"));
-        tabBarController.addChildViewController(trackLocationController);
+        trackLocationNavController = new UINavigationController(trackLocationViewController);
+        trackLocationNavController.getTabBarItem().setTitle("Track Location");
+        trackLocationNavController.getTabBarItem().setImage(UIImage.create("bullseye.png"));
+        tabBarController.addChildViewController(trackLocationNavController);
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());

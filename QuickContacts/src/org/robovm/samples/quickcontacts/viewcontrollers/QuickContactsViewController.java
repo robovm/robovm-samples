@@ -36,25 +36,23 @@ import org.robovm.apple.addressbookui.ABPersonViewController;
 import org.robovm.apple.addressbookui.ABPersonViewControllerDelegate;
 import org.robovm.apple.addressbookui.ABUnknownPersonViewController;
 import org.robovm.apple.addressbookui.ABUnknownPersonViewControllerDelegate;
-import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIAlertView;
 import org.robovm.apple.uikit.UINavigationController;
+import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellAccessoryType;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITableViewStyle;
-import org.robovm.apple.uikit.UIViewContentMode;
 
 /** Demonstrates how to use ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
  * ABNewPersonViewControllerDelegate, and ABUnknownPersonViewControllerDelegate. Shows how to browse a list of Address Book
@@ -64,7 +62,7 @@ public class QuickContactsViewController extends UITableViewController implement
 
     private final static float UI_EDIT_UNKNOWN_CONTACT_ROW_HEIGHT = 81.0f;
 
-    private ABAddressBook addressBook;
+    private final ABAddressBook addressBook;
     private NSArray<NSDictionary<NSString, NSString>> menuArray;
 
     enum TableRowSelected {
@@ -81,32 +79,14 @@ public class QuickContactsViewController extends UITableViewController implement
         }
     }
 
-    private void initUI () {
-        CGRect frame = new CGRect(0, 0, 320, 568);
-        UITableView tableView = new UITableView(frame, UITableViewStyle.Grouped);
-        tableView.setOpaque(false);
-        tableView.setClearsContextBeforeDrawing(false);
-        tableView.setContentMode(UIViewContentMode.ScaleToFill);
-        tableView.setAlwaysBounceVertical(true);
-
-        UITableViewCell cell = new UITableViewCell(new CGRect());
-        cell.setFrame(new CGRect(0, 119, 320, 44));
-        cell.getContentView().setFrame(new CGRect(0.0, 0.0, 320, 43));
-        tableView.addSubview(cell);
-
+    public QuickContactsViewController () {
+        UITableView tableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame(), UITableViewStyle.Grouped);
         setTableView(tableView);
-    }
-
-    /** Implement viewDidLoad to do additional setup after loading the view, typically from a nib. */
-    @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
-        initUI();
 
         // Create an address book object
-        NSDictionary<NSString, NSObject> options = new NSDictionary<NSString, NSObject>();
-        addressBook = ABAddressBook.create(options);
+        addressBook = ABAddressBook.create(null);
         menuArray = new NSArray<>();
+
         checkAddressBookAccess();
     }
 
@@ -138,7 +118,6 @@ public class QuickContactsViewController extends UITableViewController implement
         String plist = NSBundle.getMainBundle().findResourcePath("Menu", "plist");
         menuArray = (NSArray<NSDictionary<NSString, NSString>>)NSArray.read(new File(plist));
         getTableView().reloadData();
-
     }
 
     /** Requests access to current device's address book */
@@ -172,14 +151,18 @@ public class QuickContactsViewController extends UITableViewController implement
     @Override
     public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
         final String cellIdentifier = "CellID";
-        UITableViewCell aCell;
+        UITableViewCell aCell = tableView.dequeueReusableCell(cellIdentifier);
         // Make the Display Picker and Create New Contact rows look like buttons
         int section = (int)indexPath.getSection();
         if (section < 2) {
-            aCell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+            if (aCell == null) {
+                aCell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+            }
             aCell.getTextLabel().setTextAlignment(NSTextAlignment.Center);
         } else {
-            aCell = new UITableViewCell(UITableViewCellStyle.Subtitle, cellIdentifier);
+            if (aCell == null) {
+                aCell = new UITableViewCell(UITableViewCellStyle.Subtitle, cellIdentifier);
+            }
             aCell.setAccessoryType(UITableViewCellAccessoryType.DetailDisclosureButton);
             aCell.getDetailTextLabel().setNumberOfLines(0);
             // Display descriptions for the Edit Unknown Contact and Display and
@@ -229,12 +212,12 @@ public class QuickContactsViewController extends UITableViewController implement
     }
 
     /** Called when users tap "Display Picker" in the application. Displays a list of contacts and allows users to select a contact
-     * from that list. The application only shows the phone, email, and birthdate information of the selected contact. */
+     * from that list. The application only shows the phone, email, and birthday information of the selected contact. */
     private void showPeoplePickerController () {
         ABPeoplePickerNavigationController picker = new ABPeoplePickerNavigationController();
         picker.setPeoplePickerDelegate(this);
 
-        // Display only a person's phone, email, and birthdate
+        // Display only a person's phone, email, and birthday
         List<ABPersonProperty> props = new LinkedList<ABPersonProperty>();
         props.add(ABPersonProperty.Phone);
         props.add(ABPersonProperty.Email);

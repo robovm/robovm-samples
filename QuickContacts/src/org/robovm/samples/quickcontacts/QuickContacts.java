@@ -31,13 +31,14 @@ import org.robovm.samples.quickcontacts.viewcontrollers.QuickContactsViewControl
 
 public class QuickContacts extends UIApplicationDelegateAdapter {
     private UIWindow window = null;
+    private QuickContactsViewController contactsViewController;
 
     @Override
     public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
         window.setBackgroundColor(UIColor.lightGray());
-        UINavigationController navigationController = new UINavigationController(
-            application.addStrongRef(new QuickContactsViewController()));
+        contactsViewController = new QuickContactsViewController();
+        UINavigationController navigationController = new UINavigationController(contactsViewController);
         window.setRootViewController(navigationController);
         window.makeKeyAndVisible();
 

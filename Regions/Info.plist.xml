@@ -24,6 +24,10 @@
         <string>${app.build}</string>
         <key>LSRequiresIPhoneOS</key>
         <true />
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Location When in Use Text</string>
+        <key>NSLocationAlwaysUsageDescription</key>
+        <string>Location Always Text</string>
         <key>UIDeviceFamily</key>
         <array>
             <integer>1</integer>

@@ -39,8 +39,6 @@ public class MyOverlayViewController extends UIViewController {
     private final UILabel movieLoadStateText;
 
     public MyOverlayViewController (final MyMovieViewController movieViewController) {
-        super();
-
         UIView view = getView();
         view.setFrame(new CGRect(0, 0, 123, 57));
         view.setAlpha(0.8);

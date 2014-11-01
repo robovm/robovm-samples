@@ -26,6 +26,9 @@ import java.util.Map;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.corelocation.CLLocationAccuracy;
+import org.robovm.apple.foundation.NSObjectProtocol;
+import org.robovm.apple.uikit.NSLayoutConstraint;
+import org.robovm.apple.uikit.NSLayoutFormatOptions;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonSystemItem;
@@ -66,24 +69,15 @@ public class SetupViewController extends UIViewController {
     private UIPickerView accuracyPicker;
     private UISlider slider;
     private UILabel sliderLabel;
-    private UILabel label1;
-    private UILabel label2;
-    private UILabel label3;
-    private UILabel label4;
+    private final UILabel[] labels = new UILabel[4];
 
     public SetupViewController () {
-        super();
-
         accuracyOptions.add(new AccuracyOption(Str.getLocalizedString("AccuracyBest"), CLLocationAccuracy.Best));
         accuracyOptions.add(new AccuracyOption(Str.getLocalizedString("Accuracy10"), CLLocationAccuracy.NearestTenMeters));
         accuracyOptions.add(new AccuracyOption(Str.getLocalizedString("Accuracy100"), CLLocationAccuracy.HundredMeters));
         accuracyOptions.add(new AccuracyOption(Str.getLocalizedString("Accuracy1000"), CLLocationAccuracy.Kilometer));
         accuracyOptions.add(new AccuracyOption(Str.getLocalizedString("Accuracy3000"), CLLocationAccuracy.ThreeKilometers));
 
-    }
-
-    @Override
-    public void viewDidLoad () {
         setTitle("Configure");
         setEdgesForExtendedLayout(UIRectEdge.None);
 
@@ -99,9 +93,9 @@ public class SetupViewController extends UIViewController {
         UIView view = getView();
         view.setBackgroundColor(UIColor.black());
 
-        accuracyPicker = new UIPickerView(new CGRect(0, 79, 320, 216));
-        accuracyPicker.setMultipleTouchEnabled(true);
+        accuracyPicker = new UIPickerView();
         accuracyPicker.setShowsSelectionIndicator(true);
+        accuracyPicker.setTranslatesAutoresizingMaskIntoConstraints(false);
         accuracyPicker.setDataSource(new UIPickerViewDataSourceAdapter() {
             @Override
             public long getNumberOfComponents (UIPickerView pickerView) {
@@ -131,19 +125,21 @@ public class SetupViewController extends UIViewController {
         });
         view.addSubview(accuracyPicker);
 
-        UILabel desiredAccuracyLabel = new UILabel(new CGRect(20, 50, 151, 21));
+        UILabel desiredAccuracyLabel = new UILabel();
         desiredAccuracyLabel.setText("Desired Accuracy:");
         desiredAccuracyLabel.setFont(UIFont.getFont("Helvetica-Bold", 17));
         desiredAccuracyLabel.setTextColor(UIColor.white());
+        desiredAccuracyLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.addSubview(desiredAccuracyLabel);
 
-        sliderLabel = new UILabel(new CGRect(20, 328, 196, 21));
-        sliderLabel.setFont(UIFont.getFont("Helvetica-Bold", 17));
+        sliderLabel = new UILabel();
+        sliderLabel.setFont(UIFont.getBoldSystemFont(17));
         sliderLabel.setTextColor(UIColor.white());
+        sliderLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.addSubview(sliderLabel);
 
-        slider = new UISlider(new CGRect(18, 370, 284, 23));
-        slider.setMultipleTouchEnabled(true);
+        slider = new UISlider();
+        slider.setTranslatesAutoresizingMaskIntoConstraints(false);
         slider.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
             public void onValueChanged (UIControl control) {
@@ -156,42 +152,39 @@ public class SetupViewController extends UIViewController {
         });
         view.addSubview(slider);
 
-        label4 = new UILabel(new CGRect(284, 400, 32, 18));
-        label4.setFont(UIFont.getSystemFont(14));
-        label4.setTextColor(UIColor.white());
-        view.addSubview(label4);
-
-        label3 = new UILabel(new CGRect(196, 400, 32, 18));
-        label3.setFont(UIFont.getSystemFont(14));
-        label3.setTextColor(UIColor.white());
-        view.addSubview(label3);
-
-        label2 = new UILabel(new CGRect(108, 400, 32, 18));
-        label2.setFont(UIFont.getSystemFont(14));
-        label2.setTextColor(UIColor.white());
-        view.addSubview(label2);
-
-        label1 = new UILabel(new CGRect(20, 400, 32, 18));
-        label1.setFont(UIFont.getSystemFont(14));
-        label1.setTextColor(UIColor.white());
-        view.addSubview(label1);
-
-        if (configureForTracking) {
-            sliderLabel.setText("Distance Filter (meters):");
-            label1.setText("1");
-            label2.setText("10");
-            label3.setText("100");
-            label4.setText("1000");
-        } else {
-            sliderLabel.setText("Timeout (seconds):");
-            slider.setMinimumValue(0);
-            slider.setMaximumValue(3);
-            slider.setValue(2, false);
-            label1.setText("15");
-            label2.setText("30");
-            label3.setText("45");
-            label4.setText("60");
+        for (int i = 0; i < labels.length; i++) {
+            UILabel label = new UILabel();
+            label.setFont(UIFont.getSystemFont(14));
+            label.setTextColor(UIColor.white());
+            label.setTextAlignment(NSTextAlignment.Center);
+            label.setTranslatesAutoresizingMaskIntoConstraints(false);
+            view.addSubview(label);
+            labels[i] = label;
         }
+
+        // Layout
+        Map<String, NSObjectProtocol> views = new HashMap<>();
+        views.put("top", getTopLayoutGuide());
+        views.put("picker", accuracyPicker);
+        views.put("accuracy", desiredAccuracyLabel);
+        views.put("sliderLabel", sliderLabel);
+        views.put("slider", slider);
+        views.put("l1", labels[0]);
+        views.put("l2", labels[1]);
+        views.put("l3", labels[2]);
+        views.put("l4", labels[3]);
+
+        view.addConstraints(NSLayoutConstraint.create("H:|-20-[accuracy]-20-|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|[picker]|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|-20-[sliderLabel]-20-|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|-20-[slider]-20-|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|-[l1]-[l2(==l1)]-[l3(==l1)]-[l4(==l1)]-|", NSLayoutFormatOptions.None,
+            null, views));
+        view.addConstraints(NSLayoutConstraint.create("V:[top]-10-[accuracy]-(-17)-[picker]-(-21)-[sliderLabel]-[slider]-[l1]",
+            NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("V:[slider]-[l2]", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("V:[slider]-[l3]", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("V:[slider]-[l4]", NSLayoutFormatOptions.None, null, views));
     }
 
     @Override
@@ -202,6 +195,23 @@ public class SetupViewController extends UIViewController {
         setupInfo.put(SETUP_INFO_KEY_DISTANCE_FILTER, 100.0);
         setupInfo.put(SETUP_INFO_KEY_TIMEOUT, 45.0);
         setupInfo.put(SETUP_INFO_KEY_ACCURACY, CLLocationAccuracy.HundredMeters);
+
+        if (configureForTracking) {
+            sliderLabel.setText("Distance Filter (meters):");
+            labels[0].setText("1");
+            labels[1].setText("10");
+            labels[2].setText("100");
+            labels[3].setText("1000");
+        } else {
+            sliderLabel.setText("Timeout (seconds):");
+            slider.setMinimumValue(0);
+            slider.setMaximumValue(3);
+            slider.setValue(2, false);
+            labels[0].setText("15");
+            labels[1].setText("30");
+            labels[2].setText("45");
+            labels[3].setText("60");
+        }
     }
 
     public void setDelegate (SetupViewControllerDelegate delegate) {

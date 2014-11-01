@@ -19,15 +19,22 @@
 
 package org.robovm.samples.currentaddress.viewcontrollers;
 
-import org.robovm.apple.coregraphics.CGRect;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.robovm.apple.corelocation.CLGeocoder;
+import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLPlacemark;
 import org.robovm.apple.dispatch.Dispatch;
+import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
+import org.robovm.apple.foundation.NSObjectProtocol;
 import org.robovm.apple.mapkit.MKMapView;
 import org.robovm.apple.mapkit.MKMapViewDelegateAdapter;
 import org.robovm.apple.mapkit.MKUserLocation;
+import org.robovm.apple.uikit.NSLayoutConstraint;
+import org.robovm.apple.uikit.NSLayoutFormatOptions;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonItemStyle;
 import org.robovm.apple.uikit.UIBarButtonSystemItem;
@@ -42,31 +49,30 @@ import org.robovm.rt.bro.ptr.MachineSizedSIntPtr;
 public class MapViewController extends UIViewController {
     private final MKMapView mapView;
     private final UIBarButtonItem getAddressButton;
-    private CLGeocoder geocoder;
+    private final CLGeocoder geocoder;
     private CLPlacemark placemark;
+    private final CLLocationManager locationManager;
 
     private final PlaceMarkViewController placeMarkViewController;
 
     public MapViewController () {
-        super();
-
-        placeMarkViewController = new PlaceMarkViewController();
-
         getNavigationItem().setTitle("Current Address");
+
+        locationManager = new CLLocationManager();
 
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.75, 1));
 
         mapView = new MKMapView();
-        mapView.setFrame(new CGRect(0, 0, 320, 436));
         mapView.setMultipleTouchEnabled(true);
         mapView.setShowsUserLocation(true);
+        mapView.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.addSubview(mapView);
 
-        UIToolbar toolbar = new UIToolbar(new CGRect(0, 436, 320, 44));
+        UIToolbar toolbar = new UIToolbar();
         toolbar.setBarStyle(UIBarStyle.Black);
+        toolbar.setTranslatesAutoresizingMaskIntoConstraints(false);
 
-        UIBarButtonItem flexibleSpace1 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null);
         getAddressButton = new UIBarButtonItem("Get Current Address", UIBarButtonItemStyle.Bordered,
             new UIBarButtonItem.OnClickListener() {
                 @Override
@@ -77,9 +83,19 @@ public class MapViewController extends UIViewController {
                 }
             });
         getAddressButton.setEnabled(false);
-        UIBarButtonItem flexibleSpace2 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null);
-        toolbar.setItems(new NSArray<>(flexibleSpace1, getAddressButton, flexibleSpace2));
+        toolbar.setItems(new NSArray<>(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null), getAddressButton,
+            new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null)));
         view.addSubview(toolbar);
+
+        // Layout
+        Map<String, NSObjectProtocol> views = new HashMap<>();
+        views.put("top", getTopLayoutGuide());
+        views.put("map", mapView);
+        views.put("toolbar", toolbar);
+
+        view.addConstraints(NSLayoutConstraint.create("H:|[map]|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("H:|[toolbar]|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.create("V:[top][map][toolbar]|", NSLayoutFormatOptions.None, null, views));
 
         mapView.setDelegate(new MKMapViewDelegateAdapter() {
             @Override
@@ -109,19 +125,24 @@ public class MapViewController extends UIViewController {
                                 // we have received our current location, so enable the "Get Current Address" button
                                 getAddressButton.setEnabled(true);
                             } else {
-                                // Handle the nil case if necessary.
+                                // Handle the null case if necessary.
                             }
                         }
                     });
             }
         });
+
+        placeMarkViewController = new PlaceMarkViewController();
+        // Create a geocoder and save it for later.
+        geocoder = new CLGeocoder();
     }
 
     @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
+    public void viewWillAppear (boolean animated) {
+        super.viewWillAppear(animated);
 
-        // Create a geocoder and save it for later.
-        geocoder = new CLGeocoder();
+        if (Foundation.getMajorSystemVersion() >= 8) {
+            locationManager.requestWhenInUseAuthorization();
+        }
     }
 }

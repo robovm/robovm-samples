@@ -33,7 +33,6 @@ import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.objc.ObjCClass;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
 /** The application's main view controller (front page) */
@@ -132,7 +131,7 @@ public class MainViewController extends UITableViewController {
         temporaryBarButtonItem.setTitle("Back");
         getNavigationItem().setBackBarButtonItem(temporaryBarButtonItem);
 
-        getTableView().registerReusableCellClass(ObjCClass.getByType(MyTableViewCell.class), MY_CELL_IDENTIFIER);
+        getTableView().registerReusableCellClass(MyTableViewCell.class, MY_CELL_IDENTIFIER);
     }
 
     @Override

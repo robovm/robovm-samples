@@ -60,8 +60,6 @@ public class MyMovieViewController extends UIViewController {
     private NSObject observerPlaybackStateDidChange;
 
     public MyMovieViewController () {
-        super();
-
         movieBackgroundImageView = new UIImageView(UIImage.create("images/movieBackground.jpg"));
         movieBackgroundImageView.setFrame(new CGRect(0, 0, 240, 128));
 
@@ -78,8 +76,10 @@ public class MyMovieViewController extends UIViewController {
     /** Sent to the view controller after the user interface rotates. */
     @Override
     public void didRotate (UIInterfaceOrientation fromInterfaceOrientation) {
-        CGRect viewInsetRect = getView().getBounds().copy();
-        moviePlayerController.getView().setFrame(viewInsetRect.inset(MOVIE_VIEW_OFFSET_X, MOVIE_VIEW_OFFSET_Y));
+        if (moviePlayerController != null) {
+            CGRect viewInsetRect = getView().getBounds().copy();
+            moviePlayerController.getView().setFrame(viewInsetRect.inset(MOVIE_VIEW_OFFSET_X, MOVIE_VIEW_OFFSET_Y));
+        }
         /* Size the overlay view for the current orientation. */
         resizeOverlayWindow();
     }

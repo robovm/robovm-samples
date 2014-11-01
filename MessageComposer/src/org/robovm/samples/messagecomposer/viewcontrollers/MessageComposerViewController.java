@@ -52,8 +52,6 @@ public class MessageComposerViewController extends UIViewController {
     private final UILabel feedbackMsg;
 
     public MessageComposerViewController () {
-        super();
-
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.75, 1));
 
