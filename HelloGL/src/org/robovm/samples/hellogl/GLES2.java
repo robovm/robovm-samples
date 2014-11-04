@@ -12,9 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Portions of this code is based on Apple Inc's HelloWorld sample (v1.8)
- * which is copyright (C) 2008-2010 Apple Inc.
  */
 
 package org.robovm.samples.hellogl;
