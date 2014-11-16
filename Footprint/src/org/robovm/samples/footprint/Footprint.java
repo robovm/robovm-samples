@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's HelloWorld sample (v1.8)
- * which is copyright (C) 2008-2010 Apple Inc.
+ * Portions of this code is based on Apple Inc's Footprint sample (v1.0)
+ * which is copyright (C) 2014 Apple Inc.
  */
 
-package org.robovm.samples.helloworld;
+package org.robovm.samples.footprint;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
@@ -25,16 +25,16 @@ import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.helloworld.viewcontrollers.MyViewController;
+import org.robovm.samples.footprint.viewcontrollers.AAPLViewController;
 
-public class HelloWorld extends UIApplicationDelegateAdapter {
+public class Footprint extends UIApplicationDelegateAdapter {
     private UIWindow window;
-    private MyViewController rootViewController;
+    private AAPLViewController rootViewController;
 
     @Override
     public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
-        rootViewController = new MyViewController();
+        rootViewController = new AAPLViewController();
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
@@ -54,7 +54,7 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
 
     public static void main (String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, HelloWorld.class);
+        UIApplication.main(args, null, Footprint.class);
         pool.close();
     }
 }
