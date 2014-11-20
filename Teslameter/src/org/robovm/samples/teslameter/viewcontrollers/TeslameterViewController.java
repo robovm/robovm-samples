@@ -20,7 +20,7 @@
 package org.robovm.samples.teslameter.viewcontrollers;
 
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.corelocation.CLError;
+import org.robovm.apple.corelocation.CLErrorCode;
 import org.robovm.apple.corelocation.CLHeading;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
@@ -141,10 +141,10 @@ public class TeslameterViewController extends UIViewController {
                 /** This delegate method is invoked when the location managed encounters an error condition. */
                 @Override
                 public void didFail (CLLocationManager manager, NSError error) {
-                    if (error.getCode() == CLError.Denied.value()) {
+                    if (error.getErrorCode() == CLErrorCode.Denied) {
                         // This error indicates that the user has denied the application's request to use location services.
                         manager.stopUpdatingHeading();
-                    } else if (error.getCode() == CLError.HeadingFailure.value()) {
+                    } else if (error.getErrorCode() == CLErrorCode.HeadingFailure) {
                         // This error indicates that the heading could not be determined, most likely because of strong magnetic
                         // interference.
                     }

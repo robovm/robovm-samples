@@ -20,10 +20,10 @@
 package org.robovm.samples.videorecorder.viewcontrollers;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSURL;
 import org.robovm.apple.uikit.UIButton;
@@ -165,7 +165,7 @@ public class RootViewController extends UIViewController {
         imagePicker = new UIImagePickerController();
         imagePicker.setSourceType(UIImagePickerControllerSourceType.Camera);
 
-        imagePicker.setMediaTypes(NSArray.fromStrings("public.movie"));
+        imagePicker.setMediaTypes(Arrays.asList("public.movie"));
         imagePicker.setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode.Video);
 
         imagePicker.setAllowsEditing(false);

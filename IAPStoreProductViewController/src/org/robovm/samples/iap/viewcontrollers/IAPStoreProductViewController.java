@@ -40,7 +40,6 @@ import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITableViewStyle;
-import org.robovm.objc.ObjCClass;
 import org.robovm.objc.block.VoidBlock2;
 import org.robovm.samples.iap.Product;
 
@@ -73,7 +72,7 @@ public class IAPStoreProductViewController extends UITableViewController impleme
         }
 
         UITableView tableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame(), UITableViewStyle.Grouped);
-        tableView.registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), "productID");
+        tableView.registerReusableCellClass(UITableViewCell.class, "productID");
         setTableView(tableView);
     }
 

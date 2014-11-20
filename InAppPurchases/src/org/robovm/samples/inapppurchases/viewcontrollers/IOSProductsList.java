@@ -66,8 +66,8 @@ public class IOSProductsList extends UITableViewController {
 
         fetchProductInformation();
 
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), "availableProductID");
-        getTableView().registerReusableCellClass(ObjCClass.getByType(UITableViewCell.class), "invalidIdentifierID");
+        getTableView().registerReusableCellClass(UITableViewCell.class, "availableProductID");
+        getTableView().registerReusableCellClass(UITableViewCell.class, "invalidIdentifierID");
     }
 
     /** Retrieve product information from the App Store */

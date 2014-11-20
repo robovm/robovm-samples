@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.corelocation.CLError;
+import org.robovm.apple.corelocation.CLErrorCode;
 import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
@@ -294,7 +294,7 @@ public class TrackLocationViewController extends UIViewController {
             @Override
             public void didFail (CLLocationManager manager, NSError error) {
                 // The location "unknown" error simply means the manager is currently unable to get the location.
-                if (error.getCode() != CLError.LocationUnknown.value()) {
+                if (error.getErrorCode() != CLErrorCode.LocationUnknown) {
                     stopUpdatingLocation(Str.getLocalizedString("Error"));
                 }
             }

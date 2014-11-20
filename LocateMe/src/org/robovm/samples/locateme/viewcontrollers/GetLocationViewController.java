@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.corelocation.CLError;
+import org.robovm.apple.corelocation.CLErrorCode;
 import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
@@ -340,7 +340,7 @@ public class GetLocationViewController extends UIViewController {
                 // The location "unknown" error simply means the manager is currently unable to get the location.
                 // We can ignore this error for the scenario of getting a single location fix, because we already have a
                 // timeout that will stop the location manager to save power.
-                if (error.getCode() != CLError.LocationUnknown.value()) {
+                if (error.getErrorCode() != CLErrorCode.LocationUnknown) {
                     stopUpdatingLocation(Str.getLocalizedString("Error"));
                 }
             }

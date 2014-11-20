@@ -187,13 +187,13 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
             case Cancelled:
                 // StoreKit saves your downloaded content in the Caches directory. Let's remove it
                 // before finishing the transaction.
-                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL(), null);
+                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
                 finishDownloadTransaction(download.getTransaction());
                 break;
             case Failed:
                 // If a download fails, remove it from the Caches, then finish the transaction.
                 // It is recommended to retry downloading the content in this case.
-                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL(), null);
+                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
                 finishDownloadTransaction(download.getTransaction());
                 break;
             case Paused:

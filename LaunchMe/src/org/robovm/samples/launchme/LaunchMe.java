@@ -3,7 +3,6 @@ package org.robovm.samples.launchme;
 
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSMatchingOptions;
 import org.robovm.apple.foundation.NSPropertyList;
 import org.robovm.apple.foundation.NSRange;
@@ -90,13 +89,12 @@ public class LaunchMe extends UIApplicationDelegateAdapter {
          * is best to use vetted technology, such as NSRegularExpression, to handle the parsing instead of writing your own
          * parser.
          */
-        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
-        NSRegularExpression regex = new NSRegularExpression("#[0-9a-f]{3}([0-9a-f]{3})?",
-            NSRegularExpressionOptions.CaseInsensitive, error);
-
-        // Check for any error returned. This can be a result of incorrect regex syntax.
-        if (error.get() != null) {
-            System.err.println(error.get());
+        NSRegularExpression regex;
+        try {
+            regex = new NSRegularExpression("#[0-9a-f]{3}([0-9a-f]{3})?", NSRegularExpressionOptions.CaseInsensitive);
+        } catch (Exception e) {
+            // Check for any error returned. This can be a result of incorrect regex syntax.
+            System.err.println(e);
             return null;
         }
 

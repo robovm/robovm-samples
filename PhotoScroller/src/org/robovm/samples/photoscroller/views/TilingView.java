@@ -30,15 +30,14 @@ import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.uikit.UIGraphics;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.objc.ObjCClass;
 import org.robovm.objc.annotation.Method;
 
 public class TilingView extends UIView {
     private final String imageName;
 
     @Method(selector = "layerClass")
-    public static ObjCClass getLayerClass () {
-        return ObjCClass.getByType(CATiledLayer.class);
+    public static Class<?> getLayerClass () {
+        return CATiledLayer.class;
     }
 
     public TilingView (String imageName, CGSize size) {

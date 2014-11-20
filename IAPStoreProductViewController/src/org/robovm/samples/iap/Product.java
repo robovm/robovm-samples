@@ -29,9 +29,9 @@ public class Product {
     // Title of the product
     private final String title;
     // iTunes identifier of the product
-    private final String productID;
+    private final long productID;
 
-    public Product (String category, String title, String productID) {
+    public Product (String category, String title, long productID) {
         this.category = category;
         this.title = title;
         this.productID = productID;
@@ -40,7 +40,7 @@ public class Product {
     public Product (NSDictionary<NSString, NSObject> data) {
         this.category = data.get(new NSString("category")).toString();
         this.title = data.get(new NSString("title")).toString();
-        this.productID = data.get(new NSString("identifier")).toString();
+        this.productID = Long.valueOf(data.get(new NSString("identifier")).toString());
     }
 
     public String getCategory () {
@@ -51,7 +51,7 @@ public class Product {
         return title;
     }
 
-    public String getProductID () {
+    public long getProductID () {
         return productID;
     }
 }
