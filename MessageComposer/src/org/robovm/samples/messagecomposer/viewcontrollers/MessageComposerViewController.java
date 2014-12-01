@@ -20,13 +20,12 @@
 package org.robovm.samples.messagecomposer.viewcontrollers;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.foundation.NSError;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.messageui.MFMailComposeResult;
 import org.robovm.apple.messageui.MFMailComposeViewController;
 import org.robovm.apple.messageui.MFMailComposeViewControllerDelegateAdapter;
@@ -166,13 +165,9 @@ public class MessageComposerViewController extends UIViewController {
         picker.setSubject("Hello from California!");
 
         // Set up recipients
-        NSArray<NSString> toRecipients = NSArray.fromStrings("first@example.com");
-        NSArray<NSString> ccRecipients = NSArray.fromStrings("second@example.com", "third@example.com");
-        NSArray<NSString> bccRecipients = NSArray.fromStrings("fourth@example.com");
-
-        picker.setToRecipients(toRecipients);
-        picker.setCcRecipients(ccRecipients);
-        picker.setBccRecipients(bccRecipients);
+        picker.setToRecipients(Arrays.asList("first@example.com"));
+        picker.setCcRecipients(Arrays.asList("second@example.com", "third@example.com"));
+        picker.setBccRecipients(Arrays.asList("fourth@example.com"));
 
         // Attach an image to the email
         String path = NSBundle.getMainBundle().findResourcePath("rainy", "jpg");
