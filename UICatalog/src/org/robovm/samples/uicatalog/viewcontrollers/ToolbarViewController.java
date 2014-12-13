@@ -231,8 +231,8 @@ public class ToolbarViewController extends UIViewController {
 
         // remember our scroll view's content height (a fixed size) later when
         // we set its content size in viewWillAppear
-        savedContentHightSize = scrollView.getFrame().size().height()
-            - getNavigationController().getNavigationBar().getFrame().getHeight() - toolbar.getFrame().size().height();
+        savedContentHightSize = scrollView.getFrame().getSize().getHeight()
+            - getNavigationController().getNavigationBar().getFrame().getHeight() - toolbar.getFrame().getSize().getHeight();
 
         // @TODO check ...
         getView().addSubview(systemButtonPicker);
@@ -279,7 +279,7 @@ public class ToolbarViewController extends UIViewController {
 
         // create a custom button with a background image with black text for
         // its title:
-        UIBarButtonItem customItem1 = new UIBarButtonItem("Item1", UIBarButtonItemStyle.Bordered, action);
+        UIBarButtonItem customItem1 = new UIBarButtonItem("Item1", UIBarButtonItemStyle.Done, action);
 
         UIImage baseImage = UIImage.create("whiteButton.png");
         UIImage backroundImage = baseImage.createStretchable(12, 0);
@@ -311,7 +311,7 @@ public class ToolbarViewController extends UIViewController {
         // resized
         double adjustedHeight = getView().getBounds().getHeight() - toolbar.getFrame().getHeight();
         CGRect newFrame = scrollView.getFrame();
-        newFrame.size().height(adjustedHeight);
+        newFrame.getSize().setHeight(adjustedHeight);
         scrollView.setFrame(newFrame);
 
         // finally set the content size so that it scrolls in landscape but not

@@ -62,8 +62,8 @@ public class AAPLCoordinateConverter {
         fromAnchorMKPoint = MKMapPoint.create(anchors.fromAnchor.latitudeLongitude);
         MKMapPoint toAnchorMapkitPoint = MKMapPoint.create(anchors.toAnchor.latitudeLongitude);
 
-        double xDistance = anchors.toAnchor.pixel.x() - anchors.fromAnchor.pixel.x();
-        double yDistance = anchors.toAnchor.pixel.y() - anchors.fromAnchor.pixel.y();
+        double xDistance = anchors.toAnchor.pixel.getX() - anchors.fromAnchor.pixel.getX();
+        double yDistance = anchors.toAnchor.pixel.getY() - anchors.fromAnchor.pixel.getY();
 
         // ... so that we can use MapKit's helper function to compute distance.
         // this helper function takes into account the curvature of the earth.
@@ -97,7 +97,7 @@ public class AAPLCoordinateConverter {
 
         AAPLGeoAnchor bottomRightAnchor = new AAPLGeoAnchor();
         bottomRightAnchor.latitudeLongitude = bottomRight;
-        bottomRightAnchor.pixel = new CGPoint(imageSize.width(), imageSize.height());
+        bottomRightAnchor.pixel = new CGPoint(imageSize.getWidth(), imageSize.getHeight());
 
         AAPLGeoAnchorPair anchorPair = new AAPLGeoAnchorPair();
         anchorPair.fromAnchor = topLeftAnchor;
@@ -111,11 +111,11 @@ public class AAPLCoordinateConverter {
      * @param toPoint
      * @return */
     public static AAPLEastSouthDistance convertPoint (MKMapPoint from, MKMapPoint to) {
-        double metersPerMapPoint = MKMapPoint.getMetersPerMapPoint(from.toCoordinate().latitude());
+        double metersPerMapPoint = MKMapPoint.getMetersPerMapPoint(from.toCoordinate().getLatitude());
 
         AAPLEastSouthDistance eastSouthDistance = new AAPLEastSouthDistance();
-        eastSouthDistance.east = (to.x() - from.x()) * metersPerMapPoint;
-        eastSouthDistance.south = (to.y() - from.y()) * metersPerMapPoint;
+        eastSouthDistance.east = (to.getX() - from.getX()) * metersPerMapPoint;
+        eastSouthDistance.south = (to.getY() - from.getY()) * metersPerMapPoint;
 
         return eastSouthDistance;
     }
@@ -135,8 +135,8 @@ public class AAPLCoordinateConverter {
 
         // however, we need the pixels from the (0, 0) of the floorplan
         // so we adjust by the position of the anchor point in the floorplan
-        xy.x(xy.x() + fromAnchorFloorplanPoint.x());
-        xy.y(xy.y() + fromAnchorFloorplanPoint.y());
+        xy.setX(xy.getX() + fromAnchorFloorplanPoint.getX());
+        xy.setY(xy.getY() + fromAnchorFloorplanPoint.getY());
 
         return xy;
     }

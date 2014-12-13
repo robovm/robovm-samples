@@ -18,9 +18,9 @@ public class InfiniteScrollView extends UIScrollView {
     public InfiniteScrollView (CGRect frame) {
         super(frame);
 
-        setContentSize(new CGSize(5000, getFrame().size().height()));
+        setContentSize(new CGSize(5000, getFrame().getSize().getHeight()));
 
-        labelContainerView = new UIView(new CGRect(0, 0, getContentSize().width(), getContentSize().height() / 2));
+        labelContainerView = new UIView(new CGRect(0, 0, getContentSize().getWidth(), getContentSize().getHeight() / 2));
         labelContainerView.setUserInteractionEnabled(false);
         addSubview(labelContainerView);
 
@@ -31,17 +31,17 @@ public class InfiniteScrollView extends UIScrollView {
     /** Recenter content periodically to achieve impression of infinite scrolling. */
     private void recenterIfNecessary () {
         CGPoint currentOffset = getContentOffset();
-        double contentWidth = getContentSize().width();
-        double centerOffsetX = (contentWidth - getBounds().size().width()) / 2.0;
-        double distanceFromCenter = Math.abs(currentOffset.x() - centerOffsetX);
+        double contentWidth = getContentSize().getWidth();
+        double centerOffsetX = (contentWidth - getBounds().getSize().getWidth()) / 2.0;
+        double distanceFromCenter = Math.abs(currentOffset.getX() - centerOffsetX);
 
         if (distanceFromCenter > (contentWidth / 4.0)) {
-            setContentOffset(currentOffset.x(centerOffsetX));
+            setContentOffset(currentOffset.setX(centerOffsetX));
 
             // move content by the same amount so it appears to stay still
             for (UILabel label : visibleLabels) {
                 CGPoint center = labelContainerView.convertPointToView(label.getCenter(), this);
-                center.x(center.x() + centerOffsetX - currentOffset.x());
+                center.setX(center.getX() + centerOffsetX - currentOffset.getX());
                 label.setCenter(convertPointToView(center, labelContainerView));
             }
         }
@@ -75,8 +75,8 @@ public class InfiniteScrollView extends UIScrollView {
         visibleLabels.add(label); // add rightmost label at the end of the array
 
         CGRect frame = label.getFrame();
-        frame.origin().x(rightEdge);
-        frame.origin().y(labelContainerView.getBounds().size().height() - frame.size().height());
+        frame.getOrigin().setX(rightEdge);
+        frame.getOrigin().setY(labelContainerView.getBounds().getSize().getHeight() - frame.getSize().getHeight());
         label.setFrame(frame);
 
         return frame.getMaxX();
@@ -87,8 +87,8 @@ public class InfiniteScrollView extends UIScrollView {
         visibleLabels.add(0, label); // add leftmost label at the beginning of the array
 
         CGRect frame = label.getFrame();
-        frame.origin().x(leftEdge - frame.size().width());
-        frame.origin().y(labelContainerView.getBounds().size().height() - frame.size().height());
+        frame.getOrigin().setX(leftEdge - frame.getSize().getWidth());
+        frame.getOrigin().setY(labelContainerView.getBounds().getSize().getHeight() - frame.getSize().getHeight());
         label.setFrame(frame);
 
         return frame.getMinX();
@@ -117,7 +117,7 @@ public class InfiniteScrollView extends UIScrollView {
 
         // remove labels that have fallen off right edge
         lastLabel = visibleLabels.get(visibleLabels.size() - 1);
-        while (lastLabel.getFrame().origin().x() > maximumVisibleX) {
+        while (lastLabel.getFrame().getOrigin().getX() > maximumVisibleX) {
             lastLabel.removeFromSuperview();
             visibleLabels.remove(visibleLabels.size() - 1);
             lastLabel = visibleLabels.get(visibleLabels.size() - 1);

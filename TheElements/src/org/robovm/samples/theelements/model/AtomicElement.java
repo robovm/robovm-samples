@@ -90,7 +90,7 @@ public class AtomicElement extends NSObject {
         UIGraphics.beginImageContext(itemSize);
 
         UIImage backgroundImage = UIImage.create(String.format("%s_30.png", state));
-        CGRect elementSymbolRectangle = new CGRect(0, 0, itemSize.width(), itemSize.height());
+        CGRect elementSymbolRectangle = new CGRect(0, 0, itemSize.getWidth(), itemSize.getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
         // draw the element name
@@ -105,7 +105,7 @@ public class AtomicElement extends NSObject {
         font = UIFont.getBoldSystemFont(13);
         NSString symbolString = new NSString(symbol);
         CGSize stringSize = symbolString.getSize(font);
-        point = new CGPoint((elementSymbolRectangle.size().width() - stringSize.width()) / 2, 10);
+        point = new CGPoint((elementSymbolRectangle.getSize().getWidth() - stringSize.getWidth()) / 2, 10);
 
         symbolString.draw(point, font);
 

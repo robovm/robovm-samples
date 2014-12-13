@@ -61,7 +61,7 @@ public class RegionAnnotation extends MKAnnotationAdapter {
 
     @Override
     public String getSubtitle () {
-        return String.format("Lat: %.4f, Lon: %.4f, Rad: %.1fm", coordinate.latitude(), coordinate.longitude(), radius);
+        return String.format("Lat: %.4f, Lon: %.4f, Rad: %.1fm", coordinate.getLatitude(), coordinate.getLongitude(), radius);
     }
 
     public CLRegion getRegion () {

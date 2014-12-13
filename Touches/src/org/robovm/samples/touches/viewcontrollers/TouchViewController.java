@@ -115,17 +115,17 @@ public class TouchViewController extends UIViewController {
             if (numTaps == 2 && piecesOnTop) {
                 // A double tap positions the three pieces in a diagonal.
                 // The user will want to double tap when two or more pieces are on top of each other
-                if (firstPieceView.getCenter().x() == secondPieceView.getCenter().x()) {
-                    secondPieceView.setCenter(new CGPoint(firstPieceView.getCenter().x() - 50,
-                        firstPieceView.getCenter().y() - 50));
+                if (firstPieceView.getCenter().getX() == secondPieceView.getCenter().getX()) {
+                    secondPieceView.setCenter(new CGPoint(firstPieceView.getCenter().getX() - 50, firstPieceView.getCenter()
+                        .getY() - 50));
                 }
-                if (firstPieceView.getCenter().x() == thirdPieceView.getCenter().x()) {
-                    thirdPieceView
-                        .setCenter(new CGPoint(firstPieceView.getCenter().x() + 50, firstPieceView.getCenter().y() + 50));
+                if (firstPieceView.getCenter().getX() == thirdPieceView.getCenter().getX()) {
+                    thirdPieceView.setCenter(new CGPoint(firstPieceView.getCenter().getX() + 50, firstPieceView.getCenter()
+                        .getY() + 50));
                 }
-                if (secondPieceView.getCenter().x() == thirdPieceView.getCenter().x()) {
-                    thirdPieceView.setCenter(new CGPoint(secondPieceView.getCenter().x() + 50,
-                        secondPieceView.getCenter().y() + 50));
+                if (secondPieceView.getCenter().getX() == thirdPieceView.getCenter().getX()) {
+                    thirdPieceView.setCenter(new CGPoint(secondPieceView.getCenter().getX() + 50, secondPieceView.getCenter()
+                        .getY() + 50));
                 }
                 touchInstructionsText.setText("");
             }

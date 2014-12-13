@@ -161,7 +161,7 @@ public class TextFieldController extends UITableViewController {
             UITextField textField = (UITextField)dataSourceArray.get((int)indexPath.getSection()).getView();
 
             CGRect newFrame = textField.getFrame();
-            newFrame.size(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
+            newFrame.setSize(new CGSize(cell.getContentView().getFrame().getWidth() - Constants.LEFT_MARGIN * 2, cell
                 .getContentView().getFrame().getHeight()));
             textField.setFrame(newFrame);
 

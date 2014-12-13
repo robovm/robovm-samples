@@ -16,6 +16,7 @@
  * Portions of this code is based on Apple Inc's MoviePlayer sample (v1.5)
  * which is copyright (C) 2008-2014 Apple Inc.
  */
+
 package org.robovm.samples.movieplayer;
 
 import java.io.File;
@@ -40,11 +41,11 @@ public class MoviePlayerUserPrefs {
     private static final String REPEAT_MODE_KEY = "repeatMode";
     private static final String MOVIE_BACKGROUND_IMAGE_KEY = "useMovieBackgroundImage";
 
-    private static void registerDefaults() {
+    @SuppressWarnings("unchecked")
+    private static void registerDefaults () {
         /*
-         * First get the movie player settings defaults (scaling, controller
-         * type, background color, repeat mode, application audio session) set
-         * by the user via the built-in iPhone Settings application
+         * First get the movie player settings defaults (scaling, controller type, background color, repeat mode, application
+         * audio session) set by the user via the built-in iPhone Settings application
          */
         String testValue = NSUserDefaults.getStandardUserDefaults().getString(SCALING_MODE_KEY);
         if (testValue == null) {
@@ -63,10 +64,10 @@ public class MoviePlayerUserPrefs {
 
             String pathStr = NSBundle.getMainBundle().getBundlePath();
             String finalPath = pathStr + "/Settings.bundle" + "/Root.plist";
-            NSDictionary<NSString, NSObject> settingsDict = (NSDictionary<NSString, NSObject>) NSDictionary
-                    .read(new File(finalPath));
-            NSArray<NSDictionary<NSString, NSObject>> prefSpecifierArray = (NSArray<NSDictionary<NSString, NSObject>>) settingsDict
-                    .get(new NSString("PreferenceSpecifiers"));
+            NSDictionary<NSString, NSObject> settingsDict = (NSDictionary<NSString, NSObject>)NSDictionary.read(new File(
+                finalPath));
+            NSArray<NSDictionary<NSString, NSObject>> prefSpecifierArray = (NSArray<NSDictionary<NSString, NSObject>>)settingsDict
+                .get(new NSString("PreferenceSpecifiers"));
             NSNumber controlStyleDefault = null;
             NSNumber scalingModeDefault = null;
             NSNumber backgroundColorDefault = null;
@@ -77,10 +78,10 @@ public class MoviePlayerUserPrefs {
             NSString defaultStr = new NSString("DefaultValue");
 
             for (NSDictionary<NSString, NSObject> prefItem : prefSpecifierArray) {
-                NSString key = (NSString) prefItem.get(keyStr);
+                NSString key = (NSString)prefItem.get(keyStr);
                 if (key != null) {
                     String keyValueStr = key.toString();
-                    NSNumber defaultValue = (NSNumber) prefItem.get(defaultStr);
+                    NSNumber defaultValue = (NSNumber)prefItem.get(defaultStr);
 
                     if (keyValueStr.equals(SCALING_MODE_KEY)) {
                         scalingModeDefault = defaultValue;
@@ -97,88 +98,67 @@ public class MoviePlayerUserPrefs {
             }
 
             // Since no default values have been set, create them here.
-            NSDictionary<NSString, NSObject> appDefaults = new NSDictionary<NSString, NSObject>(new NSString(
-                    SCALING_MODE_KEY), scalingModeDefault, new NSString(CONTROL_STYLE_KEY), controlStyleDefault,
-                    new NSString(BACKGROUND_COLOR_KEY), backgroundColorDefault, new NSString(REPEAT_MODE_KEY),
-                    repeatModeDefault, new NSString(MOVIE_BACKGROUND_IMAGE_KEY), movieBackgroundImageDefault);
+            NSDictionary<NSString, NSObject> appDefaults = new NSDictionary<NSString, NSObject>(new NSString(SCALING_MODE_KEY),
+                scalingModeDefault, new NSString(CONTROL_STYLE_KEY), controlStyleDefault, new NSString(BACKGROUND_COLOR_KEY),
+                backgroundColorDefault, new NSString(REPEAT_MODE_KEY), repeatModeDefault,
+                new NSString(MOVIE_BACKGROUND_IMAGE_KEY), movieBackgroundImageDefault);
 
             NSUserDefaults.getStandardUserDefaults().registerDefaults(appDefaults);
             NSUserDefaults.getStandardUserDefaults().synchronize();
         } else {
             /*
-             * Writes any modifications to the persistent domains to disk and
-             * updates all unmodified persistent domains to what is on disk.
+             * Writes any modifications to the persistent domains to disk and updates all unmodified persistent domains to what is
+             * on disk.
              */
             NSUserDefaults.getStandardUserDefaults().synchronize();
         }
     }
 
-    /**
-     * Movie scaling mode can be one of: MPMovieScalingModeNone,
-     * MPMovieScalingModeAspectFit, MPMovieScalingModeAspectFill,
+    /** Movie scaling mode can be one of: MPMovieScalingModeNone, MPMovieScalingModeAspectFit, MPMovieScalingModeAspectFill,
      * MPMovieScalingModeFill.
      * 
-     * Movie scaling mode describes how the movie content is scaled to fit the
-     * frame of its view. It may be one of:
+     * Movie scaling mode describes how the movie content is scaled to fit the frame of its view. It may be one of:
      * 
-     * MPMovieScalingModeNone, MPMovieScalingModeAspectFit,
-     * MPMovieScalingModeAspectFill, MPMovieScalingModeFill.
-     */
-    public static MPMovieScalingMode getScalingMode() {
+     * MPMovieScalingModeNone, MPMovieScalingModeAspectFit, MPMovieScalingModeAspectFill, MPMovieScalingModeFill. */
+    public static MPMovieScalingMode getScalingMode () {
         registerDefaults();
 
         return MPMovieScalingMode.valueOf(NSUserDefaults.getStandardUserDefaults().getInteger(SCALING_MODE_KEY));
     }
 
-    /**
-     * Movie control style can be one of: MPMovieControlStyleNone,
-     * MPMovieControlStyleEmbedded, MPMovieControlStyleFullscreen.
+    /** Movie control style can be one of: MPMovieControlStyleNone, MPMovieControlStyleEmbedded, MPMovieControlStyleFullscreen.
      * 
-     * Movie control style describes the style of the playback controls. It can
-     * be one of:
+     * Movie control style describes the style of the playback controls. It can be one of:
      * 
-     * MPMovieControlStyleNone, MPMovieControlStyleEmbedded,
-     * MPMovieControlStyleFullscreen, MPMovieControlStyleDefault,
-     * MPMovieControlStyleFullscreen
-     */
-    public static MPMovieControlStyle getControlStyle() {
+     * MPMovieControlStyleNone, MPMovieControlStyleEmbedded, MPMovieControlStyleFullscreen, MPMovieControlStyleDefault,
+     * MPMovieControlStyleFullscreen */
+    public static MPMovieControlStyle getControlStyle () {
         registerDefaults();
 
         return MPMovieControlStyle.valueOf(NSUserDefaults.getStandardUserDefaults().getInteger(CONTROL_STYLE_KEY));
     }
 
-    /**
-     * The color of the background area behind the movie can be any UIColor
-     * value.
-     */
-    public static UIColor getBackgroundColor() {
+    /** The color of the background area behind the movie can be any UIColor value. */
+    public static UIColor getBackgroundColor () {
         registerDefaults();
 
-        UIColor[] colors = new UIColor[] { UIColor.black(), UIColor.darkGray(), UIColor.lightGray(),
-                UIColor.white(),
-                UIColor.gray(), UIColor.red(), UIColor.green(), UIColor.blue(),
-                UIColor.cyan(),
-                UIColor.yellow(), UIColor.magenta(), UIColor.orange(), UIColor.purple(),
-                UIColor.brown(),
-                UIColor.clear() };
+        UIColor[] colors = new UIColor[] {UIColor.black(), UIColor.darkGray(), UIColor.lightGray(), UIColor.white(),
+            UIColor.gray(), UIColor.red(), UIColor.green(), UIColor.blue(), UIColor.cyan(), UIColor.yellow(), UIColor.magenta(),
+            UIColor.orange(), UIColor.purple(), UIColor.brown(), UIColor.clear()};
 
-        return colors[(int) NSUserDefaults.getStandardUserDefaults().getInteger(BACKGROUND_COLOR_KEY)];
+        return colors[(int)NSUserDefaults.getStandardUserDefaults().getInteger(BACKGROUND_COLOR_KEY)];
     }
 
-    /**
-     * Movie repeat mode describes how the movie player repeats content at the
-     * end of playback.
+    /** Movie repeat mode describes how the movie player repeats content at the end of playback.
      * 
-     * Movie repeat mode can be one of: MPMovieRepeatModeNone,
-     * MPMovieRepeatModeOne.
-     */
-    public static MPMovieRepeatMode getRepeatMode() {
+     * Movie repeat mode can be one of: MPMovieRepeatModeNone, MPMovieRepeatModeOne. */
+    public static MPMovieRepeatMode getRepeatMode () {
         registerDefaults();
 
         return MPMovieRepeatMode.valueOf(NSUserDefaults.getStandardUserDefaults().getInteger(REPEAT_MODE_KEY));
     }
 
-    public static boolean useMovieBackground() {
+    public static boolean useMovieBackground () {
         registerDefaults();
 
         return NSUserDefaults.getStandardUserDefaults().getInteger(MOVIE_BACKGROUND_IMAGE_KEY) != 0;

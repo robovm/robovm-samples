@@ -61,9 +61,9 @@ public class AtomicElementViewController extends UIViewController {
 
         frontViewIsVisible = true;
         CGSize preferredAtomicElementViewSize = AtomicElementView.getPreferredViewSize();
-        CGRect viewRect = new CGRect((getView().getBounds().getWidth() - preferredAtomicElementViewSize.width()) / 2, (getView()
-            .getBounds().getHeight() - preferredAtomicElementViewSize.height()) / 2 - 40, preferredAtomicElementViewSize.width(),
-            preferredAtomicElementViewSize.height());
+        CGRect viewRect = new CGRect((getView().getBounds().getWidth() - preferredAtomicElementViewSize.getWidth()) / 2,
+            (getView().getBounds().getHeight() - preferredAtomicElementViewSize.getHeight()) / 2 - 40,
+            preferredAtomicElementViewSize.getWidth(), preferredAtomicElementViewSize.getHeight());
         // create the atomic element view
         atomicElementView = new AtomicElementView(viewRect);
 
@@ -78,10 +78,10 @@ public class AtomicElementViewController extends UIViewController {
         atomicElementFlippedView.setViewController(this);
 
         // create the reflection view
-        CGRect reflectionRect = new CGRect(viewRect.origin(), viewRect.size());
+        CGRect reflectionRect = new CGRect(viewRect.getOrigin(), viewRect.getSize());
 
         // the reflection is a fraction of the size of the view being reflected
-        reflectionRect.size().height(reflectionRect.getHeight() * REFLECTION_FRACTION);
+        reflectionRect.getSize().setHeight(reflectionRect.getHeight() * REFLECTION_FRACTION);
         // and is offset to be at the bottom of the view being reflected
         reflectionRect = reflectionRect.offset(0, viewRect.getHeight());
         reflectionView = new UIImageView(reflectionRect);

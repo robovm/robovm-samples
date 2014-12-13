@@ -110,15 +110,16 @@ public class ParentViewController extends UIViewController {
         // Add the status message to the UI if a download is in progress.
         // Remove it when the download is done
         if (hasDownloadContent) {
-            messageFrame = new CGRect(contentFrame.origin().x(), contentFrame.origin().y(), contentFrame.size().width(), 44);
-            contentFrame.size().height(contentFrame.size().height() - messageFrame.size().height());
-            contentFrame.origin().y(contentFrame.origin().y() + messageFrame.size().height());
+            messageFrame = new CGRect(contentFrame.getOrigin().getX(), contentFrame.getOrigin().getY(), contentFrame.getSize()
+                .getWidth(), 44);
+            contentFrame.getSize().setHeight(contentFrame.getSize().getHeight() - messageFrame.getSize().getHeight());
+            contentFrame.getOrigin().setY(contentFrame.getOrigin().getY() + messageFrame.getSize().getHeight());
         } else {
             contentFrame = getView().getFrame();
             // We need to account for the navigation bar
-            contentFrame.origin().y(64);
-            contentFrame.size().height(contentFrame.size().height() - contentFrame.origin().y());
-            messageFrame.origin().y(getView().getFrame().size().height());
+            contentFrame.getOrigin().setY(64);
+            contentFrame.getSize().setHeight(contentFrame.getSize().getHeight() - contentFrame.getOrigin().getY());
+            messageFrame.getOrigin().setY(getView().getFrame().getSize().getHeight());
         }
 
         containerView.setFrame(contentFrame);
@@ -204,8 +205,8 @@ public class ParentViewController extends UIViewController {
         }
 
         CGRect frame = newViewController.getView().getFrame();
-        frame.size().width(containerView.getFrame().getWidth());
-        frame.size().height(containerView.getFrame().getHeight());
+        frame.getSize().setWidth(containerView.getFrame().getWidth());
+        frame.getSize().setHeight(containerView.getFrame().getHeight());
         newViewController.getView().setFrame(frame);
         containerView.addSubview(newViewController.getView());
     }

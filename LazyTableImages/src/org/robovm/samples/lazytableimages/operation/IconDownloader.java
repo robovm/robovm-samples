@@ -73,10 +73,10 @@ public class IconDownloader {
                 // Set appIcon and clear temporary data/image
                 UIImage image = new UIImage(activeDownload);
 
-                if (image.getSize().width() != APP_ICON_SIZE || image.getSize().height() != APP_ICON_SIZE) {
+                if (image.getSize().getWidth() != APP_ICON_SIZE || image.getSize().getHeight() != APP_ICON_SIZE) {
                     CGSize itemSize = new CGSize(APP_ICON_SIZE, APP_ICON_SIZE);
                     UIGraphics.beginImageContext(itemSize, false, 0.0f);
-                    CGRect imageRect = new CGRect(0, 0, itemSize.width(), itemSize.height());
+                    CGRect imageRect = new CGRect(0, 0, itemSize.getWidth(), itemSize.getHeight());
                     image.draw(imageRect);
                     appRecord.appIcon = UIGraphics.getImageFromCurrentImageContext();
                     UIGraphics.endImageContext();

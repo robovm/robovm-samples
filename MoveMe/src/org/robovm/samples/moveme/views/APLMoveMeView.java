@@ -163,16 +163,16 @@ public class APLMoveMeView extends UIView {
         UIBezierPath bouncePath = new UIBezierPath();
 
         CGPoint centerPoint = getCenter();
-        double midX = centerPoint.x();
-        double midY = centerPoint.y();
-        double originalOffsetX = placardView.getCenter().x() - midX;
-        double originalOffsetY = placardView.getCenter().y() - midY;
+        double midX = centerPoint.getX();
+        double midY = centerPoint.getY();
+        double originalOffsetX = placardView.getCenter().getX() - midX;
+        double originalOffsetY = placardView.getCenter().getY() - midY;
         double offsetDivider = 4;
 
         boolean stopBouncing = false;
 
         // Start the path at the placard's current location.
-        bouncePath.move(new CGPoint(placardView.getCenter().x(), placardView.getCenter().y()));
+        bouncePath.move(new CGPoint(placardView.getCenter().getX(), placardView.getCenter().getY()));
         bouncePath.addLine(new CGPoint(midX, midY));
 
         // Add to the bounce path in decreasing excursions from the center.

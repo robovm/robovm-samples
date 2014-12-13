@@ -73,7 +73,7 @@ public class MapViewController extends UIViewController {
         toolbar.setBarStyle(UIBarStyle.Black);
         toolbar.setTranslatesAutoresizingMaskIntoConstraints(false);
 
-        getAddressButton = new UIBarButtonItem("Get Current Address", UIBarButtonItemStyle.Bordered,
+        getAddressButton = new UIBarButtonItem("Get Current Address", UIBarButtonItemStyle.Plain,
             new UIBarButtonItem.OnClickListener() {
                 @Override
                 public void onClick (UIBarButtonItem barButtonItem) {
@@ -103,7 +103,7 @@ public class MapViewController extends UIViewController {
                 // Center the map the first time we get a real location change.
                 final MachineSizedSIntPtr centerMapFirstTime = new MachineSizedSIntPtr();
 
-                if ((userLocation.getCoordinate().latitude() != 0.0) && (userLocation.getCoordinate().longitude() != 0.0)) {
+                if ((userLocation.getCoordinate().getLatitude() != 0.0) && (userLocation.getCoordinate().getLongitude() != 0.0)) {
                     Dispatch.once(centerMapFirstTime, new Runnable() {
                         @Override
                         public void run () {

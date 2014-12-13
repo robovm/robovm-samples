@@ -116,7 +116,7 @@ public class ControlsViewController extends UITableViewController {
 
         UIBarButtonItem tintButton = new UIBarButtonItem();
         tintButton.setTitle("Tinted");
-        tintButton.setStyle(UIBarButtonItemStyle.Bordered);
+        tintButton.setStyle(UIBarButtonItemStyle.Done);
         tintButton.setOnClickListener(new UIBarButtonItem.OnClickListener() {
             /** Performs a tint action on applicable controls. */
             @Override
@@ -202,7 +202,7 @@ public class ControlsViewController extends UITableViewController {
             UIView control = dataSourceArray.get((int)indexPath.getSection()).getView();
 
             CGRect newFrame = control.getFrame();
-            newFrame.origin().x(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
+            newFrame.getOrigin().setX(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
             control.setFrame(newFrame);
 
             // if the cell is ever resized, keep the button over to the right

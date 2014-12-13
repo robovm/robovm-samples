@@ -47,17 +47,17 @@ public class CustomView extends UIView {
     public CustomView (String title, UIImage image) {
         super(new CGRect(0.0, 0.0, VIEW_WIDTH, VIEW_HEIGHT));
 
-        double yCoord = (getBounds().size().height() - LABEL_HEIGHT) / 2;
-        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, yCoord, (getFrame().getWidth())
-            - MARGIN_SIZE + image.getSize().width() + MARGIN_SIZE, LABEL_HEIGHT));
+        double yCoord = (getBounds().getSize().getHeight() - LABEL_HEIGHT) / 2;
+        titleLabel = new UILabel(new CGRect(MARGIN_SIZE + image.getSize().getWidth() + MARGIN_SIZE, yCoord,
+            (getFrame().getWidth()) - MARGIN_SIZE + image.getSize().getWidth() + MARGIN_SIZE, LABEL_HEIGHT));
 
         titleLabel.setText(title.toString());
         titleLabel.setBackgroundColor(UIColor.clear());
         addSubview(titleLabel);
 
-        yCoord = (getBounds().size().height() - image.getSize().height()) / 2;
-        UIImageView imageView = new UIImageView(
-            new CGRect(MARGIN_SIZE, yCoord, image.getSize().width(), image.getSize().height()));
+        yCoord = (getBounds().getSize().getHeight() - image.getSize().getHeight()) / 2;
+        UIImageView imageView = new UIImageView(new CGRect(MARGIN_SIZE, yCoord, image.getSize().getWidth(), image.getSize()
+            .getHeight()));
 
         imageView.setImage(image);
         addSubview(imageView);

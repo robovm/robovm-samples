@@ -163,7 +163,7 @@ public class ButtonsViewController extends UITableViewController {
             }
 
             CGRect newFrame = button.getFrame();
-            newFrame.origin().x(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
+            newFrame.getOrigin().setX(cell.getContentView().getFrame().getWidth() - newFrame.getWidth() - 10.0);
             button.setFrame(newFrame);
 
             // if the cell is ever resized, keep the button over to the right

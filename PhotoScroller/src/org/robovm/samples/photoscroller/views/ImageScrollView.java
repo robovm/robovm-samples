@@ -28,8 +28,8 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.foundation.NSDictionary;
+import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSObject;
-import org.robovm.apple.foundation.NSPropertyListMutabilityOptions;
 import org.robovm.apple.foundation.NSPropertyListSerialization;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIImage;
@@ -82,27 +82,27 @@ public class ImageScrollView extends UIScrollView {
         super.layoutSubviews();
 
         // center the zoom view as it becomes smaller than the size of the screen
-        CGSize boundsSize = getBounds().size();
+        CGSize boundsSize = getBounds().getSize();
         CGRect frameToCenter = zoomView.getFrame();
 
         // center horizontally
-        if (frameToCenter.size().width() < boundsSize.width())
-            frameToCenter.origin().x((boundsSize.width() - frameToCenter.size().width()) / 2);
+        if (frameToCenter.getSize().getWidth() < boundsSize.getWidth())
+            frameToCenter.getOrigin().setX((boundsSize.getWidth() - frameToCenter.getSize().getWidth()) / 2);
         else
-            frameToCenter.origin().x(0);
+            frameToCenter.getOrigin().setX(0);
 
         // center vertically
-        if (frameToCenter.size().height() < boundsSize.height())
-            frameToCenter.origin().y((boundsSize.height() - frameToCenter.size().height()) / 2);
+        if (frameToCenter.getSize().getHeight() < boundsSize.getHeight())
+            frameToCenter.getOrigin().setY((boundsSize.getHeight() - frameToCenter.getSize().getHeight()) / 2);
         else
-            frameToCenter.origin().y(0);
+            frameToCenter.getOrigin().setY(0);
 
         zoomView.setFrame(frameToCenter);
     }
 
     @Override
     public void setFrame (CGRect frame) {
-        boolean sizeChanging = !frame.size().equalToSize(getFrame().size());
+        boolean sizeChanging = !frame.getSize().equalToSize(getFrame().getSize());
         if (sizeChanging) {
             prepareToResize();
         }
@@ -161,15 +161,15 @@ public class ImageScrollView extends UIScrollView {
     }
 
     private void setMaxMinZoomScalesForCurrentBounds () {
-        CGSize boundsSize = getBounds().size();
+        CGSize boundsSize = getBounds().getSize();
 
         // calculate min/max zoomscale
-        double xScale = boundsSize.width() / imageSize.width(); // the scale needed to perfectly fit the image width-wise
-        double yScale = boundsSize.height() / imageSize.height(); // the scale needed to perfectly fit the image height-wise
+        double xScale = boundsSize.getWidth() / imageSize.getWidth(); // the scale needed to perfectly fit the image width-wise
+        double yScale = boundsSize.getHeight() / imageSize.getHeight(); // the scale needed to perfectly fit the image height-wise
 
         // fill width if the image and phone are both portrait or both landscape; otherwise take smaller scale
-        boolean imagePortrait = imageSize.height() > imageSize.width();
-        boolean phonePortrait = boundsSize.height() > boundsSize.width();
+        boolean imagePortrait = imageSize.getHeight() > imageSize.getWidth();
+        boolean phonePortrait = boundsSize.getHeight() > boundsSize.getWidth();
         double minScale = imagePortrait == phonePortrait ? xScale : Math.min(xScale, yScale);
 
         // on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the
@@ -209,26 +209,26 @@ public class ImageScrollView extends UIScrollView {
         CGPoint boundsCenter = convertPointFromView(pointToCenterAfterResize, zoomView);
 
         // 2b: calculate the content offset that would yield that center point
-        CGPoint offset = new CGPoint(boundsCenter.x() - getBounds().size().width() / 2.0, boundsCenter.y()
-            - getBounds().size().height() / 2.0);
+        CGPoint offset = new CGPoint(boundsCenter.getX() - getBounds().getSize().getWidth() / 2.0, boundsCenter.getY()
+            - getBounds().getSize().getHeight() / 2.0);
 
         // 2c: restore offset, adjusted to be within the allowable range
         CGPoint maxOffset = getMaximumContentOffset();
         CGPoint minOffset = getMinimumContentOffset();
 
-        double realMaxOffset = Math.min(maxOffset.x(), offset.x());
-        offset.x(Math.max(minOffset.x(), realMaxOffset));
+        double realMaxOffset = Math.min(maxOffset.getX(), offset.getX());
+        offset.setX(Math.max(minOffset.getX(), realMaxOffset));
 
-        realMaxOffset = Math.min(maxOffset.y(), offset.y());
-        offset.y(Math.max(minOffset.y(), realMaxOffset));
+        realMaxOffset = Math.min(maxOffset.getY(), offset.getY());
+        offset.setY(Math.max(minOffset.getY(), realMaxOffset));
 
         setContentOffset(offset);
     }
 
     private CGPoint getMaximumContentOffset () {
         CGSize contentSize = getContentSize();
-        CGSize boundsSize = getBounds().size();
-        return new CGPoint(contentSize.width() - boundsSize.width(), contentSize.height() - boundsSize.height());
+        CGSize boundsSize = getBounds().getSize();
+        return new CGPoint(contentSize.getWidth() - boundsSize.getWidth(), contentSize.getHeight() - boundsSize.getHeight());
     }
 
     private CGPoint getMinimumContentOffset () {
@@ -239,11 +239,10 @@ public class ImageScrollView extends UIScrollView {
         if (imageData == null) {
             String path = NSBundle.getMainBundle().findResourcePath("ImageData", "plist");
             NSData plistData = NSData.read(new File(path));
-            imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData,
-                NSPropertyListMutabilityOptions.Immutable);
-
-            if (imageData == null) {
-                System.err.println("Unable to read image data: "); // TODO error
+            try {
+                imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData, 0);
+            } catch (NSErrorException e) {
+                System.err.println("Unable to read image data: " + e.getError());
             }
         }
         return imageData;
@@ -255,6 +254,7 @@ public class ImageScrollView extends UIScrollView {
         return imageData.size();
     }
 
+    @SuppressWarnings("unchecked")
     private static String getImageName (int index) {
         NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>)getImageData().get(index);
         return info.get(new NSString("name")).toString();
@@ -266,6 +266,7 @@ public class ImageScrollView extends UIScrollView {
         return UIImage.create(new File(path));
     }
 
+    @SuppressWarnings("unchecked")
     private static CGSize getImageSize (int index) {
         NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>)getImageData().get(index);
         float width = Float.valueOf(info.get(new NSString("width")).toString());

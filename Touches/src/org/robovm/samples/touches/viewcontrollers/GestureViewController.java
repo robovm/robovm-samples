@@ -168,8 +168,8 @@ public class GestureViewController extends UIViewController {
             CGPoint locationInSuperview = gestureRecognizer.getLocationInView(piece.getSuperview());
 
             piece.getLayer().setAnchorPoint(
-                new CGPoint(locationInView.x() / piece.getBounds().size().width(), locationInView.y()
-                    / piece.getBounds().size().height()));
+                new CGPoint(locationInView.getX() / piece.getBounds().getSize().getWidth(), locationInView.getY()
+                    / piece.getBounds().getSize().getHeight()));
             piece.setCenter(locationInSuperview);
         }
     }
@@ -194,7 +194,7 @@ public class GestureViewController extends UIViewController {
             menuController.setMenuItems(new NSArray<>(resetMenuItem));
 
             CGPoint location = gestureRecognizer.getLocationInView(gestureRecognizer.getView());
-            CGRect menuLocation = new CGRect(location.x(), location.y(), 0, 0);
+            CGRect menuLocation = new CGRect(location.getX(), location.getY(), 0, 0);
             menuController.setTargetRect(menuLocation, gestureRecognizer.getView());
 
             menuController.setMenuVisible(true, true);
@@ -237,7 +237,8 @@ public class GestureViewController extends UIViewController {
             || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
             CGPoint translation = gestureRecognizer.getTranslation(piece.getSuperview());
 
-            piece.setCenter(new CGPoint(piece.getCenter().x() + translation.x(), piece.getCenter().y() + translation.y()));
+            piece.setCenter(new CGPoint(piece.getCenter().getX() + translation.getX(), piece.getCenter().getY()
+                + translation.getY()));
             gestureRecognizer.setTranslation(CGPoint.Zero(), piece.getSuperview());
         }
     }

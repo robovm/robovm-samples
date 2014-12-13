@@ -131,24 +131,25 @@ public class AAPLViewController extends UIViewController {
     }
 
     private void setScaleAndOffset () {
-        CGSize imageViewFrameSize = imageView.getFrame().size();
+        CGSize imageViewFrameSize = imageView.getFrame().getSize();
         CGSize imageSize = imageView.getImage().getSize();
 
         // Calculate how much we'll be scaling the image to fit on screen.
-        displayScale = Math.min(imageViewFrameSize.width() / imageSize.width(), imageViewFrameSize.height() / imageSize.height());
+        displayScale = Math.min(imageViewFrameSize.getWidth() / imageSize.getWidth(),
+            imageViewFrameSize.getHeight() / imageSize.getHeight());
         System.out.println(String.format("Scale Factor: %f", displayScale));
 
         // Depending on whether we're constrained by width or height,
         // figure out how much our floorplan pixels need to be offset to adjust for the image being centered
-        if (imageViewFrameSize.width() / imageSize.width() < imageViewFrameSize.height() / imageSize.height()) {
+        if (imageViewFrameSize.getWidth() / imageSize.getWidth() < imageViewFrameSize.getHeight() / imageSize.getHeight()) {
             System.out.println("Contrained by width");
-            displayOffset = new CGPoint(0, (imageViewFrameSize.height() - imageSize.height() * displayScale) / 2);
+            displayOffset = new CGPoint(0, (imageViewFrameSize.getHeight() - imageSize.getHeight() * displayScale) / 2);
         } else {
             System.out.println("Contrained by height");
-            displayOffset = new CGPoint((imageViewFrameSize.width() - imageSize.width() * displayScale) / 2, 0);
+            displayOffset = new CGPoint((imageViewFrameSize.getWidth() - imageSize.getWidth() * displayScale) / 2, 0);
         }
 
-        System.out.println(String.format("Offset: %f, %f", displayOffset.x(), displayOffset.y()));
+        System.out.println(String.format("Offset: %f, %f", displayOffset.getX(), displayOffset.getY()));
     }
 
     private void startTrackingLocation () {
@@ -169,8 +170,8 @@ public class AAPLViewController extends UIViewController {
                 CGPoint pointOnImage = coordinateConverter.getPointFromCoordinate(location.getCoordinate());
 
                 // These coordinates need to be scaled based on how much the image has been scaled
-                CGPoint scaledPoint = new CGPoint(pointOnImage.x() * displayScale + displayOffset.x(), pointOnImage.y()
-                    * displayScale + displayOffset.y());
+                CGPoint scaledPoint = new CGPoint(pointOnImage.getX() * displayScale + displayOffset.getX(), pointOnImage.getY()
+                    * displayScale + displayOffset.getY());
 
                 // Calculate and set the size of the radius
                 double radiusFrameSize = location.getHorizontalAccuracy() * coordinateConverter.getPixelsPerMeter() * 2;

@@ -77,7 +77,8 @@ public class AtomicElementView extends UIView {
         // get the background image for the state of the element
         // position it appropriately and draw the image
         UIImage backgroundImage = element.getStateImageForAtomicElementView();
-        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().width(), backgroundImage.getSize().height());
+        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().getWidth(), backgroundImage.getSize()
+            .getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
         // all the text is drawn in white
@@ -86,7 +87,7 @@ public class AtomicElementView extends UIView {
         // draw the element name
         UIFont font = UIFont.getBoldSystemFont(36);
         CGSize stringSize = new NSString(element.getName()).getSize(font);
-        CGPoint point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, 256 / 2 - 50);
+        CGPoint point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, 256 / 2 - 50);
         new NSString(element.getName()).draw(point, font);
 
         // draw the element number
@@ -97,7 +98,7 @@ public class AtomicElementView extends UIView {
         // draw the element symbol
         font = UIFont.getBoldSystemFont(96);
         stringSize = new NSString(element.getSymbol()).getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, 256 - 120);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, 256 - 120);
         new NSString(element.getSymbol()).draw(point, font);
     }
 
@@ -141,7 +142,7 @@ public class AtomicElementView extends UIView {
         CGColorSpace colorSpace = CGColorSpace.createDeviceRGB();
 
         // create a bitmap graphics context the size of the image
-        CGBitmapContext mainViewContentContext = CGBitmapContext.create((long)getBounds().size().width(), height, 8, 0,
+        CGBitmapContext mainViewContentContext = CGBitmapContext.create((long)getBounds().getSize().getWidth(), height, 8, 0,
             colorSpace, new CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.value()));
 
         // free the rgb colorspace
@@ -153,7 +154,7 @@ public class AtomicElementView extends UIView {
         // it rendered it is inverted. Since we're only creating a context the size of our
         // reflection view (a fraction of the size of the main view) we have to translate the context the
         // delta in size, render it, and then translate back
-        double translateVertical = getBounds().size().height() - height;
+        double translateVertical = getBounds().getSize().getHeight() - height;
         mainViewContentContext.translateCTM(0, -translateVertical);
 
         // render the layer into the bitmap context

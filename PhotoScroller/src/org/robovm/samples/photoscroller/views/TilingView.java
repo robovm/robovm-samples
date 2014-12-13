@@ -65,7 +65,7 @@ public class TilingView extends UIView {
          * both dimensions.
          */
 
-        double scale = context.getCTM().a();
+        double scale = context.getCTM().getA();
 
         CATiledLayer tiledLayer = (CATiledLayer)getLayer();
         CGSize tileSize = tiledLayer.getTileSize();
@@ -77,19 +77,20 @@ public class TilingView extends UIView {
          * 6 small tiles to fill the entire original image area. But this is okay, because the big blurry image we're drawing here
          * will be scaled way down before it is displayed.)
          */
-        tileSize.width(tileSize.width() / scale);
-        tileSize.height(tileSize.height() / scale);
+        tileSize.setWidth(tileSize.getWidth() / scale);
+        tileSize.setHeight(tileSize.getHeight() / scale);
 
         // calculate the rows and columns of tiles that intersect the rect we have been asked to draw
-        int firstCol = (int)Math.floor(rect.getMinX() / tileSize.width());
-        int lastCol = (int)Math.floor((rect.getMaxX() - 1) / tileSize.width());
-        int firstRow = (int)Math.floor(rect.getMinY() / tileSize.height());
-        int lastRow = (int)Math.floor((rect.getMaxY() - 1) / tileSize.height());
+        int firstCol = (int)Math.floor(rect.getMinX() / tileSize.getWidth());
+        int lastCol = (int)Math.floor((rect.getMaxX() - 1) / tileSize.getWidth());
+        int firstRow = (int)Math.floor(rect.getMinY() / tileSize.getHeight());
+        int lastRow = (int)Math.floor((rect.getMaxY() - 1) / tileSize.getHeight());
 
         for (int row = firstRow; row <= lastRow; row++) {
             for (int col = firstCol; col <= lastCol; col++) {
                 UIImage tile = getTile(scale, row, col);
-                CGRect tileRect = new CGRect(tileSize.width() * col, tileSize.height() * row, tileSize.width(), tileSize.height());
+                CGRect tileRect = new CGRect(tileSize.getWidth() * col, tileSize.getHeight() * row, tileSize.getWidth(),
+                    tileSize.getHeight());
                 /*
                  * if the tile would stick outside of our bounds, we need to truncate it so as to avoid stretching out the partial
                  * tiles at the right and bottom edges

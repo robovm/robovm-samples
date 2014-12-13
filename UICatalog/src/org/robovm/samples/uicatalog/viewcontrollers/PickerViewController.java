@@ -194,16 +194,16 @@ public class PickerViewController extends UIViewController {
 
     private CGRect pickerFrameWithSize (CGSize size) {
         CGRect resultFrame;
-        double height = size.height();
-        double width = size.width();
+        double height = size.getHeight();
+        double width = size.getWidth();
 
-        if (size.height() < OPTIMUM_PICKER_HEIGHT) {
+        if (size.getHeight() < OPTIMUM_PICKER_HEIGHT) {
             // if in landscape, the picker height can be sized too small, so use
             // a optimum height
             height = OPTIMUM_PICKER_HEIGHT;
         }
 
-        if (size.width() > OPTIMUM_PICKER_WIDTH) {
+        if (size.getWidth() > OPTIMUM_PICKER_WIDTH) {
             // keep the width an optimum size as well
             width = OPTIMUM_PICKER_WIDTH;
         }
@@ -222,7 +222,7 @@ public class PickerViewController extends UIViewController {
 
         myPickerView.sizeToFit();
 
-        CGSize pickerSize = myPickerView.getFrame().size();
+        CGSize pickerSize = myPickerView.getFrame().getSize();
         myPickerView.setFrame(pickerFrameWithSize(pickerSize));
 
         myPickerView.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin.set(UIViewAutoresizing.FlexibleRightMargin));
@@ -247,7 +247,7 @@ public class PickerViewController extends UIViewController {
         datePickerView.setDatePickerMode(UIDatePickerMode.Date);
 
         datePickerView.sizeToFit();
-        CGSize pickerSize = datePickerView.getFrame().size();
+        CGSize pickerSize = datePickerView.getFrame().getSize();
         datePickerView.setFrame(pickerFrameWithSize(pickerSize));
 
         // add this picker to our view controller, initially hidden
@@ -272,7 +272,7 @@ public class PickerViewController extends UIViewController {
         // this is because picker views have a built in optimum size,
         // you just need to set the correct origin in your view.
         customPickerView.sizeToFit();
-        CGSize pickerSize = customPickerView.getFrame().size();
+        CGSize pickerSize = customPickerView.getFrame().getSize();
         customPickerView.setFrame(pickerFrameWithSize(pickerSize));
         customPickerView.setShowsSelectionIndicator(true);
 

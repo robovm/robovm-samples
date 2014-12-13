@@ -110,7 +110,7 @@ public class SetupViewController extends UIViewController {
         accuracyPicker.setDelegate(new UIPickerViewDelegateAdapter() {
             @Override
             public UIView getRowView (UIPickerView pickerView, long row, long component, UIView view) {
-                UILabel label = new UILabel(new CGRect(0, 0, pickerView.getFrame().size().width(), 44));
+                UILabel label = new UILabel(new CGRect(0, 0, pickerView.getFrame().getSize().getWidth(), 44));
                 label.setTextColor(UIColor.white());
                 label.setTextAlignment(NSTextAlignment.Center);
                 label.setFont(UIFont.getSystemFont(16));

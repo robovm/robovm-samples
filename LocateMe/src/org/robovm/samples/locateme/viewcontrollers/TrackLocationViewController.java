@@ -192,7 +192,7 @@ public class TrackLocationViewController extends UIViewController {
                         cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
                         activityIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Gray);
                         CGRect frame = activityIndicator.getFrame();
-                        frame.origin(new CGPoint(290, 12));
+                        frame.setOrigin(new CGPoint(290, 12));
                         activityIndicator.setFrame(frame);
                         activityIndicator.setAutoresizingMask(UIViewAutoresizing.FlexibleLeftMargin);
                         activityIndicator.setTag(StatusCellActivityIndicatorTag);
@@ -310,7 +310,7 @@ public class TrackLocationViewController extends UIViewController {
 
         stateString = Str.getLocalizedString("Tracking");
         tableView.reloadData();
-        UIBarButtonItem resetItem = new UIBarButtonItem(Str.getLocalizedString("Reset"), UIBarButtonItemStyle.Bordered,
+        UIBarButtonItem resetItem = new UIBarButtonItem(Str.getLocalizedString("Reset"), UIBarButtonItemStyle.Plain,
             new UIBarButtonItem.OnClickListener() {
                 @Override
                 public void onClick (UIBarButtonItem barButtonItem) {

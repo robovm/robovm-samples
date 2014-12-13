@@ -58,7 +58,6 @@ import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIInterfaceOrientation;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UISegmentedControl;
-import org.robovm.apple.uikit.UISegmentedControlStyle;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellStyle;
@@ -78,7 +77,6 @@ public class RegionsViewController extends UIViewController {
 
     public RegionsViewController () {
         UISegmentedControl switchButton = new UISegmentedControl(new CGRect(96, 7, 128, 30));
-        switchButton.setControlStyle(UISegmentedControlStyle.Bar);
         switchButton.insertSegment("Map", 0, false);
         switchButton.insertSegment("Update", 1, false);
         switchButton.setSelectedSegment(0);
@@ -214,7 +212,7 @@ public class RegionsViewController extends UIViewController {
                         regionView.updateRadiusOverlay();
 
                         CLRegion newRegion = new CLRegion(regionAnnotation.getCoordinate(), 1000, String.format("%f, %f",
-                            regionAnnotation.getCoordinate().latitude(), regionAnnotation.getCoordinate().longitude()));
+                            regionAnnotation.getCoordinate().getLatitude(), regionAnnotation.getCoordinate().getLongitude()));
                         regionAnnotation.setRegion(newRegion);
                         newRegion.release();
 
@@ -337,10 +335,10 @@ public class RegionsViewController extends UIViewController {
     private void addRegion () {
         if (CLLocationManager.isRegionMonitoringAvailable()) {
             // Create a new region based on the center of the map view.
-            CLLocationCoordinate2D coord = new CLLocationCoordinate2D(regionsMapView.getCenterCoordinate().latitude(),
-                regionsMapView.getCenterCoordinate().longitude());
+            CLLocationCoordinate2D coord = new CLLocationCoordinate2D(regionsMapView.getCenterCoordinate().getLatitude(),
+                regionsMapView.getCenterCoordinate().getLongitude());
             CLRegion newRegion = new CLRegion(coord, 1000, String.format("%f, %f", regionsMapView.getCenterCoordinate()
-                .latitude(), regionsMapView.getCenterCoordinate().longitude()));
+                .getLatitude(), regionsMapView.getCenterCoordinate().getLongitude()));
 
             // Create an annotation to show where the region is located on the map.
             RegionAnnotation regionAnnotation = new RegionAnnotation(newRegion);

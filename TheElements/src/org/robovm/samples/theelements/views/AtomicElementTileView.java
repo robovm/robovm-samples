@@ -42,7 +42,8 @@ public class AtomicElementTileView extends UIView {
         if (element == null) return;
         // get the image that represents the element physical state and draw it
         UIImage backgroundImage = element.getStateImageForAtomicElementTileView();
-        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().width(), backgroundImage.getSize().height());
+        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().getWidth(), backgroundImage.getSize()
+            .getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
         UIColor.white().setFillAndStroke();
@@ -53,7 +54,7 @@ public class AtomicElementTileView extends UIView {
         // draw the element symbol
         font = UIFont.getBoldSystemFont(18);
         CGSize stringSize = new NSString(element.getSymbol()).getSize(font);
-        point = new CGPoint((elementSymbolRectangle.size().width() - stringSize.width()) / 2, 14);
+        point = new CGPoint((elementSymbolRectangle.getSize().getWidth() - stringSize.getWidth()) / 2, 14);
         new NSString(element.getSymbol()).draw(point, font);
     }
 

@@ -107,8 +107,8 @@ public class LaunchMe extends UIApplicationDelegateAdapter {
         if (regexMatches.size() < 1) return null;
 
         // Extract the first matched string
-        int start = (int)regexMatches.get(0).getRange().location();
-        int end = start + (int)regexMatches.get(0).getRange().length();
+        int start = (int)regexMatches.get(0).getRange().getLocation();
+        int end = start + (int)regexMatches.get(0).getRange().getLength();
         String matchedString = urlString.substring(start, end);
 
         /*

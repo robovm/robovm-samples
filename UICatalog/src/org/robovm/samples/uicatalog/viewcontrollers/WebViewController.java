@@ -80,14 +80,15 @@ public class WebViewController extends UIViewController {
 
         // create the UIWebView
         CGRect webFrame = getView().getFrame();
-        webFrame.origin().y(webFrame.origin().y() + (Constants.TWEEN_MARGIN * 2.0) + Constants.TEXT_FIELD_HEIGHT + 70); // leave
-                                                                                                                        // room
-                                                                                                                        // for
-                                                                                                                        // the
-                                                                                                                        // URL
-                                                                                                                        // input
-                                                                                                                        // field
-        webFrame.size().height(webFrame.size().height() - 40.0);
+        webFrame.getOrigin()
+            .setY(webFrame.getOrigin().getY() + (Constants.TWEEN_MARGIN * 2.0) + Constants.TEXT_FIELD_HEIGHT + 70); // leave
+        // room
+        // for
+        // the
+        // URL
+        // input
+        // field
+        webFrame.getSize().setHeight(webFrame.getSize().getHeight() - 40.0);
 
         myWebView = new UIWebView(webFrame);
         myWebView.setBackgroundColor(UIColor.white());

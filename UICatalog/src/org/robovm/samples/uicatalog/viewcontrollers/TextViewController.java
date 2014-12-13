@@ -135,9 +135,9 @@ public class TextViewController extends UIViewController {
         double adjustDelta = isPortrait(getInterfaceOrientation()) ? keyboardRect.getHeight() : keyboardRect.getWidth();
 
         if (showKeyboard) {
-            frame.size().height(frame.size().height() - adjustDelta);
+            frame.getSize().setHeight(frame.getSize().getHeight() - adjustDelta);
         } else {
-            frame.size().height(frame.size().height() + adjustDelta);
+            frame.getSize().setHeight(frame.getSize().getHeight() + adjustDelta);
         }
 
         UIView.beginAnimations("ResizeForKeyboard", null);

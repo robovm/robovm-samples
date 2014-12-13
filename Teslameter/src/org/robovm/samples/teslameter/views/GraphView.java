@@ -61,18 +61,19 @@ public class GraphView extends UIView {
             if (value == 0.0) {
                 continue;
             }
-            temp = 0.5 + Math.round(bounds.origin().y() + bounds.size().height() / 2 + value / (2 * 5) * bounds.size().height());
-            context.moveToPoint(bounds.origin().x(), temp);
-            context.addLineToPoint(bounds.origin().x() + bounds.size().width(), temp);
+            temp = 0.5 + Math.round(bounds.getOrigin().getY() + bounds.getSize().getHeight() / 2 + value / (2 * 5)
+                * bounds.getSize().getHeight());
+            context.moveToPoint(bounds.getOrigin().getX(), temp);
+            context.addLineToPoint(bounds.getOrigin().getX() + bounds.getSize().getWidth(), temp);
         }
         context.strokePath();
 
         // Draw the center line
         context.setGrayStrokeColor(0.25, 1.0);
         context.beginPath();
-        temp = 0.5 + Math.round(bounds.origin().y() + bounds.size().height() / 2);
-        context.moveToPoint(bounds.origin().x(), temp);
-        context.addLineToPoint(bounds.origin().x() + bounds.size().width(), temp);
+        temp = 0.5 + Math.round(bounds.getOrigin().getY() + bounds.getSize().getHeight() / 2);
+        context.moveToPoint(bounds.getOrigin().getX(), temp);
+        context.addLineToPoint(bounds.getOrigin().getX() + bounds.getSize().getWidth(), temp);
         context.strokePath();
 
         // Restore previous graphics state.
@@ -87,11 +88,12 @@ public class GraphView extends UIView {
             // UIView referential has the Y axis going down, so we need to draw upside-down.
             value = history[(index + counter) % 150][axis] / -128;
             if (counter > 0) {
-                context.addLineToPoint(bounds.origin().x() + (float)counter / (float)(150 - 1) * bounds.size().width(), bounds
-                    .origin().y() + bounds.size().height() / 2 + value * bounds.size().height() / 2);
+                context.addLineToPoint(bounds.getOrigin().getX() + (float)counter / (float)(150 - 1)
+                    * bounds.getSize().getWidth(), bounds.getOrigin().getY() + bounds.getSize().getHeight() / 2 + value
+                    * bounds.getSize().getHeight() / 2);
             } else {
-                context.moveToPoint(bounds.origin().x() + (float)counter / (float)(150 - 1) * bounds.size().width(), bounds
-                    .origin().y() + bounds.size().height() / 2 + value * bounds.size().height() / 2);
+                context.moveToPoint(bounds.getOrigin().getX() + (float)counter / (float)(150 - 1) * bounds.getSize().getWidth(),
+                    bounds.getOrigin().getY() + bounds.getSize().getHeight() / 2 + value * bounds.getSize().getHeight() / 2);
             }
         }
         // Save any previous graphics state settings before setting the color and line width for the current draw.
@@ -108,7 +110,7 @@ public class GraphView extends UIView {
         int index = nextIndex;
 
         CGContext context = UIGraphics.getCurrentContext();
-        CGRect bounds = new CGRect(0, 0, getBounds().size().width(), getBounds().size().height());
+        CGRect bounds = new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getHeight());
 
         // create the graph
         drawGraph(context, bounds);

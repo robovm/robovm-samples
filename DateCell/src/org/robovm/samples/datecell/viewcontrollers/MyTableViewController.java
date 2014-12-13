@@ -142,7 +142,7 @@ public class MyTableViewController extends UITableViewController {
             @Override
             public void onClick (UIBarButtonItem barButtonItem) {
                 final CGRect pickerFrame = pickerView.getFrame();
-                pickerFrame.origin().y(getView().getFrame().getHeight());
+                pickerFrame.getOrigin().setY(getView().getFrame().getHeight());
 
                 // animate the date picker out of view
                 UIView.animate(PICKER_ANIMATION_DURATION, new Runnable() {
@@ -377,10 +377,10 @@ public class MyTableViewController extends UITableViewController {
             final CGRect endFrame = pickerView.getFrame();
 
             // the start position is below the bottom of the visible frame
-            startFrame.origin().y(getView().getFrame().getHeight());
+            startFrame.getOrigin().setY(getView().getFrame().getHeight());
 
             // the end position is slid up by the height of the view
-            endFrame.origin().y(startFrame.origin().y() - endFrame.getHeight());
+            endFrame.getOrigin().setY(startFrame.getOrigin().getY() - endFrame.getHeight());
 
             pickerView.setFrame(startFrame);
 

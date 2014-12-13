@@ -39,7 +39,6 @@ import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
-import org.robovm.objc.ObjCClass;
 import org.robovm.objc.block.VoidBlock1;
 import org.robovm.samples.inapppurchases.MyModel;
 import org.robovm.samples.inapppurchases.StoreManager;

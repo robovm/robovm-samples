@@ -31,10 +31,12 @@ public class Str {
         if (location.getHorizontalAccuracy() < 0) {
             return getLocalizedString("DataUnavailable");
         }
-        String latString = (location.getCoordinate().latitude() < 0) ? getLocalizedString("South") : getLocalizedString("North");
-        String lonString = (location.getCoordinate().longitude() < 0) ? getLocalizedString("West") : getLocalizedString("East");
-        return String.format("%.4f° %s, %.4f° %s", Math.abs(location.getCoordinate().latitude()), latString,
-            Math.abs(location.getCoordinate().longitude()), lonString);
+        String latString = (location.getCoordinate().getLatitude() < 0) ? getLocalizedString("South")
+            : getLocalizedString("North");
+        String lonString = (location.getCoordinate().getLongitude() < 0) ? getLocalizedString("West")
+            : getLocalizedString("East");
+        return String.format("%.4f° %s, %.4f° %s", Math.abs(location.getCoordinate().getLatitude()), latString,
+            Math.abs(location.getCoordinate().getLongitude()), lonString);
     }
 
     public static String getLocalizedAltitudeString (CLLocation location) {

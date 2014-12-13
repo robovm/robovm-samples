@@ -95,9 +95,9 @@ public class MyMovieViewController extends UIViewController {
     }
 
     @Override
-    public void viewDidUnload () {
+    protected void dispose (boolean finalizing) {
         deletePlayerAndNotificationObservers();
-        super.viewDidUnload();
+        super.dispose(finalizing);
     }
 
     /** Notifies the view controller that its view is about to be become visible. */
@@ -156,7 +156,7 @@ public class MyMovieViewController extends UIViewController {
 
     private void resizeOverlayWindow () {
         CGRect frame = overlayController.getView().getFrame();
-        frame.origin(new CGPoint(Math.round((getView().getFrame().getWidth() - frame.getWidth())) / 2.0, Math.round((getView()
+        frame.setOrigin(new CGPoint(Math.round((getView().getFrame().getWidth() - frame.getWidth())) / 2.0, Math.round((getView()
             .getFrame().getHeight() - frame.getHeight()) / 2.0)));
         overlayController.getView().setFrame(frame);
     }

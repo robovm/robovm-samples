@@ -80,7 +80,8 @@ public class AtomicElementFlippedView extends AtomicElementView {
         // get the background image for the state of the element
         // position it appropriately and draw the image
         UIImage backgroundImage = element.getStateImageForAtomicElementView();
-        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().width(), backgroundImage.getSize().height());
+        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().getWidth(), backgroundImage.getSize()
+            .getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
         // all the text is drawn in white
@@ -95,14 +96,14 @@ public class AtomicElementFlippedView extends AtomicElementView {
         // draw the element symbol
         NSString symbolString = new NSString(element.getSymbol());
         CGSize stringSize = symbolString.getSize(font);
-        point = new CGPoint(getBounds().size().width() - stringSize.width() - 10, 5);
+        point = new CGPoint(getBounds().getSize().getWidth() - stringSize.getWidth() - 10, 5);
         symbolString.draw(point, font);
 
         // draw the element name
         font = UIFont.getBoldSystemFont(36);
         NSString nameString = new NSString(element.getName());
         stringSize = nameString.getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, 50);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, 50);
         nameString.draw(point, font);
 
         float verticalStartingPoint = 95;
@@ -110,34 +111,34 @@ public class AtomicElementFlippedView extends AtomicElementView {
         // draw the element weight
         font = UIFont.getBoldSystemFont(14);
         NSString atomicWeightString = new NSString(String.format("Atomic Weight: %s", element.getAtomicWeight()));
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, verticalStartingPoint);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint);
         atomicWeightString.draw(point, font);
 
         // draw the element state
         font = UIFont.getBoldSystemFont(14);
         NSString stateString = new NSString(String.format("State: %s", element.getState()));
         stringSize = stateString.getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, verticalStartingPoint + 20);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 20);
         stateString.draw(point, font);
 
         // draw the element period
         font = UIFont.getBoldSystemFont(14);
         NSString periodString = new NSString(String.format("Period: %d", element.getPeriod()));
         stringSize = periodString.getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, verticalStartingPoint + 40);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 40);
         periodString.draw(point, font);
 
         // draw the element group
         font = UIFont.getBoldSystemFont(14);
         NSString groupString = new NSString(String.format("Group: %d", element.getGroup()));
         stringSize = groupString.getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, verticalStartingPoint + 60);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 60);
         groupString.draw(point, font);
 
         // draw the discovery year
         NSString discoveryYearString = new NSString(String.format("Discovered: %s", element.getDiscoveryYear()));
         stringSize = discoveryYearString.getSize(font);
-        point = new CGPoint((getBounds().size().width() - stringSize.width()) / 2, verticalStartingPoint + 80);
+        point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 80);
         discoveryYearString.draw(point, font);
     }
 }
