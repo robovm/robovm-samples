@@ -26,7 +26,8 @@ import org.robovm.apple.coreanimation.CABasicAnimation;
 import org.robovm.apple.coreanimation.CAKeyframeAnimation;
 import org.robovm.apple.coreanimation.CALayer;
 import org.robovm.apple.coreanimation.CAMediaTimingFunction;
-import org.robovm.apple.coreanimation.CoreAnimation;
+import org.robovm.apple.coreanimation.CAMediaTimingFunctionName;
+import org.robovm.apple.coreanimation.CATransform3D;
 import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.foundation.NSArray;
@@ -195,8 +196,7 @@ public class APLMoveMeView extends UIView {
         CABasicAnimation transformAnimation = CABasicAnimation.create("transform");
         transformAnimation.setRemovedOnCompletion(true);
         transformAnimation.setDuration(animationDuration);
-        // transformAnimation.setToValue(NSValue.valueOf(CATransform3D.Identity())); TODO
-        transformAnimation.setToValue(NSValue.valueOf(CoreAnimation.Transform3DIdentity()));
+        transformAnimation.setToValue(NSValue.valueOf(CATransform3D.Identity()));
 
         // Create an animation group to combine the keyframe and basic animations.
         CAAnimationGroup group = new CAAnimationGroup();
@@ -211,7 +211,7 @@ public class APLMoveMeView extends UIView {
             }
         });
         group.setDuration(animationDuration);
-        group.setTimingFunction(CAMediaTimingFunction.create(CoreAnimation.MediaTimingFunctionEaseIn())); // TODO
+        group.setTimingFunction(CAMediaTimingFunction.create(CAMediaTimingFunctionName.EaseIn));
 
         group.setAnimations(new NSArray<CAAnimation>(bounceAnimation, transformAnimation));
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import org.robovm.apple.coregraphics.CGDataProvider;
 import org.robovm.apple.coregraphics.CGPoint;
@@ -33,9 +34,7 @@ import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSData;
-import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSOperationQueue;
-import org.robovm.apple.foundation.NSSet;
 import org.robovm.apple.imageio.CGImageProperties;
 import org.robovm.apple.imageio.CGImagePropertyGPS;
 import org.robovm.apple.imageio.CGImagePropertyGPSData;
@@ -65,7 +64,7 @@ import org.robovm.samples.photomap.views.LoadingStatus;
 public class PhotoMapViewController extends UIViewController {
     private static final CLLocationCoordinate2D CherryLakeLocation = new CLLocationCoordinate2D(38.002493, -119.9078987);
 
-    private List<PhotoAnnotation> photos;
+    private List<MKAnnotation> photos;
     private final MKMapView allAnnotationsMapView;
     private final MKMapView mapView;
 
@@ -137,8 +136,7 @@ public class PhotoMapViewController extends UIViewController {
                         .dequeueReusableAnnotationView(annotationIdentifier);
 
                     if (annotationView == null) {
-                        annotationView = new MKPinAnnotationView(); // TODO reuseIdentifier: annotationIdentifier
-                        annotationView.setAnnotation(annotation);
+                        annotationView = new MKPinAnnotationView(annotation, annotationIdentifier);
                         annotationView.setCanShowCallout(true);
                         annotationView.setPinColor(MKPinAnnotationColor.Red);
 
@@ -189,8 +187,8 @@ public class PhotoMapViewController extends UIViewController {
         populateWorldWithAllPhotoAnnotations();
     }
 
-    private List<PhotoAnnotation> loadPhotoSet (String path) {
-        final List<PhotoAnnotation> photos = new ArrayList<>();
+    private List<MKAnnotation> loadPhotoSet (String path) {
+        final List<MKAnnotation> photos = new ArrayList<>();
         // The bulk of our work here is going to be loading the files and looking up metadata
         // Thus, we see a major speed improvement by loading multiple photos simultaneously
 
@@ -246,7 +244,7 @@ public class PhotoMapViewController extends UIViewController {
             @Override
             public void run () {
                 System.out.println("Loading photos...");
-                List<PhotoAnnotation> photos = loadPhotoSet("PhotoSet");
+                List<MKAnnotation> photos = loadPhotoSet("PhotoSet");
                 if (photos == null) throw new UnsupportedOperationException("No photos found at path!");
                 System.out.println("Photos loaded");
 
@@ -255,8 +253,7 @@ public class PhotoMapViewController extends UIViewController {
                 DispatchQueue.getMainQueue().async(new Runnable() {
                     @Override
                     public void run () {
-                        NSArray<?> p = new NSArray<>(PhotoMapViewController.this.photos);
-                        allAnnotationsMapView.addAnnotations((NSArray<NSObject>)p);
+                        allAnnotationsMapView.addAnnotations(PhotoMapViewController.this.photos);
                         updateVisibleAnnotations();
 
                         loadingStatus.removeFromSuperviewWithFade();
@@ -268,7 +265,7 @@ public class PhotoMapViewController extends UIViewController {
 
     private PhotoAnnotation getAnnotationInGrid (MKMapRect gridMapRect, List<PhotoAnnotation> annotations) {
         // first, see if one of the annotations we were already showing is in this mapRect
-        NSSet<NSObject> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
+        Set<MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
         for (MKAnnotation annotation : annotations) {
             if (visibleAnnotationsInBucket.contains(annotation)) {
@@ -346,14 +343,14 @@ public class PhotoMapViewController extends UIViewController {
             gridMapRect.getOrigin().setX(startX);
 
             while (gridMapRect.getOrigin().getX() <= endX) {
-                NSSet<NSObject> allAnnotationsInBucket = allAnnotationsMapView.getAnnotations(gridMapRect);
-                NSSet<NSObject> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
+                Set<MKAnnotation> allAnnotationsInBucket = allAnnotationsMapView.getAnnotations(gridMapRect);
+                Set<MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
                 if (allAnnotationsInBucket == null || visibleAnnotationsInBucket == null) continue;
 
                 // we only care about PhotoAnnotations
                 List<PhotoAnnotation> filteredAnnotationsInBucket = new ArrayList<>();
-                for (NSObject annotation : allAnnotationsInBucket) {
+                for (MKAnnotation annotation : allAnnotationsInBucket) {
                     if (annotation instanceof PhotoAnnotation) {
                         filteredAnnotationsInBucket.add((PhotoAnnotation)annotation);
                     }

@@ -20,7 +20,6 @@
 package org.robovm.samples.regions.views;
 
 import org.robovm.apple.corelocation.CLLocationCoordinate2D;
-import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.mapkit.MKAnnotation;
 import org.robovm.apple.mapkit.MKCircle;
 import org.robovm.apple.mapkit.MKMapView;
@@ -36,8 +35,7 @@ public class RegionAnnotationView extends MKPinAnnotationView {
     private RegionAnnotation annotation;
 
     public RegionAnnotationView (RegionAnnotation annotation) {
-// super(annotation, annotation.getTitle()); // TODO
-        setAnnotation(annotation); // TODO remove
+        super(annotation, annotation.getTitle());
 
         setCanShowCallout(true);
         setMultipleTouchEnabled(false);
@@ -53,14 +51,14 @@ public class RegionAnnotationView extends MKPinAnnotationView {
 
     public void removeRadiusOverlay () {
         // Find the overlay for this annotation view and remove it if it has the same coordinates.
-        for (NSObject overlay : map.getOverlays()) {
+        for (MKOverlay overlay : map.getOverlays()) {
             if (overlay instanceof MKCircle) {
                 MKCircle circleOverlay = (MKCircle)overlay;
                 CLLocationCoordinate2D coord = circleOverlay.getCoordinate();
 
-                if (coord.latitude() == annotation.getCoordinate().latitude()
-                    && coord.longitude() == annotation.getCoordinate().longitude()) {
-                    map.removeOverlay((MKOverlay)overlay);
+                if (coord.getLatitude() == annotation.getCoordinate().getLatitude()
+                    && coord.getLongitude() == annotation.getCoordinate().getLongitude()) {
+                    map.removeOverlay(overlay);
                 }
             }
         }

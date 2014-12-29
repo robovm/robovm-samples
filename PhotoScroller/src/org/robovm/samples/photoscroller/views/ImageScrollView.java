@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSObject;
+import org.robovm.apple.foundation.NSPropertyListMutabilityOptions;
 import org.robovm.apple.foundation.NSPropertyListSerialization;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIImage;
@@ -240,7 +241,8 @@ public class ImageScrollView extends UIScrollView {
             String path = NSBundle.getMainBundle().findResourcePath("ImageData", "plist");
             NSData plistData = NSData.read(new File(path));
             try {
-                imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData, 0);
+                imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData,
+                    NSPropertyListMutabilityOptions.None);
             } catch (NSErrorException e) {
                 System.err.println("Unable to read image data: " + e.getError());
             }

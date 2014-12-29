@@ -20,13 +20,14 @@
 package org.robovm.samples.quickcontacts.viewcontrollers;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.robovm.apple.addressbook.ABAddressBook;
 import org.robovm.apple.addressbook.ABPerson;
 import org.robovm.apple.addressbook.ABPersonEmailAddress;
 import org.robovm.apple.addressbook.ABPersonProperty;
+import org.robovm.apple.addressbook.ABProperty;
 import org.robovm.apple.addressbook.ABPropertyLabel;
 import org.robovm.apple.addressbookui.ABNewPersonViewController;
 import org.robovm.apple.addressbookui.ABNewPersonViewControllerDelegate;
@@ -101,8 +102,7 @@ public class QuickContactsViewController extends UITableViewController implement
             break;
         case Denied:
         case Restricted:
-            UIAlertView alert = new UIAlertView("Privacy Warning", "Permission was not granted for Contacts.", null, "OK",
-                new String[0]);
+            UIAlertView alert = new UIAlertView("Privacy Warning", "Permission was not granted for Contacts.", null, "OK");
             alert.show();
             break;
         default:
@@ -218,7 +218,7 @@ public class QuickContactsViewController extends UITableViewController implement
         picker.setPeoplePickerDelegate(this);
 
         // Display only a person's phone, email, and birthday
-        List<ABPersonProperty> props = new LinkedList<ABPersonProperty>();
+        List<ABProperty> props = new ArrayList<ABProperty>();
         props.add(ABPersonProperty.Phone);
         props.add(ABPersonProperty.Email);
         props.add(ABPersonProperty.Birthday);
@@ -240,13 +240,12 @@ public class QuickContactsViewController extends UITableViewController implement
             ABPersonViewController picker = new ABPersonViewController();
             picker.setPersonViewDelegate(this);
             picker.setDisplayedPerson(person);
-            // Allow users to edit the person???s information
+            // Allow users to edit the person's information
             picker.setAllowsEditing(true);
             getNavigationController().pushViewController(picker, true);
         } else {
             // Show an alert if "Appleseed" is not in Contacts
-            UIAlertView alert = new UIAlertView("Error", "Could not find Appleseed in the Contacts application", null, "Cancel",
-                new String[0]);
+            UIAlertView alert = new UIAlertView("Error", "Could not find Appleseed in the Contacts application", null, "Cancel");
             alert.show();
         }
     }
@@ -274,8 +273,8 @@ public class QuickContactsViewController extends UITableViewController implement
     }
 
     @Override
-    public boolean shouldPerformDefaultAction (ABUnknownPersonViewController personViewController, ABPerson person, int property,
-        int identifier) {
+    public boolean shouldPerformDefaultAction (ABUnknownPersonViewController personViewController, ABPerson person,
+        ABProperty property, int identifier) {
         return false;
     }
 
@@ -285,7 +284,7 @@ public class QuickContactsViewController extends UITableViewController implement
     }
 
     @Override
-    public boolean shouldPerformDefaultAction (ABPersonViewController personViewController, ABPerson person, int property,
+    public boolean shouldPerformDefaultAction (ABPersonViewController personViewController, ABPerson person, ABProperty property,
         int identifier) {
         return false;
     }
@@ -302,7 +301,16 @@ public class QuickContactsViewController extends UITableViewController implement
 
     @Override
     public boolean shouldContinueAfterSelectingPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson person,
-        int property, int identifier) {
+        ABProperty property, int identifier) {
         return false;
+    }
+
+    @Override
+    public void didSelectPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson person) {
+    }
+
+    @Override
+    public void didSelectPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property,
+        int identifier) {
     }
 }
