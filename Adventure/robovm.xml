@@ -1,0 +1,30 @@
+<config>
+    <executableName>${app.executable}</executableName>
+    <mainClass>${app.mainclass}</mainClass>
+    <os>ios</os>
+    <arch>thumbv7</arch>
+    <resources>
+        <resource>
+            <directory>resources/Environment</directory>
+        </resource>
+        <resource>
+            <directory>resources/Particles</directory>
+        </resource>
+        <resource>
+            <directory>resources/Sounds</directory>
+        </resource>
+        <resource>
+            <directory>resources/Texture Atlases</directory>
+            <skipPngCrush>true</skipPngCrush>
+        </resource>
+        <resource>
+            <directory>resources/UI</directory>
+        </resource>
+    </resources>
+    <target>ios</target>
+    <iosInfoPList>Info.plist.xml</iosInfoPList>
+    <frameworks>
+        <framework>CoreGraphics</framework>
+        <framework>SpriteKit</framework>
+    </frameworks>
+</config>
