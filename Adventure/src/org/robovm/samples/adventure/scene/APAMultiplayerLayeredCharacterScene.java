@@ -386,7 +386,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             hudAvatars.add(avatar);
             hud.addChild(avatar);
 
-            SKLabelNode label = SKLabelNode.create("Copperplate");
+            SKLabelNode label = SKLabelNode.createWithFont("Copperplate");
             label.setText("NO PLAYER");
             label.setFontColor(colors[i]);
             label.setFontSize(16);
@@ -395,7 +395,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             hudLabels.add(label);
             hud.addChild(label);
 
-            SKLabelNode score = SKLabelNode.create("Copperplate");
+            SKLabelNode score = SKLabelNode.createWithFont("Copperplate");
             score.setText("SCORE: 0");
             score.setFontColor(colors[i]);
             score.setFontSize(16);

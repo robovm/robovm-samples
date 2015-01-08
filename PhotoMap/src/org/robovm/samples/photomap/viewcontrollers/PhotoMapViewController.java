@@ -265,7 +265,7 @@ public class PhotoMapViewController extends UIViewController {
 
     private PhotoAnnotation getAnnotationInGrid (MKMapRect gridMapRect, List<PhotoAnnotation> annotations) {
         // first, see if one of the annotations we were already showing is in this mapRect
-        Set<MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
+        Set<? extends MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
         for (MKAnnotation annotation : annotations) {
             if (visibleAnnotationsInBucket.contains(annotation)) {
@@ -343,8 +343,8 @@ public class PhotoMapViewController extends UIViewController {
             gridMapRect.getOrigin().setX(startX);
 
             while (gridMapRect.getOrigin().getX() <= endX) {
-                Set<MKAnnotation> allAnnotationsInBucket = allAnnotationsMapView.getAnnotations(gridMapRect);
-                Set<MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
+                Set<? extends MKAnnotation> allAnnotationsInBucket = allAnnotationsMapView.getAnnotations(gridMapRect);
+                Set<? extends MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
                 if (allAnnotationsInBucket == null || visibleAnnotationsInBucket == null) continue;
 
