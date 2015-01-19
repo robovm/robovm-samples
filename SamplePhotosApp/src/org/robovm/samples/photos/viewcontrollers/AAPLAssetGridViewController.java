@@ -155,15 +155,15 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
                             @Override
                             public void run () {
                                 NSIndexSet removedIndexes = collectionChanges.getRemovedIndexes();
-                                if (removedIndexes != null && removedIndexes.getCount() > 0) {
+                                if (removedIndexes != null && removedIndexes.size() > 0) {
                                     collectionView.deleteItems(getIndexPathsFromIndexesWithSection(removedIndexes, 0));
                                 }
                                 NSIndexSet insertedIndexes = collectionChanges.getInsertedIndexes();
-                                if (insertedIndexes != null && insertedIndexes.getCount() > 0) {
+                                if (insertedIndexes != null && insertedIndexes.size() > 0) {
                                     collectionView.insertItems(getIndexPathsFromIndexesWithSection(insertedIndexes, 0));
                                 }
                                 NSIndexSet changedIndexes = collectionChanges.getChangedIndexes();
-                                if (changedIndexes != null && changedIndexes.getCount() > 0) {
+                                if (changedIndexes != null && changedIndexes.size() > 0) {
                                     collectionView.reloadItems(getIndexPathsFromIndexesWithSection(changedIndexes, 0));
                                 }
                             }
@@ -181,7 +181,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     }
 
     @Override
-    public UICollectionViewCell getItemCell (UICollectionView collectionView, NSIndexPath indexPath) {
+    public UICollectionViewCell getCellForItem (UICollectionView collectionView, NSIndexPath indexPath) {
         final AAPLGridViewCell cell = (AAPLGridViewCell)collectionView.dequeueReusableCell(CellReuseIdentifier, indexPath);
 
         // Increment the cell's tag
@@ -341,7 +341,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     }
 
     private NSArray<NSIndexPath> getIndexPathsFromIndexesWithSection (NSIndexSet indexSet, final long section) {
-        final NSArray<NSIndexPath> indexPaths = new NSMutableArray<>(indexSet.getCount());
+        final NSArray<NSIndexPath> indexPaths = new NSMutableArray<>(indexSet.size());
         indexSet.enumerateIndexes(new VoidBlock2<Long, BooleanPtr>() {
             @Override
             public void invoke (Long idx, BooleanPtr stop) {

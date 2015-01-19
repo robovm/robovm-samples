@@ -42,8 +42,8 @@ public class MainViewController extends UITableViewController {
 
     private class MyTableViewCell extends UITableViewCell {
         @Override
-        protected long initWithStyle$reuseIdentifier$ (UITableViewCellStyle style, String reuseIdentifier) {
-            return super.initWithStyle$reuseIdentifier$(UITableViewCellStyle.Subtitle, reuseIdentifier);
+        protected long init (UITableViewCellStyle style, String reuseIdentifier) {
+            return super.init(UITableViewCellStyle.Subtitle, reuseIdentifier);
         }
     }
 

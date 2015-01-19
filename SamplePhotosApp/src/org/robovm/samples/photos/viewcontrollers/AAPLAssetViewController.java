@@ -194,9 +194,9 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
         // Download from cloud if necessary
         options.setNetworkAccessAllowed(true);
-        options.setProgressHandler(new VoidBlock4<Boolean, Double, NSError, BooleanPtr>() {
+        options.setProgressHandler(new VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<NSString, NSObject>>() {
             @Override
-            public void invoke (Boolean a, final Double progress, NSError c, BooleanPtr d) {
+            public void invoke (final Double progress, NSError error, BooleanPtr c, NSDictionary<NSString, NSObject> d) {
                 DispatchQueue.getMainQueue().async(new Runnable() {
                     @Override
                     public void run () {
@@ -256,9 +256,9 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
             public void invoke (PHContentEditingInput contentEditingInput, NSDictionary<NSString, NSObject> info) {
                 // Get full image
                 NSURL url = contentEditingInput.getFullSizeImageURL();
-                int orientation = contentEditingInput.getFullSizeImageOrientation();
+                CGImagePropertyOrientation orientation = contentEditingInput.getFullSizeImageOrientation();
                 CIImage inputImage = new CIImage(url, null);
-                inputImage = inputImage.newImageByApplyingOrientation(CGImagePropertyOrientation.valueOf(orientation));
+                inputImage = inputImage.newImageByApplyingOrientation(orientation);
 
                 // Add filter
                 CIFilterInputParameters inputParameters = new CIFilterInputParameters().setImage(inputImage);

@@ -72,9 +72,9 @@ public class MyTableViewController extends UITableViewController {
 
     public class DateViewCell extends UITableViewCell {
         @Override
-        protected long initWithStyle$reuseIdentifier$ (UITableViewCellStyle style, String reuseIdentifier) {
+        protected long init (UITableViewCellStyle style, String reuseIdentifier) {
             // ignore the style argument and force the creation with a specific style
-            return super.initWithStyle$reuseIdentifier$(UITableViewCellStyle.Value1, reuseIdentifier);
+            return super.init(UITableViewCellStyle.Value1, reuseIdentifier);
         }
     }
 

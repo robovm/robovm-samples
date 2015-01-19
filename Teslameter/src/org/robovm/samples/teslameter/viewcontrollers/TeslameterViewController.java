@@ -113,7 +113,7 @@ public class TeslameterViewController extends UIViewController {
             noCompassAlert.show();
         } else {
             // heading service configuration
-            locationManager.setHeadingFilter(CLLocationManager.HeadingFilterNone());
+            locationManager.setHeadingFilter(CLLocationManager.getHeadingFilterNone());
 
             // setup delegate callbacks
             locationManager.setDelegate(new CLLocationManagerDelegateAdapter() {
