@@ -177,9 +177,9 @@ public class ContractRApp extends UIApplicationDelegateAdapter {
 
     private CGRect calculateIconDrawingRect(NSAttributedString s, CGSize imageSize) {
         CGSize iconSize = s.getSize();
-        double xOffset = (imageSize.width() - iconSize.width()) / 2.0;
-        double yOffset = (imageSize.height() - iconSize.height()) / 2.0;
-        return new CGRect(xOffset, yOffset, iconSize.width(), iconSize.height());
+        double xOffset = (imageSize.getWidth() - iconSize.getWidth()) / 2.0;
+        double yOffset = (imageSize.getHeight() - iconSize.getHeight()) / 2.0;
+        return new CGRect(xOffset, yOffset, iconSize.getWidth(), iconSize.getHeight());
     }
     
     private UIImage createIconImage(UIFont font, char code) {
