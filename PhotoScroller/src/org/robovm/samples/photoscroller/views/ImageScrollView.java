@@ -103,7 +103,7 @@ public class ImageScrollView extends UIScrollView {
 
     @Override
     public void setFrame (CGRect frame) {
-        boolean sizeChanging = !frame.getSize().equalToSize(getFrame().getSize());
+        boolean sizeChanging = !frame.getSize().equalsTo(getFrame().getSize());
         if (sizeChanging) {
             prepareToResize();
         }

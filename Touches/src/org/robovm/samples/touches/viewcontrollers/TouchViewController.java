@@ -217,9 +217,9 @@ public class TouchViewController extends UIViewController {
         }
 
         // If one piece obscures another, display a message so the user can move the pieces apart.
-        if (firstPieceView.getCenter().equalToPoint(secondPieceView.getCenter())
-            || firstPieceView.getCenter().equalToPoint(thirdPieceView.getCenter())
-            || secondPieceView.getCenter().equalToPoint(thirdPieceView.getCenter())) {
+        if (firstPieceView.getCenter().equalsTo(secondPieceView.getCenter())
+            || firstPieceView.getCenter().equalsTo(thirdPieceView.getCenter())
+		|| secondPieceView.getCenter().equalsTo(thirdPieceView.getCenter())) {
             touchInstructionsText.setText("Double tap the background to move the pieces apart.");
             piecesOnTop = true;
         } else {
