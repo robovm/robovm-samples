@@ -179,7 +179,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
     public void viewWillLayoutSubviews () {
         super.viewWillLayoutSubviews();
 
-        if (lastImageViewSize == null || !imageView.getBounds().getSize().equalToSize(lastImageViewSize)) {
+        if (lastImageViewSize == null || !imageView.getBounds().getSize().equalsTo(lastImageViewSize)) {
             updateImage();
         }
     }

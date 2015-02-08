@@ -39,7 +39,7 @@ import org.robovm.apple.spritekit.SKTextureAtlas;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
-import org.robovm.rt.bro.ptr.VoidPtr;
+import org.robovm.rt.bro.ptr.IntPtr;
 
 public class APAUtils {
 
@@ -132,7 +132,7 @@ public class APAUtils {
 
         // Allocate memory for image data. This is the destination in memory
         // where any drawing to the bitmap context will be rendered.
-        VoidPtr bitmapData = Struct.malloc(VoidPtr.class, (int)(bitmapBytesPerRow * pixelsHigh));
+        IntPtr bitmapData = Struct.malloc(IntPtr.class, (int)(bitmapBytesPerRow * pixelsHigh));
         if (bitmapData == null) {
             System.err.println("Memory not allocated!");
             return null;
@@ -171,7 +171,7 @@ public class APAUtils {
         context.drawImage(rect, inImage);
 
         // Now we can get a pointer to the image data associated with the bitmap context.
-        VoidPtr data = context.getData();
+        IntPtr data = context.getData();
 
         APADataMap map = data.as(APADataMap.class);
         return map.toArray((int)(w * h));
@@ -197,7 +197,7 @@ public class APAUtils {
         context.drawImage(rect, inImage);
 
         // Now we can get a pointer to the image data associated with the bitmap context.
-        VoidPtr data = context.getData();
+        IntPtr data = context.getData();
 
         // When finished, release the context.
         context.release();

@@ -522,13 +522,13 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
 
         if (!hero.dying) {
-            if (!defaultPlayer.targetLocation.equalToPoint(CGPoint.Zero())) {
+            if (!defaultPlayer.targetLocation.equalsTo(CGPoint.Zero())) {
                 if (defaultPlayer.fireAction) {
                     hero.faceTo(defaultPlayer.targetLocation);
                 }
 
                 if (defaultPlayer.moveRequested) {
-                    if (!defaultPlayer.targetLocation.equalToPoint(hero.getPosition())) {
+                    if (!defaultPlayer.targetLocation.equalsTo(hero.getPosition())) {
                         hero.moveTowards(defaultPlayer.targetLocation, timeSinceLast);
                     } else {
                         defaultPlayer.moveRequested = false;
