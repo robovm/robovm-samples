@@ -41,20 +41,20 @@ public class UICurrencyTextField extends UITextField {
                     NSRange range, String string) {
 
                 if (string.isEmpty()
-                        && range.length() == 1
+                        && range.getLength() == 1
                         && !Character.isDigit(textField.getText().charAt(
-                                (int) range.location()))) {
-                    
-                    setCaretPosition(textField, (int) range.location());
+                                (int) range.getLocation()))) {
+
+                    setCaretPosition(textField, (int) range.getLocation());
                     return false;
                 }
                 
                 String oldText = textField.getText();
-                String newText = oldText.substring(0, (int) range.location()) 
-                        + string + oldText.substring((int) (range.location() + range.length())); 
+                String newText = oldText.substring(0, (int) range.getLocation())
+                        + string + oldText.substring((int) (range.getLocation() + range.getLength()));
                 textField.setText(newText);
 
-                int distanceFromEnd = oldText.length() - (int) (range.location() + range.length());
+                int distanceFromEnd = oldText.length() - (int) (range.getLocation() + range.getLength());
                 int caretPos = newText.length() - distanceFromEnd;
                 if (caretPos >= 0 && caretPos <= newText.length()) {
                     setCaretPosition(textField, caretPos);

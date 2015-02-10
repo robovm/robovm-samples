@@ -66,7 +66,7 @@ public class APASpawnAI extends APAArtificialIntelligence {
         int goblinCount = cave.activeGoblins.size();
         if (goblinCount < 1 || cave.timeUntilNextGenerate <= 0.0 || (distScale < 0.35 && cave.timeUntilNextGenerate > 5.0)) {
             if (goblinCount < 1
-                || (goblinCount < 4 && closestHeroPosition.equalToPoint(CGPoint.Zero()) && scene.canSee(closestHeroPosition,
+                || (goblinCount < 4 && closestHeroPosition.equalsTo(CGPoint.Zero()) && scene.canSee(closestHeroPosition,
                     cave.getPosition()))) {
                 cave.generate();
             }

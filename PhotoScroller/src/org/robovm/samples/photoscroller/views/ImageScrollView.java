@@ -59,7 +59,7 @@ public class ImageScrollView extends UIScrollView {
         setShowsHorizontalScrollIndicator(false);
         setShowsHorizontalScrollIndicator(false);
         setBouncesZoom(true);
-        setDecelerationRate(UIScrollView.DecelerationRateFast());
+        setDecelerationRate(UIScrollView.getFastDecelerationRate());
         setDelegate(new UIScrollViewDelegateAdapter() {
             @Override
             public UIView getViewForZooming (UIScrollView scrollView) {
@@ -103,7 +103,7 @@ public class ImageScrollView extends UIScrollView {
 
     @Override
     public void setFrame (CGRect frame) {
-        boolean sizeChanging = !frame.getSize().equalToSize(getFrame().getSize());
+        boolean sizeChanging = !frame.getSize().equalsTo(getFrame().getSize());
         if (sizeChanging) {
             prepareToResize();
         }
