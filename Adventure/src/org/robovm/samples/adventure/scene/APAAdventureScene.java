@@ -540,7 +540,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
                 sharedBackgroundTiles.add(tileNode);
             }
         }
-        System.out.println(String.format("Loaded all world tiles in %d seconds", new NSDate().getTimeIntervalSince(startDate)));
+        System.out.println(String.format("Loaded all world tiles in %f seconds", new NSDate().getTimeIntervalSince(startDate)));
     }
 
     @Override
