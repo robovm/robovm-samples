@@ -1,3 +1,4 @@
+
 package org.robovm.samples.speakhere;
 
 import java.io.IOException;
@@ -25,9 +26,9 @@ import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.ptr.FunctionPtr;
 import org.robovm.rt.bro.ptr.VoidPtr;
 
-/*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
-public class AudioRecord
-{
+/*<annotations>*/@Library("AudioToolbox")
+/* </annotations> */
+public class AudioRecord {
     protected double mSampleRate;
     protected AudioFormat mFormatID;
     protected int mFormatFlags;
@@ -35,19 +36,18 @@ public class AudioRecord
     protected int mFramesPerPacket;
     protected int mBytesPerFrame;
     protected int mChannelsPerFrame;
-    protected int mBitsPerChannel;  
+    protected int mBitsPerChannel;
 
     protected AudioQueue mQueue = null;
 
-    private int kNumberBuffers = 3;
-    private PipedInputStream mPIS;
-    private PipedOutputStream mPOS;
+    private final int kNumberBuffers = 3;
+    private final PipedInputStream mPIS;
+    private final PipedOutputStream mPOS;
     private int mStateID = -1;
 
     private boolean mRunning = false;
 
-    public AudioRecord() throws IOException 
-    {
+    public AudioRecord () throws IOException {
         mSampleRate = 44100;
         mFormatID = AudioFormat.LinearPCM;
         mFormatFlags = CoreAudio.AudioFormatFlagIsPacked | CoreAudio.AudioFormatFlagIsSignedInteger;
@@ -55,99 +55,91 @@ public class AudioRecord
         mFramesPerPacket = 1;
         mBytesPerFrame = 2;
         mChannelsPerFrame = 1;
-        mBitsPerChannel = 16;    
+        mBitsPerChannel = 16;
 
         mPOS = new PipedOutputStream();
         mPIS = new PipedInputStream(mPOS);
     }
 
-    public static int getMinBufferSize(int sampleRate, int channelConfig, int audioFormat) 
-    {
+    public static int getMinBufferSize (int sampleRate, int channelConfig, int audioFormat) {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    public int deriveBufferSize(AudioQueue audioQueue, AudioStreamBasicDescription ASBDescription, double seconds)
-    {
+    public int deriveBufferSize (AudioQueue audioQueue, AudioStreamBasicDescription ASBDescription, double seconds) {
         int maxBufferSize = 0x50000;
         int maxPacketSize = ASBDescription.getMBytesPerPacket();
-        System.out.println(3);
         double numBytesForTime = ASBDescription.getMSampleRate() * maxPacketSize * seconds;
         return (int)(numBytesForTime < maxBufferSize ? numBytesForTime : maxBufferSize);
     }
 
-    public void release() 
-    {
+    public void release () {
         System.out.println("RECORD QUEUE STOPPING...");
         mRunning = false;
         mQueue.stop(true);
-//      mQueue.dispose(true);
+// mQueue.dispose(true);
         System.out.println("RECORD QUEUE STOPPED");
-        try
-        {
+        try {
             mPOS.close();
             mPIS.close();
             AQRecorderState.drop(mStateID);
+        } catch (Exception x) {
+            x.printStackTrace();
         }
-        catch (Exception x) { x.printStackTrace(); }
     }
 
-    public int read(byte[] abData, int i, int length) throws IOException 
-    {
+    public int read (byte[] abData, int i, int length) throws IOException {
         return mPIS.read(abData, i, length);
     }
 
-    /*<bind>*/static { Bro.bind(AudioRecord.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /* <bind> */static {
+        Bro.bind(AudioRecord.class);
+    }/* </bind> */
+
+    /* <constants> *//* </constants> */
+    /* <constructors> *//* </constructors> */
+    /* <properties> *//* </properties> */
+    /* <members> *//* </members> */
     @Callback
-    public static void callbackMethod(
-            @Pointer long                     refcon,
-            AudioQueue                        inAQ,
-            AudioQueueBuffer                  inBuffer,
-            AudioTimeStampPtr                 inStartTime,
-            int                               inNumPackets,
-            AudioStreamPacketDescriptionPtr   inPacketDesc
-        )
-    {
-        try
-        {
+    public static void callbackMethod (@Pointer long refcon, AudioQueue inAQ, AudioQueueBuffer inBuffer,
+        AudioTimeStampPtr inStartTime, int inNumPackets, AudioStreamPacketDescriptionPtr inPacketDesc) {
+        try {
             AQRecorderState.AQRecorderStatePtr ptr = new AQRecorderState.AQRecorderStatePtr();
             ptr.set(refcon);
             AQRecorderState aqrs = ptr.get();
             byte[] ba = VM.newByteArray(inBuffer.getMAudioData().getHandle(), inBuffer.getMAudioDataByteSize());
             aqrs.getRecord().receive(ba);
+        } catch (Exception x) {
+            x.printStackTrace();
         }
-        catch (Exception x) { x.printStackTrace(); }
 
         inAQ.enqueueBuffer(inBuffer, 0, null);
     }
 
-    private void receive(byte[] ba) 
-    {
-        if (mRunning) try { mPOS.write(ba); } catch (Exception x) { x.printStackTrace(); }
+    private void receive (byte[] ba) {
+        if (mRunning) try {
+            mPOS.write(ba);
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
     }
 
-    public void startRecording() throws Exception
-    {
-        AudioStreamBasicDescription asbd = new AudioStreamBasicDescription(mSampleRate, mFormatID, mFormatFlags, mBytesPerPacket, mFramesPerPacket, mBytesPerFrame, mChannelsPerFrame, mBitsPerChannel, 0);
+    public void startRecording () throws Exception {
+        AudioStreamBasicDescription asbd = new AudioStreamBasicDescription(mSampleRate, mFormatID, mFormatFlags, mBytesPerPacket,
+            mFramesPerPacket, mBytesPerFrame, mChannelsPerFrame, mBitsPerChannel, 0);
         AudioQueuePtr mQueuePtr = new AudioQueuePtr();
         AudioQueueBufferPtr mBuffers = Struct.allocate(AudioQueueBufferPtr.class, kNumberBuffers);
-        System.out.println(11);
         AQRecorderState aqData = new AQRecorderState(this);
         mStateID = aqData.mID();
-        System.out.println(12);
         Method callbackMethod = null;
         Method[] methods = this.getClass().getMethods();
         int i = methods.length;
-        while (i-->0) if (methods[i].getName().equals("callbackMethod")) 
-        {
-            callbackMethod = methods[i];
-            break;
-        }
-        FunctionPtr fp = new FunctionPtr(callbackMethod );
+        while (i-- > 0)
+            if (methods[i].getName().equals("callbackMethod")) {
+                callbackMethod = methods[i];
+                break;
+            }
+        FunctionPtr fp = new FunctionPtr(callbackMethod);
         VoidPtr vp = aqData.as(VoidPtr.class);
 
         AudioQueueError aqe = AudioQueue.newInput(asbd, fp, vp, null, null, 0, mQueuePtr);
@@ -155,11 +147,10 @@ public class AudioRecord
         System.out.println(aqe.name());
         mQueue = mQueuePtr.get();
         int bufferByteSize = deriveBufferSize(mQueue, asbd, 0.5);
-        System.out.println("BUFFER SIZE: "+bufferByteSize);
+        System.out.println("BUFFER SIZE: " + bufferByteSize);
 
         AudioQueueBufferPtr[] buffers = mBuffers.toArray(kNumberBuffers);
-        for (i = 0; i < kNumberBuffers; ++i) 
-        {
+        for (i = 0; i < kNumberBuffers; ++i) {
             mQueue.allocateBuffer(bufferByteSize, buffers[i]);
             mQueue.enqueueBuffer(buffers[i].get(), 0, null);
         }
