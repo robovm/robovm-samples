@@ -125,28 +125,29 @@ public class GestureViewController extends UIViewController {
         };
 
         UIRotationGestureRecognizer rotationGestureRecognizer = new UIRotationGestureRecognizer(
-            new UIGestureRecognizer.GestureListener() {
+            new UIGestureRecognizer.OnGestureListener() {
                 @Override
-                public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                public void onGesture (UIGestureRecognizer gestureRecognizer) {
                     rotatePiece((UIRotationGestureRecognizer)gestureRecognizer);
                 }
             });
-        UIPinchGestureRecognizer pinchGestureRecognizer = new UIPinchGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+        UIPinchGestureRecognizer pinchGestureRecognizer = new UIPinchGestureRecognizer(
+            new UIGestureRecognizer.OnGestureListener() {
+                @Override
+                public void onGesture (UIGestureRecognizer gestureRecognizer) {
+                    scalePiece((UIPinchGestureRecognizer)gestureRecognizer);
+                }
+            });
+        UIPanGestureRecognizer panGestureRecognizer = new UIPanGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
-            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
-                scalePiece((UIPinchGestureRecognizer)gestureRecognizer);
-            }
-        });
-        UIPanGestureRecognizer panGestureRecognizer = new UIPanGestureRecognizer(new UIGestureRecognizer.GestureListener() {
-            @Override
-            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+            public void onGesture (UIGestureRecognizer gestureRecognizer) {
                 panPiece((UIPanGestureRecognizer)gestureRecognizer);
             }
         });
         UILongPressGestureRecognizer longPressGestureRecognizer = new UILongPressGestureRecognizer(
-            new UIGestureRecognizer.GestureListener() {
+            new UIGestureRecognizer.OnGestureListener() {
                 @Override
-                public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                public void onGesture (UIGestureRecognizer gestureRecognizer) {
                     showResetMenu((UILongPressGestureRecognizer)gestureRecognizer);
                 }
             });
