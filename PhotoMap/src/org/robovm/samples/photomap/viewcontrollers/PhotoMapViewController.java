@@ -195,7 +195,7 @@ public class PhotoMapViewController extends UIViewController {
         NSOperationQueue queue = new NSOperationQueue();
         queue.setMaxConcurrentOperationCount(8);
 
-        List<String> photoPaths = NSBundle.getMainBundle().findResourcesPathsInSubPath("jpg", path);
+        List<String> photoPaths = NSBundle.getMainBundle().findResourcesPaths("jpg", path);
         for (final String photoPath : photoPaths) {
             queue.addOperation(new Runnable() {
                 @Override

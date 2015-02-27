@@ -74,7 +74,7 @@ public class AppPrefs extends UIApplicationDelegateAdapter {
     /** Locates the file representing the root page of the settings for this app, invokes
      * loadDefaults:fromSettingsPage:inSettingsBundleAtURL: on it, and registers the loaded values as the app's defaults. */
     private void populateRegistrationDomain () {
-        NSURL settingsBundleURL = NSBundle.getMainBundle().findResourceURLInSubPath("Settings", "bundle");
+        NSURL settingsBundleURL = NSBundle.getMainBundle().findResourceURL("Settings", "bundle");
 
         // Invoke loadDefaults() on the property list file for the root settings page (always named Root.plist).
         NSDictionary<?, ?> appDefaults = loadDefaults("Root.plist", settingsBundleURL);

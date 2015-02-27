@@ -17,6 +17,7 @@ import org.robovm.apple.coreaudio.AudioStreamPacketDescription.AudioStreamPacket
 import org.robovm.apple.coreaudio.AudioTimeStamp.AudioTimeStampPtr;
 import org.robovm.apple.coreaudio.CoreAudio;
 import org.robovm.apple.corefoundation.CFRunLoopMode;
+import org.robovm.apple.corefoundation.OSStatus;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.Bro;
 import org.robovm.rt.bro.Struct;
@@ -142,9 +143,9 @@ public class AudioRecord {
         FunctionPtr fp = new FunctionPtr(callbackMethod);
         VoidPtr vp = aqData.as(VoidPtr.class);
 
-        AudioQueueError aqe = AudioQueue.newInput(asbd, fp, vp, null, null, 0, mQueuePtr);
+        OSStatus aqe = AudioQueue.newInput(asbd, fp, vp, null, null, 0, mQueuePtr);
         System.out.println(CFRunLoopMode.Common.value());
-        System.out.println(aqe.name());
+        System.out.println(AudioQueueError.valueOf(aqe.getStatusCode()));
         mQueue = mQueuePtr.get();
         int bufferByteSize = deriveBufferSize(mQueue, asbd, 0.5);
         System.out.println("BUFFER SIZE: " + bufferByteSize);

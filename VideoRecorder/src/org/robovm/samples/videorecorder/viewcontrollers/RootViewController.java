@@ -51,6 +51,7 @@ import org.robovm.apple.uikit.UIVideo;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAnimationOptions;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.block.VoidBlock2;
 import org.robovm.objc.block.VoidBooleanBlock;
 
 public class RootViewController extends UIViewController {
@@ -127,9 +128,9 @@ public class RootViewController extends UIViewController {
 
         createImagePicker();
 
-        recordGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+        recordGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
-            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+            public void onGesture (UIGestureRecognizer gestureRecognizer) {
                 if (!recording) {
                     recording = true;
                     startRecording();
@@ -198,9 +199,9 @@ public class RootViewController extends UIViewController {
 
                 boolean okToSaveVideo = UIVideo.isCompatibleWithSavedPhotosAlbum(new File(videoURL.getPath()));
                 if (okToSaveVideo) {
-                    UIVideo.saveToPhotosAlbum(new File(videoURL.getPath()), new UIVideo.VideoSaveListener() {
+                    UIVideo.saveToPhotosAlbum(new File(videoURL.getPath()), new VoidBlock2<String, NSError>() {
                         @Override
-                        public void didFinishSaving (String videoPath, NSError error) {
+                        public void invoke (String a, NSError b) {
                             showControls();
                         }
                     });

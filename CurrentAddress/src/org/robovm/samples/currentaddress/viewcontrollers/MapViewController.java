@@ -44,7 +44,6 @@ import org.robovm.apple.uikit.UIToolbar;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.block.VoidBlock2;
-import org.robovm.rt.bro.ptr.MachineSizedSIntPtr;
 
 public class MapViewController extends UIViewController {
     private final MKMapView mapView;
@@ -101,10 +100,8 @@ public class MapViewController extends UIViewController {
             @Override
             public void didUpdateUserLocation (final MKMapView mapView, final MKUserLocation userLocation) {
                 // Center the map the first time we get a real location change.
-                final MachineSizedSIntPtr centerMapFirstTime = new MachineSizedSIntPtr();
-
                 if ((userLocation.getCoordinate().getLatitude() != 0.0) && (userLocation.getCoordinate().getLongitude() != 0.0)) {
-                    Dispatch.once(centerMapFirstTime, new Runnable() {
+                    Dispatch.once(new Runnable() {
                         @Override
                         public void run () {
                             mapView.setCenterCoordinate(userLocation.getCoordinate(), true);

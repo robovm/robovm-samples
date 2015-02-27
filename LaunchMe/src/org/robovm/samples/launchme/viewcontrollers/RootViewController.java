@@ -104,9 +104,9 @@ public class RootViewController extends UIViewController {
         urlField.setBackgroundColor(UIColor.white());
         urlField.setFont(UIFont.getSystemFont(17));
         urlField.setAutocapitalizationType(UITextAutocapitalizationType.Sentences);
-        urlField.addGestureRecognizer(new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+        urlField.addGestureRecognizer(new UITapGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
-            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+            public void onGesture (UIGestureRecognizer gestureRecognizer) {
                 // Select the url.
                 urlField.setSelectedRange(new NSRange(0, urlField.getText().length()));
                 // Show the copy menu.

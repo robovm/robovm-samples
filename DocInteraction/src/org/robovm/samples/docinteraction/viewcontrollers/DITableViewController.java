@@ -179,10 +179,10 @@ public class DITableViewController extends UITableViewController {
             // or
             // add a custom gesture recognizer in lieu of using the canned ones
             UILongPressGestureRecognizer longPressGesture = new UILongPressGestureRecognizer(
-                new UIGestureRecognizer.GestureListener() {
+                new UIGestureRecognizer.OnGestureListener() {
                     // if we installed a custom UIGestureRecognizer (i.e. long-hold), then this would be called
                     @Override
-                    public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+                    public void onGesture (UIGestureRecognizer gestureRecognizer) {
                         UILongPressGestureRecognizer longPressGesture = (UILongPressGestureRecognizer)gestureRecognizer;
                         if (longPressGesture.getState() == UIGestureRecognizerState.Began) {
                             NSIndexPath cellIndexPath = getTableView().getIndexPathForRow(

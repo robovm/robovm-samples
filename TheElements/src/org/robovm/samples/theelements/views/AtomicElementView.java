@@ -56,9 +56,9 @@ public class AtomicElementView extends UIView {
         setBackgroundColor(UIColor.clear());
 
         // attach a tap gesture recognizer to this view so it can flip
-        UITapGestureRecognizer tapGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.GestureListener() {
+        UITapGestureRecognizer tapGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
-            public void handleGesture (UIGestureRecognizer gestureRecognizer) {
+            public void onGesture (UIGestureRecognizer gestureRecognizer) {
                 // when a tap gesture occurs tell the view controller to flip this view to the
                 // back and show the AtomicElementFlippedView instead
                 viewController.flipCurrentView();
