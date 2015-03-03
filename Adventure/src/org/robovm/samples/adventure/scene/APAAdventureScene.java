@@ -36,6 +36,7 @@ import org.robovm.apple.spritekit.SKPhysicsContactDelegate;
 import org.robovm.apple.spritekit.SKPhysicsWorld;
 import org.robovm.apple.spritekit.SKSpriteNode;
 import org.robovm.apple.spritekit.SKTextureAtlas;
+import org.robovm.objc.ObjCRuntime;
 import org.robovm.samples.adventure.sprites.APAArcher;
 import org.robovm.samples.adventure.sprites.APABoss;
 import org.robovm.samples.adventure.sprites.APACave;
@@ -57,10 +58,12 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
 
     private static final int WORLD_CENTER = 2048;
 
-    private static final int LEVEL_MAP_SIZE = 256; // pixel size of level map (square)
+    private static final int LEVEL_MAP_SIZE = 256; // pixel size of level map
+                                                   // (square)
     private static final int LEVEL_MAP_DIVISOR = WORLD_SIZE / LEVEL_MAP_SIZE;
 
-    private static final boolean MOVE_NEAR_TO_BOSS = false; // Cheat to move near to boss.
+    private static final boolean MOVE_NEAR_TO_BOSS = false; // Cheat to move
+                                                            // near to boss.
 
     public enum APAHeroType {
         Archer, Warrior
@@ -74,22 +77,34 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     private static SKEmitterNode sharedLeafEmitterB;
     private static NSArray<SKNode> sharedBackgroundTiles;
 
-    private final NSArray<APACave> goblinCaves = new NSMutableArray<>(); // whence cometh goblins
+    private final NSArray<APACave> goblinCaves = new NSMutableArray<>(); // whence
+                                                                         // cometh
+                                                                         // goblins
 
     private APADataMap[] levelMap; // locations of caves/spawn points/etc
     private APATreeMap[] treeMap; // locations of trees
 
     private APABoss levelBoss; // the big boss character
-    private final NSArray<SKEmitterNode> particleSystems = new NSMutableArray<>();// particle emitter nodes
-    private final NSArray<APAParallaxSprite> parallaxSprites = new NSMutableArray<>(); // all the parallax sprites in this scene
-    private final NSArray<APATree> trees = new NSMutableArray<>(); // all the trees in the scene
+    private final NSArray<SKEmitterNode> particleSystems = new NSMutableArray<>();// particle
+                                                                                  // emitter
+                                                                                  // nodes
+    private final NSArray<APAParallaxSprite> parallaxSprites = new NSMutableArray<>(); // all
+                                                                                       // the
+                                                                                       // parallax
+                                                                                       // sprites
+                                                                                       // in
+                                                                                       // this
+                                                                                       // scene
+    private final NSArray<APATree> trees = new NSMutableArray<>(); // all the
+                                                                   // trees in
+                                                                   // the scene
 
-    public APAAdventureScene (CGSize size) {
+    public APAAdventureScene(CGSize size) {
         super(size);
     }
 
     @Override
-    public void setup () {
+    public void setup() {
         super.setup();
 
         // Build level and tree maps.
@@ -105,17 +120,14 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         centerWorldOnPosition(startPosition);
     }
 
-    private void buildWorld () {
+    private void buildWorld() {
         System.out.println("Building the world");
 
         // Configure physics for the world.
-        System.out.println(1);
-
         SKPhysicsWorld physicsWorld = getPhysicsWorld();
-        System.out.println(physicsWorld);
         physicsWorld.setGravity(new CGVector(0.0, 0.0)); // no gravity
         physicsWorld.setContactDelegate(this);
-        System.out.println(3);
+        System.out.println(physicsWorld);
 
         addBackgroundTiles();
         System.out.println(4);
@@ -130,14 +142,14 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         System.out.println(7);
     }
 
-    private void addBackgroundTiles () {
+    private void addBackgroundTiles() {
         // Tiles should already have been pre-loaded in loadSceneAssets.
         for (SKNode tileNode : sharedBackgroundTiles) {
             addNode(tileNode, APAWorldLayer.Ground);
         }
     }
 
-    private void addSpawnPoints () {
+    private void addSpawnPoints() {
         // Add goblin caves and set hero/boss spawn points.
         for (int y = 0; y < LEVEL_MAP_SIZE; y++) {
             for (int x = 0; x < LEVEL_MAP_SIZE; x++) {
@@ -162,7 +174,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         }
     }
 
-    private void addTrees () {
+    private void addTrees() {
         for (int y = 0; y < LEVEL_MAP_SIZE; y++) {
             for (int x = 0; x < LEVEL_MAP_SIZE; x++) {
                 CGPoint location = new CGPoint(x, y);
@@ -175,17 +187,17 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
                 if (spot.getSmallTreeLocation() >= 200) {
                     // Create small tree at this location.
                     treeLayer = APAWorldLayer.AboveCharacter;
-                    tree = (APATree)sharedSmallTree.copy();
+                    tree = (APATree) sharedSmallTree.copy();
                 } else if (spot.getBigTreeLocation() >= 200) {
                     // Create big tree with leaf emitters at this position.
-                    tree = (APATree)sharedBigTree.copy();
+                    tree = (APATree) sharedBigTree.copy();
 
                     SKEmitterNode emitter = null;
                     // Pick one of the two leaf emitters for this tree.
                     if (Math.random() < 0.5) {
-                        emitter = (SKEmitterNode)sharedLeafEmitterA.copy();
+                        emitter = (SKEmitterNode) sharedLeafEmitterA.copy();
                     } else {
-                        emitter = (SKEmitterNode)sharedLeafEmitterB.copy();
+                        emitter = (SKEmitterNode) sharedLeafEmitterB.copy();
                     }
 
                     emitter.setPosition(treePos);
@@ -205,7 +217,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         }
     }
 
-    private void addCollisionWalls () {
+    private void addCollisionWalls() {
         NSDate startDate = new NSDate();
         boolean[] filled = new boolean[LEVEL_MAP_SIZE * LEVEL_MAP_SIZE];
 
@@ -228,7 +240,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
                 int horizontalDistanceFromLeft = x;
                 APADataMap nextSpot = spot;
                 while (horizontalDistanceFromLeft < LEVEL_MAP_SIZE && nextSpot.getWall() >= 200
-                    && !filled[(y * LEVEL_MAP_SIZE) + horizontalDistanceFromLeft]) {
+                        && !filled[(y * LEVEL_MAP_SIZE) + horizontalDistanceFromLeft]) {
                     horizontalDistanceFromLeft++;
                     nextSpot = queryLevelMap(new CGPoint(horizontalDistanceFromLeft, y));
                 }
@@ -267,13 +279,14 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
                 CGPoint worldPoint = convertLevelMapPointToWorldPoint(location);
 
                 if (spot.getWall() < 200 || filled[(y * LEVEL_MAP_SIZE) + x]) {
-                    continue; // no wall, or already filled from X collision walls
+                    continue; // no wall, or already filled from X collision
+                              // walls
                 }
 
                 int verticalDistanceFromTop = y;
                 APADataMap nextSpot = spot;
                 while (verticalDistanceFromTop < LEVEL_MAP_SIZE && nextSpot.getWall() >= 200
-                    && !filled[(verticalDistanceFromTop * LEVEL_MAP_SIZE) + x]) {
+                        && !filled[(verticalDistanceFromTop * LEVEL_MAP_SIZE) + x]) {
                     verticalDistanceFromTop++;
                     nextSpot = queryLevelMap(new CGPoint(x, verticalDistanceFromTop));
                 }
@@ -302,16 +315,17 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
             }
         }
 
-        System.out.println(String.format("converted %d collision blocks into %d volumes in %f seconds", numBlocks, numVolumes,
-            new NSDate().getTimeIntervalSince(startDate)));
+        System.out.println(String.format("converted %d collision blocks into %d volumes in %f seconds", numBlocks,
+                numVolumes,
+                new NSDate().getTimeIntervalSince(startDate)));
     }
 
-    private void addCollisionWall (CGPoint worldPoint, double width, double height) {
+    private void addCollisionWall(CGPoint worldPoint, double width, double height) {
         CGRect rect = new CGRect(0, 0, width, height);
 
         SKNode wallNode = new SKNode();
         wallNode.setPosition(new CGPoint(worldPoint.getX() + rect.getSize().getWidth() * 0.5, worldPoint.getY()
-            - rect.getSize().getHeight() * 0.5));
+                - rect.getSize().getHeight() * 0.5));
         SKPhysicsBody physicsBody = SKPhysicsBody.createRectangle(rect.getSize());
         physicsBody.setDynamic(false);
         physicsBody.setCategoryBitMask(APAColliderType.Wall);
@@ -321,11 +335,13 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         addNode(wallNode, APAWorldLayer.Ground);
     }
 
-    public void startLevel () {
+    public void startLevel() {
         APAHeroCharacter hero = addHeroForPlayer(defaultPlayer);
 
         if (MOVE_NEAR_TO_BOSS) {
-            CGPoint bossPosition = levelBoss.getPosition(); // set earlier from buildWorld in addSpawnPoints
+            CGPoint bossPosition = levelBoss.getPosition(); // set earlier from
+                                                            // buildWorld in
+                                                            // addSpawnPoints
             bossPosition.setX(bossPosition.getX() + 128);
             bossPosition.setY(bossPosition.getY() + 512);
             hero.setPosition(bossPosition);
@@ -334,7 +350,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         centerWorldOnCharacter(hero);
     }
 
-    public void setDefaultPlayerHeroType (APAHeroType heroType) {
+    public void setDefaultPlayerHeroType(APAHeroType heroType) {
         switch (heroType) {
         case Archer:
             defaultPlayer.heroClass = APAArcher.class;
@@ -346,7 +362,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    public void heroWasKilled (APAHeroCharacter hero) {
+    public void heroWasKilled(APAHeroCharacter hero) {
         for (APACave cave : goblinCaves) {
             cave.stopGoblinsFromTargettingHero(hero);
         }
@@ -354,7 +370,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    void updateScene (double timeSinceLast) {
+    void updateScene(double timeSinceLast) {
         // Update all players' heroes.
         for (APAHeroCharacter hero : heroes) {
             hero.update(timeSinceLast);
@@ -370,7 +386,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    public void didSimulatePhysics () {
+    public void didSimulatePhysics() {
         super.didSimulatePhysics();
 
         // Get the position either of the default hero or the hero spawn point.
@@ -382,7 +398,8 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
             position = defaultSpawnPoint;
         }
 
-        // Update the alphas of any trees that are near the hero (center of the camera) and therefore visible or soon to be
+        // Update the alphas of any trees that are near the hero (center of the
+        // camera) and therefore visible or soon to be
 // visible.
         for (APATree tree : trees) {
             if (APAUtils.getDistanceBetweenPoints(tree.getPosition(), position) < 1024) {
@@ -394,7 +411,8 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
             return;
         }
 
-        // Show any nearby hidden particle systems and hide those that are too far away to be seen.
+        // Show any nearby hidden particle systems and hide those that are too
+        // far away to be seen.
         for (SKEmitterNode particles : particleSystems) {
             boolean particlesAreVisible = APAUtils.getDistanceBetweenPoints(particles.getPosition(), position) < 1024;
 
@@ -415,18 +433,18 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         }
     }
 
-    private APADataMap queryLevelMap (CGPoint point) {
+    private APADataMap queryLevelMap(CGPoint point) {
         // Grab the level map pixel for a given x,y (upper left).
-        return levelMap[(int)point.getY() * LEVEL_MAP_SIZE + (int)point.getX()];
+        return levelMap[(int) point.getY() * LEVEL_MAP_SIZE + (int) point.getX()];
     }
 
-    private APATreeMap queryTreeMap (CGPoint point) {
+    private APATreeMap queryTreeMap(CGPoint point) {
         // Grab the tree map pixel for a given x,y (upper left).
-        return treeMap[(int)point.getY() * LEVEL_MAP_SIZE + (int)point.getX()];
+        return treeMap[(int) point.getY() * LEVEL_MAP_SIZE + (int) point.getX()];
     }
 
     @Override
-    public double getDistanceToWall (CGPoint pos0, CGPoint pos1) {
+    public double getDistanceToWall(CGPoint pos0, CGPoint pos1) {
         CGPoint a = convertWorldPointToLevelMapPoint(pos0);
         CGPoint b = convertWorldPointToLevelMapPoint(pos1);
 
@@ -450,7 +468,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    public boolean canSee (CGPoint pos0, CGPoint pos1) {
+    public boolean canSee(CGPoint pos0, CGPoint pos1) {
         CGPoint a = convertWorldPointToLevelMapPoint(pos0);
         CGPoint b = convertWorldPointToLevelMapPoint(pos1);
 
@@ -472,39 +490,43 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         return true;
     }
 
-    private CGPoint convertLevelMapPointToWorldPoint (CGPoint location) {
+    private CGPoint convertLevelMapPointToWorldPoint(CGPoint location) {
         // Given a level map pixel point, convert up to a world point.
-        // This determines which "tile" the point falls in and centers within that tile.
-        int x = (int)((location.getX() * LEVEL_MAP_DIVISOR) - (WORLD_CENTER * WORLD_TILE_SIZE / 2));
-        int y = (int)-((location.getY() * LEVEL_MAP_DIVISOR) - (WORLD_CENTER * WORLD_TILE_SIZE / 2));
+        // This determines which "tile" the point falls in and centers within
+        // that tile.
+        int x = (int) ((location.getX() * LEVEL_MAP_DIVISOR) - (WORLD_CENTER * WORLD_TILE_SIZE / 2));
+        int y = (int) -((location.getY() * LEVEL_MAP_DIVISOR) - (WORLD_CENTER * WORLD_TILE_SIZE / 2));
         location.setX(x);
         location.setY(y);
         return location;
     }
 
-    private CGPoint convertWorldPointToLevelMapPoint (CGPoint location) {
-        // Given a world based point, resolve to a pixel location in the level map.
-        int x = (int)((location.getX() + WORLD_CENTER) / LEVEL_MAP_DIVISOR);
-        int y = (int)((WORLD_SIZE - (location.getY() + WORLD_CENTER)) / LEVEL_MAP_DIVISOR);
+    private CGPoint convertWorldPointToLevelMapPoint(CGPoint location) {
+        // Given a world based point, resolve to a pixel location in the level
+        // map.
+        int x = (int) ((location.getX() + WORLD_CENTER) / LEVEL_MAP_DIVISOR);
+        int y = (int) ((WORLD_SIZE - (location.getY() + WORLD_CENTER)) / LEVEL_MAP_DIVISOR);
         location.setX(x);
         location.setY(y);
         return location;
     }
 
     @Override
-    void loadSceneAssets () {
+    void loadSceneAssets() {
         SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
 
         // Load archived emitters and create copyable sprites.
         sharedProjectileSparkEmitter = APAUtils.getEmitterNodeByName("ProjectileSplat");
         sharedSpawnEmitter = APAUtils.getEmitterNodeByName("Spawn");
 
-        sharedSmallTree = new APATree(new NSArray<SKSpriteNode>(SKSpriteNode.create(atlas.getTexture("small_tree_base.png")),
-            SKSpriteNode.create(atlas.getTexture("small_tree_middle.png")), SKSpriteNode.create(atlas
-                .getTexture("small_tree_top.png"))), 25.0);
-        sharedBigTree = new APATree(new NSArray<SKSpriteNode>(SKSpriteNode.create(atlas.getTexture("big_tree_base.png")),
-            SKSpriteNode.create(atlas.getTexture("big_tree_middle.png")), SKSpriteNode.create(atlas
-                .getTexture("big_tree_top.png"))), 150.0);
+        sharedSmallTree = new APATree(new NSArray<SKSpriteNode>(SKSpriteNode.create(atlas
+                .getTexture("small_tree_base.png")),
+                SKSpriteNode.create(atlas.getTexture("small_tree_middle.png")), SKSpriteNode.create(atlas
+                        .getTexture("small_tree_top.png"))), 25.0);
+        sharedBigTree = new APATree(new NSArray<SKSpriteNode>(
+                SKSpriteNode.create(atlas.getTexture("big_tree_base.png")),
+                SKSpriteNode.create(atlas.getTexture("big_tree_middle.png")), SKSpriteNode.create(atlas
+                        .getTexture("big_tree_top.png"))), 150.0);
         sharedBigTree.setFadesAlpha(true);
         sharedLeafEmitterA = APAUtils.getEmitterNodeByName("Leaves_01");
         sharedLeafEmitterB = APAUtils.getEmitterNodeByName("Leaves_02");
@@ -521,7 +543,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         APAWarrior.loadSharedAssets();
     }
 
-    private void loadWorldTiles () {
+    private void loadWorldTiles() {
         System.out.println("Loading world tiles");
         NSDate startDate = new NSDate();
 
@@ -531,21 +553,25 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         for (int y = 0; y < WORLD_TILE_DIVISOR; y++) {
             for (int x = 0; x < WORLD_TILE_DIVISOR; x++) {
                 int tileNumber = (y * WORLD_TILE_DIVISOR) + x;
-                SKSpriteNode tileNode = SKSpriteNode.create(tileAtlas.getTexture(String.format("tile%d.png", tileNumber)));
-                CGPoint position = new CGPoint((x * WORLD_TILE_SIZE) - WORLD_CENTER, (WORLD_SIZE - (y * WORLD_TILE_SIZE))
-                    - WORLD_CENTER);
+                SKSpriteNode tileNode = SKSpriteNode.create(tileAtlas.getTexture(String
+                        .format("tile%d.png", tileNumber)));
+                CGPoint position = new CGPoint((x * WORLD_TILE_SIZE) - WORLD_CENTER,
+                        (WORLD_SIZE - (y * WORLD_TILE_SIZE))
+                                - WORLD_CENTER);
                 tileNode.setPosition(position);
                 tileNode.setZPosition(-1.0);
                 tileNode.setBlendMode(SKBlendMode.Replace);
                 sharedBackgroundTiles.add(tileNode);
             }
         }
-        System.out.println(String.format("Loaded all world tiles in %f seconds", new NSDate().getTimeIntervalSince(startDate)));
+        System.out.println(String.format("Loaded all world tiles in %f seconds",
+                new NSDate().getTimeIntervalSince(startDate)));
     }
 
     @Override
-    public void releaseSceneAssets () {
-        // Get rid of everything unique to this scene (but not the characters, which might appear in other scenes).
+    public void releaseSceneAssets() {
+        // Get rid of everything unique to this scene (but not the characters,
+        // which might appear in other scenes).
         sharedBackgroundTiles = null;
         sharedProjectileSparkEmitter = null;
         sharedSpawnEmitter = null;
@@ -554,29 +580,31 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    public void didBeginContact (SKPhysicsContact contact) {
+    public void didBeginContact(SKPhysicsContact contact) {
         // Either bodyA or bodyB in the collision could be a character.
         SKNode node = contact.getBodyA().getNode();
         if (node instanceof APACharacter) {
-            ((APACharacter)node).collidedWith(contact.getBodyB());
+            ((APACharacter) node).collidedWith(contact.getBodyB());
         }
 
         // Check bodyB too.
         node = contact.getBodyB().getNode();
         if (node instanceof APACharacter) {
-            ((APACharacter)node).collidedWith(contact.getBodyA());
+            ((APACharacter) node).collidedWith(contact.getBodyA());
         }
 
         // Handle collisions with projectiles.
         if ((contact.getBodyA().getCategoryBitMask() & APAColliderType.Projectile) == APAColliderType.Projectile
-            || (contact.getBodyB().getCategoryBitMask() & APAColliderType.Projectile) == APAColliderType.Projectile) {
+                || (contact.getBodyB().getCategoryBitMask() & APAColliderType.Projectile) == APAColliderType.Projectile) {
             SKNode projectile = ((contact.getBodyA().getCategoryBitMask() & APAColliderType.Projectile) == APAColliderType.Projectile) ? contact
-                .getBodyA().getNode() : contact.getBodyB().getNode();
+                    .getBodyA().getNode()
+                    : contact.getBodyB().getNode();
 
             projectile.runAction(SKAction.removeFromParent());
 
-            // Build up a "one shot" particle to indicate where the projectile hit.
-            SKEmitterNode emitter = (SKEmitterNode)sharedProjectileSparkEmitter.copy();
+            // Build up a "one shot" particle to indicate where the projectile
+            // hit.
+            SKEmitterNode emitter = (SKEmitterNode) sharedProjectileSparkEmitter.copy();
             addNode(emitter, APAWorldLayer.AboveCharacter);
             emitter.setPosition(projectile.getPosition());
             APAUtils.runOneShotEmitter(emitter, 0.15);
@@ -584,11 +612,10 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
     }
 
     @Override
-    public void didEndContact (SKPhysicsContact contact) {
-    }
+    public void didEndContact(SKPhysicsContact contact) {}
 
     @Override
-    SKEmitterNode getSharedSpawnEmitter () {
+    SKEmitterNode getSharedSpawnEmitter() {
         return sharedSpawnEmitter;
     }
 }

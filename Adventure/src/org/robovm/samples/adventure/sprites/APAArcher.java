@@ -47,11 +47,11 @@ public class APAArcher extends APAHeroCharacter {
     private static NSArray<SKTexture> sharedDeathAnimationFrames;
     private static SKAction sharedDamageAction;
 
-    public APAArcher (CGPoint position, APAPlayer player) {
-        super(SKTextureAtlas.create("Archer_Idle").getTexture("archer_idle_0001.png"), position, player);
+    public APAArcher(CGPoint position, APAPlayer player) {
+        super(SKTextureAtlas.create("Archer/Archer_Idle").getTexture("archer_idle_0001.png"), position, player);
     }
 
-    public static void loadSharedAssets () {
+    public static void loadSharedAssets() {
         // Load only once
         if (sharedProjectile == null) {
             sharedProjectile = SKSpriteNode.create(UIColor.white(), new CGSize(2.0, 24.0));
@@ -59,59 +59,64 @@ public class APAArcher extends APAHeroCharacter {
             sharedProjectile.setName("Projectile");
             sharedProjectile.getPhysicsBody().setCategoryBitMask(APAColliderType.Projectile);
             sharedProjectile.getPhysicsBody().setCollisionBitMask(APAColliderType.Wall);
-            sharedProjectile.getPhysicsBody().setContactTestBitMask(sharedProjectile.getPhysicsBody().getCollisionBitMask());
+            sharedProjectile.getPhysicsBody().setContactTestBitMask(
+                    sharedProjectile.getPhysicsBody().getCollisionBitMask());
 
             sharedProjectileEmitter = APAUtils.getEmitterNodeByName("ArcherProjectile");
             sharedWalkAnimationFrames = APAUtils
-                .loadFramesFromAtlas("Archer_Idle", "archer_idle_", DEFAULT_NUMBER_OF_IDLE_FRAMES);
+                    .loadFramesFromAtlas("Archer/Archer_Idle", "archer_idle_", DEFAULT_NUMBER_OF_IDLE_FRAMES);
             sharedWalkAnimationFrames = APAUtils
-                .loadFramesFromAtlas("Archer_Walk", "archer_walk_", DEFAULT_NUMBER_OF_WALK_FRAMES);
-            sharedAttackAnimationFrames = APAUtils.loadFramesFromAtlas("Archer_Attack", "archer_attack_", ATTACK_FRAMES);
-            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Archer_GetHit", "archer_getHit_", GET_HIT_FRAMES);
-            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Archer_Death", "archer_death_", DEATH_FRAMES);
+                    .loadFramesFromAtlas("Archer/Archer_Walk", "archer_walk_", DEFAULT_NUMBER_OF_WALK_FRAMES);
+            sharedAttackAnimationFrames = APAUtils
+                    .loadFramesFromAtlas("Archer/Archer_Attack", "archer_attack_", ATTACK_FRAMES);
+            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Archer/Archer_GetHit", "archer_getHit_",
+                    GET_HIT_FRAMES);
+            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Archer/Archer_Death", "archer_death_",
+                    DEATH_FRAMES);
 
-            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 10.0, 0.0), SKAction
-                .wait(0.75), SKAction.colorize(0.0, 0.25)));
+            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 10.0, 0.0),
+                    SKAction
+                            .wait(0.75), SKAction.colorize(0.0, 0.25)));
         }
     }
 
     @Override
-    NSArray<SKTexture> getIdleAnimationFrames () {
+    NSArray<SKTexture> getIdleAnimationFrames() {
         return sharedIdleAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getWalkAnimationFrames () {
+    NSArray<SKTexture> getWalkAnimationFrames() {
         return sharedWalkAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getAttackAnimationFrames () {
+    NSArray<SKTexture> getAttackAnimationFrames() {
         return sharedAttackAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getHitAnimationFrames () {
+    NSArray<SKTexture> getHitAnimationFrames() {
         return sharedGetHitAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getDeathAnimationFrames () {
+    NSArray<SKTexture> getDeathAnimationFrames() {
         return sharedDeathAnimationFrames;
     }
 
     @Override
-    SKAction getDamageAction () {
+    SKAction getDamageAction() {
         return sharedDamageAction;
     }
 
     @Override
-    SKSpriteNode getProjectile () {
+    SKSpriteNode getProjectile() {
         return sharedProjectile;
     }
 
     @Override
-    SKEmitterNode getProjectileEmitter () {
+    SKEmitterNode getProjectileEmitter() {
         return sharedProjectileEmitter;
     }
 }

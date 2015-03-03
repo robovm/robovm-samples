@@ -23,7 +23,6 @@ import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSArray;
-import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.NSTextAlignment;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
@@ -42,7 +41,6 @@ import org.robovm.apple.uikit.UIPinchGestureRecognizer;
 import org.robovm.apple.uikit.UIRotationGestureRecognizer;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.objc.Selector;
 
 public class GestureViewController extends UIViewController {
     private final UIImageView firstPieceView;
@@ -51,7 +49,7 @@ public class GestureViewController extends UIViewController {
 
     private UIView pieceForReset;
 
-    public GestureViewController () {
+    public GestureViewController() {
         getTabBarItem().setTitle("Gestures");
 
         createGestureRecognizers();
@@ -95,28 +93,34 @@ public class GestureViewController extends UIViewController {
         view.addSubview(subtitle);
     }
 
-    private NSArray<UIGestureRecognizer> createGestureRecognizers () {
+    private NSArray<UIGestureRecognizer> createGestureRecognizers() {
         UIGestureRecognizerDelegate gestureRecognizerDelegate = new UIGestureRecognizerDelegateAdapter() {
-            /** Ensure that the pinch, pan and rotate gesture recognizers on a particular view can all recognize simultaneously.
-             * Prevent other gesture recognizers from recognizing simultaneously. */
+            /**
+             * Ensure that the pinch, pan and rotate gesture recognizers on a
+             * particular view can all recognize simultaneously. Prevent other
+             * gesture recognizers from recognizing simultaneously.
+             */
             @Override
-            public boolean shouldRecognizeSimultaneously (UIGestureRecognizer gestureRecognizer,
-                UIGestureRecognizer otherGestureRecognizer) {
+            public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer,
+                    UIGestureRecognizer otherGestureRecognizer) {
 
-                // If the gesture recognizers's view isn't one of our pieces, don't allow simultaneous recognition.
+                // If the gesture recognizers's view isn't one of our pieces,
+                // don't allow simultaneous recognition.
                 if (gestureRecognizer.getView() != firstPieceView && gestureRecognizer.getView() != secondPieceView
-                    && gestureRecognizer.getView() != thirdPieceView) {
+                        && gestureRecognizer.getView() != thirdPieceView) {
                     return false;
                 }
 
-                // If the gesture recognizers are on different views, don't allow simultaneous recognition.
+                // If the gesture recognizers are on different views, don't
+                // allow simultaneous recognition.
                 if (gestureRecognizer.getView() != otherGestureRecognizer.getView()) {
                     return false;
                 }
 
-                // If either of the gesture recognizers is the long press, don't allow simultaneous recognition.
+                // If either of the gesture recognizers is the long press, don't
+                // allow simultaneous recognition.
                 if (gestureRecognizer instanceof UILongPressGestureRecognizer
-                    || otherGestureRecognizer instanceof UILongPressGestureRecognizer) {
+                        || otherGestureRecognizer instanceof UILongPressGestureRecognizer) {
                     return false;
                 }
 
@@ -125,58 +129,66 @@ public class GestureViewController extends UIViewController {
         };
 
         UIRotationGestureRecognizer rotationGestureRecognizer = new UIRotationGestureRecognizer(
-            new UIGestureRecognizer.OnGestureListener() {
-                @Override
-                public void onGesture (UIGestureRecognizer gestureRecognizer) {
-                    rotatePiece((UIRotationGestureRecognizer)gestureRecognizer);
-                }
-            });
+                new UIGestureRecognizer.OnGestureListener() {
+                    @Override
+                    public void onGesture(UIGestureRecognizer gestureRecognizer) {
+                        rotatePiece((UIRotationGestureRecognizer) gestureRecognizer);
+                    }
+                });
         UIPinchGestureRecognizer pinchGestureRecognizer = new UIPinchGestureRecognizer(
-            new UIGestureRecognizer.OnGestureListener() {
-                @Override
-                public void onGesture (UIGestureRecognizer gestureRecognizer) {
-                    scalePiece((UIPinchGestureRecognizer)gestureRecognizer);
-                }
-            });
-        UIPanGestureRecognizer panGestureRecognizer = new UIPanGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
-            @Override
-            public void onGesture (UIGestureRecognizer gestureRecognizer) {
-                panPiece((UIPanGestureRecognizer)gestureRecognizer);
-            }
-        });
+                new UIGestureRecognizer.OnGestureListener() {
+                    @Override
+                    public void onGesture(UIGestureRecognizer gestureRecognizer) {
+                        scalePiece((UIPinchGestureRecognizer) gestureRecognizer);
+                    }
+                });
+        UIPanGestureRecognizer panGestureRecognizer = new UIPanGestureRecognizer(
+                new UIGestureRecognizer.OnGestureListener() {
+                    @Override
+                    public void onGesture(UIGestureRecognizer gestureRecognizer) {
+                        panPiece((UIPanGestureRecognizer) gestureRecognizer);
+                    }
+                });
         UILongPressGestureRecognizer longPressGestureRecognizer = new UILongPressGestureRecognizer(
-            new UIGestureRecognizer.OnGestureListener() {
-                @Override
-                public void onGesture (UIGestureRecognizer gestureRecognizer) {
-                    showResetMenu((UILongPressGestureRecognizer)gestureRecognizer);
-                }
-            });
+                new UIGestureRecognizer.OnGestureListener() {
+                    @Override
+                    public void onGesture(UIGestureRecognizer gestureRecognizer) {
+                        showResetMenu((UILongPressGestureRecognizer) gestureRecognizer);
+                    }
+                });
 
-        NSArray<UIGestureRecognizer> gestureRecognizers = new NSArray<>(rotationGestureRecognizer, pinchGestureRecognizer,
-            panGestureRecognizer, longPressGestureRecognizer);
+        NSArray<UIGestureRecognizer> gestureRecognizers = new NSArray<>(rotationGestureRecognizer,
+                pinchGestureRecognizer,
+                panGestureRecognizer, longPressGestureRecognizer);
         for (UIGestureRecognizer gestureRecognizer : gestureRecognizers) {
             gestureRecognizer.setDelegate(gestureRecognizerDelegate);
         }
         return gestureRecognizers;
     }
 
-    /** Scale and rotation transforms are applied relative to the layer's anchor point this method moves a gesture recognizer's
-     * view's anchor point between the user's fingers. */
-    private void adjustAnchorPointForGestureRecognizer (UIGestureRecognizer gestureRecognizer) {
+    /**
+     * Scale and rotation transforms are applied relative to the layer's anchor
+     * point this method moves a gesture recognizer's view's anchor point
+     * between the user's fingers.
+     */
+    private void adjustAnchorPointForGestureRecognizer(UIGestureRecognizer gestureRecognizer) {
         if (gestureRecognizer.getState() == UIGestureRecognizerState.Began) {
             UIView piece = gestureRecognizer.getView();
             CGPoint locationInView = gestureRecognizer.getLocationInView(piece);
             CGPoint locationInSuperview = gestureRecognizer.getLocationInView(piece.getSuperview());
 
             piece.getLayer().setAnchorPoint(
-                new CGPoint(locationInView.getX() / piece.getBounds().getSize().getWidth(), locationInView.getY()
-                    / piece.getBounds().getSize().getHeight()));
+                    new CGPoint(locationInView.getX() / piece.getBounds().getSize().getWidth(), locationInView.getY()
+                            / piece.getBounds().getSize().getHeight()));
             piece.setCenter(locationInSuperview);
         }
     }
 
-    /** Display a menu with a single item to allow the piece's transform to be reset. */
-    private void showResetMenu (final UILongPressGestureRecognizer gestureRecognizer) {
+    /**
+     * Display a menu with a single item to allow the piece's transform to be
+     * reset.
+     */
+    private void showResetMenu(final UILongPressGestureRecognizer gestureRecognizer) {
         if (gestureRecognizer.getState() == UIGestureRecognizerState.Began) {
             becomeFirstResponder();
             pieceForReset = gestureRecognizer.getView();
@@ -186,7 +198,7 @@ public class GestureViewController extends UIViewController {
              */
             UIMenuItem resetMenuItem = new UIMenuItem("Reset", new UIMenuItem.OnActionListener() {
                 @Override
-                public void onAction (UIMenuController menuController, UIMenuItem item) {
+                public void onAction(UIMenuController menuController, UIMenuItem item) {
                     resetPiece(menuController);
                 }
             });
@@ -203,7 +215,7 @@ public class GestureViewController extends UIViewController {
     }
 
     /** Animate back to the default anchor point and transform. */
-    private void resetPiece (UIMenuController controller) {
+    private void resetPiece(UIMenuController controller) {
         CGPoint centerPoint = new CGPoint(pieceForReset.getBounds().getMidX(), pieceForReset.getBounds().getMidY());
         CGPoint locationInSuperview = pieceForReset.convertPointToView(centerPoint, pieceForReset.getSuperview());
 
@@ -216,56 +228,63 @@ public class GestureViewController extends UIViewController {
     }
 
     @Override
-    public boolean canBecomeFirstResponder () {
-        // UIMenuController requires that we can become first responder or it won't display
+    public boolean canBecomeFirstResponder() {
+        /*
+         * UIMenuController requires that we can become first responder or it
+         * won't display.
+         */
         return true;
     }
 
-    @Override
-    public boolean canPerformAction (Selector action, NSObject sender) {
-        if (action.getName().equals("action:")) return true; // FIXME: Is it possible to simplify this?
-        return false;
-    }
-
-    /** Shift the piece's center by the pan amount. Reset the gesture recognizer's translation to {0, 0} after applying so the next
-     * callback is a delta from the current position. */
-    private void panPiece (UIPanGestureRecognizer gestureRecognizer) {
+    /**
+     * Shift the piece's center by the pan amount. Reset the gesture
+     * recognizer's translation to {0, 0} after applying so the next callback is
+     * a delta from the current position.
+     */
+    private void panPiece(UIPanGestureRecognizer gestureRecognizer) {
         UIView piece = gestureRecognizer.getView();
 
         adjustAnchorPointForGestureRecognizer(gestureRecognizer);
 
         if (gestureRecognizer.getState() == UIGestureRecognizerState.Began
-            || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
+                || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
             CGPoint translation = gestureRecognizer.getTranslation(piece.getSuperview());
 
             piece.setCenter(new CGPoint(piece.getCenter().getX() + translation.getX(), piece.getCenter().getY()
-                + translation.getY()));
+                    + translation.getY()));
             gestureRecognizer.setTranslation(CGPoint.Zero(), piece.getSuperview());
         }
     }
 
-    /** Rotate the piece by the current rotation. Reset the gesture recognizer's rotation to 0 after applying so the next callback
-     * is a delta from the current rotation. */
-    private void rotatePiece (UIRotationGestureRecognizer gestureRecognizer) {
+    /**
+     * Rotate the piece by the current rotation. Reset the gesture recognizer's
+     * rotation to 0 after applying so the next callback is a delta from the
+     * current rotation.
+     */
+    private void rotatePiece(UIRotationGestureRecognizer gestureRecognizer) {
         adjustAnchorPointForGestureRecognizer(gestureRecognizer);
 
         if (gestureRecognizer.getState() == UIGestureRecognizerState.Began
-            || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
+                || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
             gestureRecognizer.getView().setTransform(
-                gestureRecognizer.getView().getTransform().rotate(gestureRecognizer.getRotation()));
+                    gestureRecognizer.getView().getTransform().rotate(gestureRecognizer.getRotation()));
             gestureRecognizer.setRotation(0);
         }
     }
 
-    /** Scale the piece by the current scale. Reset the gesture recognizer's rotation to 0 after applying so the next callback is a
-     * delta from the current scale. */
-    private void scalePiece (UIPinchGestureRecognizer gestureRecognizer) {
+    /**
+     * Scale the piece by the current scale. Reset the gesture recognizer's
+     * rotation to 0 after applying so the next callback is a delta from the
+     * current scale.
+     */
+    private void scalePiece(UIPinchGestureRecognizer gestureRecognizer) {
         adjustAnchorPointForGestureRecognizer(gestureRecognizer);
 
         if (gestureRecognizer.getState() == UIGestureRecognizerState.Began
-            || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
+                || gestureRecognizer.getState() == UIGestureRecognizerState.Changed) {
             gestureRecognizer.getView().setTransform(
-                gestureRecognizer.getView().getTransform().scale(gestureRecognizer.getScale(), gestureRecognizer.getScale()));
+                    gestureRecognizer.getView().getTransform()
+                            .scale(gestureRecognizer.getScale(), gestureRecognizer.getScale()));
             gestureRecognizer.setScale(1);
         }
     }

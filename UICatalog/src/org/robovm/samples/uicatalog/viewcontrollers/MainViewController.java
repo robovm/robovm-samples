@@ -25,14 +25,12 @@ import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellAccessoryType;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.apple.uikit.UIWindow;
 import org.robovm.rt.bro.annotation.MachineSizedSInt;
 
 /** The application's main view controller (front page) */
@@ -74,16 +72,9 @@ public class MainViewController extends UITableViewController {
 
     }
 
-    /** construct the array of page descriptions we will use (each description is a dictionary) */
-    @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
+    public MainViewController () {
+        setTitle("UICatalog");
 
-        UIWindow window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        window.setBackgroundColor(UIColor.lightGray());
-        window.makeKeyAndVisible();
-
-        // <rect key="frame" x="0.0" y="64" width="320" height="416"/>
         CGRect tableViewBounds = new CGRect(0.0, 64.0, 320, 416);
         setTableView(new UITableView(tableViewBounds));
 

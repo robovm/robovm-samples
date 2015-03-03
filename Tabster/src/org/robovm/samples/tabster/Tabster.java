@@ -49,10 +49,16 @@ import org.robovm.samples.tabster.viewcontrollers.ThreeViewController;
 import org.robovm.samples.tabster.viewcontrollers.TwoViewController;
 
 public class Tabster extends UIApplicationDelegateAdapter {
-    private static final boolean CUSTOMIZE_TAB_BAR = false; // Turn on/off custom tab bar appearance
+    private static final boolean CUSTOMIZE_TAB_BAR = false; // Turn on/off
+                                                            // custom tab bar
+                                                            // appearance
 
     // NSUserDefaults keys:
-    private static final String TAB_BAR_ORDER_PREF_KEY = "TabBarOrder"; // The ordering of the tabs
+    private static final String TAB_BAR_ORDER_PREF_KEY = "TabBarOrder"; // The
+                                                                        // ordering
+                                                                        // of
+                                                                        // the
+                                                                        // tabs
 
     private UIWindow window;
     private UITabBarController tabBarController;
@@ -69,7 +75,7 @@ public class Tabster extends UIApplicationDelegateAdapter {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
         tabBarController = new UITabBarController();
 
@@ -117,13 +123,16 @@ public class Tabster extends UIApplicationDelegateAdapter {
             tabBarController.getTabBar().setSelectedImageTintColor(UIColor.yellow());
 
             // note:
-            // 1) you can also apply additional custom appearance to UITabBar using:
+            // 1) you can also apply additional custom appearance to UITabBar
+            // using:
             // "backgroundImage" and "selectionIndicatorImage"
-            // 2) you can also customize the appearance of individual UITabBarItems as well.
+            // 2) you can also customize the appearance of individual
+            // UITabBarItems as well.
         }
 
         // restore the tab-order from prefs
-        NSArray<NSString> arr = (NSArray<NSString>)NSUserDefaults.getStandardUserDefaults().getArray(TAB_BAR_ORDER_PREF_KEY);
+        NSArray<NSString> arr = (NSArray<NSString>) NSUserDefaults.getStandardUserDefaults().getArray(
+                TAB_BAR_ORDER_PREF_KEY);
 
         if (arr != null && arr.size() > 0) {
             List<String> classNames = arr.asStringList();
@@ -133,7 +142,8 @@ public class Tabster extends UIApplicationDelegateAdapter {
                     String controllerClassName = null;
 
                     if (controller instanceof UINavigationController) {
-                        controllerClassName = ((UINavigationController)controller).getTopViewController().getClass().getName();
+                        controllerClassName = ((UINavigationController) controller).getTopViewController().getClass()
+                                .getName();
                     } else {
                         controllerClassName = controller.getClass().getName();
                     }
@@ -153,15 +163,17 @@ public class Tabster extends UIApplicationDelegateAdapter {
         // listen for changes in view controller from the More screen
         tabBarController.getMoreNavigationController().setDelegate(new UINavigationControllerDelegateAdapter() {
             @Override
-            public void willShowViewController (UINavigationController navigationController, UIViewController viewController,
-                boolean animated) {
+            public void willShowViewController(UINavigationController navigationController,
+                    UIViewController viewController,
+                    boolean animated) {
                 if (viewController == tabBarController.getMoreNavigationController().getViewControllers().first()) {
                     // returned to the More page
                 }
             }
         });
 
-        // choose to make one of our view controllers ("FeaturedViewController"),
+        // choose to make one of our view controllers
+        // ("FeaturedViewController"),
         // not movable/reorderable in More's edit screen
         NSArray<UIViewController> customizeableViewControllers;
         if (tabBarController.getViewControllers() == null) {
@@ -184,27 +196,21 @@ public class Tabster extends UIApplicationDelegateAdapter {
         // Make the window visible.
         window.makeKeyAndVisible();
 
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
-
         return true;
     }
 
     @Override
-    public void didEnterBackground (UIApplication application) {
+    public void didEnterBackground(UIApplication application) {
         // this will store tab ordering.
         saveTabOrder();
     }
 
     /** Store the tab-order to preferences */
-    private void saveTabOrder () {
+    private void saveTabOrder() {
         List<String> classNames = new ArrayList<String>();
         for (UIViewController controller : tabBarController.getViewControllers()) {
             if (controller instanceof UINavigationController) {
-                UINavigationController navController = (UINavigationController)controller;
+                UINavigationController navController = (UINavigationController) controller;
                 classNames.add(navController.getTopViewController().getClass().getName());
             } else {
                 classNames.add(controller.getClass().getName());
@@ -215,16 +221,16 @@ public class Tabster extends UIApplicationDelegateAdapter {
     }
 
     @Override
-    public boolean shouldRestoreApplicationState (UIApplication application, NSCoder coder) {
+    public boolean shouldRestoreApplicationState(UIApplication application, NSCoder coder) {
         return true;
     }
 
     @Override
-    public boolean shouldSaveApplicationState (UIApplication application, NSCoder coder) {
+    public boolean shouldSaveApplicationState(UIApplication application, NSCoder coder) {
         return true;
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, Tabster.class);
         pool.close();

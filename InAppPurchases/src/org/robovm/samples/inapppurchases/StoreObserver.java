@@ -82,7 +82,7 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
     /** Create and add a payment request to the payment queue.
      * @param product */
     public void buy (SKProduct product) {
-        SKPayment payment = SKPayment.createFromProduct(product);
+        SKPayment payment = SKPayment.create(product);
         SKPaymentQueue.getDefaultQueue().addPayment(payment);
     }
 

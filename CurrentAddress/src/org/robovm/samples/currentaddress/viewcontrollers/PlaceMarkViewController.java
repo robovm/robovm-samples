@@ -31,8 +31,8 @@ import org.robovm.apple.uikit.UITableViewController;
 public class PlaceMarkViewController extends UITableViewController {
     private CLPlacemark placemark = new CLPlacemark();
 
-    public PlaceMarkViewController () {
-        getNavigationItem().setTitle("Address");
+    public PlaceMarkViewController() {
+        setTitle("Address");
 
         UITableView tableView = getTableView();
         tableView.setBackgroundColor(UIColor.white());
@@ -40,22 +40,22 @@ public class PlaceMarkViewController extends UITableViewController {
         tableView.setDataSource(this);
     }
 
-    public void setPlacemark (CLPlacemark placemark) {
+    public void setPlacemark(CLPlacemark placemark) {
         this.placemark = placemark;
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         return 1;
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         return 9;
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         final String cellID = "cellID";
 
         UITableViewCell cell = tableView.dequeueReusableCell(cellID);
@@ -63,7 +63,7 @@ public class PlaceMarkViewController extends UITableViewController {
             cell = new UITableViewCell(UITableViewCellStyle.Subtitle, cellID);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
         }
-        int row = (int)indexPath.getRow();
+        int row = (int) indexPath.getRow();
         switch (row) {
         case 0:
             cell.getTextLabel().setText("Thoroughfare");

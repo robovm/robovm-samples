@@ -25,9 +25,9 @@
         <key>LSRequiresIPhoneOS</key>
         <true />
         <key>NSLocationWhenInUseUsageDescription</key>
-        <string>Location When in Use Text</string>
+        <string>The Location services are used to demonstrate MapKit!</string>
         <key>NSLocationAlwaysUsageDescription</key>
-        <string>Location Always Text</string>
+        <string>The Location services are used to demonstrate MapKit!</string>
         <key>UIDeviceFamily</key>
         <array>
             <integer>1</integer>

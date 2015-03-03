@@ -31,22 +31,18 @@ import org.robovm.samples.uicatalog.viewcontrollers.MainViewController;
 
 /** Class which starts application. */
 public class UICatalog extends UIApplicationDelegateAdapter {
-    private UIWindow window = null;
+    private UIWindow window;
+    private MainViewController mainViewController;
 
     @Override
     public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        mainViewController = new MainViewController();
+        UINavigationController navigationController = new UINavigationController(mainViewController);
+
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
         window.setBackgroundColor(UIColor.lightGray());
-        UINavigationController navigationController = new UINavigationController(
-            application.addStrongRef(new MainViewController()));
         window.setRootViewController(navigationController);
         window.makeKeyAndVisible();
-
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
 
         return true;
     }

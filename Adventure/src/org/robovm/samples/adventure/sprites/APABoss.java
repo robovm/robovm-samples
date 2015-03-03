@@ -48,8 +48,8 @@ public class APABoss extends APAEnemyCharacter {
     private static NSArray<SKTexture> sharedGetHitAnimationFrames;
     private static NSArray<SKTexture> sharedDeathAnimationFrames;
 
-    public APABoss (CGPoint position) {
-        super(SKTextureAtlas.create("Boss_Idle").getTexture("boss_idle_0001.png"), position);
+    public APABoss(CGPoint position) {
+        super(SKTextureAtlas.create("Boss/Boss_Idle").getTexture("boss_idle_0001.png"), position);
 
         movementSpeed = MOVEMENT_SPEED * 0.35f;
         animationSpeed = 1.0 / 35.0;
@@ -67,15 +67,16 @@ public class APABoss extends APAEnemyCharacter {
     }
 
     @Override
-    void configurePhysicsBody () {
+    void configurePhysicsBody() {
         SKPhysicsBody physicsBody = SKPhysicsBody.createCircle(COLLISION_RADIUS);
 
         // Our object type for collisions.
         physicsBody.setCategoryBitMask(APAColliderType.GoblinOrBoss);
 
         // Collides with these objects.
-        physicsBody.setCollisionBitMask(APAColliderType.GoblinOrBoss | APAColliderType.Hero | APAColliderType.Projectile
-            | APAColliderType.Wall);
+        physicsBody.setCollisionBitMask(APAColliderType.GoblinOrBoss | APAColliderType.Hero
+                | APAColliderType.Projectile
+                | APAColliderType.Wall);
 
         // We want notifications for colliding with these objects.
         physicsBody.setContactTestBitMask(APAColliderType.Projectile);
@@ -84,24 +85,26 @@ public class APABoss extends APAEnemyCharacter {
     }
 
     @Override
-    void animationDidComplete (APAAnimationState animationState) {
+    void animationDidComplete(APAAnimationState animationState) {
         super.animationDidComplete(animationState);
         if (animationState == APAAnimationState.Death) {
-            // In a real game, you'd complete the level here, maybe as shown by commented code below.
+            // In a real game, you'd complete the level here, maybe as shown by
+            // commented code below.
             removeAllActions();
             runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(3.0), SKAction.fadeOut(2.0), SKAction
-                .removeFromParent()
-            /*
-             * SKAction.runBlock(new Runnable() {
-             * 
-             * @Override public void run () { getCharacterScene().gameOver(); } })
-             */
-            )));
+                    .removeFromParent()
+                    /*
+                     * SKAction.runBlock(new Runnable() {
+                     * 
+                     * @Override public void run () {
+                     * getCharacterScene().gameOver(); } })
+                     */
+                    )));
         }
     }
 
     @Override
-    public void collidedWith (SKPhysicsBody other) {
+    public void collidedWith(SKPhysicsBody other) {
         if (dying) {
             return;
         }
@@ -117,59 +120,62 @@ public class APABoss extends APAEnemyCharacter {
     }
 
     @Override
-    public void performDeath () {
+    public void performDeath() {
         removeAllActions();
 
         super.performDeath();
     }
 
-    public static void loadSharedAssets () {
+    public static void loadSharedAssets() {
         // Load only once.
         if (sharedDamageEmitter == null) {
-            sharedIdleAnimationFrames = APAUtils.loadFramesFromAtlas("Boss_Idle", "boss_idle_", IDLE_FRAMES);
-            sharedWalkAnimationFrames = APAUtils.loadFramesFromAtlas("Boss_Walk", "boss_walk_", WALK_FRAMES);
-            sharedAttackAnimationFrames = APAUtils.loadFramesFromAtlas("Boss_Attack", "boss_attack_", ATTACK_FRAMES);
-            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Boss_GetHit", "boss_getHit_", GET_HIT_FRAMES);
-            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Boss_Death", "boss_death_", DEATH_FRAMES);
+            sharedIdleAnimationFrames = APAUtils.loadFramesFromAtlas("Boss/Boss_Idle", "boss_idle_", IDLE_FRAMES);
+            sharedWalkAnimationFrames = APAUtils.loadFramesFromAtlas("Boss/Boss_Walk", "boss_walk_", WALK_FRAMES);
+            sharedAttackAnimationFrames = APAUtils.loadFramesFromAtlas("Boss/Boss_Attack", "boss_attack_",
+                    ATTACK_FRAMES);
+            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Boss/Boss_GetHit", "boss_getHit_",
+                    GET_HIT_FRAMES);
+            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Boss/Boss_Death", "boss_death_", DEATH_FRAMES);
 
             sharedDamageEmitter = APAUtils.getEmitterNodeByName("BossDamage");
-            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 1.0, 0.0), SKAction
-                .wait(0.5), SKAction.colorize(0.0, 0.1)));
+            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 1.0, 0.0),
+                    SKAction
+                            .wait(0.5), SKAction.colorize(0.0, 0.1)));
         }
     }
 
     @Override
-    NSArray<SKTexture> getIdleAnimationFrames () {
+    NSArray<SKTexture> getIdleAnimationFrames() {
         return sharedIdleAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getWalkAnimationFrames () {
+    NSArray<SKTexture> getWalkAnimationFrames() {
         return sharedWalkAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getAttackAnimationFrames () {
+    NSArray<SKTexture> getAttackAnimationFrames() {
         return sharedAttackAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getHitAnimationFrames () {
+    NSArray<SKTexture> getHitAnimationFrames() {
         return sharedGetHitAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getDeathAnimationFrames () {
+    NSArray<SKTexture> getDeathAnimationFrames() {
         return sharedDeathAnimationFrames;
     }
 
     @Override
-    SKEmitterNode getDamageEmitter () {
+    SKEmitterNode getDamageEmitter() {
         return sharedDamageEmitter;
     }
 
     @Override
-    SKAction getDamageAction () {
+    SKAction getDamageAction() {
         return sharedDamageAction;
     }
 }

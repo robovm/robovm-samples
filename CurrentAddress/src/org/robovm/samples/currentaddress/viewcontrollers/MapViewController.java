@@ -54,8 +54,8 @@ public class MapViewController extends UIViewController {
 
     private final PlaceMarkViewController placeMarkViewController;
 
-    public MapViewController () {
-        getNavigationItem().setTitle("Current Address");
+    public MapViewController() {
+        setTitle("Current Address");
 
         locationManager = new CLLocationManager();
 
@@ -73,17 +73,19 @@ public class MapViewController extends UIViewController {
         toolbar.setTranslatesAutoresizingMaskIntoConstraints(false);
 
         getAddressButton = new UIBarButtonItem("Get Current Address", UIBarButtonItemStyle.Plain,
-            new UIBarButtonItem.OnClickListener() {
-                @Override
-                public void onClick (UIBarButtonItem barButtonItem) {
-                    // Get the destination view controller and set the placemark data that it should display.
-                    placeMarkViewController.setPlacemark(placemark);
-                    getNavigationController().pushViewController(placeMarkViewController, true);
-                }
-            });
+                new UIBarButtonItem.OnClickListener() {
+                    @Override
+                    public void onClick(UIBarButtonItem barButtonItem) {
+                        // Get the destination view controller and set the
+                        // placemark data that it should display.
+                        placeMarkViewController.setPlacemark(placemark);
+                        getNavigationController().pushViewController(placeMarkViewController, true);
+                    }
+                });
         getAddressButton.setEnabled(false);
-        toolbar.setItems(new NSArray<>(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null), getAddressButton,
-            new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null)));
+        toolbar.setItems(new NSArray<>(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null),
+                getAddressButton,
+                new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null)));
         view.addSubview(toolbar);
 
         // Layout
@@ -94,16 +96,18 @@ public class MapViewController extends UIViewController {
 
         view.addConstraints(NSLayoutConstraint.create("H:|[map]|", NSLayoutFormatOptions.None, null, views));
         view.addConstraints(NSLayoutConstraint.create("H:|[toolbar]|", NSLayoutFormatOptions.None, null, views));
-        view.addConstraints(NSLayoutConstraint.create("V:[top][map][toolbar]|", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint
+                .create("V:[top][map][toolbar]|", NSLayoutFormatOptions.None, null, views));
 
         mapView.setDelegate(new MKMapViewDelegateAdapter() {
             @Override
-            public void didUpdateUserLocation (final MKMapView mapView, final MKUserLocation userLocation) {
+            public void didUpdateUserLocation(final MKMapView mapView, final MKUserLocation userLocation) {
                 // Center the map the first time we get a real location change.
-                if ((userLocation.getCoordinate().getLatitude() != 0.0) && (userLocation.getCoordinate().getLongitude() != 0.0)) {
+                if ((userLocation.getCoordinate().getLatitude() != 0.0)
+                        && (userLocation.getCoordinate().getLongitude() != 0.0)) {
                     Dispatch.once(new Runnable() {
                         @Override
-                        public void run () {
+                        public void run() {
                             mapView.setCenterCoordinate(userLocation.getCoordinate(), true);
                         }
                     });
@@ -111,21 +115,24 @@ public class MapViewController extends UIViewController {
 
                 // Lookup the information for the current location of the user.
                 geocoder.reverseGeocodeLocation(mapView.getUserLocation().getLocation(),
-                    new VoidBlock2<NSArray<CLPlacemark>, NSError>() {
-                        @Override
-                        public void invoke (NSArray<CLPlacemark> placemarks, NSError error) {
-                            if (placemarks != null && placemarks.size() > 0) {
-                                // If the placemark is not null then we have at least one placemark. Typically there will only be
-                                // one.
-                                placemark = placemarks.get(0);
+                        new VoidBlock2<NSArray<CLPlacemark>, NSError>() {
+                            @Override
+                            public void invoke(NSArray<CLPlacemark> placemarks, NSError error) {
+                                if (placemarks != null && placemarks.size() > 0) {
+                                    // If the placemark is not null then we have
+                                    // at least one placemark. Typically there
+                                    // will only be
+                                    // one.
+                                    placemark = placemarks.get(0);
 
-                                // we have received our current location, so enable the "Get Current Address" button
-                                getAddressButton.setEnabled(true);
-                            } else {
-                                // Handle the null case if necessary.
+                                    // we have received our current location, so
+                                    // enable the "Get Current Address" button
+                                    getAddressButton.setEnabled(true);
+                                } else {
+                                    // Handle the null case if necessary.
+                                }
                             }
-                        }
-                    });
+                        });
             }
         });
 
@@ -135,9 +142,7 @@ public class MapViewController extends UIViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
-        super.viewWillAppear(animated);
-
+    public void viewDidLoad() {
         if (Foundation.getMajorSystemVersion() >= 8) {
             locationManager.requestWhenInUseAuthorization();
         }

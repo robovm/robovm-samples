@@ -100,11 +100,11 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     // the previous update: loop time interval
     private double lastUpdateTimeInterval;
 
-    public APAMultiplayerLayeredCharacterScene (CGSize size) {
+    public APAMultiplayerLayeredCharacterScene(CGSize size) {
         super(size);
     }
 
-    public void setup () {
+    public void setup() {
         defaultPlayer = new APAPlayer();
         players.add(defaultPlayer);
 
@@ -124,12 +124,15 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         updateHUD(defaultPlayer, APAHUDState.Local, null);
     }
 
-    /** Start loading all the shared assets for the scene in the background. This method calls loadSceneAssets on a background
-     * queue, then calls the callback handler on the main thread. */
-    public void loadSceneAssets (final Runnable callback) {
+    /**
+     * Start loading all the shared assets for the scene in the background. This
+     * method calls loadSceneAssets on a background queue, then calls the
+     * callback handler on the main thread.
+     */
+    public void loadSceneAssets(final Runnable callback) {
         DispatchQueue.getGlobalQueue(DispatchQueue.PRIORITY_HIGH, 0).async(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 // Load the shared assets in the background.
                 loadSceneAssets();
 
@@ -139,7 +142,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
 
                 DispatchQueue.getMainQueue().async(new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         // Call the completion handler back on the main queue.
                         callback.run();
                     }
@@ -149,24 +152,30 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     }
 
     /** Overridden by subclasses to load scene-specific assets. */
-    abstract void loadSceneAssets ();
+    abstract void loadSceneAssets();
 
     /** Overridden by subclasses to release assets used only by this scene. */
-    abstract void releaseSceneAssets ();
+    abstract void releaseSceneAssets();
 
-    /** Overridden by subclasses to provide an emitter used to indicate when a new hero is spawned. */
-    abstract SKEmitterNode getSharedSpawnEmitter ();
+    /**
+     * Overridden by subclasses to provide an emitter used to indicate when a
+     * new hero is spawned.
+     */
+    abstract SKEmitterNode getSharedSpawnEmitter();
 
-    /** This method should be called when the level is loaded to set up currently-connected game controllers, and register for the
-     * relevant notifications to deal with new connections/disconnections. */
-    public void configureGameControllers () {
+    /**
+     * This method should be called when the level is loaded to set up
+     * currently-connected game controllers, and register for the relevant
+     * notifications to deal with new connections/disconnections.
+     */
+    public void configureGameControllers() {
         // Receive notifications when a controller connects or disconnects.
         controllerDidConnect = GCController.Notifications.observeDidConnect(new VoidBlock1<GCController>() {
             @Override
-            public void invoke (GCController controller) {
+            public void invoke(GCController controller) {
                 System.out.println("Connected game controller: " + controller);
 
-                int playerIndex = (int)controller.getPlayerIndex();
+                int playerIndex = (int) controller.getPlayerIndex();
                 if (playerIndex == -1) {
                     assignUnknownController(controller);
                 } else {
@@ -176,7 +185,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         });
         controllerDidDisconnect = GCController.Notifications.observeDidDisconnect(new VoidBlock1<GCController>() {
             @Override
-            public void invoke (GCController controller) {
+            public void invoke(GCController controller) {
                 for (APAPlayer player : players) {
                     if (player == null) {
                         continue;
@@ -197,16 +206,16 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         // And start looking for any wireless controllers.
         GCController.startWirelessControllerDiscovery(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 System.out.println("Finished finding controllers");
             }
         });
     }
 
-    private void configureConnectedGameControllers () {
+    private void configureConnectedGameControllers() {
         // First deal with the controllers previously set to a player.
         for (GCController controller : GCController.getControllers()) {
-            int playerIndex = (int)controller.getPlayerIndex();
+            int playerIndex = (int) controller.getPlayerIndex();
             if (playerIndex == -1) {
                 continue;
             }
@@ -225,7 +234,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
     }
 
-    private void assignUnknownController (GCController controller) {
+    private void assignUnknownController(GCController controller) {
         for (int playerIndex = 0; playerIndex < NUM_PLAYERS; playerIndex++) {
             APAPlayer player = players.get(playerIndex);
 
@@ -246,7 +255,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
     }
 
-    private void assignPresetController (GCController controller, int playerIndex) {
+    private void assignPresetController(GCController controller, int playerIndex) {
         // Check whether this index is free.
         APAPlayer player = players.get(playerIndex);
         if (player == null) {
@@ -264,16 +273,17 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         configureController(controller, player);
     }
 
-    private void configureController (GCController controller, final APAPlayer player) {
+    private void configureController(GCController controller, final APAPlayer player) {
         int playerIndex = players.indexOf(player);
-        System.out.println(String.format("Assigning %s to player %s [%d]", controller.getVendorName(), player, playerIndex));
+        System.out.println(String.format("Assigning %s to player %s [%d]", controller.getVendorName(), player,
+                playerIndex));
 
         // Assign the controller to the player.
         player.controller = controller;
 
         VoidBlock3<GCControllerDirectionPad, Float, Float> dpadMoveHandler = new VoidBlock3<GCControllerDirectionPad, Float, Float>() {
             @Override
-            public void invoke (GCControllerDirectionPad dpad, Float xValue, Float yValue) {
+            public void invoke(GCControllerDirectionPad dpad, Float xValue, Float yValue) {
                 double length = Math.hypot(xValue, yValue);
                 if (length > 0) {
                     double invLength = 1f / length;
@@ -290,7 +300,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
 
         VoidBlock3<GCControllerButtonInput, Float, Boolean> fireButtonHandler = new VoidBlock3<GCControllerButtonInput, Float, Boolean>() {
             @Override
-            public void invoke (GCControllerButtonInput a, Float b, Boolean pressed) {
+            public void invoke(GCControllerButtonInput a, Float b, Boolean pressed) {
                 player.fireAction = pressed;
             }
         };
@@ -303,14 +313,18 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
     }
 
-    /** All sprites in the scene should be added through this method to ensure they are placed in the correct world layer. */
-    public void addNode (SKNode node, APAWorldLayer layer) {
+    /**
+     * All sprites in the scene should be added through this method to ensure
+     * they are placed in the correct world layer.
+     */
+    public void addNode(SKNode node, APAWorldLayer layer) {
         SKNode layerNode = layers.get(layer.ordinal());
         layerNode.addChild(node);
     }
 
-    public APAHeroCharacter addHeroForPlayer (APAPlayer player) {
-        if (player == null) throw new NullPointerException("player");
+    public APAHeroCharacter addHeroForPlayer(APAPlayer player) {
+        if (player == null)
+            throw new NullPointerException("player");
 
         if (player.hero != null && !player.hero.dying) {
             player.hero.removeFromParent();
@@ -322,12 +336,12 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         try {
             hero = player.heroClass.getConstructor(CGPoint.class, APAPlayer.class).newInstance(spawnPos, player);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-            | NoSuchMethodException e) {
+                | NoSuchMethodException e) {
             e.printStackTrace();
         }
 
         if (hero != null) {
-            SKEmitterNode emitter = (SKEmitterNode)getSharedSpawnEmitter().copy();
+            SKEmitterNode emitter = (SKEmitterNode) getSharedSpawnEmitter().copy();
             emitter.setPosition(spawnPos);
             addNode(emitter, APAWorldLayer.AboveCharacter);
             APAUtils.runOneShotEmitter(emitter, 0.15);
@@ -341,16 +355,18 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         return hero;
     }
 
-    public void heroWasKilled (APAHeroCharacter hero) {
+    public void heroWasKilled(APAHeroCharacter hero) {
         APAPlayer player = hero.getPlayer();
 
         heroes.remove(hero);
 
-        // Disable touch movement, otherwise new hero will try to move to previously-touched location.
+        // Disable touch movement, otherwise new hero will try to move to
+        // previously-touched location.
         player.moveRequested = false;
 
         if (--player.livesLeft < 1) {
-            // In a real game, you'd want to end the game when there are no lives left.
+            // In a real game, you'd want to end the game when there are no
+            // lives left.
             return;
         }
 
@@ -361,15 +377,16 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     }
 
     @Override
-    protected void dispose (boolean finalizing) {
+    protected void dispose(boolean finalizing) {
         NSNotificationCenter.getDefaultCenter().removeObserver(controllerDidConnect);
         NSNotificationCenter.getDefaultCenter().removeObserver(controllerDidDisconnect);
         super.dispose(finalizing);
     }
 
-    private void buildHUD () {
-        String iconNames[] = new String[] {"iconWarrior_blue", "iconWarrior_green", "iconWarrior_pink", "iconWarrior_red"};
-        UIColor colors[] = new UIColor[] {UIColor.green(), UIColor.blue(), UIColor.yellow(), UIColor.red()};
+    private void buildHUD() {
+        String iconNames[] = new String[] { "iconWarrior_blue", "iconWarrior_green", "iconWarrior_pink",
+            "iconWarrior_red" };
+        UIColor colors[] = new UIColor[] { UIColor.green(), UIColor.blue(), UIColor.yellow(), UIColor.red() };
 
         double hudX = 30;
         double hudY = getFrame().getSize().getHeight() - 30;
@@ -382,7 +399,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             avatar.setScale(0.5);
             avatar.setAlpha(0.5);
             avatar.setPosition(new CGPoint(hudX + i * hudD + (avatar.getSize().getWidth() * 0.5), getFrame().getSize()
-                .getHeight() - avatar.getSize().getHeight() * 0.5 - 8));
+                    .getHeight() - avatar.getSize().getHeight() * 0.5 - 8));
             hudAvatars.add(avatar);
             hud.addChild(avatar);
 
@@ -409,9 +426,9 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
                 SKSpriteNode heart = SKSpriteNode.create("lives.png");
                 heart.setScale(0.4);
                 heart.setPosition(new CGPoint(hudX + i * hudD + (avatar.getSize().getWidth() * 1.0) + 18
-                    + ((heart.getSize().getWidth() + 5) * j), hudY - 10));
+                        + ((heart.getSize().getWidth() + 5) * j), hudY - 10));
                 heart.setAlpha(0.1);
-                hudLifeHeartArrays.get(i).set(j, heart);
+                hudLifeHeartArrays.get(i).add(heart);
                 hud.addChild(heart);
             }
         }
@@ -419,12 +436,13 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         addChild(hud);
     }
 
-    private void updateHUD (APAPlayer player, APAHUDState state, String message) {
+    private void updateHUD(APAPlayer player, APAHUDState state, String message) {
         int playerIndex = players.indexOf(player);
 
         SKSpriteNode avatar = hudAvatars.get(playerIndex);
-        avatar.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.fadeAlphaTo(1.0, 1.0), SKAction.fadeAlphaTo(0.2, 1.0),
-            SKAction.fadeAlphaTo(1.0, 1.0))));
+        avatar.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.fadeAlphaTo(1.0, 1.0), SKAction.fadeAlphaTo(
+                0.2, 1.0),
+                SKAction.fadeAlphaTo(1.0, 1.0))));
 
         SKLabelNode label = hudLabels.get(playerIndex);
         double heartAlpha = 1;
@@ -463,16 +481,17 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
     }
 
-    private void updateHUD (APAPlayer player) {
+    private void updateHUD(APAPlayer player) {
         int playerIndex = players.indexOf(player);
         SKLabelNode label = hudScores.get(playerIndex);
         label.setText(String.format("SCORE: %d", player.score));
     }
 
-    private void updateHUDAfterHeroDeath (APAPlayer player) {
+    private void updateHUDAfterHeroDeath(APAPlayer player) {
         int playerIndex = players.indexOf(player);
 
-        // Fade out the relevant heart - one-based livesLeft has already been decremented.
+        // Fade out the relevant heart - one-based livesLeft has already been
+        // decremented.
         int heartNumber = player.livesLeft;
 
         NSArray<SKSpriteNode> heartArray = hudLifeHeartArrays.get(playerIndex);
@@ -480,32 +499,33 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         heart.runAction(SKAction.fadeAlphaTo(0.0, 3.0));
     }
 
-    public void addToScore (long amount, SKNode projectile) {
-        APAPlayer player = (APAPlayer)projectile.getUserData().get(APAHeroCharacter.PLAYER_KEY);
+    public void addToScore(long amount, SKNode projectile) {
+        APAPlayer player = (APAPlayer) projectile.getUserData().get(APAHeroCharacter.PLAYER_KEY);
 
         player.score += amount;
 
         updateHUD(player);
     }
 
-    void centerWorldOnPosition (CGPoint position) {
+    void centerWorldOnPosition(CGPoint position) {
         world.setPosition(new CGPoint(-position.getX() + getFrame().getMidX(), -position.getY() + getFrame().getMidY()));
 
         worldMovedForUpdate = true;
     }
 
-    void centerWorldOnCharacter (APACharacter character) {
+    void centerWorldOnCharacter(APACharacter character) {
         centerWorldOnPosition(character.getPosition());
     }
 
-    public abstract double getDistanceToWall (CGPoint pos0, CGPoint pos1);
+    public abstract double getDistanceToWall(CGPoint pos0, CGPoint pos1);
 
-    public abstract boolean canSee (CGPoint pos0, CGPoint pos1);
+    public abstract boolean canSee(CGPoint pos0, CGPoint pos1);
 
     @Override
-    public void update (double currentTime) {
+    public void update(double currentTime) {
         // Handle time delta.
-        // If we drop below 60fps, we still want everything to move the same distance.
+        // If we drop below 60fps, we still want everything to move the same
+        // distance.
         double timeSinceLast = currentTime - lastUpdateTimeInterval;
         lastUpdateTimeInterval = currentTime;
         if (timeSinceLast > 1) { // more than a second since last update
@@ -572,10 +592,10 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     }
 
     /** Overridden by subclasses to update the scene - called once per frame. */
-    abstract void updateScene (double timeSinceLast);
+    abstract void updateScene(double timeSinceLast);
 
     @Override
-    public void didSimulatePhysics () {
+    public void didSimulatePhysics() {
         APAHeroCharacter defaultHero = defaultPlayer.hero;
 
         // Move the world relative to the default player position.
@@ -587,7 +607,8 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
                 worldPos.setY(worldPos.getY() - yCoordinate + MIN_HERO_TO_EDGE_DISTANCE);
                 worldMovedForUpdate = true;
             } else if (yCoordinate > (getFrame().getSize().getHeight() - MIN_HERO_TO_EDGE_DISTANCE)) {
-                worldPos.setY(worldPos.getY() + (getFrame().getSize().getHeight() - yCoordinate) - MIN_HERO_TO_EDGE_DISTANCE);
+                worldPos.setY(worldPos.getY() + (getFrame().getSize().getHeight() - yCoordinate)
+                        - MIN_HERO_TO_EDGE_DISTANCE);
                 worldMovedForUpdate = true;
             }
 
@@ -596,24 +617,27 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
                 worldPos.setX(worldPos.getX() - xCoordinate + MIN_HERO_TO_EDGE_DISTANCE);
                 worldMovedForUpdate = true;
             } else if (xCoordinate > (getFrame().getSize().getHeight() - MIN_HERO_TO_EDGE_DISTANCE)) {
-                worldPos.setX(worldPos.getX() + (getFrame().getSize().getWidth() - xCoordinate) - MIN_HERO_TO_EDGE_DISTANCE);
+                worldPos.setX(worldPos.getX() + (getFrame().getSize().getWidth() - xCoordinate)
+                        - MIN_HERO_TO_EDGE_DISTANCE);
                 worldMovedForUpdate = true;
             }
             world.setPosition(worldPos);
         }
-        // Using performSelector:withObject:afterDelay: withg a delay of 0.0 means that the selector call occurs after
+        // Using performSelector:withObject:afterDelay: withg a delay of 0.0
+        // means that the selector call occurs after
         // the current pass through the run loop.
-        // This means the property will be cleared after the subclass implementation of didSimulatePhysics completes.
+        // This means the property will be cleared after the subclass
+        // implementation of didSimulatePhysics completes.
         performSelector(clearWorldMoved, null, 0.0);
     }
 
     @Method(selector = "clearWorldMoved")
-    private void clearWorldMoved () {
+    private void clearWorldMoved() {
         worldMovedForUpdate = false;
     }
 
     @Override
-    public void touchesBegan (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesBegan(NSSet<UITouch> touches, UIEvent event) {
         if (heroes.size() < 1) {
             return;
         }
@@ -629,7 +653,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         NSArray<SKNode> nodes = getNodesAtPoint(touch.getLocationInNode(this));
         for (SKNode node : nodes) {
             if (((node.getPhysicsBody().getCategoryBitMask() & APAColliderType.Cave) == APAColliderType.Cave)
-                || ((node.getPhysicsBody().getCategoryBitMask() & APAColliderType.GoblinOrBoss) == APAColliderType.GoblinOrBoss)) {
+                    || ((node.getPhysicsBody().getCategoryBitMask() & APAColliderType.GoblinOrBoss) == APAColliderType.GoblinOrBoss)) {
                 wantsAttack = true;
             }
         }
@@ -640,7 +664,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     }
 
     @Override
-    public void touchesMoved (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesMoved(NSSet<UITouch> touches, UIEvent event) {
         if (heroes.size() < 1) {
             return;
         }
@@ -654,7 +678,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     }
 
     @Override
-    public void touchesEnded (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesEnded(NSSet<UITouch> touches, UIEvent event) {
         if (heroes.size() < 1) {
             return;
         }
@@ -666,7 +690,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         }
     }
 
-    public NSArray<APAHeroCharacter> getHeroes () {
+    public NSArray<APAHeroCharacter> getHeroes() {
         return heroes;
     }
 }

@@ -51,11 +51,14 @@ public class APAGoblin extends APAEnemyCharacter {
 
     private APACave cave;
 
-    public APAGoblin (CGPoint position) {
-        super(SKTextureAtlas.create("Goblin_Idle").getTexture("goblin_idle_0001.png"), position);
+    public APAGoblin(CGPoint position) {
+        super(SKTextureAtlas.create("Goblin/Goblin_Idle").getTexture("goblin_idle_0001.png"), position);
 
-        movementSpeed = MOVEMENT_SPEED * Math.random(); // set a random movement speed
-        setScale(MINIMUM_SIZE + (Math.random() * SIZE_VARIANCE)); // and a random goblin size
+        movementSpeed = MOVEMENT_SPEED * Math.random(); // set a random movement
+                                                        // speed
+        setScale(MINIMUM_SIZE + (Math.random() * SIZE_VARIANCE)); // and a
+                                                                  // random
+                                                                  // goblin size
         setZPosition(-0.25);
         setName("Enemy");
 
@@ -64,15 +67,16 @@ public class APAGoblin extends APAEnemyCharacter {
     }
 
     @Override
-    void configurePhysicsBody () {
+    void configurePhysicsBody() {
         SKPhysicsBody physicsBody = SKPhysicsBody.createCircle(COLLISION_RADIUS);
 
 // Our object type for collisions.
         physicsBody.setCategoryBitMask(APAColliderType.GoblinOrBoss);
 
 // Collides with these objects.
-        physicsBody.setCollisionBitMask(APAColliderType.GoblinOrBoss | APAColliderType.Hero | APAColliderType.Projectile
-            | APAColliderType.Wall | APAColliderType.Cave);
+        physicsBody.setCollisionBitMask(APAColliderType.GoblinOrBoss | APAColliderType.Hero
+                | APAColliderType.Projectile
+                | APAColliderType.Wall | APAColliderType.Cave);
 
         // We want notifications for colliding with these objects.
         physicsBody.setContactTestBitMask(APAColliderType.Projectile);
@@ -81,7 +85,7 @@ public class APAGoblin extends APAEnemyCharacter {
     }
 
     @Override
-    void reset () {
+    void reset() {
         super.reset();
 
         setAlpha(1.0);
@@ -91,20 +95,20 @@ public class APAGoblin extends APAEnemyCharacter {
     }
 
     @Override
-    void animationDidComplete (APAAnimationState animationState) {
+    void animationDidComplete(APAAnimationState animationState) {
         super.animationDidComplete(animationState);
 
         switch (animationState) {
         case Death:
             removeAllActions();
             runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(0.75), SKAction.fadeOut(1.0), SKAction
-                .runBlock(new Runnable() {
-                    @Override
-                    public void run () {
-                        removeFromParent();
-                        cave.recycle(APAGoblin.this);
-                    }
-                }))));
+                    .runBlock(new Runnable() {
+                        @Override
+                        public void run() {
+                            removeFromParent();
+                            cave.recycle(APAGoblin.this);
+                        }
+                    }))));
             break;
         default:
             break;
@@ -112,7 +116,7 @@ public class APAGoblin extends APAEnemyCharacter {
     }
 
     @Override
-    public void collidedWith (SKPhysicsBody other) {
+    public void collidedWith(SKPhysicsBody other) {
         if (dying) {
             return;
         }
@@ -133,10 +137,10 @@ public class APAGoblin extends APAEnemyCharacter {
     }
 
     @Override
-    public void performDeath () {
+    public void performDeath() {
         removeAllActions();
 
-        SKSpriteNode splort = (SKSpriteNode)sharedDeathSplort.copy();
+        SKSpriteNode splort = (SKSpriteNode) sharedDeathSplort.copy();
         splort.setZPosition(-1.0);
         splort.setZRotation(Math.random() * Math.PI);
         splort.setPosition(getPosition());
@@ -153,62 +157,66 @@ public class APAGoblin extends APAEnemyCharacter {
         setPhysicsBody(null);
     }
 
-    public static void loadSharedAssets () {
+    public static void loadSharedAssets() {
         // Load only once
         if (sharedDamageEmitter == null) {
             SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
 
             sharedIdleAnimationFrames = APAUtils
-                .loadFramesFromAtlas("Goblin_Idle", "goblin_idle_", DEFAULT_NUMBER_OF_IDLE_FRAMES);
+                    .loadFramesFromAtlas("Goblin/Goblin_Idle", "goblin_idle_", DEFAULT_NUMBER_OF_IDLE_FRAMES);
             sharedWalkAnimationFrames = APAUtils
-                .loadFramesFromAtlas("Goblin_Walk", "goblin_walk_", DEFAULT_NUMBER_OF_WALK_FRAMES);
-            sharedAttackAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin_Attack", "goblin_attack_", ATTACK_FRAMES);
-            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin_GetHit", "goblin_getHit_", GET_HIT_FRAMES);
-            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin_Death", "goblin_death_", DEATH_FRAMES);
+                    .loadFramesFromAtlas("Goblin/Goblin_Walk", "goblin_walk_", DEFAULT_NUMBER_OF_WALK_FRAMES);
+            sharedAttackAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin/Goblin_Attack", "goblin_attack_",
+                    ATTACK_FRAMES);
+            sharedGetHitAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin/Goblin_GetHit", "goblin_getHit_",
+                    GET_HIT_FRAMES);
+            sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin/Goblin_Death", "goblin_death_",
+                    DEATH_FRAMES);
             sharedDamageEmitter = APAUtils.getEmitterNodeByName("Damage");
             sharedDeathSplort = SKSpriteNode.create(atlas.getTexture("minionSplort.png"));
-            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 1.0, 0.0), SKAction
-                .wait(0.75), SKAction.colorize(0.0, 0.1)));
+            sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 1.0, 0.0),
+                    SKAction
+                            .wait(0.75), SKAction.colorize(0.0, 0.1)));
 
         }
     }
 
-    public void setCave (APACave cave) {
+    public void setCave(APACave cave) {
         this.cave = cave;
     }
 
     @Override
-    NSArray<SKTexture> getIdleAnimationFrames () {
+    NSArray<SKTexture> getIdleAnimationFrames() {
         return sharedIdleAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getWalkAnimationFrames () {
+    NSArray<SKTexture> getWalkAnimationFrames() {
         return sharedWalkAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getAttackAnimationFrames () {
+    NSArray<SKTexture> getAttackAnimationFrames() {
         return sharedAttackAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getHitAnimationFrames () {
+    NSArray<SKTexture> getHitAnimationFrames() {
         return sharedGetHitAnimationFrames;
     }
 
     @Override
-    NSArray<SKTexture> getDeathAnimationFrames () {
+    NSArray<SKTexture> getDeathAnimationFrames() {
         return sharedDeathAnimationFrames;
     }
 
     @Override
-    SKEmitterNode getDamageEmitter () {
+    SKEmitterNode getDamageEmitter() {
         return sharedDamageEmitter;
     }
 
     @Override
-    SKAction getDamageAction () {
+    SKAction getDamageAction() {
         return sharedDamageAction;
     }
 }

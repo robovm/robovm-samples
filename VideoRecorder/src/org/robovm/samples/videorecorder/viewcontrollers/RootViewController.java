@@ -21,9 +21,11 @@ package org.robovm.samples.videorecorder.viewcontrollers;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGRect;
+import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSURL;
 import org.robovm.apple.uikit.UIButton;
@@ -55,23 +57,20 @@ import org.robovm.objc.block.VoidBlock2;
 import org.robovm.objc.block.VoidBooleanBlock;
 
 public class RootViewController extends UIViewController {
-    private UIButton cameraSelectionButton;
-    private UIButton flashModeButton;
-    private UIButton videoQualitySelectionButton;
-    private UIImageView recordIndicatorView;
+    private final UIButton cameraSelectionButton;
+    private final UIButton flashModeButton;
+    private final UIButton videoQualitySelectionButton;
+    private final UIImageView recordIndicatorView;
 
-    private UIView cameraOverlayView;
+    private final UIView cameraOverlayView;
 
-    private UITapGestureRecognizer recordGestureRecognizer;
+    private final UITapGestureRecognizer recordGestureRecognizer;
     private UIImagePickerController imagePicker;
     private boolean recording;
     private boolean showCameraSelection;
     private boolean showFlashMode;
 
-    @Override
-    public void viewDidLoad () {
-        super.viewDidLoad();
-
+    public RootViewController() {
         getNavigationItem().setTitle("Video Recorder");
 
         cameraOverlayView = new UIView(getView().getFrame());
@@ -82,7 +81,7 @@ public class RootViewController extends UIViewController {
         cameraSelectionButton.setAlpha(0);
         cameraSelectionButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 changeCamera();
             }
         });
@@ -93,7 +92,7 @@ public class RootViewController extends UIViewController {
         flashModeButton.setAlpha(0);
         flashModeButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 changeFlashMode();
             }
         });
@@ -104,7 +103,7 @@ public class RootViewController extends UIViewController {
         videoQualitySelectionButton.setImage(UIImage.create("hd-selected.png"), UIControlState.Highlighted);
         videoQualitySelectionButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 changeVideoQuality();
             }
         });
@@ -116,7 +115,7 @@ public class RootViewController extends UIViewController {
         cameraOverlayView.addSubview(recordIndicatorView);
 
         UIToolbar toolBar = new UIToolbar(new CGRect(0, UIScreen.getMainScreen().getBounds().getHeight() - 44, UIScreen
-            .getMainScreen().getBounds().getWidth(), 44));
+                .getMainScreen().getBounds().getWidth(), 44));
         toolBar.setBarTintColor(UIColor.black());
 
         UILabel tapLabel = new UILabel(toolBar.getBounds());
@@ -130,7 +129,7 @@ public class RootViewController extends UIViewController {
 
         recordGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
-            public void onGesture (UIGestureRecognizer gestureRecognizer) {
+            public void onGesture(UIGestureRecognizer gestureRecognizer) {
                 if (!recording) {
                     recording = true;
                     startRecording();
@@ -146,23 +145,20 @@ public class RootViewController extends UIViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(final boolean animated) {
         CGRect theRect = imagePicker.getView().getFrame();
         cameraOverlayView.setFrame(theRect);
 
-        presentViewController(imagePicker, animated, null);
-        imagePicker.setCameraOverlayView(cameraOverlayView);
+        DispatchQueue.getMainQueue().after(100, TimeUnit.MILLISECONDS, new Runnable() {
+            @Override
+            public void run() {
+                getNavigationController().presentViewController(imagePicker, animated, null);
+                imagePicker.setCameraOverlayView(cameraOverlayView);
+            }
+        });
     }
 
-    @Override
-    public void didReceiveMemoryWarning () {
-        // Releases the view if it doesn't have a superview.
-        super.didReceiveMemoryWarning();
-
-        // Relinquish ownership any cached data, images, etc that aren't in use.
-    }
-
-    private void createImagePicker () {
+    private void createImagePicker() {
         imagePicker = new UIImagePickerController();
         imagePicker.setSourceType(UIImagePickerControllerSourceType.Camera);
 
@@ -194,14 +190,14 @@ public class RootViewController extends UIViewController {
 
         imagePicker.setDelegate(new UIImagePickerControllerDelegateAdapter() {
             @Override
-            public void didFinishPickingMedia (UIImagePickerController picker, UIImagePickerControllerEditingInfo info) {
+            public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) {
                 NSURL videoURL = info.getMediaURL();
 
                 boolean okToSaveVideo = UIVideo.isCompatibleWithSavedPhotosAlbum(new File(videoURL.getPath()));
                 if (okToSaveVideo) {
                     UIVideo.saveToPhotosAlbum(new File(videoURL.getPath()), new VoidBlock2<String, NSError>() {
                         @Override
-                        public void invoke (String a, NSError b) {
+                        public void invoke(String a, NSError b) {
                             showControls();
                         }
                     });
@@ -211,10 +207,9 @@ public class RootViewController extends UIViewController {
 
             }
         });
-        imagePicker.setWantsFullScreenLayout(true);
     }
 
-    private void changeVideoQuality () {
+    private void changeVideoQuality() {
         if (imagePicker.getVideoQuality() == UIImagePickerControllerQualityType._640x480) {
             imagePicker.setVideoQuality(UIImagePickerControllerQualityType.High);
             videoQualitySelectionButton.setImage(UIImage.create("hd-selected.png"), UIControlState.Normal);
@@ -224,7 +219,7 @@ public class RootViewController extends UIViewController {
         }
     }
 
-    private void changeFlashMode () {
+    private void changeFlashMode() {
         if (imagePicker.getCameraFlashMode() == UIImagePickerControllerCameraFlashMode.Off) {
             imagePicker.setCameraFlashMode(UIImagePickerControllerCameraFlashMode.On);
             flashModeButton.setImage(UIImage.create("flash-on.png"), UIControlState.Normal);
@@ -234,7 +229,7 @@ public class RootViewController extends UIViewController {
         }
     }
 
-    private void changeCamera () {
+    private void changeCamera() {
         if (imagePicker.getCameraDevice() == UIImagePickerControllerCameraDevice.Rear) {
             imagePicker.setCameraDevice(UIImagePickerControllerCameraDevice.Front);
         } else {
@@ -244,7 +239,7 @@ public class RootViewController extends UIViewController {
         if (!UIImagePickerController.isFlashAvailableForCameraDevice(imagePicker.getCameraDevice())) {
             UIView.animate(0.3, new Runnable() {
                 @Override
-                public void run () {
+                public void run() {
                     flashModeButton.setAlpha(0);
                 }
             });
@@ -252,7 +247,7 @@ public class RootViewController extends UIViewController {
         } else {
             UIView.animate(0.3, new Runnable() {
                 @Override
-                public void run () {
+                public void run() {
                     flashModeButton.setAlpha(1);
                 }
             });
@@ -260,10 +255,10 @@ public class RootViewController extends UIViewController {
         }
     }
 
-    private void startRecording () {
+    private void startRecording() {
         UIView.animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 cameraSelectionButton.setAlpha(0);
                 flashModeButton.setAlpha(0);
                 videoQualitySelectionButton.setAlpha(0);
@@ -271,22 +266,24 @@ public class RootViewController extends UIViewController {
             }
         }, new VoidBooleanBlock() {
             @Override
-            public void invoke (boolean v) {
+            public void invoke(boolean v) {
                 imagePicker.startVideoCapture();
             }
         });
     }
 
-    private void stopRecording () {
+    private void stopRecording() {
         imagePicker.stopVideoCapture();
     }
 
-    private void showControls () {
+    private void showControls() {
         UIView.animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, new Runnable() {
             @Override
-            public void run () {
-                if (showCameraSelection) cameraSelectionButton.setAlpha(1);
-                if (showFlashMode) flashModeButton.setAlpha(0);
+            public void run() {
+                if (showCameraSelection)
+                    cameraSelectionButton.setAlpha(1);
+                if (showFlashMode)
+                    flashModeButton.setAlpha(0);
                 videoQualitySelectionButton.setAlpha(1);
                 recordIndicatorView.setAlpha(0);
             }

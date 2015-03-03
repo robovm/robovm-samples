@@ -37,7 +37,7 @@ public class CurrentAddress extends UIApplicationDelegateAdapter {
     private MapViewController mapViewController;
 
     @Override
-    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
         mapViewController = new MapViewController();
         navigationController = new UINavigationController(mapViewController);
@@ -47,7 +47,7 @@ public class CurrentAddress extends UIApplicationDelegateAdapter {
             navigationController.getNavigationBar().setTintColor(UIColor.black());
         }
         navigationController.getNavigationBar().setTitleTextAttributes(
-            new NSAttributedStringAttributes().setForegroundColor(UIColor.white()));
+                new NSAttributedStringAttributes().setForegroundColor(UIColor.white()));
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
@@ -56,15 +56,10 @@ public class CurrentAddress extends UIApplicationDelegateAdapter {
         // Make the window visible.
         window.makeKeyAndVisible();
 
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
         return true;
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, CurrentAddress.class);
         pool.close();

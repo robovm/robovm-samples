@@ -30,33 +30,27 @@ import org.robovm.samples.videorecorder.viewcontrollers.RootViewController;
 
 public class VideoRecorder extends UIApplicationDelegateAdapter {
     private UIWindow window;
-    private UINavigationController navigation;
+    private UINavigationController navigationController;
     private RootViewController rootViewController;
 
     @Override
-    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
         rootViewController = new RootViewController();
 
-        navigation = new UINavigationController(rootViewController);
+        navigationController = new UINavigationController(rootViewController);
 
         // Create a new window at screen size.
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
         // Set our viewcontroller as the root controller for the window.
-        window.setRootViewController(navigation);
+        window.setRootViewController(navigationController);
         // Make the window visible.
         window.makeKeyAndVisible();
-
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
 
         return true;
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, VideoRecorder.class);
         pool.close();
