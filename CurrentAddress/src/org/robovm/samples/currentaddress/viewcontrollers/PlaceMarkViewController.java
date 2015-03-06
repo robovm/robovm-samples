@@ -29,7 +29,7 @@ import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 
 public class PlaceMarkViewController extends UITableViewController {
-    private CLPlacemark placemark = new CLPlacemark();
+    private CLPlacemark placemark = null;
 
     public PlaceMarkViewController() {
         setTitle("Address");
