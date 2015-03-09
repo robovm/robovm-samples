@@ -21,6 +21,7 @@ package org.robovm.samples.photoscroller.views;
 
 import java.io.File;
 
+import org.robovm.apple.coreanimation.CALayer;
 import org.robovm.apple.coreanimation.CATiledLayer;
 import org.robovm.apple.coregraphics.CGContext;
 import org.robovm.apple.coregraphics.CGPoint;
@@ -36,7 +37,7 @@ public class TilingView extends UIView {
     private final String imageName;
 
     @Method(selector = "layerClass")
-    public static Class<?> getLayerClass () {
+    public static Class<? extends CALayer> getLayerClass () {
         return CATiledLayer.class;
     }
 
