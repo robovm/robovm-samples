@@ -23,6 +23,7 @@ import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.coregraphics.CGVector;
+import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDate;
 import org.robovm.apple.foundation.NSMutableArray;
@@ -127,7 +128,6 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         SKPhysicsWorld physicsWorld = getPhysicsWorld();
         physicsWorld.setGravity(new CGVector(0.0, 0.0)); // no gravity
         physicsWorld.setContactDelegate(this);
-        System.out.println(physicsWorld);
 
         addBackgroundTiles();
         System.out.println(4);
@@ -550,6 +550,7 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         SKTextureAtlas tileAtlas = SKTextureAtlas.create("Tiles");
 
         sharedBackgroundTiles = new NSMutableArray<>(1024);
+        System.out.println("A");
         for (int y = 0; y < WORLD_TILE_DIVISOR; y++) {
             for (int x = 0; x < WORLD_TILE_DIVISOR; x++) {
                 int tileNumber = (y * WORLD_TILE_DIVISOR) + x;

@@ -43,18 +43,12 @@ public class HelloWorld extends UIApplicationDelegateAdapter {
         // Make the window visible.
         window.makeKeyAndVisible();
 
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
-
         return true;
     }
 
     public static void main (String[] args) {
-        NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, HelloWorld.class);
-        pool.close();
+        try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
+            UIApplication.main(args, null, HelloWorld.class);
+        }
     }
 }

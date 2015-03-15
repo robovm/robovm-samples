@@ -42,12 +42,6 @@ public class Adventure extends UIApplicationDelegateAdapter {
         // Make the window visible.
         window.makeKeyAndVisible();
 
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
-
         return true;
     }
 

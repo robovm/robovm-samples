@@ -129,7 +129,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
      * method calls loadSceneAssets on a background queue, then calls the
      * callback handler on the main thread.
      */
-    public void loadSceneAssets(final Runnable callback) {
+    public void loadSceneAssets(final Runnable callback) { 
         DispatchQueue.getGlobalQueue(DispatchQueue.PRIORITY_HIGH, 0).async(new Runnable() {
             @Override
             public void run() {
