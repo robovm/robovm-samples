@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <question>
+        <questionText>Which of these fruits are red?</questionText>
+        <correctAnswer>2</correctAnswer>
+        <answers>
+            <answer>An Orange</answer>
+            <answer>An apple</answer>
+            <answer>A lemon</answer>
+        </answers>
+    </question>
+    <question>
+        <questionText>Which of these shapes are round?</questionText>
+        <correctAnswer>3</correctAnswer>
+        <answers>
+            <answer>A star</answer>
+            <answer>A square</answer>
+            <answer>A circle</answer>
+        </answers>
+    </question>
+    <question>
+        <questionText>This is the fourth question.</questionText>
+        <correctAnswer>2</correctAnswer>
+        <answers>
+            <answer>True</answer>
+            <answer>False</answer>
+        </answers>
+    </question>
+</quiz>
