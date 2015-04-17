@@ -6,3 +6,5 @@ pom.xml.releaseBackup
 pom.xml.next
 release.properties
 robovm-logs/
+*.iml
+.idea/
