@@ -79,7 +79,8 @@
     <module>Regions</module>
     <!-- Cyclic dependency for some reason! -->
     <!-- <module>SamplePhotosApp</module> -->
-    <module>SpeakHere</module>
+    <!-- Doesn't compile -->
+    <!--<module>SpeakHere</module>-->
     <module>StreetScroller</module>
     <module>TableSearch</module>
     <module>Tabster</module>
