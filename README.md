@@ -21,19 +21,19 @@ To run on a connected device:
 ./gradlew launchIOSDevice
 ```
 
-## Run using Maven
+## Compile & Run using Maven
 
 To run in the iPhone simulator:
 ```
-mvn robovm:iphone-sim
+mvn compile robovm:iphone-sim
 ```
 To run in the iPad simulator:
 ```
-mvn robovm:ipad-sim
+mvn compile robovm:ipad-sim
 ```
 To run on a connected device:
 ```
-mvn robovm:ios-device
+mvn compile robovm:ios-device
 ```
 
 ## Run using Eclipse

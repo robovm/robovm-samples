@@ -77,7 +77,8 @@
     <module>QuickContacts</module>
     <module>Quiz</module>
     <module>Regions</module>
-    <module>SamplePhotosApp</module>
+    <!-- Cyclic dependency for some reason! -->
+    <!-- <module>SamplePhotosApp</module> -->
     <module>SpeakHere</module>
     <module>StreetScroller</module>
     <module>TableSearch</module>
