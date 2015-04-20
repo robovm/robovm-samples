@@ -73,6 +73,7 @@
     <module>MoveMe</module>
     <module>MoviePlayer</module>
     <module>PhotoMap</module>
+    <module>PhotoPicker</module>
     <module>PhotoScroller</module>
     <module>QuickContacts</module>
     <module>Quiz</module>
