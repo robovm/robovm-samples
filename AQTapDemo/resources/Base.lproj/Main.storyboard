@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rw5-ns-KcI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+    </dependencies>
+    <scenes>
+        <!--MyViewController-->
+        <scene sceneID="HF5-hW-DZA">
+            <objects>
+                <viewController title="MyViewController" id="Rw5-ns-KcI" customClass="WebRadioViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WrT-94-kTm"/>
+                        <viewControllerLayoutGuide type="bottom" id="GRf-jy-2iC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xOT-TG-81E">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="ZTd-5n-cJP">
+                                <rect key="frame" x="14" y="87" width="572" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="nSU-cI-B5L"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="pitchValueChanged" destination="Rw5-ns-KcI" eventType="valueChanged" id="ZES-PX-6zj"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hcs-Db-aaS">
+                                <rect key="frame" x="16" y="155" width="80" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="bdU-5k-pYv"/>
+                                    <constraint firstAttribute="height" constant="21" id="yQ9-en-2IB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-TI-M4V">
+                                <rect key="frame" x="104" y="155" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="5Ee-Ys-WYP"/>
+                                    <constraint firstAttribute="width" constant="100" id="MBd-98-8WD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkQ-8f-QAH">
+                                <rect key="frame" x="444" y="155" width="140" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ACT-QL-bD2"/>
+                                    <constraint firstAttribute="width" constant="140" id="ip0-Ti-cjK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Reset to 1.0">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetPitch" destination="Rw5-ns-KcI" eventType="touchUpInside" id="r1L-wE-aq5"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Radio Station URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tk1-zf-oEU">
+                                <rect key="frame" x="16" y="28" width="568" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="KPX-V2-uGD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Hcs-Db-aaS" firstAttribute="leading" secondItem="xOT-TG-81E" secondAttribute="leading" constant="16" id="1BR-fF-jz3"/>
+                            <constraint firstItem="AUn-TI-M4V" firstAttribute="leading" secondItem="Hcs-Db-aaS" secondAttribute="trailing" constant="8" symbolic="YES" id="35c-y9-a2B"/>
+                            <constraint firstItem="ZTd-5n-cJP" firstAttribute="top" secondItem="tk1-zf-oEU" secondAttribute="bottom" constant="38" id="4Fi-hn-84a"/>
+                            <constraint firstItem="dkQ-8f-QAH" firstAttribute="top" secondItem="AUn-TI-M4V" secondAttribute="top" id="5D1-DK-lSc"/>
+                            <constraint firstItem="GRf-jy-2iC" firstAttribute="top" secondItem="AUn-TI-M4V" secondAttribute="bottom" constant="424" id="5mt-r1-PD2"/>
+                            <constraint firstItem="Hcs-Db-aaS" firstAttribute="top" secondItem="ZTd-5n-cJP" secondAttribute="bottom" constant="38" id="BGk-fL-BKT"/>
+                            <constraint firstItem="ZTd-5n-cJP" firstAttribute="trailing" secondItem="tk1-zf-oEU" secondAttribute="trailing" id="CAx-9m-kTQ"/>
+                            <constraint firstItem="GRf-jy-2iC" firstAttribute="top" secondItem="dkQ-8f-QAH" secondAttribute="bottom" constant="415" id="Dt1-2c-fbI"/>
+                            <constraint firstItem="AUn-TI-M4V" firstAttribute="top" secondItem="Hcs-Db-aaS" secondAttribute="top" id="K9d-kh-T1E"/>
+                            <constraint firstItem="dkQ-8f-QAH" firstAttribute="trailing" secondItem="ZTd-5n-cJP" secondAttribute="trailing" id="KL8-kQ-F9B"/>
+                            <constraint firstItem="dkQ-8f-QAH" firstAttribute="top" secondItem="ZTd-5n-cJP" secondAttribute="bottom" constant="38" id="KM2-aM-2Ac"/>
+                            <constraint firstItem="ZTd-5n-cJP" firstAttribute="leading" secondItem="tk1-zf-oEU" secondAttribute="leading" id="MdY-Xq-sLe"/>
+                            <constraint firstAttribute="trailing" secondItem="ZTd-5n-cJP" secondAttribute="trailing" constant="16" id="PDb-an-LLt"/>
+                            <constraint firstItem="GRf-jy-2iC" firstAttribute="top" secondItem="dkQ-8f-QAH" secondAttribute="bottom" constant="415" id="UCo-eo-FHo"/>
+                            <constraint firstItem="AUn-TI-M4V" firstAttribute="leading" secondItem="Hcs-Db-aaS" secondAttribute="trailing" constant="8" id="UuV-V0-aXf"/>
+                            <constraint firstItem="dkQ-8f-QAH" firstAttribute="trailing" secondItem="ZTd-5n-cJP" secondAttribute="trailing" id="XV6-1X-P5V"/>
+                            <constraint firstItem="AUn-TI-M4V" firstAttribute="baseline" secondItem="Hcs-Db-aaS" secondAttribute="baseline" id="cOb-QJ-p1e"/>
+                            <constraint firstItem="tk1-zf-oEU" firstAttribute="top" secondItem="WrT-94-kTm" secondAttribute="bottom" constant="8" symbolic="YES" id="eiL-zZ-SKn"/>
+                            <constraint firstAttribute="trailing" secondItem="tk1-zf-oEU" secondAttribute="trailing" constant="16" id="ekf-Ps-YP4"/>
+                            <constraint firstItem="AUn-TI-M4V" firstAttribute="top" secondItem="ZTd-5n-cJP" secondAttribute="bottom" constant="38" id="iel-Vj-Wu6"/>
+                            <constraint firstItem="Hcs-Db-aaS" firstAttribute="leading" secondItem="ZTd-5n-cJP" secondAttribute="leading" id="kYi-qF-PlG"/>
+                            <constraint firstItem="GRf-jy-2iC" firstAttribute="top" secondItem="ZTd-5n-cJP" secondAttribute="bottom" constant="483" id="nZT-1F-o2L"/>
+                            <constraint firstItem="tk1-zf-oEU" firstAttribute="leading" secondItem="xOT-TG-81E" secondAttribute="leading" constant="16" id="oTC-IP-bnv"/>
+                            <constraint firstItem="ZTd-5n-cJP" firstAttribute="leading" secondItem="xOT-TG-81E" secondAttribute="leading" constant="16" id="wHD-bm-lnl"/>
+                            <constraint firstItem="tk1-zf-oEU" firstAttribute="centerX" secondItem="xOT-TG-81E" secondAttribute="centerX" id="xrU-0P-g4a"/>
+                            <constraint firstItem="dkQ-8f-QAH" firstAttribute="top" secondItem="AUn-TI-M4V" secondAttribute="top" id="zTd-Mm-v65"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xrU-0P-g4a"/>
+                                <exclude reference="CAx-9m-kTQ"/>
+                                <exclude reference="MdY-Xq-sLe"/>
+                                <exclude reference="kYi-qF-PlG"/>
+                                <exclude reference="35c-y9-a2B"/>
+                                <exclude reference="K9d-kh-T1E"/>
+                                <exclude reference="cOb-QJ-p1e"/>
+                                <exclude reference="5D1-DK-lSc"/>
+                                <exclude reference="KL8-kQ-F9B"/>
+                                <exclude reference="zTd-Mm-v65"/>
+                                <exclude reference="5mt-r1-PD2"/>
+                                <exclude reference="Dt1-2c-fbI"/>
+                                <exclude reference="UCo-eo-FHo"/>
+                                <exclude reference="nZT-1F-o2L"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="pitchLabel" destination="AUn-TI-M4V" id="Xlc-Tb-gRr"/>
+                        <outlet property="pitchSlider" destination="ZTd-5n-cJP" id="s8W-c9-x72"/>
+                        <outlet property="radioStationLabel" destination="tk1-zf-oEU" id="hlH-AW-bLu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-Qu-SKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="625" y="507"/>
+        </scene>
+    </scenes>
+</document>
