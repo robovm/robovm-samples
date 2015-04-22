@@ -128,7 +128,7 @@ public class WebRadioPlayer implements AudioQueue.OutputCallback, ProcessingTapC
         try {
             sourceFrames = aqTap.getSourceAudio(numberFrames, timeStamp, flags, data);
 
-            for (int channel = 0; channel < data.getBufferCount(); channel++) {
+            for (int channel = 0, n = data.getBufferCount(); channel < n; channel++) {
                 preRenderData[channel] = data.getBuffer(channel).getDataPointer();
                 data.setBuffer(channel, 0);
             }
@@ -148,7 +148,7 @@ public class WebRadioPlayer implements AudioQueue.OutputCallback, ProcessingTapC
             int numberFrames, AudioBufferList data) {
         renderTimeStamp.setSampleTime(renderTimeStamp.getSampleTime() + numberFrames);
 
-        for (int channel = 0; channel < data.getBufferCount(); channel++) {
+        for (int channel = 0, n = data.getBufferCount(); channel < n; channel++) {
             data.setBuffer(channel, preRenderData[channel]);
         }
     }
