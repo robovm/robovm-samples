@@ -56,7 +56,7 @@
   <modules>
     <module>Adventure</module>
     <module>AppPrefs</module>
-    <!--<module>AQTapDemo</module>-->
+    <module>AQTapDemo</module>
     <module>BatteryStatus</module>
     <module>CurrentAddress</module>
     <module>CustomAnimatableProperty</module>
@@ -74,13 +74,13 @@
     <module>MoveMe</module>
     <module>MoviePlayer</module>
     <module>PhotoMap</module>
-    <!--<module>PhotoPicker</module>-->
+    <module>PhotoPicker</module>
     <module>PhotoScroller</module>
     <module>QuickContacts</module>
     <module>Quiz</module>
     <module>Regions</module>
     <module>SamplePhotosApp</module>    
-    <!--<module>SpeakHere</module>-->
+    <module>SpeakHere</module>
     <module>StreetScroller</module>
     <module>TableSearch</module>
     <module>Tabster</module>
