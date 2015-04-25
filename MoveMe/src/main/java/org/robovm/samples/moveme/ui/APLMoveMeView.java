@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  * Portions of this code is based on Apple Inc's MoveMe sample (v3.0)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
-
-package org.robovm.samples.moveme.views;
+package org.robovm.samples.moveme.ui;
 
 import org.robovm.apple.coreanimation.CAAnimation;
 import org.robovm.apple.coreanimation.CAAnimationDelegateAdapter;
@@ -34,34 +33,34 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSSet;
 import org.robovm.apple.foundation.NSValue;
 import org.robovm.apple.uikit.UIBezierPath;
-import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIEvent;
-import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UITouch;
 import org.robovm.apple.uikit.UIView;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.objc.block.VoidBooleanBlock;
 
+@CustomClass("APLMoveMeView")
 public class APLMoveMeView extends UIView {
+    private static final float GROW_FACTOR = 1.2f;
+    private static final float SHRINK_FACTOR = 1.1f;
+    private static final float GROW_ANIMATION_DURATION_SECONDS = 0.15f;
+    private static final float SHRINK_ANIMATION_DURATION_SECONDS = 0.15f;
+
     private String[] displayStrings;
     private int nextDisplayStringIndex;
-    private final APLPlacardView placardView;
-
-    public APLMoveMeView () {
-        setFrame(UIScreen.getMainScreen().getApplicationFrame());
-        setBackgroundColor(UIColor.darkGray());
-
-        placardView = new APLPlacardView();
-        addSubview(placardView);
-    }
+    private APLPlacardView placardView;
 
     @Override
-    public void touchesBegan (NSSet<UITouch> touches, UIEvent event) {
-        // We only support single touches, so any retrieves just that touch from touches.
+    public void touchesBegan(NSSet<UITouch> touches, UIEvent event) {
+        // We only support single touches, so any retrieves just that touch from
+        // touches.
         UITouch touch = touches.any();
 
         // Only move the placard view if the touch was in the placard view.
         if (touch.getView() != placardView) {
-            // In case of a double tap outside the placard view, update the placard's display string.
+            // In case of a double tap outside the placard view, update the
+            // placard's display string.
             if (touch.getTapCount() == 2) {
                 setupNextDisplayString();
             }
@@ -74,10 +73,11 @@ public class APLMoveMeView extends UIView {
     }
 
     @Override
-    public void touchesMoved (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesMoved(NSSet<UITouch> touches, UIEvent event) {
         UITouch touch = touches.any();
 
-        // If the touch was in the placardView, move the placardView to its location.
+        // If the touch was in the placardView, move the placardView to its
+        // location.
         if (touch.getView() == placardView) {
             CGPoint location = touch.getLocationInView(this);
             placardView.setCenter(location);
@@ -86,14 +86,15 @@ public class APLMoveMeView extends UIView {
     }
 
     @Override
-    public void touchesEnded (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesEnded(NSSet<UITouch> touches, UIEvent event) {
         UITouch touch = touches.any();
 
         // If the touch was in the placardView, bounce it back to the center.
         if (touch.getView() == placardView) {
             /*
-             * Disable user interaction so subsequent touches don't interfere with animation until the placard has returned to the
-             * center. Interaction is reenabled in animationDidStop:finished:.
+             * Disable user interaction so subsequent touches don't interfere
+             * with animation until the placard has returned to the center.
+             * Interaction is reenabled in animationDidStop:finished:.
              */
             setUserInteractionEnabled(false);
             animatePlacardViewToCenter();
@@ -102,56 +103,55 @@ public class APLMoveMeView extends UIView {
     }
 
     @Override
-    public void touchesCancelled (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesCancelled(NSSet<UITouch> touches, UIEvent event) {
         /*
-         * To impose as little impact on the device as possible, simply set the placard view's center and transformation to the
-         * original values.
+         * To impose as little impact on the device as possible, simply set the
+         * placard view's center and transformation to the original values.
          */
         placardView.setCenter(getCenter());
         placardView.setTransform(CGAffineTransform.Identity());
     }
 
-    private static final float GROW_FACTOR = 1.2f;
-    private static final float SHRINK_FACTOR = 1.1f;
-    private static final float GROW_ANIMATION_DURATION_SECONDS = 0.15f;
-    private static final float SHRINK_ANIMATION_DURATION_SECONDS = 0.15f;
-
-    /** "Pulse" the placard view by scaling up then down, then move the placard to under the finger. */
-    private void animateFirstTouch (final CGPoint touchPoint) {
+    /**
+     * "Pulse" the placard view by scaling up then down, then move the placard
+     * to under the finger.
+     */
+    private void animateFirstTouch(final CGPoint touchPoint) {
         /*
-         * Create two separate animations. The first animation is for the grow and partial shrink. The grow animation is performed
-         * in a block. The method uses a completion block that itself includes an animation block to perform the shrink. The
-         * second animation lasts for the total duration of the grow and shrink animations and contains a block responsible for
-         * performing the move.
+         * Create two separate animations. The first animation is for the grow
+         * and partial shrink. The grow animation is performed in a block. The
+         * method uses a completion block that itself includes an animation
+         * block to perform the shrink. The second animation lasts for the total
+         * duration of the grow and shrink animations and contains a block
+         * responsible for performing the move.
          */
         UIView.animate(GROW_ANIMATION_DURATION_SECONDS, new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 CGAffineTransform transform = CGAffineTransform.createScale(GROW_FACTOR, GROW_FACTOR);
                 placardView.setTransform(transform);
             }
         }, new VoidBooleanBlock() {
             @Override
-            public void invoke (boolean finished) {
+            public void invoke(boolean finished) {
                 UIView.animate(SHRINK_ANIMATION_DURATION_SECONDS, new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         placardView.setTransform(CGAffineTransform.createScale(SHRINK_FACTOR, SHRINK_FACTOR));
                     }
                 });
             }
         });
-
         UIView.animate(GROW_ANIMATION_DURATION_SECONDS + SHRINK_ANIMATION_DURATION_SECONDS, new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 placardView.setCenter(touchPoint);
             }
         });
     }
 
     /** Bounce the placard back to the center. */
-    private void animatePlacardViewToCenter () {
+    private void animatePlacardViewToCenter() {
         CALayer welcomeLayer = placardView.getLayer();
 
         // Create a keyframe animation to follow a path back to the center.
@@ -178,7 +178,8 @@ public class APLMoveMeView extends UIView {
 
         // Add to the bounce path in decreasing excursions from the center.
         while (!stopBouncing) {
-            CGPoint excursion = new CGPoint(midX + originalOffsetX / offsetDivider, midY + originalOffsetY / offsetDivider);
+            CGPoint excursion = new CGPoint(midX + originalOffsetX / offsetDivider, midY + originalOffsetY
+                    / offsetDivider);
             bouncePath.addLine(excursion);
             bouncePath.addLine(centerPoint);
 
@@ -198,14 +199,17 @@ public class APLMoveMeView extends UIView {
         transformAnimation.setDuration(animationDuration);
         transformAnimation.setToValue(NSValue.valueOf(CATransform3D.Identity()));
 
-        // Create an animation group to combine the keyframe and basic animations.
+        // Create an animation group to combine the keyframe and basic
+        // animations.
         CAAnimationGroup group = new CAAnimationGroup();
 
         group.setDelegate(new CAAnimationDelegateAdapter() {
-            /** Animation delegate method called when the animation's finished: restore the transform and reenable user
-             * interaction. */
+            /**
+             * Animation delegate method called when the animation's finished:
+             * restore the transform and reenable user interaction.
+             */
             @Override
-            public void didStop (CAAnimation anim, boolean flag) {
+            public void didStop(CAAnimation anim, boolean flag) {
                 placardView.setTransform(CGAffineTransform.Identity());
                 setUserInteractionEnabled(true);
             }
@@ -218,12 +222,13 @@ public class APLMoveMeView extends UIView {
         // Add the animation group to the layer.
         welcomeLayer.addAnimation(group, "animatePlacardViewToCenter");
 
-        // Set the placard view's center and transformation to the original values in preparation for the end of the animation.
+        // Set the placard view's center and transformation to the original
+        // values in preparation for the end of the animation.
         placardView.setCenter(centerPoint);
         placardView.setTransform(CGAffineTransform.Identity());
     }
 
-    public void setupNextDisplayString () {
+    public void setupNextDisplayString() {
         int nextIndex = nextDisplayStringIndex;
         String displayString = displayStrings[nextIndex];
         placardView.setDisplayString(displayString);
@@ -237,7 +242,12 @@ public class APLMoveMeView extends UIView {
         placardView.setCenter(getCenter());
     }
 
-    public void setDisplayStrings (String[] displayStrings) {
+    public void setDisplayStrings(String[] displayStrings) {
         this.displayStrings = displayStrings;
+    }
+
+    @IBOutlet
+    private void setPlacardView(APLPlacardView placardView) {
+        this.placardView = placardView;
     }
 }

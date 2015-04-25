@@ -16,23 +16,23 @@
  * Portions of this code is based on Apple Inc's MoveMe sample (v3.0)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
-package org.robovm.samples.moveme;
+package org.robovm.samples.moveme.ui;
 
-import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.uikit.UIApplication;
-import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
-import org.robovm.apple.uikit.UIApplicationLaunchOptions;
+import org.robovm.apple.uikit.UILabel;
+import org.robovm.apple.uikit.UIView;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
 
-public class MoveMe extends UIApplicationDelegateAdapter {
+@CustomClass("APLPlacardView")
+public class APLPlacardView extends UIView {
+    private UILabel textLabel;
 
-    @Override
-    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        return true;
+    public void setDisplayString(String displayString) {
+        textLabel.setText(displayString);
     }
 
-    public static void main(String[] args) {
-        try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
-            UIApplication.main(args, null, MoveMe.class);
-        }
+    @IBOutlet
+    private void setTextLabel(UILabel textLabel) {
+        this.textLabel = textLabel;
     }
 }
