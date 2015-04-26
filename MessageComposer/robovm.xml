@@ -10,7 +10,4 @@
     </resources>
     <target>ios</target>
     <iosInfoPList>Info.plist.xml</iosInfoPList>
-    <frameworks>
-        <framework>MessageUI</framework>
-    </frameworks>
 </config>
