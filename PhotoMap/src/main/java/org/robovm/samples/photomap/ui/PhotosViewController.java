@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  * Portions of this code is based on Apple Inc's PhotoMap sample (v1.1)
  * which is copyright (C) 2011-2014 Apple Inc.
  */
-
-package org.robovm.samples.photomap.viewcontrollers;
+package org.robovm.samples.photomap.ui;
 
 import java.util.List;
 
@@ -30,77 +29,81 @@ import org.robovm.apple.uikit.UIPageViewControllerNavigationDirection;
 import org.robovm.apple.uikit.UIPageViewControllerNavigationOrientation;
 import org.robovm.apple.uikit.UIPageViewControllerSpineLocation;
 import org.robovm.apple.uikit.UIPageViewControllerTransitionStyle;
-import org.robovm.apple.uikit.UIRectEdge;
+import org.robovm.apple.uikit.UIStoryboard;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
 import org.robovm.samples.photomap.PhotoAnnotation;
 
+@CustomClass("PhotosViewController")
 public class PhotosViewController extends UIViewController implements UIPageViewControllerDelegate {
-    private final UIPageViewController pageViewController;
+    private UIPageViewController pageViewController;
     private List<PhotoAnnotation> photosToShow;
     private boolean pageAnimationFinished;
 
-    private final ModelController modelController;
+    private ModelController modelController;
 
-    public PhotosViewController () {
-        setEdgesForExtendedLayout(UIRectEdge.None);
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
 
         modelController = new ModelController();
 
-        // Configure the page view controller and add it as a child view controller.
+        // Do any additional setup after loading the view, typically from a nib.
+        // Configure the page view controller and add it as a child view
+        // controller.
         pageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.PageCurl,
-            UIPageViewControllerNavigationOrientation.Horizontal, null);
+                UIPageViewControllerNavigationOrientation.Horizontal, null);
         pageViewController.setDelegate(this);
+
+        modelController.setPageData(photosToShow);
+
+        UIStoryboard storyboard = UIStoryboard.create("Main", null);
+        DataViewController startingViewController = modelController.getViewControllerAtIndex(0, storyboard);
+
+        NSArray<UIViewController> viewControllers = new NSArray<UIViewController>(startingViewController);
+        pageViewController.setViewControllers(viewControllers,
+                UIPageViewControllerNavigationDirection.Forward, false, null);
+
+        updateNavBarTitle();
 
         pageViewController.setDataSource(modelController);
 
         addChildViewController(pageViewController);
-
         getView().addSubview(pageViewController.getView());
         pageViewController.didMoveToParentViewController(this);
 
-        // add the page view controller's gesture recognizers to the book view controller's view
+        // add the page view controller's gesture recognizers to the book view
+        // controller's view
         // so that the gestures are started more easily
         getView().setGestureRecognizers(pageViewController.getGestureRecognizers());
 
         pageAnimationFinished = true;
     }
 
-    @Override
-    public void viewWillAppear (boolean animated) {
-        super.viewWillAppear(animated);
-
-        modelController.setPageData(photosToShow);
-
-        DataViewController startingViewController = modelController.getViewControllerAtIndex(0);
-
-        NSArray<UIViewController> viewControllers = new NSArray<>((UIViewController)startingViewController);
-        pageViewController.setViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-
-        updateNavBarTitle();
-    }
-
-    private void updateNavBarTitle () {
+    private void updateNavBarTitle() {
         if (modelController.getPageData().size() > 1) {
-            setTitle(String.format("Photos (%d of %d)", modelController.getCurrentPageIndex() + 1, modelController.getPageData()
-                .size()));
+            setTitle(String.format("Photos (%d of %d)", modelController.getCurrentPageIndex() + 1, modelController
+                    .getPageData()
+                    .size()));
         } else {
-// DataViewController viewController = modelController.getPageData().get((int)modelController.getCurrentPageIndex());
-// setTitle(viewController.getTitle()); TODO
+            PhotoAnnotation viewController = modelController.getPageData().get(
+                    (int) modelController.getCurrentPageIndex());
+            setTitle(viewController.getTitle());
         }
     }
 
-    public boolean isPageAnimationFinished () {
+    public boolean isPageAnimationFinished() {
         return pageAnimationFinished;
     }
 
     @Override
-    public void willTransition (UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers) {
+    public void willTransition(UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers) {
         pageAnimationFinished = false;
     }
 
     @Override
-    public void didFinishAnimating (UIPageViewController pageViewController, boolean finished,
-        NSArray<UIViewController> previousViewControllers, boolean completed) {
+    public void didFinishAnimating(UIPageViewController pageViewController, boolean finished,
+            NSArray<UIViewController> previousViewControllers, boolean completed) {
 
         // update the nav bar title showing which index we are displaying
         updateNavBarTitle();
@@ -109,33 +112,35 @@ public class PhotosViewController extends UIViewController implements UIPageView
     }
 
     @Override
-    public UIPageViewControllerSpineLocation getSpineLocation (UIPageViewController pageViewController,
-        UIInterfaceOrientation orientation) {
-        // Set the spine position to "min" and the page view controller's view controllers array to contain just one view
-        // controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the
-// doubleSided
-        // property to YES, so set it to NO here.
+    public UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController,
+            UIInterfaceOrientation orientation) {
+        // Set the spine position to "min" and the page view controller's view
+        // controllers array to contain just one view
+        // controller. Setting the spine position to
+        // 'UIPageViewControllerSpineLocationMid' in landscape orientation sets
+        // the doubleSided property to YES, so set it to NO here.
         UIViewController currentViewController = pageViewController.getViewControllers().get(0);
 
         NSArray<UIViewController> viewControllers = new NSArray<>(currentViewController);
 
-        pageViewController.setViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, true, null);
+        pageViewController.setViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, true,
+                null);
 
         pageViewController.setDoubleSided(false);
         return UIPageViewControllerSpineLocation.Min;
     }
 
     @Override
-    public UIInterfaceOrientationMask getSupportedInterfaceOrientations (UIPageViewController pageViewController) {
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIPageViewController pageViewController) {
         return getSupportedInterfaceOrientations();
     }
 
     @Override
-    public UIInterfaceOrientation getPreferredInterfaceOrientation (UIPageViewController pageViewController) {
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UIPageViewController pageViewController) {
         return getPreferredInterfaceOrientation();
     }
 
-    public void setPhotosToShow (List<PhotoAnnotation> photosToShow) {
+    public void setPhotosToShow(List<PhotoAnnotation> photosToShow) {
         this.photosToShow = photosToShow;
     }
 }

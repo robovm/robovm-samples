@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  * Portions of this code is based on Apple Inc's PhotoMap sample (v1.1)
  * which is copyright (C) 2011-2014 Apple Inc.
  */
-
-package org.robovm.samples.photomap.views;
+package org.robovm.samples.photomap.ui;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
@@ -36,11 +35,11 @@ public class LoadingStatus extends UIView {
     private final UIActivityIndicatorView progress;
     private final UILabel loadingLabel;
 
-    public static LoadingStatus getDefaultLoadingStatus (double width) {
+    public static LoadingStatus getDefaultLoadingStatus(double width) {
         return new LoadingStatus(new CGRect(0, 0, width, 40));
     }
 
-    public LoadingStatus (CGRect frame) {
+    public LoadingStatus(CGRect frame) {
         super(frame);
 
         setBackgroundColor(UIColor.fromRGBA(0, 0, 0, 0.4));
@@ -49,10 +48,9 @@ public class LoadingStatus extends UIView {
         UIFont loadingFont = UIFont.getBoldSystemFont(17);
 
         NSAttributedStringAttributes attrs = new NSAttributedStringAttributes().setFont(loadingFont);
-        // TODO stringdrawingoptions bit -> NSStringDrawingOptions.UsesLineFragmentOrigin.value() |
-// NSStringDrawingOptions.UsesFontLeading.value()
         CGRect rect = new NSString(loadingString).getBoundingRect(new CGSize(frame.getWidth(), frame.getHeight()),
-            NSStringDrawingOptions.UsesLineFragmentOrigin, attrs, null);
+                NSStringDrawingOptions.with(NSStringDrawingOptions.UsesLineFragmentOrigin,
+                        NSStringDrawingOptions.UsesFontLeading), attrs, null);
         CGSize labelSize = rect.getSize();
 
         double centerX = Math.floor((frame.getWidth() / 2) - (labelSize.getWidth() / 2));
@@ -74,28 +72,29 @@ public class LoadingStatus extends UIView {
     }
 
     @Override
-    public void willRemoveSubview (UIView subview) {
-        if (subview == progress) progress.stopAnimating();
+    public void willRemoveSubview(UIView subview) {
+        if (subview == progress)
+            progress.stopAnimating();
 
         super.willRemoveSubview(subview);
     }
 
     @Override
-    public void didMoveToWindow () {
+    public void didMoveToWindow() {
         super.didMoveToWindow();
 
         progress.startAnimating();
     }
 
-    public void removeFromSuperviewWithFade () {
+    public void removeFromSuperviewWithFade() {
         UIView.animate(0.3, new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 setAlpha(0);
             }
         }, new VoidBooleanBlock() {
             @Override
-            public void invoke (boolean finished) {
+            public void invoke(boolean finished) {
                 if (finished) {
                     removeFromSuperview();
                 }

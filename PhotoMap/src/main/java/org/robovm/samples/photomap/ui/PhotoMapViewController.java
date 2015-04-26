@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  * Portions of this code is based on Apple Inc's PhotoMap sample (v1.1)
  * which is copyright (C) 2011-2014 Apple Inc.
  */
-
-package org.robovm.samples.photomap.viewcontrollers;
+package org.robovm.samples.photomap.ui;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,69 +44,69 @@ import org.robovm.apple.mapkit.MKCoordinateRegion;
 import org.robovm.apple.mapkit.MKCoordinateSpan;
 import org.robovm.apple.mapkit.MKMapPoint;
 import org.robovm.apple.mapkit.MKMapRect;
-import org.robovm.apple.mapkit.MKMapSize;
 import org.robovm.apple.mapkit.MKMapView;
 import org.robovm.apple.mapkit.MKMapViewDelegateAdapter;
-import org.robovm.apple.mapkit.MKPinAnnotationColor;
 import org.robovm.apple.mapkit.MKPinAnnotationView;
-import org.robovm.apple.uikit.UIBarButtonItem;
-import org.robovm.apple.uikit.UIBarButtonItemStyle;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIButtonType;
 import org.robovm.apple.uikit.UIControl;
+import org.robovm.apple.uikit.UIRectEdge;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBAction;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.objc.block.VoidBooleanBlock;
 import org.robovm.samples.photomap.PhotoAnnotation;
-import org.robovm.samples.photomap.views.LoadingStatus;
 
+@CustomClass("PhotoMapViewController")
 public class PhotoMapViewController extends UIViewController {
     private static final CLLocationCoordinate2D CherryLakeLocation = new CLLocationCoordinate2D(38.002493, -119.9078987);
 
     private List<MKAnnotation> photos;
-    private final MKMapView allAnnotationsMapView;
-    private final MKMapView mapView;
+    private MKMapView allAnnotationsMapView;
+    private MKMapView mapView;
 
-    private PhotosViewController photosViewController;
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
 
-    public PhotoMapViewController () {
-        setTitle("PhotoMap");
-        getNavigationItem().setRightBarButtonItem(
-            new UIBarButtonItem("Go", UIBarButtonItemStyle.Plain, new UIBarButtonItem.OnClickListener() {
-                @Override
-                public void onClick (UIBarButtonItem barButtonItem) {
-                    zoomToCherryLake();
-                }
-            }));
-
-        photosViewController = new PhotosViewController();
+        // center to Cherry Lake, but zoomed outward
+        MKCoordinateRegion newRegion = new MKCoordinateRegion(CherryLakeLocation, new MKCoordinateSpan(5.0, 5.0));
+        mapView.setRegion(newRegion);
 
         allAnnotationsMapView = new MKMapView(CGRect.Zero());
 
-        mapView = new MKMapView(getView().getBounds());
+        // now load all photos from Resources and add them as annotations to the
+        // mapview
+        populateWorldWithAllPhotoAnnotations();
 
+        // Set mapview delegate
         mapView.setDelegate(new MKMapViewDelegateAdapter() {
             @Override
-            public void didChangeRegion (MKMapView mapView, boolean animated) {
+            public void didChangeRegion(MKMapView mapView, boolean animated) {
                 updateVisibleAnnotations();
             }
 
             @Override
-            public void didAddAnnotationViews (MKMapView mapView, NSArray<MKAnnotationView> views) {
+            public void didAddAnnotationViews(MKMapView mapView, NSArray<MKAnnotationView> views) {
                 for (MKAnnotationView annotationView : views) {
                     if (!(annotationView.getAnnotation() instanceof PhotoAnnotation)) {
                         continue;
                     }
 
-                    final PhotoAnnotation annotation = (PhotoAnnotation)annotationView.getAnnotation();
+                    final PhotoAnnotation annotation = (PhotoAnnotation) annotationView.getAnnotation();
 
                     if (annotation.getClusterAnnotation() != null) {
-                        // animate the annotation from it's old container's coordinate, to its actual coordinate
+                        // animate the annotation from it's old container's
+                        // coordinate, to its actual coordinate
                         final CLLocationCoordinate2D actualCoordinate = annotation.getCoordinate();
                         CLLocationCoordinate2D containerCoordinate = annotation.getClusterAnnotation().getCoordinate();
 
-                        // since it's displayed on the map, it is no longer contained by another annotation,
-                        // (We couldn't reset this in -updateVisibleAnnotations because we needed the reference to it here
+                        // since it's displayed on the map, it is no longer
+                        // contained by another annotation,
+                        // (We couldn't reset this in -updateVisibleAnnotations
+                        // because we needed the reference to it here
                         // to get the containerCoordinate)
                         annotation.setClusterAnnotation(null);
 
@@ -115,7 +114,7 @@ public class PhotoMapViewController extends UIViewController {
 
                         UIView.animate(0.3, new Runnable() {
                             @Override
-                            public void run () {
+                            public void run() {
                                 annotation.setCoordinate(actualCoordinate);
                             }
                         });
@@ -124,7 +123,7 @@ public class PhotoMapViewController extends UIViewController {
             }
 
             @Override
-            public MKAnnotationView getAnnotationView (MKMapView mapView, MKAnnotation annotation) {
+            public MKAnnotationView getAnnotationView(MKMapView mapView, MKAnnotation annotation) {
                 final String annotationIdentifier = "Photo";
 
                 if (mapView != PhotoMapViewController.this.mapView) {
@@ -132,65 +131,60 @@ public class PhotoMapViewController extends UIViewController {
                 }
 
                 if (annotation instanceof PhotoAnnotation) {
-                    MKPinAnnotationView annotationView = (MKPinAnnotationView)mapView
-                        .dequeueReusableAnnotationView(annotationIdentifier);
-
+                    MKPinAnnotationView annotationView = (MKPinAnnotationView) mapView
+                            .dequeueReusableAnnotationView(annotationIdentifier);
                     if (annotationView == null) {
                         annotationView = new MKPinAnnotationView(annotation, annotationIdentifier);
-                        annotationView.setCanShowCallout(true);
-                        annotationView.setPinColor(MKPinAnnotationColor.Red);
-
-                        annotationView.setAnimatesDrop(true); // FIXME Without animatesDrop pin is not visible
-
-                        UIButton disclosureButton = UIButton.create(UIButtonType.DetailDisclosure);
-                        annotationView.setRightCalloutAccessoryView(disclosureButton);
-                    } else {
-                        annotationView.setAnnotation(annotation);
                     }
+
+                    annotationView.setCanShowCallout(true);
+
+                    UIButton disclosureButton = UIButton.create(UIButtonType.DetailDisclosure);
+                    annotationView.setRightCalloutAccessoryView(disclosureButton);
+
                     return annotationView;
                 }
                 return null;
             }
 
-            /** User tapped the call out accessory 'i' button.
+            /**
+             * User tapped the call out accessory 'i' button.
+             * 
              * @param mapView
              * @param view
-             * @param control */
+             * @param control
+             */
             @Override
-            public void calloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control) {
-                PhotoAnnotation annotation = (PhotoAnnotation)view.getAnnotation();
+            public void calloutAccessoryControlTapped(MKMapView mapView, MKAnnotationView view, UIControl control) {
+                PhotoAnnotation annotation = (PhotoAnnotation) view.getAnnotation();
 
                 List<PhotoAnnotation> photosToShow = new ArrayList<>();
                 photosToShow.add(annotation);
                 photosToShow.addAll(annotation.getContainedAnnotations());
 
-                photosViewController.setPhotosToShow(photosToShow);
+                PhotosViewController viewController = new PhotosViewController();
+                viewController.setEdgesForExtendedLayout(UIRectEdge.None);
+                viewController.setPhotosToShow(photosToShow);
 
-                getNavigationController().pushViewController(photosViewController, true);
+                getNavigationController().pushViewController(viewController, true);
             }
 
             @Override
-            public void didSelectAnnotationView (MKMapView mapView, MKAnnotationView view) {
+            public void didSelectAnnotationView(MKMapView mapView, MKAnnotationView view) {
                 if (view.getAnnotation() instanceof PhotoAnnotation) {
-                    PhotoAnnotation annotation = (PhotoAnnotation)view.getAnnotation();
+                    PhotoAnnotation annotation = (PhotoAnnotation) view.getAnnotation();
                     annotation.updateSubtitleIfNeeded();
                 }
             }
         });
-        getView().addSubview(mapView);
-
-        // center to Cherry Lake, but zoomed outward
-        MKCoordinateRegion newRegion = new MKCoordinateRegion(CherryLakeLocation, new MKCoordinateSpan(5.0, 5.0));
-        mapView.setRegion(newRegion);
-
-        // now load all photos from Resources and add them as annotations to the mapview
-        populateWorldWithAllPhotoAnnotations();
     }
 
-    private List<MKAnnotation> loadPhotoSet (String path) {
+    private List<MKAnnotation> loadPhotoSet(String path) {
         final List<MKAnnotation> photos = new ArrayList<>();
-        // The bulk of our work here is going to be loading the files and looking up metadata
-        // Thus, we see a major speed improvement by loading multiple photos simultaneously
+        // The bulk of our work here is going to be loading the files and
+        // looking up metadata
+        // Thus, we see a major speed improvement by loading multiple photos
+        // simultaneously
 
         NSOperationQueue queue = new NSOperationQueue();
         queue.setMaxConcurrentOperationCount(8);
@@ -199,7 +193,7 @@ public class PhotoMapViewController extends UIViewController {
         for (final String photoPath : photoPaths) {
             queue.addOperation(new Runnable() {
                 @Override
-                public void run () {
+                public void run() {
                     File file = new File(photoPath);
                     NSData imageData = NSData.read(file);
                     CGDataProvider dataProvider = CGDataProvider.create(imageData);
@@ -234,7 +228,7 @@ public class PhotoMapViewController extends UIViewController {
         return photos;
     }
 
-    private void populateWorldWithAllPhotoAnnotations () {
+    private void populateWorldWithAllPhotoAnnotations() {
         // add a temporary loading view
         final LoadingStatus loadingStatus = LoadingStatus.getDefaultLoadingStatus(getView().getFrame().getWidth());
         getView().addSubview(loadingStatus);
@@ -242,17 +236,16 @@ public class PhotoMapViewController extends UIViewController {
         // loading/processing photos might take a while -- do it asynchronously
         DispatchQueue.getGlobalQueue(DispatchQueue.PRIORITY_DEFAULT, 0).async(new Runnable() {
             @Override
-            public void run () {
-                System.out.println("Loading photos...");
+            public void run() {
                 List<MKAnnotation> photos = loadPhotoSet("PhotoSet");
-                if (photos == null) throw new UnsupportedOperationException("No photos found at path!");
-                System.out.println("Photos loaded");
+                if (photos == null)
+                    throw new UnsupportedOperationException("No photos found at path!");
 
                 PhotoMapViewController.this.photos = photos;
 
                 DispatchQueue.getMainQueue().async(new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         allAnnotationsMapView.addAnnotations(PhotoMapViewController.this.photos);
                         updateVisibleAnnotations();
 
@@ -263,8 +256,9 @@ public class PhotoMapViewController extends UIViewController {
         });
     }
 
-    private PhotoAnnotation getAnnotationInGrid (MKMapRect gridMapRect, List<PhotoAnnotation> annotations) {
-        // first, see if one of the annotations we were already showing is in this mapRect
+    private PhotoAnnotation getAnnotationInGrid(MKMapRect gridMapRect, List<PhotoAnnotation> annotations) {
+        // first, see if one of the annotations we were already showing is in
+        // this mapRect
         Set<? extends MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
         for (MKAnnotation annotation : annotations) {
@@ -272,14 +266,16 @@ public class PhotoMapViewController extends UIViewController {
                 return annotations.get(0);
             }
         }
-        // otherwise, sort the annotations based on their distance from the center of the grid square,
+        // otherwise, sort the annotations based on their distance from the
+        // center of the grid square,
         // then choose the one closest to the center to show
-        final MKMapPoint centerMapPoint = new MKMapPoint(gridMapRect.getOrigin().getX() + gridMapRect.getSize().getWidth() / 2,
-            gridMapRect.getOrigin().getY() + gridMapRect.getSize().getHeight() / 2);
+        final MKMapPoint centerMapPoint = new MKMapPoint(gridMapRect.getOrigin().getX()
+                + gridMapRect.getSize().getWidth() / 2,
+                gridMapRect.getOrigin().getY() + gridMapRect.getSize().getHeight() / 2);
 
         Comparator<MKAnnotation> comparator = new Comparator<MKAnnotation>() {
             @Override
-            public int compare (MKAnnotation lhs, MKAnnotation rhs) {
+            public int compare(MKAnnotation lhs, MKAnnotation rhs) {
                 MKMapPoint mapPoint1 = MKMapPoint.create(lhs.getCoordinate());
                 MKMapPoint mapPoint2 = MKMapPoint.create(rhs.getCoordinate());
 
@@ -300,59 +296,63 @@ public class PhotoMapViewController extends UIViewController {
         return annotations.get(0);
     }
 
-    private void updateVisibleAnnotations () {
-        System.out.println("Updating visible annotations...");
-        // This value to controls the number of off screen annotations are displayed.
-        // A bigger number means more annotations, less chance of seeing annotation views pop in but decreased performance.
-        // A smaller number means fewer annotations, more chance of seeing annotation views pop in but better performance.
+    private void updateVisibleAnnotations() {
+        // This value to controls the number of off screen annotations are
+        // displayed.
+        // A bigger number means more annotations, less chance of seeing
+        // annotation views pop in but decreased performance.
+        // A smaller number means fewer annotations, more chance of seeing
+        // annotation views pop in but better performance.
         final float marginFactor = 2.0f;
 
-        // Adjust this roughly based on the dimensions of your annotations views.
-        // Bigger numbers more aggressively coalesce annotations (fewer annotations displayed but better performance).
-        // Numbers too small result in overlapping annotations views and too many annotations on screen.
+        // Adjust this roughly based on the dimensions of your annotations
+        // views.
+        // Bigger numbers more aggressively coalesce annotations (fewer
+        // annotations displayed but better performance).
+        // Numbers too small result in overlapping annotations views and too
+        // many annotations on screen.
         final float bucketSize = 60.0f;
 
-        // find all the annotations in the visible area + a wide margin to avoid popping annotation views in and out while
+        // find all the annotations in the visible area + a wide margin to avoid
+        // popping annotation views in and out while
         // panning the map.
         MKMapRect visibleMapRect = mapView.getVisibleMapRect();
         MKMapRect adjustedVisibleMapRect = visibleMapRect.inset(-marginFactor * visibleMapRect.getSize().getWidth(),
-            -marginFactor * visibleMapRect.getSize().getHeight());
+                -marginFactor * visibleMapRect.getSize().getHeight());
 
         // determine how wide each bucket will be, as a MKMapRect square
         CLLocationCoordinate2D leftCoordinate = mapView.convertPointToCoordinateFromView(CGPoint.Zero(), getView());
-        CLLocationCoordinate2D rightCoordinate = mapView.convertPointToCoordinateFromView(new CGPoint(bucketSize, 0), getView());
+        CLLocationCoordinate2D rightCoordinate = mapView.convertPointToCoordinateFromView(new CGPoint(bucketSize, 0),
+                getView());
 
         double gridSize = MKMapPoint.create(rightCoordinate).getX() - MKMapPoint.create(leftCoordinate).getX();
-        MKMapRect gridMapRect = new MKMapRect(); // 0, 0, gridSize, gridSize TODO
-        gridMapRect.setSize(new MKMapSize(gridSize, gridSize));
+        MKMapRect gridMapRect = new MKMapRect(0, 0, gridSize, gridSize);
 
-        // condense annotations, with a padding of two squares, around the visibleMapRect
-        double startX = Math.floor(adjustedVisibleMapRect.getOrigin().getX() / gridSize) * gridSize;
-        double startY = Math.floor(adjustedVisibleMapRect.getOrigin().getY() / gridSize) * gridSize;
-        double endX = Math.floor((adjustedVisibleMapRect.getOrigin().getX() + adjustedVisibleMapRect.getSize().getWidth())
-            / gridSize)
-            * gridSize;
-        double endY = Math.floor((adjustedVisibleMapRect.getOrigin().getY() + adjustedVisibleMapRect.getSize().getHeight())
-            / gridSize)
-            * gridSize;
+        // condense annotations, with a padding of two squares, around the
+        // visibleMapRect
+        double startX = Math.floor(adjustedVisibleMapRect.getMinX() / gridSize) * gridSize;
+        double startY = Math.floor(adjustedVisibleMapRect.getMinY() / gridSize) * gridSize;
+        double endX = Math.floor((adjustedVisibleMapRect.getMaxX()) / gridSize) * gridSize;
+        double endY = Math.floor((adjustedVisibleMapRect.getMaxY()) / gridSize) * gridSize;
 
         // for each square in our grid, pick one annotation to show
         gridMapRect.getOrigin().setY(startY);
 
-        while (gridMapRect.getOrigin().getY() <= endY) {
+        while (gridMapRect.getMinY() <= endY) {
             gridMapRect.getOrigin().setX(startX);
 
-            while (gridMapRect.getOrigin().getX() <= endX) {
+            while (gridMapRect.getMinX() <= endX) {
                 Set<? extends MKAnnotation> allAnnotationsInBucket = allAnnotationsMapView.getAnnotations(gridMapRect);
                 Set<? extends MKAnnotation> visibleAnnotationsInBucket = mapView.getAnnotations(gridMapRect);
 
-                if (allAnnotationsInBucket == null || visibleAnnotationsInBucket == null) continue;
+                if (allAnnotationsInBucket == null || visibleAnnotationsInBucket == null)
+                    continue;
 
                 // we only care about PhotoAnnotations
                 List<PhotoAnnotation> filteredAnnotationsInBucket = new ArrayList<>();
-                for (MKAnnotation annotation : allAnnotationsInBucket) {
+                for (Object annotation : allAnnotationsInBucket) {
                     if (annotation instanceof PhotoAnnotation) {
-                        filteredAnnotationsInBucket.add((PhotoAnnotation)annotation);
+                        filteredAnnotationsInBucket.add((PhotoAnnotation) annotation);
                     }
                 }
 
@@ -361,13 +361,15 @@ public class PhotoMapViewController extends UIViewController {
 
                     filteredAnnotationsInBucket.remove(annotationForGrid);
 
-                    // give the annotationForGrid a reference to all the annotations it will represent
+                    // give the annotationForGrid a reference to all the
+                    // annotations it will represent
                     annotationForGrid.setContainedAnnotations(filteredAnnotationsInBucket);
 
                     mapView.addAnnotation(annotationForGrid);
 
                     for (final PhotoAnnotation annotation : filteredAnnotationsInBucket) {
-                        // give all the other annotations a reference to the one which is representing them
+                        // give all the other annotations a reference to the one
+                        // which is representing them
                         annotation.setClusterAnnotation(annotationForGrid);
                         annotation.setContainedAnnotations(null);
 
@@ -376,12 +378,12 @@ public class PhotoMapViewController extends UIViewController {
                             final CLLocationCoordinate2D actualCoordinate = annotation.getCoordinate();
                             UIView.animate(0.3, new Runnable() {
                                 @Override
-                                public void run () {
+                                public void run() {
                                     annotation.setCoordinate(annotation.getClusterAnnotation().getCoordinate());
                                 }
                             }, new VoidBooleanBlock() {
                                 @Override
-                                public void invoke (boolean v) {
+                                public void invoke(boolean v) {
                                     annotation.setCoordinate(actualCoordinate);
                                     mapView.removeAnnotation(annotation);
                                 }
@@ -395,10 +397,10 @@ public class PhotoMapViewController extends UIViewController {
 
             gridMapRect.getOrigin().setY(gridMapRect.getOrigin().getY() + gridSize);
         }
-        System.out.println("Update completed");
     }
 
-    private void zoomToCherryLake () {
+    @IBAction
+    private void zoomToCherryLake() {
         // clear any annotations in preparation for zooming
         mapView.removeAnnotations(mapView.getAnnotations());
 
@@ -406,5 +408,10 @@ public class PhotoMapViewController extends UIViewController {
         MKCoordinateRegion newRegion = new MKCoordinateRegion(CherryLakeLocation, new MKCoordinateSpan(0.05, 0.05));
 
         mapView.setRegion(newRegion, true);
+    }
+
+    @IBOutlet
+    private void setMapView(MKMapView mapView) {
+        this.mapView = mapView;
     }
 }

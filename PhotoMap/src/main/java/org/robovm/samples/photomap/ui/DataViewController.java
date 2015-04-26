@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,43 @@
  * Portions of this code is based on Apple Inc's PhotoMap sample (v1.1)
  * which is copyright (C) 2011-2014 Apple Inc.
  */
-
-package org.robovm.samples.photomap.viewcontrollers;
+package org.robovm.samples.photomap.ui;
 
 import java.io.File;
 
-import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.samples.photomap.PhotoAnnotation;
 
+@CustomClass("DataViewController")
 public class DataViewController extends UIViewController {
     private PhotoAnnotation dataObject;
-    private final UIImageView imageView;
-
-    public DataViewController () {
-        imageView = new UIImageView(getView().getBounds());
-        imageView.setBackgroundColor(UIColor.fromWhiteAlpha(0, 1));
-    }
+    private UIImageView imageView;
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
-        // we want for the title to only be the image name (obtained from the file system path)
+        // we want for the title to only be the image name (obtained from the
+        // file system path)
         String title = new File(dataObject.getImagePath()).getName();
         setTitle(title);
 
         imageView.setImage(dataObject.getImage());
     }
 
-    public void setDataObject (PhotoAnnotation dataObject) {
+    public void setDataObject(PhotoAnnotation dataObject) {
         this.dataObject = dataObject;
     }
 
-    public PhotoAnnotation getDataObject () {
+    public PhotoAnnotation getDataObject() {
         return dataObject;
+    }
+
+    @IBOutlet
+    private void setImageView(UIImageView imageView) {
+        this.imageView = imageView;
     }
 }
