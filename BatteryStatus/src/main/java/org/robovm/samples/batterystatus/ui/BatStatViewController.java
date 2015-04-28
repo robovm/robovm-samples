@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  * Portions of this code is based on Apple Inc's BatteryStatus sample (v1.2)
  * which is copyright (C) 2009-2013 Apple Inc.
  */
-
 package org.robovm.samples.batterystatus.ui;
 
 import org.robovm.apple.foundation.NSNumber;
