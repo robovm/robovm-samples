@@ -49,17 +49,18 @@ public class IOSProductsList extends UITableViewController {
     private final List<MyModel> products = new ArrayList<>();
     private final List<String> sectionNames = new ArrayList<>();
 
-    public IOSProductsList () {
+    public IOSProductsList() {
         // Register for StoreManager's notifications
         NSNotificationCenter.getDefaultCenter().addObserver(StoreManager.IAPProductRequestNotification,
-            StoreManager.getInstance(), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
-                @Override
-                public void invoke (NSNotification a) {
-                    handleProductRequestNotification(a);
-                }
-            });
+                StoreManager.getInstance(), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                    @Override
+                    public void invoke(NSNotification a) {
+                        handleProductRequestNotification(a);
+                    }
+                });
 
-        // The tableview is organized into 2 sections: AVAILABLE PRODUCTS and INVALID PRODUCT IDS
+        // The tableview is organized into 2 sections: AVAILABLE PRODUCTS and
+        // INVALID PRODUCT IDS
         products.add(new MyModel("AVAILABLE PRODUCTS"));
         products.add(new MyModel("INVALID PRODUCT IDS"));
 
@@ -71,13 +72,14 @@ public class IOSProductsList extends UITableViewController {
 
     /** Retrieve product information from the App Store */
     @SuppressWarnings("unchecked")
-    private void fetchProductInformation () {
-        // Query the App Store for product information if the user is is allowed to make purchases.
+    private void fetchProductInformation() {
+        // Query the App Store for product information if the user is is allowed
+        // to make purchases.
         // Display an alert, otherwise.
         if (SKPaymentQueue.canMakePayments()) {
             // Load the product identifiers fron ProductIds.plist
             String filePath = NSBundle.getMainBundle().findResourcePath("ProductIds", "plist");
-            NSArray<NSString> productIds = (NSArray<NSString>)NSArray.read(new File(filePath));
+            NSArray<NSString> productIds = (NSArray<NSString>) NSArray.read(new File(filePath));
 
             StoreManager.getInstance().fetchProductInformationForIds(productIds.asStringList());
         } else {
@@ -86,17 +88,21 @@ public class IOSProductsList extends UITableViewController {
         }
     }
 
-    /** Update the UI according to the notification result
-     * @param notification */
-    private void handleProductRequestNotification (NSNotification notification) {
+    /**
+     * Update the UI according to the notification result
+     * 
+     * @param notification
+     */
+    private void handleProductRequestNotification(NSNotification notification) {
         MyModel model = null;
-        StoreManager productRequestNotification = (StoreManager)notification.getObject();
+        StoreManager productRequestNotification = (StoreManager) notification.getObject();
         IAPProductRequestStatus result = productRequestNotification.getStatus();
 
         sectionNames.clear();
 
         switch (result) {
-        // The App Store has recognized some identifiers and returned their matching products.
+        // The App Store has recognized some identifiers and returned their
+        // matching products.
         case ProductsFound:
             model = products.get(0);
             model.setElements(productRequestNotification.getAvailableProducts());
@@ -119,16 +125,19 @@ public class IOSProductsList extends UITableViewController {
         }
     }
 
-    /** Display an alert with a given title and message
+    /**
+     * Display an alert with a given title and message
+     * 
      * @param title
-     * @param message */
-    private void alert (String title, String message) {
+     * @param message
+     */
+    private void alert(String title, String message) {
         UIAlertView alertView = new UIAlertView(title, message, null, "OK");
         alertView.show();
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         int numberOfSections = 0;
 
         if (!products.get(0).isEmpty()) {
@@ -143,9 +152,9 @@ public class IOSProductsList extends UITableViewController {
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         // Fetch the section name at the given index
-        String sectionName = sectionNames.get((int)section);
+        String sectionName = sectionNames.get((int) section);
 
         // Fetch the model whose name matches sectionName
         MyModel model = sectionName.equals("AVAILABLE PRODUCTS") ? products.get(0) : products.get(1);
@@ -155,8 +164,8 @@ public class IOSProductsList extends UITableViewController {
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
-        String sectionName = sectionNames.get((int)section);
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
+        String sectionName = sectionNames.get((int) section);
         MyModel model = sectionName.equals("AVAILABLE PRODUCTS") ? products.get(0) : products.get(1);
 
         // Return the number of rows in the section.
@@ -164,8 +173,8 @@ public class IOSProductsList extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
-        String sectionName = sectionNames.get((int)indexPath.getSection());
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
+        String sectionName = sectionNames.get((int) indexPath.getSection());
 
         MyModel model = sectionName.equals("AVAILABLE PRODUCTS") ? products.get(0) : products.get(1);
 
@@ -178,12 +187,14 @@ public class IOSProductsList extends UITableViewController {
                 cell.setSelectionStyle(UITableViewCellSelectionStyle.Blue);
             }
 
-            SKProduct product = (SKProduct)productRequestResponse.get((int)indexPath.getRow());
+            SKProduct product = (SKProduct) productRequestResponse.get((int) indexPath.getRow());
             // Show the localized title of the product
             cell.getTextLabel().setText(product.getLocalizedTitle());
-            // Show the product's price in the locale and currency returned by the App Store
+            // Show the product's price in the locale and currency returned by
+            // the App Store
             cell.getDetailTextLabel().setText(
-                String.format("%s %.02f", product.getPriceLocale().getCurrencySymbol(), product.getPrice().floatValue()));
+                    String.format("%s %.02f", product.getPriceLocale().getCurrencySymbol(), product.getPrice()
+                            .floatValue()));
 
             return cell;
         } else {
@@ -191,34 +202,37 @@ public class IOSProductsList extends UITableViewController {
             if (cell == null) {
                 cell = new UITableViewCell(UITableViewCellStyle.Default, "invalidIdentifierID");
             }
-            cell.getTextLabel().setText((String)productRequestResponse.get((int)indexPath.getRow()));
+            cell.getTextLabel().setText((String) productRequestResponse.get((int) indexPath.getRow()));
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
             cell.getTextLabel().setTextColor(UIColor.gray());
             return cell;
         }
     }
 
-    /** Start a purchase when the user taps a row.
+    /**
+     * Start a purchase when the user taps a row.
+     * 
      * @param tableView
-     * @param indexPath */
+     * @param indexPath
+     */
     @Override
-    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         // Only items in the first section of the table can be bought
         if (tableView.getNumberOfSections() == 2 && indexPath.getSection() == 0) {
             MyModel model = products.get(0);
             List<?> productRequestResponse = model.getElements();
 
-            SKProduct product = (SKProduct)productRequestResponse.get((int)indexPath.getRow());
+            SKProduct product = (SKProduct) productRequestResponse.get((int) indexPath.getRow());
             // Attempt to purchase the tapped product
             StoreObserver.getInstance().buy(product);
         }
     }
 
     @Override
-    protected void dispose (boolean finalizing) {
+    protected void dispose(boolean finalizing) {
         // Unregister for StoreManager's notifications
         NSNotificationCenter.getDefaultCenter().removeObserver(this, StoreManager.IAPProductRequestNotification,
-            StoreManager.getInstance());
+                StoreManager.getInstance());
         super.dispose(finalizing);
     }
 

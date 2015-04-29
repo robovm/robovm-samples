@@ -54,7 +54,8 @@ public class StoreManager extends NSObject implements SKRequestDelegate, SKProdu
     // Provide the status of the product request
     private IAPProductRequestStatus status;
 
-    // Keep track of all valid products. These products are available for sale in the App Store
+    // Keep track of all valid products. These products are available for sale
+    // in the App Store
     private final List<SKProduct> availableProducts = new ArrayList<>();
 
     // Keep track of all invalid product identifiers
@@ -63,17 +64,20 @@ public class StoreManager extends NSObject implements SKRequestDelegate, SKProdu
     // Indicate the cause of the product request failure
     private String errorMessage;
 
-    private StoreManager () {
-    }
+    private StoreManager() {}
 
-    public static StoreManager getInstance () {
+    public static StoreManager getInstance() {
         return instance;
     }
 
-    /** Query the App Store about the given product identifiers
-     * @param productIds */
-    public void fetchProductInformationForIds (List<String> productIds) {
-        // Create a product request object and initialize it with our product identifiers
+    /**
+     * Query the App Store about the given product identifiers
+     * 
+     * @param productIds
+     */
+    public void fetchProductInformationForIds(List<String> productIds) {
+        // Create a product request object and initialize it with our product
+        // identifiers
         SKProductsRequest request = new SKProductsRequest(new HashSet<String>(productIds));
         request.setDelegate(this);
 
@@ -81,10 +85,13 @@ public class StoreManager extends NSObject implements SKRequestDelegate, SKProdu
         request.start();
     }
 
-    /** @param identifier
-     * @return the product's title matching a given product identifier */
-    public String getTitleForId (String identifier) {
-        // Iterate through availableProducts to find the product whose productIdentifier
+    /**
+     * @param identifier
+     * @return the product's title matching a given product identifier
+     */
+    public String getTitleForId(String identifier) {
+        // Iterate through availableProducts to find the product whose
+        // productIdentifier
         // property matches identifier, return its localized title when found
         for (SKProduct product : availableProducts) {
             if (product.getProductIdentifier().equals(identifier)) {
@@ -96,18 +103,24 @@ public class StoreManager extends NSObject implements SKRequestDelegate, SKProdu
 
 // SKProductsRequestDelegate
 
-    /** Used to get the App Store's response to your request and notifies your observer */
+    /**
+     * Used to get the App Store's response to your request and notifies your
+     * observer
+     */
     @Override
-    public void didReceiveResponse (SKProductsRequest request, SKProductsResponse response) {
-        // The products array contains products whose identifiers have been recognized by the App Store.
-        // As such, they can be purchased. Add them to the availableProducts array.
+    public void didReceiveResponse(SKProductsRequest request, SKProductsResponse response) {
+        // The products array contains products whose identifiers have been
+        // recognized by the App Store.
+        // As such, they can be purchased. Add them to the availableProducts
+        // array.
         if (response.getProducts().size() > 0) {
             availableProducts.addAll(response.getProducts());
             status = IAPProductRequestStatus.ProductsFound;
             NSNotificationCenter.getDefaultCenter().postNotification(IAPProductRequestNotification, this);
         }
 
-        // The invalidProductIdentifiers array contains all product identifiers not recognized by the App Store.
+        // The invalidProductIdentifiers array contains all product identifiers
+        // not recognized by the App Store.
         // Add them to the invalidProducts array.
         if (response.getInvalidProductIdentifiers().size() > 0) {
             invalidProductIds.addAll(response.getInvalidProductIdentifiers());
@@ -119,30 +132,30 @@ public class StoreManager extends NSObject implements SKRequestDelegate, SKProdu
     // SKRequestDelegate
 
     @Override
-    public void didFinish (SKRequest request) {
+    public void didFinish(SKRequest request) {
         // ignore
     }
 
     /** Called when the product request failed. */
     @Override
-    public void didFail (SKRequest request, NSError error) {
+    public void didFail(SKRequest request, NSError error) {
         // Prints the cause of the product request failure
         System.out.println("Product Request Status: " + error.getLocalizedDescription());
     }
 
-    public List<SKProduct> getAvailableProducts () {
+    public List<SKProduct> getAvailableProducts() {
         return availableProducts;
     }
 
-    public List<String> getInvalidProductIds () {
+    public List<String> getInvalidProductIds() {
         return invalidProductIds;
     }
 
-    public IAPProductRequestStatus getStatus () {
+    public IAPProductRequestStatus getStatus() {
         return status;
     }
 
-    public String getErrorMessage () {
+    public String getErrorMessage() {
         return errorMessage;
     }
 }

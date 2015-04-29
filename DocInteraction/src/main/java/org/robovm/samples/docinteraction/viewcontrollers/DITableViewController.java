@@ -27,6 +27,7 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSByteCountFormatter;
 import org.robovm.apple.foundation.NSByteCountFormatterCountStyle;
+import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSFileAttributes;
 import org.robovm.apple.foundation.NSFileManager;
 import org.robovm.apple.foundation.NSIndexPath;
@@ -52,26 +53,26 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.samples.docinteraction.QLBasicPreviewItem;
 
 public class DITableViewController extends UITableViewController {
-    private static String[] documents = new String[] {"Text Document.txt", "Image Document.jpg", "PDF Document.pdf",
-        "HTML Document.html"};
+    private static String[] documents = new String[] { "Text Document.txt", "Image Document.jpg", "PDF Document.pdf",
+        "HTML Document.html" };
 
     private final List<NSURL> documentURLs = new ArrayList<>();
     private UIDocumentInteractionController docInteractionController;
 
-    public DITableViewController () {
+    public DITableViewController() {
         setTitle("DocInteraction");
 
         // scan for existing documents
         readDirectory();
     }
 
-    private void setupDocumentController (NSURL url) {
+    private void setupDocumentController(NSURL url) {
         // checks if docInteractionController has been initialized with the URL
         if (docInteractionController == null) {
             docInteractionController = UIDocumentInteractionController.create(url);
             docInteractionController.setDelegate(new UIDocumentInteractionControllerDelegateAdapter() {
                 @Override
-                public UIViewController getViewControllerForPreview (UIDocumentInteractionController controller) {
+                public UIViewController getViewControllerForPreview(UIDocumentInteractionController controller) {
                     return DITableViewController.this;
                 }
             });
@@ -80,42 +81,49 @@ public class DITableViewController extends UITableViewController {
         }
     }
 
-    private String getApplicationDocumentsDirectory () {
-        List<String> paths = NSPathUtilities.getSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,
-            NSSearchPathDomainMask.UserDomainMask, true);
+    private String getApplicationDocumentsDirectory() {
+        List<String> paths = NSPathUtilities.getSearchPathForDirectoriesInDomains(
+                NSSearchPathDirectory.DocumentDirectory,
+                NSSearchPathDomainMask.UserDomainMask, true);
         return paths.get(paths.size() - 1);
     }
 
-    private void readDirectory () {
+    private void readDirectory() {
         documentURLs.clear();
 
         String documentsDirectoryPath = getApplicationDocumentsDirectory();
 
-        NSArray<NSURL> documentsDirectoryContents = NSFileManager.getDefaultManager().getContentsOfDirectoryAtPath(
-            documentsDirectoryPath);
+        NSArray<NSURL> documentsDirectoryContents;
+        try {
+            documentsDirectoryContents = NSFileManager.getDefaultManager().getContentsOfDirectoryAtPath(
+                    documentsDirectoryPath);
 
-        for (NSURL url : documentsDirectoryContents) {
-            String filePath = documentsDirectoryPath + "/" + url.getLastPathComponent();
-            NSURL fileURL = new NSURL(new File(filePath));
+            for (NSURL url : documentsDirectoryContents) {
+                String filePath = documentsDirectoryPath + "/" + url.getLastPathComponent();
+                NSURL fileURL = new NSURL(new File(filePath));
 
-            boolean isDirectory = NSFileManager.getDefaultManager().isDirectoryAtPath(filePath);
+                boolean isDirectory = NSFileManager.getDefaultManager().isDirectoryAtPath(filePath);
 
-            // proceed to add the document URL to our list (ignore the "Inbox" folder)
-            if (!(isDirectory && url.getLastPathComponent().equals("Inbox"))) {
-                documentURLs.add(fileURL);
+                // proceed to add the document URL to our list (ignore the
+                // "Inbox" folder)
+                if (!(isDirectory && url.getLastPathComponent().equals("Inbox"))) {
+                    documentURLs.add(fileURL);
+                }
             }
+        } catch (NSErrorException e) {
+            throw new Error(e);
         }
 
         getTableView().reloadData();
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         return 2;
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         // Initializing each section with a set of rows
         if (section == 0) {
             return documents.length;
@@ -125,7 +133,7 @@ public class DITableViewController extends UITableViewController {
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         String title = null;
         // setting headers for each section
         if (section == 0) {
@@ -140,7 +148,7 @@ public class DITableViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         final String cellIdentifier = "cellID";
         UITableViewCell cell = tableView.dequeueReusableCell(cellIdentifier);
 
@@ -152,10 +160,11 @@ public class DITableViewController extends UITableViewController {
         NSURL fileURL;
         if (indexPath.getSection() == 0) {
             // first section is our build-in documents
-            fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(documents[(int)indexPath.getRow()], null)));
+            fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(documents[(int) indexPath.getRow()],
+                    null)));
         } else {
             // second section is the contents of the Documents folder
-            fileURL = documentURLs.get((int)indexPath.getRow());
+            fileURL = documentURLs.get((int) indexPath.getRow());
         }
         setupDocumentController(fileURL);
 
@@ -168,44 +177,53 @@ public class DITableViewController extends UITableViewController {
 
         try {
             String fileURLString = docInteractionController.getURL().getPath();
-            NSFileAttributes fileAttributes = NSFileManager.getDefaultManager().getAttributesOfItemAtPath(fileURLString);
+            NSFileAttributes fileAttributes = NSFileManager.getDefaultManager()
+                    .getAttributesOfItemAtPath(fileURLString);
             long fileSize = fileAttributes.getSize();
             String fileSizeStr = NSByteCountFormatter.format(fileSize, NSByteCountFormatterCountStyle.File);
             cell.getDetailTextLabel().setText(String.format("%s - %s", fileSizeStr, docInteractionController.getUTI()));
 
-            // attach to our view any gesture recognizers that the UIDocumentInteractionController provides
+            // attach to our view any gesture recognizers that the
+            // UIDocumentInteractionController provides
             // cell.getImageView().setUserInteractionEnabled(true);
             // cell.getContentView().setGestureRecognizers(docInteractionController.getGestureRecognizers());
             // or
             // add a custom gesture recognizer in lieu of using the canned ones
             UILongPressGestureRecognizer longPressGesture = new UILongPressGestureRecognizer(
-                new UIGestureRecognizer.OnGestureListener() {
-                    // if we installed a custom UIGestureRecognizer (i.e. long-hold), then this would be called
-                    @Override
-                    public void onGesture (UIGestureRecognizer gestureRecognizer) {
-                        UILongPressGestureRecognizer longPressGesture = (UILongPressGestureRecognizer)gestureRecognizer;
-                        if (longPressGesture.getState() == UIGestureRecognizerState.Began) {
-                            NSIndexPath cellIndexPath = getTableView().getIndexPathForRow(
-                                longPressGesture.getLocationInView(getTableView()));
+                    new UIGestureRecognizer.OnGestureListener() {
+                        // if we installed a custom UIGestureRecognizer (i.e.
+                        // long-hold), then this would be called
+                        @Override
+                        public void onGesture(UIGestureRecognizer gestureRecognizer) {
+                            UILongPressGestureRecognizer longPressGesture = (UILongPressGestureRecognizer) gestureRecognizer;
+                            if (longPressGesture.getState() == UIGestureRecognizerState.Began) {
+                                NSIndexPath cellIndexPath = getTableView().getIndexPathForRow(
+                                        longPressGesture.getLocationInView(getTableView()));
 
-                            NSURL fileURL;
-                            if (cellIndexPath.getSection() == 0) {
-                                // for section 0, we preview the docs built into our app
-                                fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(
-                                    documents[(int)cellIndexPath.getRow()], null)));
-                            } else {
-                                // for secton 1, we preview the docs found in the Documents folder
-                                fileURL = documentURLs.get((int)cellIndexPath.getRow());
+                                NSURL fileURL;
+                                if (cellIndexPath.getSection() == 0) {
+                                    // for section 0, we preview the docs built
+                                    // into our app
+                                    fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(
+                                            documents[(int) cellIndexPath.getRow()], null)));
+                                } else {
+                                    // for secton 1, we preview the docs found
+                                    // in the Documents folder
+                                    fileURL = documentURLs.get((int) cellIndexPath.getRow());
+                                }
+                                docInteractionController.setURL(fileURL);
+
+                                docInteractionController.presentOptionsMenu(longPressGesture.getView().getFrame(),
+                                        longPressGesture.getView(), true);
                             }
-                            docInteractionController.setURL(fileURL);
-
-                            docInteractionController.presentOptionsMenu(longPressGesture.getView().getFrame(),
-                                longPressGesture.getView(), true);
                         }
-                    }
-                });
+                    });
             cell.getImageView().addGestureRecognizer(longPressGesture);
-            cell.getImageView().setUserInteractionEnabled(true);// this is by default false, so we need to turn it on
+            cell.getImageView().setUserInteractionEnabled(true);// this is by
+                                                                // default
+                                                                // false, so we
+                                                                // need to turn
+                                                                // it on
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,35 +232,45 @@ public class DITableViewController extends UITableViewController {
     }
 
     @Override
-    public double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
+    public double getHeightForRow(UITableView tableView, NSIndexPath indexPath) {
         return 58;
     }
 
     @Override
-    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         // three ways to present a preview:
-        // 1. Don't implement this method and simply attach the canned gestureRecognizers to the cell
+        // 1. Don't implement this method and simply attach the canned
+        // gestureRecognizers to the cell
         //
-        // 2. Don't use canned gesture recognizers and simply use UIDocumentInteractionController's
-        // presentPreview(animated) to get a preview for the document associated with this cell
+        // 2. Don't use canned gesture recognizers and simply use
+        // UIDocumentInteractionController's
+        // presentPreview(animated) to get a preview for the document associated
+        // with this cell
         //
-        // 3. Use the QLPreviewController to give the user preview access to the document associated
+        // 3. Use the QLPreviewController to give the user preview access to the
+        // document associated
         // with this cell and all the other documents as well.
 
-        // for case 2 use this, allowing UIDocumentInteractionController to handle the preview:
+        // for case 2 use this, allowing UIDocumentInteractionController to
+        // handle the preview:
         /*
-         * NSURL fileURL; if (indexPath.getSection() == 0) { fileURL = new NSURL(new
-         * File(NSBundle.getMainBundle().findResourcePath(documents((int)indexPath.getRow()), null))); } else { fileURL =
-         * documentURLs.get((int)indexPath.getRow()); } setupDocumentController(fileURL);
+         * NSURL fileURL; if (indexPath.getSection() == 0) { fileURL = new
+         * NSURL(new
+         * File(NSBundle.getMainBundle().findResourcePath(documents((int
+         * )indexPath.getRow()), null))); } else { fileURL =
+         * documentURLs.get((int)indexPath.getRow()); }
+         * setupDocumentController(fileURL);
          * docInteractionController.presentPreview(true);
          */
 
-        // for case 3 we use the QuickLook APIs directly to preview the document -
+        // for case 3 we use the QuickLook APIs directly to preview the document
+        // -
         QLPreviewController previewController = new QLPreviewController();
         previewController.setDataSource(new QLPreviewControllerDataSourceAdapter() {
-            // Returns the number of items that the preview controller should preview
+            // Returns the number of items that the preview controller should
+            // preview
             @Override
-            public long getNumberOfPreviewItems (QLPreviewController controller) {
+            public long getNumberOfPreviewItems(QLPreviewController controller) {
                 int numToPreview = 0;
 
                 NSIndexPath selectedIndexPath = getTableView().getIndexPathForSelectedRow();
@@ -256,14 +284,15 @@ public class DITableViewController extends UITableViewController {
 
             // returns the item that the preview controller should preview
             @Override
-            public QLPreviewItem getPreviewItem (QLPreviewController controller, long index) {
+            public QLPreviewItem getPreviewItem(QLPreviewController controller, long index) {
                 NSURL fileURL = null;
 
                 NSIndexPath selectedIndexPath = getTableView().getIndexPathForSelectedRow();
                 if (selectedIndexPath.getSection() == 0) {
-                    fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(documents[(int)index], null)));
+                    fileURL = new NSURL(new File(NSBundle.getMainBundle()
+                            .findResourcePath(documents[(int) index], null)));
                 } else {
-                    fileURL = documentURLs.get((int)index);
+                    fileURL = documentURLs.get((int) index);
                 }
 
                 return new QLBasicPreviewItem(fileURL);
@@ -271,8 +300,9 @@ public class DITableViewController extends UITableViewController {
         });
         previewController.setDelegate(new QLPreviewControllerDelegateAdapter() {
             @Override
-            public void didDismiss (QLPreviewController controller) {
-                // if the preview dismissed (done button touched), use this method to post-process previews
+            public void didDismiss(QLPreviewController controller) {
+                // if the preview dismissed (done button touched), use this
+                // method to post-process previews
             }
         });
 

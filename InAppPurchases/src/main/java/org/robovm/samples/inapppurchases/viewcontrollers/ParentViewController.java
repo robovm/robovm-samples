@@ -52,32 +52,33 @@ public class ParentViewController extends UIViewController {
     private final UILabel statusMessage;
     private final UISegmentedControl segmentedControl;
 
-    public ParentViewController () {
-        NSNotificationCenter.getDefaultCenter().addObserver(StoreObserver.IAPPurchaseNotification, StoreObserver.getInstance(),
-            NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
-                @Override
-                public void invoke (NSNotification a) {
-                    handlePurchasesNotification(a);
-                }
-            });
+    public ParentViewController() {
+        NSNotificationCenter.getDefaultCenter().addObserver(StoreObserver.IAPPurchaseNotification,
+                StoreObserver.getInstance(),
+                NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                    @Override
+                    public void invoke(NSNotification a) {
+                        handlePurchasesNotification(a);
+                    }
+                });
 
         segmentedControl = new UISegmentedControl(NSArray.fromStrings("Products", "Purchases"));
         segmentedControl.setSelectedSegment(0);
         segmentedControl.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
             @Override
-            public void onValueChanged (UIControl control) {
+            public void onValueChanged(UIControl control) {
                 segmentValueChanged(control);
             }
         });
         getNavigationItem().setTitleView(segmentedControl);
 
         getNavigationItem().setRightBarButtonItem(
-            new UIBarButtonItem("Restore", UIBarButtonItemStyle.Done, new UIBarButtonItem.OnClickListener() {
-                @Override
-                public void onClick (UIBarButtonItem barButtonItem) {
-                    restore();
-                }
-            }));
+                new UIBarButtonItem("Restore", UIBarButtonItemStyle.Done, new UIBarButtonItem.OnClickListener() {
+                    @Override
+                    public void onClick(UIBarButtonItem barButtonItem) {
+                        restore();
+                    }
+                }));
 
         UIView view = getView();
         view.setBackgroundColor(UIColor.white());
@@ -103,15 +104,16 @@ public class ParentViewController extends UIViewController {
     }
 
     @Override
-    public void viewDidLayoutSubviews () {
+    public void viewDidLayoutSubviews() {
         CGRect contentFrame = containerView.getFrame();
         CGRect messageFrame = statusMessage.getFrame();
 
         // Add the status message to the UI if a download is in progress.
         // Remove it when the download is done
         if (hasDownloadContent) {
-            messageFrame = new CGRect(contentFrame.getOrigin().getX(), contentFrame.getOrigin().getY(), contentFrame.getSize()
-                .getWidth(), 44);
+            messageFrame = new CGRect(contentFrame.getOrigin().getX(), contentFrame.getOrigin().getY(), contentFrame
+                    .getSize()
+                    .getWidth(), 44);
             contentFrame.getSize().setHeight(contentFrame.getSize().getHeight() - messageFrame.getSize().getHeight());
             contentFrame.getOrigin().setY(contentFrame.getOrigin().getY() + messageFrame.getSize().getHeight());
         } else {
@@ -126,27 +128,34 @@ public class ParentViewController extends UIViewController {
         statusMessage.setFrame(messageFrame);
     }
 
-    /** Called when the status message was removed. Force the view to update its layout. */
-    private void hideStatusMessage () {
+    /**
+     * Called when the status message was removed. Force the view to update its
+     * layout.
+     */
+    private void hideStatusMessage() {
         getView().setNeedsLayout();
     }
 
-    private void alert (String title, String message) {
+    private void alert(String title, String message) {
         UIAlertView alertView = new UIAlertView(title, message, null, "OK");
         alertView.show();
     }
 
-    /** Update the UI according to the notification result
-     * @param notification */
-    private void handlePurchasesNotification (NSNotification notification) {
-        StoreObserver purchasesNotification = (StoreObserver)notification.getObject();
+    /**
+     * Update the UI according to the notification result
+     * 
+     * @param notification
+     */
+    private void handlePurchasesNotification(NSNotification notification) {
+        StoreObserver purchasesNotification = (StoreObserver) notification.getObject();
         IAPPurchaseNotificationStatus status = purchasesNotification.getStatus();
 
         switch (status) {
         case PurchaseSucceeded:
             String title = StoreManager.getInstance().getTitleForId(purchasesNotification.getPurchasedID());
 
-            // Display the product's title associated with the payment's product identifier if it exists or the product
+            // Display the product's title associated with the payment's product
+            // identifier if it exists or the product
             // identifier, otherwise.
             String displayedTitle = title != null ? title : purchasesNotification.getPurchasedID();
             alert("Purchase Status", displayedTitle + " was successfully purchased.");
@@ -154,17 +163,20 @@ public class ParentViewController extends UIViewController {
         case PurchaseFailed:
             alert("Purchase Status", purchasesNotification.getMessage());
             break;
-        // Switch to the iOSPurchasesList view controller when receiving a successful restore notification
+        // Switch to the iOSPurchasesList view controller when receiving a
+        // successful restore notification
         case RestoredSucceeded:
             // Get the view controller currently displayed
-            UIViewController selectedController = getViewControllerForSelectedIndex((int)segmentedControl.getSelectedSegment());
+            UIViewController selectedController = getViewControllerForSelectedIndex((int) segmentedControl
+                    .getSelectedSegment());
             segmentedControl.setSelectedSegment(1);
             cycleViewControllers(selectedController, purchasesList);
             break;
         case RestoredFailed:
             alert("Purchase Status", purchasesNotification.getMessage());
             break;
-        // Notify the user that downloading is about to start when receiving a download started notification
+        // Notify the user that downloading is about to start when receiving a
+        // download started notification
         case DownloadStarted:
             hasDownloadContent = true;
             getView().addSubview(statusMessage);
@@ -175,7 +187,7 @@ public class ParentViewController extends UIViewController {
             title = StoreManager.getInstance().getTitleForId(purchasesNotification.getPurchasedID());
             displayedTitle = title.length() > 0 ? title : purchasesNotification.getPurchasedID();
             statusMessage.setText(String.format("Downloading %s %.2f%%", displayedTitle,
-                purchasesNotification.getDownloadProgress()));
+                    purchasesNotification.getDownloadProgress()));
             break;
         // Downloading is done, remove the status message
         case DownloadSucceeded:
@@ -185,7 +197,7 @@ public class ParentViewController extends UIViewController {
             // Remove the message after 2 seconds
             DispatchQueue.getMainQueue().after(2, TimeUnit.SECONDS, new Runnable() {
                 @Override
-                public void run () {
+                public void run() {
                     hideStatusMessage();
                 }
             });
@@ -195,11 +207,15 @@ public class ParentViewController extends UIViewController {
         }
     }
 
-    /** Transition from the old view controller to the new one.
+    /**
+     * Transition from the old view controller to the new one.
+     * 
      * @param oldViewController
-     * @param newViewController */
-    private void cycleViewControllers (UIViewController oldViewController, UIViewController newViewController) {
-        if (newViewController == null) throw new NullPointerException("newViewController");
+     * @param newViewController
+     */
+    private void cycleViewControllers(UIViewController oldViewController, UIViewController newViewController) {
+        if (newViewController == null)
+            throw new NullPointerException("newViewController");
         if (oldViewController != null) {
             oldViewController.getView().removeFromSuperview();
         }
@@ -211,9 +227,12 @@ public class ParentViewController extends UIViewController {
         containerView.addSubview(newViewController.getView());
     }
 
-    /** @param index
-     * @return the view controller associated with the segmented control's selected index. */
-    private UIViewController getViewControllerForSelectedIndex (int index) {
+    /**
+     * @param index
+     * @return the view controller associated with the segmented control's
+     *         selected index.
+     */
+    private UIViewController getViewControllerForSelectedIndex(int index) {
         UIViewController viewController = null;
         switch (index) {
         case 0:
@@ -228,29 +247,34 @@ public class ParentViewController extends UIViewController {
         return viewController;
     }
 
-    /** Called when a user taps on the segmented control
-     * @param sender */
-    private void segmentValueChanged (UIControl sender) {
-        UISegmentedControl segControl = (UISegmentedControl)sender;
+    /**
+     * Called when a user taps on the segmented control
+     * 
+     * @param sender
+     */
+    private void segmentValueChanged(UIControl sender) {
+        UISegmentedControl segControl = (UISegmentedControl) sender;
 
-        // Return productsList if the user tapped Products in the segmented control and purchasesList, otherwise
+        // Return productsList if the user tapped Products in the segmented
+        // control and purchasesList, otherwise
         UIViewController newViewController = segControl.getSelectedSegment() == 0 ? productsList : purchasesList;
 
-        // Return purchasesList if the user tapped Purchases in the segmented control and productsList, otherwise
+        // Return purchasesList if the user tapped Purchases in the segmented
+        // control and productsList, otherwise
         UIViewController oldViewController = segControl.getSelectedSegment() == 1 ? purchasesList : productsList;
 
         cycleViewControllers(oldViewController, newViewController);
     }
 
-    private void restore () {
+    private void restore() {
         // Call StoreObserver to restore all restorable purchases
         StoreObserver.getInstance().restore();
     }
 
     @Override
-    protected void dispose (boolean finalizing) {
+    protected void dispose(boolean finalizing) {
         NSNotificationCenter.getDefaultCenter().removeObserver(this, StoreObserver.IAPPurchaseNotification,
-            StoreObserver.getInstance());
+                StoreObserver.getInstance());
         super.dispose(finalizing);
     }
 }

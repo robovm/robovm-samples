@@ -10,8 +10,8 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>robovm-samples-samplephotosapp</artifactId>
-    <name>RoboVM port of Apple's SamplePhotosApp sample</name>
+    <artifactId>robovm-samples-photomap</artifactId>
+    <name>RoboVM port of Apple's PhotoMap sample</name>
 
     <packaging>jar</packaging>
 

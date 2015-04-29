@@ -34,40 +34,39 @@ import org.robovm.samples.inapppurchases.MyModel;
 public class PaymentTransactionDetails extends UITableViewController {
     private final List<MyModel> details = new ArrayList<>();
 
-    public PaymentTransactionDetails () {
-    }
+    public PaymentTransactionDetails() {}
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         // Return the number of sections.
         return details.size();
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
-        MyModel model = details.get((int)section);
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
+        MyModel model = details.get((int) section);
         // Return the number of rows in the section.
         return model.getElements().size();
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
-        MyModel model = details.get((int)section);
+    public String getTitleForHeader(UITableView tableView, long section) {
+        MyModel model = details.get((int) section);
         // Return the header title for this section
         return model.getName();
     }
 
-    public void setDetails (List<MyModel> details) {
+    public void setDetails(List<MyModel> details) {
         this.details.clear();
         this.details.addAll(details);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
-        MyModel model = details.get((int)indexPath.getSection());
-        List<SKPaymentTransaction> transactions = (List<SKPaymentTransaction>)model.getElements();
-        Map<String, String> map = (Map<String, String>)transactions.get((int)indexPath.getRow());
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
+        MyModel model = details.get((int) indexPath.getSection());
+        List<SKPaymentTransaction> transactions = (List<SKPaymentTransaction>) model.getElements();
+        Map<String, String> map = (Map<String, String>) transactions.get((int) indexPath.getRow());
 
         if (model.getName().equals("DOWNLOAD")) {
             UITableViewCell cell = tableView.dequeueReusableCell("customCellID", indexPath);
@@ -75,7 +74,7 @@ public class PaymentTransactionDetails extends UITableViewController {
                 cell = new UITableViewCell(UITableViewCellStyle.Default, "customCellID");
             }
 
-            switch ((int)indexPath.getRow()) {
+            switch ((int) indexPath.getRow()) {
             case 0:
                 cell.getTextLabel().setText("Identifier");
                 cell.getDetailTextLabel().setText(map.get("Identifier"));
@@ -98,7 +97,7 @@ public class PaymentTransactionDetails extends UITableViewController {
                 cell = new UITableViewCell(UITableViewCellStyle.Value1, "customCellID");
             }
 
-            switch ((int)indexPath.getRow()) {
+            switch ((int) indexPath.getRow()) {
             case 0:
                 cell.getTextLabel().setText("Transaction ID");
                 cell.getDetailTextLabel().setText(map.get("Transaction ID"));
