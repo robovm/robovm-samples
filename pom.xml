@@ -54,7 +54,7 @@
   </dependencyManagement>
 
   <modules>
-    <module>AQTapDemo</module>
+    <!--<module>AQTapDemo</module>-->
     <module>Adventure</module>
     <module>AppPrefs</module>    
     <module>BatteryStatus</module>
