@@ -1,5 +1,5 @@
-include 'Adventure'
 // include 'AQTapDemo'
+include 'Adventure'
 include 'AppPrefs'
 include 'BatteryStatus'
 include 'ContractR'

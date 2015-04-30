@@ -54,9 +54,9 @@
   </dependencyManagement>
 
   <modules>
+    <module>AQTapDemo</module>
     <module>Adventure</module>
-    <module>AppPrefs</module>
-    <!--<module>AQTapDemo</module>-->
+    <module>AppPrefs</module>    
     <module>BatteryStatus</module>
     <module>CurrentAddress</module>
     <module>CustomAnimatableProperty</module>
@@ -87,6 +87,7 @@
     <module>Teslameter</module>
     <module>TheElements</module>
     <module>Touches</module>
+    <module>UICatalog</module>
     <module>VideoRecorder</module>
   </modules>
 </project>
