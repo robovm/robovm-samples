@@ -78,7 +78,7 @@ public class AAPLSegmentedControlViewController extends UITableViewController im
         int i = 0;
         for (Map.Entry<String, String> entry : imageToAccessibilityLabelMappings.entrySet()) {
             UIImage image = UIImage.create(entry.getKey());
-//            image.setAccessibilityLabel(entry.getValue()); TODO
+            image.setAccessibilityLabel(entry.getValue());
 
             customSegmentsSegmentedControl.setImage(image, i);
             i++;

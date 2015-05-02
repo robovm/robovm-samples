@@ -81,7 +81,7 @@ public class AAPLButtonViewController extends UITableViewController implements U
         imageButton.setImage(imageButtonNormalImage, UIControlState.Normal);
 
         // Add an accessibility label to the image.
-//        imageButton.setAccessibilityLabel("X_Button"); TODO
+        imageButton.setAccessibilityLabel("X Button");
 
         imageButton.addOnTouchUpInsideListener(this);
     }

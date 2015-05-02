@@ -55,7 +55,7 @@ public class AAPLImageViewController extends UIViewController {
         imageView.setAnimationDuration(5);
         imageView.startAnimating();
 
-//        imageView.setAccessibilityElement(true); TODO
-//        imageView.setAccessibilityLabel("Animated"); TODO
+        imageView.setAccessibilityElement(true);
+        imageView.setAccessibilityLabel("Animated");
     }
 }
