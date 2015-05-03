@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,63 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's Tabster sample (v1.6)
- * which is copyright (C) 2011-2014 Apple Inc.
+ * Portions of this code is based on Apple Inc's PhotoPicker sample (v2.0)
+ * which is copyright (C) 2010-2013 Apple Inc.
  */
-
 package org.robovm.samples.tabster.viewcontrollers;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.robovm.apple.foundation.NSObjectProtocol;
-import org.robovm.apple.uikit.NSLayoutConstraint;
-import org.robovm.apple.uikit.NSLayoutFormatOptions;
-import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UITabBarItem;
-import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
 
+@CustomClass("FourViewController")
 public class FourViewController extends UIViewController {
-    private final UILabel titleLabel;
+    private UILabel titleLabel;
 
-    public FourViewController () {
-        setTabBarItem(new UITabBarItem("Four", UIImage.create("tab4"), 0));
+    /**
+     * this is called when the UITabBarController loads it's views at launch
+     * time
+     */
+    @Override
+    public void awakeFromNib() {
+        // make our tabbar icon a custom one;
+        // we could do it in Interface Builder, but this is just to illustrate a
+        // point about using awakeFromNib vs. viewDidLoad.
 
-        UIView view = getView();
-        view.setBackgroundColor(UIColor.fromRGBA(0.32, 1, 0.3, 1));
-
-        titleLabel = new UILabel();
-        titleLabel.setFont(UIFont.getSystemFont(17));
-        titleLabel.setText("FOUR");
-        titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
-        view.addSubview(titleLabel);
-
-        // Layout
-        Map<String, NSObjectProtocol> views = new HashMap<>();
-        views.put("parent", view);
-        views.put("title", titleLabel);
-
-        view.addConstraints(NSLayoutConstraint.create("H:[parent]-(<=1)-[title]", NSLayoutFormatOptions.AlignAllCenterY, null,
-            views));
-        view.addConstraints(NSLayoutConstraint.create("V:[parent]-(<=1)-[title]", NSLayoutFormatOptions.AlignAllCenterX, null,
-            views));
+        UITabBarItem customTab = new UITabBarItem("Four", UIImage.create("tab4.png"), 0);
+        setTabBarItem(customTab);
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
-        // if we were navigated to through the More screen table, then we have a navigation bar which
-        // also means we have a title. So hide the title label in this case, otherwise, we need it
+        // if we were navigated to through the More screen table, then we have a
+        // navigation bar which also means we have a title. So hide the title
+        // label in this case, otherwise, we need it
         if (getParentViewController() instanceof UINavigationController) {
             titleLabel.setHidden(true);
         } else {
             titleLabel.setHidden(false);
         }
+    }
+
+    @IBOutlet
+    private void setTitleLabel(UILabel titleLabel) {
+        this.titleLabel = titleLabel;
     }
 }
