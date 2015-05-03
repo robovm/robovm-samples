@@ -24,10 +24,6 @@
         <string>${app.build}</string>
         <key>LSRequiresIPhoneOS</key>
         <true />
-        <key>UIMainStoryboardFile</key>
-        <string>Main</string>
-        <key>MinimumOSVersion</key>
-        <string>8.0</string>
         <key>UIDeviceFamily</key>
         <array>
             <integer>1</integer>
@@ -40,11 +36,42 @@
         <key>UISupportedInterfaceOrientations</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
         <key>UISupportedInterfaceOrientations~ipad</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
             <string>UIInterfaceOrientationPortraitUpsideDown</string>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
+        <key>CFBundleIcons</key>
+        <dict>
+            <key>CFBundlePrimaryIcon</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Icon-Small</string>
+                    <string>Icon-Small-40</string>
+                    <string>Icon</string>
+                    <string>Icon-60</string>
+                    <string>Icon-72</string>
+                </array>
+            </dict>
+        </dict>
+        <key>CFBundleIcons~ipad</key>
+        <dict>
+            <key>CFBundlePrimaryIcon</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Icon-Small</string>
+                    <string>Icon-Small-40</string>
+                    <string>Icon-72</string>
+                    <string>Icon-76</string>
+                </array>
+            </dict>
+        </dict>
     </dict>
 </plist>
