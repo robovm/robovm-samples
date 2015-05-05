@@ -41,6 +41,10 @@ allprojects {
 	robovm {
 	    // Configure robovm
 	}
+
+	eclipse.project {    
+    	natures 'org.robovm.eclipse.RoboVMNature'
+	}
 }
 
 task wrapper(type: Wrapper) {
