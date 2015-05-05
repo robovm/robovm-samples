@@ -9,3 +9,4 @@ robovm-logs/
 robovm-build/
 *.iml
 .idea/
+bin/
