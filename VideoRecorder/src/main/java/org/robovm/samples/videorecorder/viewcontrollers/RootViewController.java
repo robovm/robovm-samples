@@ -125,7 +125,9 @@ public class RootViewController extends UIViewController {
         toolBar.addSubview(tapLabel);
         cameraOverlayView.addSubview(toolBar);
 
-        createImagePicker();
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+            createImagePicker();
+        }
 
         recordGestureRecognizer = new UITapGestureRecognizer(new UIGestureRecognizer.OnGestureListener() {
             @Override
