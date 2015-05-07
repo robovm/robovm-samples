@@ -30,7 +30,7 @@ public class MyModel {
     // List of products/purchases
     private final List<Object> elements = new ArrayList<>();
 
-    public MyModel (String name, Object... elements) {
+    public MyModel(String name, Object... elements) {
         this.name = name;
         if (elements != null) {
             Collections.addAll(this.elements, elements);
@@ -38,19 +38,19 @@ public class MyModel {
     }
 
     // Check whether there are products/purchases
-    public boolean isEmpty () {
+    public boolean isEmpty() {
         return elements.size() == 0;
     }
 
-    public String getName () {
+    public String getName() {
         return name;
     }
 
-    public List<?> getElements () {
+    public List<?> getElements() {
         return elements;
     }
 
-    public void setElements (List<?> elements) {
+    public void setElements(List<?> elements) {
         this.elements.clear();
         this.elements.addAll(elements);
     }

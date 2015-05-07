@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
+import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSFileManager;
 import org.robovm.apple.foundation.NSNotificationCenter;
 import org.robovm.apple.foundation.NSObject;
@@ -58,45 +59,50 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
     // Keep track of the purchased/restored product's identifier
     private String purchasedID;
 
-    private StoreObserver () {
-    }
+    private StoreObserver() {}
 
-    public static StoreObserver getInstance () {
+    public static StoreObserver getInstance() {
         return instance;
     }
 
     /** @return whether there are purchased products */
-    public boolean hasPurchasedProducts () {
+    public boolean hasPurchasedProducts() {
         // productsPurchased keeps track of all our purchases.
         // Returns true if it contains some items and false, otherwise
         return productsPurchased.size() > 0;
     }
 
     /** @return whether there are restored purchases */
-    public boolean hasRestoredProducts () {
+    public boolean hasRestoredProducts() {
         // productsRestored keeps track of all our restored purchases.
         // Returns true if it contains some items and false, otherwise
         return productsRestored.size() > 0;
     }
 
-    /** Create and add a payment request to the payment queue.
-     * @param product */
-    public void buy (SKProduct product) {
+    /**
+     * Create and add a payment request to the payment queue.
+     * 
+     * @param product
+     */
+    public void buy(SKProduct product) {
         SKPayment payment = SKPayment.create(product);
         SKPaymentQueue.getDefaultQueue().addPayment(payment);
     }
 
     /** Implement the restoration of previously completed purchases */
-    public void restore () {
+    public void restore() {
         productsRestored.clear();
         SKPaymentQueue.getDefaultQueue().restoreCompletedTransactions();
     }
 
-    /** Called when there are trasactions in the payment queue.
+    /**
+     * Called when there are trasactions in the payment queue.
+     * 
      * @param queue
-     * @param transactions */
+     * @param transactions
+     */
     @Override
-    public void updatedTransactions (SKPaymentQueue queue, NSArray<SKPaymentTransaction> transactions) {
+    public void updatedTransactions(SKPaymentQueue queue, NSArray<SKPaymentTransaction> transactions) {
         for (SKPaymentTransaction transaction : transactions) {
 
             switch (transaction.getTransactionState()) {
@@ -109,7 +115,8 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
 
                 System.out.println("Deliver content for " + transaction.getPayment().getProductIdentifier());
 
-                // Check whether the purchased product has content hosted with Apple.
+                // Check whether the purchased product has content hosted with
+                // Apple.
                 if (transaction.getDownloads() != null && transaction.getDownloads().size() > 0) {
                     completeTransaction(transaction, IAPPurchaseNotificationStatus.DownloadStarted);
                 } else {
@@ -141,21 +148,29 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
         }
     }
 
-    /** Logs all transactions that have been removed from the payment queue
+    /**
+     * Logs all transactions that have been removed from the payment queue
+     * 
      * @param queue
-     * @param transactions */
+     * @param transactions
+     */
     @Override
-    public void removedTransactions (SKPaymentQueue queue, NSArray<SKPaymentTransaction> transactions) {
+    public void removedTransactions(SKPaymentQueue queue, NSArray<SKPaymentTransaction> transactions) {
         for (SKPaymentTransaction transaction : transactions) {
-            System.out.println(transaction.getPayment().getProductIdentifier() + " was removed from the payment queue.");
+            System.out
+                    .println(transaction.getPayment().getProductIdentifier() + " was removed from the payment queue.");
         }
     }
 
-    /** Called when an error occur while restoring purchases. Notify the user about the error.
+    /**
+     * Called when an error occur while restoring purchases. Notify the user
+     * about the error.
+     * 
      * @param queue
-     * @param error */
+     * @param error
+     */
     @Override
-    public void restoreCompletedTransactionsFailed (SKPaymentQueue queue, NSError error) {
+    public void restoreCompletedTransactionsFailed(SKPaymentQueue queue, NSError error) {
         if (error.getErrorCode() != SKErrorCode.PaymentCancelled) {
             status = IAPPurchaseNotificationStatus.RestoredFailed;
             message = error.getLocalizedDescription();
@@ -163,21 +178,29 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
         }
     }
 
-    /** Called when all restorable transactions have been processed by the payment queue.
-     * @param queu */
+    /**
+     * Called when all restorable transactions have been processed by the
+     * payment queue.
+     * 
+     * @param queu
+     */
     @Override
-    public void restoreCompletedTransactionsFinished (SKPaymentQueue queue) {
+    public void restoreCompletedTransactionsFinished(SKPaymentQueue queue) {
         System.out.println("All restorable transactions have been processed by the payment queue.");
     }
 
-    /** Called when the payment queue has downloaded content.
+    /**
+     * Called when the payment queue has downloaded content.
+     * 
      * @param queue
-     * @param downloads */
+     * @param downloads
+     */
     @Override
-    public void updatedDownloads (SKPaymentQueue queue, NSArray<SKDownload> downloads) {
+    public void updatedDownloads(SKPaymentQueue queue, NSArray<SKDownload> downloads) {
         for (SKDownload download : downloads) {
             switch (download.getDownloadState()) {
-            // The content is being downloaded. Let's provide a download progress to the user
+            // The content is being downloaded. Let's provide a download
+            // progress to the user
             case Active:
                 status = IAPPurchaseNotificationStatus.DownloadInProgress;
                 purchasedID = download.getTransaction().getPayment().getProductIdentifier();
@@ -185,22 +208,34 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
                 NSNotificationCenter.getDefaultCenter().postNotification(IAPPurchaseNotification, this);
                 break;
             case Cancelled:
-                // StoreKit saves your downloaded content in the Caches directory. Let's remove it
+                // StoreKit saves your downloaded content in the Caches
+                // directory. Let's remove it
                 // before finishing the transaction.
-                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
+                try {
+                    NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
+                } catch (NSErrorException e) {
+                    e.printStackTrace();
+                }
                 finishDownloadTransaction(download.getTransaction());
                 break;
             case Failed:
-                // If a download fails, remove it from the Caches, then finish the transaction.
-                // It is recommended to retry downloading the content in this case.
-                NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
+                // If a download fails, remove it from the Caches, then finish
+                // the transaction.
+                // It is recommended to retry downloading the content in this
+                // case.
+                try {
+                    NSFileManager.getDefaultManager().removeItemAtURL(download.getContentURL());
+                } catch (NSErrorException e) {
+                    e.printStackTrace();
+                }
                 finishDownloadTransaction(download.getTransaction());
                 break;
             case Paused:
                 System.out.println("Download was paused");
                 break;
             case Finished:
-                // Download is complete. StoreKit saves the downloaded content in the Caches directory.
+                // Download is complete. StoreKit saves the downloaded content
+                // in the Caches directory.
                 System.out.println("Location of downloaded file " + download.getContentURL());
                 finishDownloadTransaction(download.getTransaction());
                 break;
@@ -214,11 +249,14 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
         }
     }
 
-    /** Notify the user about the purchase process. Start the download process if status is IAPDownloadStarted. Finish all
-     * transactions, otherwise.
+    /**
+     * Notify the user about the purchase process. Start the download process if
+     * status is IAPDownloadStarted. Finish all transactions, otherwise.
+     * 
      * @param transaction
-     * @param status */
-    private void completeTransaction (SKPaymentTransaction transaction, IAPPurchaseNotificationStatus status) {
+     * @param status
+     */
+    private void completeTransaction(SKPaymentTransaction transaction, IAPPurchaseNotificationStatus status) {
         this.status = status;
         // Do not send any notifications when the user cancels the purchase
         if (transaction.getError().getErrorCode() != SKErrorCode.PaymentCancelled) {
@@ -230,29 +268,37 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
             // The purchased product is a hosted one, let's download its content
             SKPaymentQueue.getDefaultQueue().startDownloads(transaction.getDownloads());
         } else {
-            // Remove the transaction from the queue for purchased and restored statuses
+            // Remove the transaction from the queue for purchased and restored
+            // statuses
             SKPaymentQueue.getDefaultQueue().finishTransaction(transaction);
         }
     }
 
-    private void finishDownloadTransaction (SKPaymentTransaction transaction) {
-        // allAssetsDownloaded indicates whether all content associated with the transaction were downloaded.
+    private void finishDownloadTransaction(SKPaymentTransaction transaction) {
+        // allAssetsDownloaded indicates whether all content associated with the
+        // transaction were downloaded.
         boolean allAssetsDownloaded = true;
 
-        // A download is complete if its state is SKDownloadStateCancelled, SKDownloadStateFailed, or SKDownloadStateFinished
-        // and pending, otherwise. We finish a transaction if and only if all its associated downloads are complete.
-        // For the SKDownloadStateFailed case, it is recommended to try downloading the content again before finishing the
+        // A download is complete if its state is SKDownloadStateCancelled,
+        // SKDownloadStateFailed, or SKDownloadStateFinished
+        // and pending, otherwise. We finish a transaction if and only if all
+        // its associated downloads are complete.
+        // For the SKDownloadStateFailed case, it is recommended to try
+        // downloading the content again before finishing the
         // transaction.
         for (SKDownload download : transaction.getDownloads()) {
-            if (download.getDownloadState() != SKDownloadState.Cancelled && download.getDownloadState() != SKDownloadState.Failed
-                && download.getDownloadState() != SKDownloadState.Finished) {
-                // Let's break. We found an ongoing download. Therefore, there are still pending downloads.
+            if (download.getDownloadState() != SKDownloadState.Cancelled
+                    && download.getDownloadState() != SKDownloadState.Failed
+                    && download.getDownloadState() != SKDownloadState.Finished) {
+                // Let's break. We found an ongoing download. Therefore, there
+                // are still pending downloads.
                 allAssetsDownloaded = false;
                 break;
             }
         }
 
-        // Finish the transaction and post a IAPDownloadSucceeded notification if all downloads are complete
+        // Finish the transaction and post a IAPDownloadSucceeded notification
+        // if all downloads are complete
         if (allAssetsDownloaded) {
             status = IAPPurchaseNotificationStatus.DownloadSucceeded;
 
@@ -261,27 +307,27 @@ public class StoreObserver extends NSObject implements SKPaymentTransactionObser
         }
     }
 
-    public IAPPurchaseNotificationStatus getStatus () {
+    public IAPPurchaseNotificationStatus getStatus() {
         return status;
     }
 
-    public String getMessage () {
+    public String getMessage() {
         return message;
     }
 
-    public String getPurchasedID () {
+    public String getPurchasedID() {
         return purchasedID;
     }
 
-    public float getDownloadProgress () {
+    public float getDownloadProgress() {
         return downloadProgress;
     }
 
-    public List<SKPaymentTransaction> getProductsPurchased () {
+    public List<SKPaymentTransaction> getProductsPurchased() {
         return productsPurchased;
     }
 
-    public List<SKPaymentTransaction> getProductsRestored () {
+    public List<SKPaymentTransaction> getProductsRestored() {
         return productsRestored;
     }
 }

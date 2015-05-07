@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,64 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's Tabster sample (v1.6)
- * which is copyright (C) 2011-2014 Apple Inc.
+ * Portions of this code is based on Apple Inc's PhotoPicker sample (v2.0)
+ * which is copyright (C) 2010-2013 Apple Inc.
  */
-
 package org.robovm.samples.tabster.viewcontrollers;
 
-import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.uikit.UIButton;
-import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIControl;
-import org.robovm.apple.uikit.UIControlState;
-import org.robovm.apple.uikit.UIEvent;
+import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UIInterfaceOrientationMask;
-import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBAction;
+import org.robovm.objc.annotation.IBOutlet;
 
+@CustomClass("LandscapeViewController")
 public class LandscapeViewController extends UIViewController {
+    private UIImageView imageView;
     private UIImage image;
-    private final UIImageView imageView;
 
-    public LandscapeViewController () {
-        UIView view = getView();
-        view.setBackgroundColor(UIColor.white());
-
-        imageView = new UIImageView(new CGRect(0, 0, 568, 320));
-        view.addSubview(imageView);
-
-        UIButton button = new UIButton(new CGRect(20, 259, 49, 41));
-        button.setImage(UIImage.create("left"), UIControlState.Normal);
-        button.setImage(UIImage.create("left_pressed"), UIControlState.with(UIControlState.Selected, UIControlState.Highlighted));
-        button.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
-            @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
-                dismissViewController(false, null);
-            }
-        });
-        view.addSubview(button);
+    @IBAction
+    private void actionCompleted(NSObject sender) {
+        dismissViewController(false, null);
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
         imageView.setImage(image);
     }
 
     @Override
-    public UIInterfaceOrientationMask getSupportedInterfaceOrientations () {
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
         return UIInterfaceOrientationMask.Landscape;
     }
 
     @Override
-    public boolean shouldAutorotate () {
+    public boolean shouldAutorotate() {
         return true;
     }
 
-    public void setImage (UIImage image) {
+    public void setImage(UIImage image) {
         this.image = image;
+    }
+
+    @IBOutlet
+    private void setImageView(UIImageView imageView) {
+        this.imageView = imageView;
     }
 }

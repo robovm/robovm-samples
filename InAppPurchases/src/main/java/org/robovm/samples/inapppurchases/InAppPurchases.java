@@ -35,7 +35,7 @@ public class InAppPurchases extends UIApplicationDelegateAdapter {
     private ParentViewController parentViewController;
 
     @Override
-    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
         // Set up the view controller.
         parentViewController = new ParentViewController();
         rootNavigationController = new UINavigationController(parentViewController);
@@ -51,8 +51,8 @@ public class InAppPurchases extends UIApplicationDelegateAdapter {
         SKPaymentQueue.getDefaultQueue().addTransactionObserver(StoreObserver.getInstance());
 
         /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
+         * Retains the window object until the application is deallocated.
+         * Prevents Java GC from collecting the window object too early.
          */
         addStrongRef(window);
 
@@ -60,12 +60,12 @@ public class InAppPurchases extends UIApplicationDelegateAdapter {
     }
 
     @Override
-    public void willTerminate (UIApplication application) {
+    public void willTerminate(UIApplication application) {
         // Remove the observer
         SKPaymentQueue.getDefaultQueue().removeTransactionObserver(StoreObserver.getInstance());
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, InAppPurchases.class);
         pool.close();

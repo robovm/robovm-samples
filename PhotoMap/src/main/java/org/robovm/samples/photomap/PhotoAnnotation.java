@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  * Portions of this code is based on Apple Inc's PhotoMap sample (v1.1)
  * which is copyright (C) 2011-2014 Apple Inc.
  */
-
 package org.robovm.samples.photomap;
 
 import java.io.File;
@@ -42,44 +41,46 @@ public class PhotoAnnotation extends MKAnnotationAdapter {
     private CLLocationCoordinate2D coordinate;
     private List<PhotoAnnotation> containedAnnotations;
 
-    public PhotoAnnotation (String imagePath, String title, CLLocationCoordinate2D coordinate) {
+    public PhotoAnnotation(String imagePath, String title, CLLocationCoordinate2D coordinate) {
         this.imagePath = imagePath;
         this.title = title;
         this.coordinate = coordinate;
     }
 
-    public UIImage getImage () {
+    public UIImage getImage() {
         if (image == null && imagePath != null) {
             image = UIImage.create(new File(imagePath));
         }
-
         return image;
     }
 
-    public String getStringForPlacemark (CLPlacemark placemark) {
+    public String getStringForPlacemark(CLPlacemark placemark) {
         StringBuilder sb = new StringBuilder();
         if (placemark.getLocality() != null) {
             sb.append(placemark.getLocality());
         }
 
         if (placemark.getAdministrativeArea() != null) {
-            if (sb.length() > 0) sb.append(", ");
+            if (sb.length() > 0)
+                sb.append(", ");
             sb.append(placemark.getAdministrativeArea());
         }
 
-        if (sb.length() == 0 && placemark.getName() != null) sb.append(placemark.getName());
+        if (sb.length() == 0 && placemark.getName() != null)
+            sb.append(placemark.getName());
 
         return sb.toString();
     }
 
-    public void updateSubtitleIfNeeded () {
+    public void updateSubtitleIfNeeded() {
         if (subtitle == null) {
-            // for the subtitle, we reverse geocode the lat/long for a proper location string name
+            // for the subtitle, we reverse geocode the lat/long for a proper
+            // location string name
             CLLocation location = new CLLocation(coordinate.getLatitude(), coordinate.getLongitude());
             CLGeocoder geocoder = new CLGeocoder();
             geocoder.reverseGeocodeLocation(location, new VoidBlock2<NSArray<CLPlacemark>, NSError>() {
                 @Override
-                public void invoke (NSArray<CLPlacemark> placemarks, NSError error) {
+                public void invoke(NSArray<CLPlacemark> placemarks, NSError error) {
                     if (placemarks.size() > 0) {
                         CLPlacemark placemark = placemarks.get(0);
                         subtitle = String.format("Near %s", getStringForPlacemark(placemark));
@@ -89,24 +90,24 @@ public class PhotoAnnotation extends MKAnnotationAdapter {
         }
     }
 
-    public List<PhotoAnnotation> getContainedAnnotations () {
+    public List<PhotoAnnotation> getContainedAnnotations() {
         return containedAnnotations;
     }
 
-    public void setContainedAnnotations (List<PhotoAnnotation> containedAnnotations) {
+    public void setContainedAnnotations(List<PhotoAnnotation> containedAnnotations) {
         this.containedAnnotations = containedAnnotations;
     }
 
-    public PhotoAnnotation getClusterAnnotation () {
+    public PhotoAnnotation getClusterAnnotation() {
         return clusterAnnotation;
     }
 
-    public void setClusterAnnotation (PhotoAnnotation clusterAnnotation) {
+    public void setClusterAnnotation(PhotoAnnotation clusterAnnotation) {
         this.clusterAnnotation = clusterAnnotation;
     }
 
     @Override
-    public String getTitle () {
+    public String getTitle() {
         if (containedAnnotations != null && containedAnnotations.size() > 0) {
             return String.format("%d Photos", containedAnnotations.size() + 1);
         }
@@ -115,21 +116,21 @@ public class PhotoAnnotation extends MKAnnotationAdapter {
     }
 
     @Override
-    public String getSubtitle () {
+    public String getSubtitle() {
         return subtitle;
     }
 
     @Override
-    public CLLocationCoordinate2D getCoordinate () {
+    public CLLocationCoordinate2D getCoordinate() {
         return coordinate;
     }
 
     @Override
-    public void setCoordinate (CLLocationCoordinate2D newCoordinate) {
+    public void setCoordinate(CLLocationCoordinate2D newCoordinate) {
         this.coordinate = newCoordinate;
     }
 
-    public String getImagePath () {
+    public String getImagePath() {
         return imagePath;
     }
 }

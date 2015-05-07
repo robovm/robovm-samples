@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rw5-ns-KcI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+    </dependencies>
+    <scenes>
+        <!--RecordViewController-->
+        <scene sceneID="HF5-hW-DZA">
+            <objects>
+                <viewController title="RecordViewController" id="Rw5-ns-KcI" customClass="RecordViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WrT-94-kTm"/>
+                        <viewControllerLayoutGuide type="bottom" id="GRf-jy-2iC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xOT-TG-81E">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRn-gg-Lm4">
+                                <rect key="frame" x="200" y="285" width="200" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="C6a-S1-F9d"/>
+                                    <constraint firstAttribute="height" constant="31" id="cFG-x7-HWJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Play">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playAudio" destination="Rw5-ns-KcI" eventType="touchUpInside" id="xc3-wv-nA2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZG1-Qh-ovJ">
+                                <rect key="frame" x="200" y="364" width="200" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="vGs-GW-Lm1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Stop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stopAudio" destination="Rw5-ns-KcI" eventType="touchUpInside" id="8ti-zt-gkg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0IL-AH-Iud">
+                                <rect key="frame" x="200" y="201" width="200" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="oKB-Eg-Sm0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Record">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="recordAudio" destination="Rw5-ns-KcI" eventType="touchUpInside" id="hiV-74-pNn"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DRn-gg-Lm4" firstAttribute="centerY" secondItem="xOT-TG-81E" secondAttribute="centerY" id="6kg-SK-uIR"/>
+                            <constraint firstItem="DRn-gg-Lm4" firstAttribute="centerX" secondItem="ZG1-Qh-ovJ" secondAttribute="centerX" id="Zmk-xm-hlK"/>
+                            <constraint firstItem="ZG1-Qh-ovJ" firstAttribute="top" secondItem="DRn-gg-Lm4" secondAttribute="bottom" constant="48" id="cSA-Ga-hAu"/>
+                            <constraint firstItem="DRn-gg-Lm4" firstAttribute="centerX" secondItem="0IL-AH-Iud" secondAttribute="centerX" id="fxh-9g-tvH"/>
+                            <constraint firstItem="DRn-gg-Lm4" firstAttribute="centerX" secondItem="xOT-TG-81E" secondAttribute="centerX" id="noP-nw-AUV"/>
+                            <constraint firstItem="DRn-gg-Lm4" firstAttribute="top" secondItem="0IL-AH-Iud" secondAttribute="bottom" constant="48" id="wgw-BG-v2L"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="playButton" destination="DRn-gg-Lm4" id="k0G-yk-Nzn"/>
+                        <outlet property="recordButton" destination="0IL-AH-Iud" id="oB0-Uh-hNZ"/>
+                        <outlet property="stopButton" destination="ZG1-Qh-ovJ" id="iOJ-eM-lem"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-Qu-SKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="625" y="507"/>
+        </scene>
+    </scenes>
+</document>

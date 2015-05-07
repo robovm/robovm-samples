@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's Tabster sample (v1.6)
- * which is copyright (C) 2011-2014 Apple Inc.
+ * Portions of this code is based on Apple Inc's PhotoPicker sample (v2.0)
+ * which is copyright (C) 2010-2013 Apple Inc.
  */
-
 package org.robovm.samples.tabster;
 
 import java.util.ArrayList;
@@ -33,83 +32,41 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UINavigationControllerDelegateAdapter;
-import org.robovm.apple.uikit.UIScreen;
+import org.robovm.apple.uikit.UIStoryboard;
 import org.robovm.apple.uikit.UITabBarController;
-import org.robovm.apple.uikit.UITabBarItem;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.tabster.viewcontrollers.FavoritesViewController;
 import org.robovm.samples.tabster.viewcontrollers.FeaturedViewController;
-import org.robovm.samples.tabster.viewcontrollers.FourViewController;
-import org.robovm.samples.tabster.viewcontrollers.OneViewController;
-import org.robovm.samples.tabster.viewcontrollers.ThreeViewController;
-import org.robovm.samples.tabster.viewcontrollers.TwoViewController;
 
 public class Tabster extends UIApplicationDelegateAdapter {
-    private static final boolean CUSTOMIZE_TAB_BAR = false; // Turn on/off
-                                                            // custom tab bar
-                                                            // appearance
+    // Turn on/off custom tab bar appearance
+    private static final boolean CUSTOMIZE_TAB_BAR = false;
 
-    // NSUserDefaults keys:
-    private static final String TAB_BAR_ORDER_PREF_KEY = "TabBarOrder"; // The
-                                                                        // ordering
-                                                                        // of
-                                                                        // the
-                                                                        // tabs
+    // The ordering of the tabs
+    private static final String TAB_BAR_ORDER_PREF_KEY = "TabBarOrder";
 
-    private UIWindow window;
     private UITabBarController tabBarController;
 
-    private UINavigationController oneNavController;
-    private OneViewController oneViewController;
-    private UINavigationController twoNavController;
-    private TwoViewController twoViewController;
-    private UINavigationController threeNavController;
-    private ThreeViewController threeViewController;
-    private FourViewController fourViewController;
-    private FavoritesViewController favoritesViewController;
-    private FeaturedViewController featuredViewController;
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "deprecation", "unchecked" })
     @Override
-    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        // Set up the view controller.
-        tabBarController = new UITabBarController();
+    public boolean willFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        // add the tab bar controller's current view as a subview of the window
+        tabBarController = (UITabBarController) getWindow().getRootViewController();
 
         // customize the More page's navigation bar color
         tabBarController.getMoreNavigationController().getNavigationBar().setTintColor(UIColor.gray());
 
-        // Adding view controllers.
-        NSArray<UIViewController> viewControllers = new NSMutableArray<UIViewController>();
+        // Adding controller from the Four.storyboard
+        NSArray<UIViewController> classController = tabBarController.getViewControllers();
+        NSMutableArray<UIViewController> controllerArray = new NSMutableArray<>(classController);
 
-        oneViewController = new OneViewController();
-        oneNavController = new UINavigationController(oneViewController);
-        oneNavController.setTabBarItem(new UITabBarItem("One", UIImage.create("tab1"), 0));
-        viewControllers.add(oneNavController);
+        UIStoryboard storyboard = UIStoryboard.create("Four", null);
+        UIViewController four = storyboard.instantiateInitialViewController();
 
-        twoViewController = new TwoViewController();
-        twoNavController = new UINavigationController(twoViewController);
-        twoNavController.setTabBarItem(new UITabBarItem("Two", UIImage.create("tab2"), 0));
-        viewControllers.add(twoNavController);
+        controllerArray.add(3, four);
 
-        threeViewController = new ThreeViewController();
-        threeNavController = new UINavigationController(threeViewController);
-        threeNavController.setTabBarItem(new UITabBarItem("Three", UIImage.create("tab3"), 0));
-        viewControllers.add(threeNavController);
-
-        fourViewController = new FourViewController();
-        viewControllers.add(fourViewController);
-
-        favoritesViewController = new FavoritesViewController();
-        viewControllers.add(favoritesViewController);
-
-        featuredViewController = new FeaturedViewController();
-        viewControllers.add(featuredViewController);
-
-        tabBarController.setViewControllers(viewControllers);
+        tabBarController.setViewControllers(controllerArray);
 
         if (CUSTOMIZE_TAB_BAR) {
             // set the bar tint color for iOS 7 and later
@@ -172,15 +129,9 @@ public class Tabster extends UIApplicationDelegateAdapter {
             }
         });
 
-        // choose to make one of our view controllers
-        // ("FeaturedViewController"),
+        // choose to make one of our view controllers ("FeaturedViewController")
         // not movable/reorderable in More's edit screen
-        NSArray<UIViewController> customizeableViewControllers;
-        if (tabBarController.getViewControllers() == null) {
-            customizeableViewControllers = new NSMutableArray<>();
-        } else {
-            customizeableViewControllers = new NSMutableArray<>(tabBarController.getViewControllers());
-        }
+        NSArray<UIViewController> customizeableViewControllers = tabBarController.getViewControllers();
         for (UIViewController viewController : customizeableViewControllers) {
             if (viewController instanceof FeaturedViewController) {
                 customizeableViewControllers.remove(viewController);
@@ -189,14 +140,8 @@ public class Tabster extends UIApplicationDelegateAdapter {
         }
         tabBarController.setCustomizableViewControllers(customizeableViewControllers);
 
-        // Create a new window at screen size.
-        window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        // Set our viewcontroller as the root controller for the window.
-        window.setRootViewController(tabBarController);
-        // Make the window visible.
-        window.makeKeyAndVisible();
-
         return true;
+
     }
 
     @Override
@@ -231,8 +176,8 @@ public class Tabster extends UIApplicationDelegateAdapter {
     }
 
     public static void main(String[] args) {
-        NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, Tabster.class);
-        pool.close();
+        try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
+            UIApplication.main(args, null, Tabster.class);
+        }
     }
 }

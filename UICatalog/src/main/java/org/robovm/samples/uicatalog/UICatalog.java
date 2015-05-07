@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,44 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's UICatalog sample (v2.11)
- * which is copyright (C) 2008-2013 Apple Inc.
+ * Portions of this code is based on Apple Inc's UICatalog sample (v11.3)
+ * which is copyright (C) 2008-2015 Apple Inc.
  */
-
 package org.robovm.samples.uicatalog;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
-import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UINavigationController;
-import org.robovm.apple.uikit.UIScreen;
-import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.uicatalog.viewcontrollers.MainViewController;
+import org.robovm.apple.uikit.UISplitViewController;
+import org.robovm.apple.uikit.UISplitViewControllerDelegateAdapter;
+import org.robovm.apple.uikit.UISplitViewControllerDisplayMode;
 
-/** Class which starts application. */
 public class UICatalog extends UIApplicationDelegateAdapter {
-    private UIWindow window;
-    private MainViewController mainViewController;
 
     @Override
-    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        mainViewController = new MainViewController();
-        UINavigationController navigationController = new UINavigationController(mainViewController);
-
-        window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        window.setBackgroundColor(UIColor.lightGray());
-        window.setRootViewController(navigationController);
-        window.makeKeyAndVisible();
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        UISplitViewController splitViewController = (UISplitViewController) getWindow().getRootViewController();
+        splitViewController.setDelegate(new UISplitViewControllerDelegateAdapter() {
+            @Override
+            public UISplitViewControllerDisplayMode getTargetDisplayMode(UISplitViewController svc) {
+                return UISplitViewControllerDisplayMode.AllVisible;
+            }
+        });
+        splitViewController.setPreferredDisplayMode(UISplitViewControllerDisplayMode.AllVisible);
 
         return true;
     }
 
-    public static void main (String[] args) {
-        NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, UICatalog.class);
-        pool.close();
+    public static void main(String[] args) {
+        try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
+            UIApplication.main(args, null, UICatalog.class);
+        }
     }
-
 }

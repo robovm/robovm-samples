@@ -48,7 +48,7 @@ public class IOSPurchasesList extends UITableViewController {
 
     private final PaymentTransactionDetails transactionDetails;
 
-    public IOSPurchasesList () {
+    public IOSPurchasesList() {
         transactionDetails = new PaymentTransactionDetails();
 
         allPurchases.add(new MyModel("PURCHASED"));
@@ -56,7 +56,7 @@ public class IOSPurchasesList extends UITableViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
         // Update allPurchases if there are purchased products
@@ -77,7 +77,7 @@ public class IOSPurchasesList extends UITableViewController {
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         int numberOfSections = 0;
         if (!allPurchases.get(0).isEmpty()) {
             numberOfSections++;
@@ -91,9 +91,9 @@ public class IOSPurchasesList extends UITableViewController {
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         // Fetch the section name at the given index
-        String sectionName = sectionNames.get((int)section);
+        String sectionName = sectionNames.get((int) section);
         // Fetch the model whose name matches sectionName
         MyModel model = sectionName.equals("PURCHASED") ? allPurchases.get(0) : allPurchases.get(1);
 
@@ -102,8 +102,8 @@ public class IOSPurchasesList extends UITableViewController {
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
-        String sectionName = sectionNames.get((int)section);
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
+        String sectionName = sectionNames.get((int) section);
         MyModel model = sectionName.equals("PURCHASED") ? allPurchases.get(0) : allPurchases.get(1);
 
         // Return the number of rows in the section.
@@ -112,10 +112,10 @@ public class IOSPurchasesList extends UITableViewController {
 
     @SuppressWarnings("unchecked")
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
-        String sectionName = sectionNames.get((int)indexPath.getSection());
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
+        String sectionName = sectionNames.get((int) indexPath.getSection());
         MyModel model = sectionName.equals("PURCHASED") ? allPurchases.get(0) : allPurchases.get(1);
-        List<SKPaymentTransaction> purchases = (List<SKPaymentTransaction>)model.getElements();
+        List<SKPaymentTransaction> purchases = (List<SKPaymentTransaction>) model.getElements();
 
         UITableViewCell cell = tableView.dequeueReusableCell("purchasedID", indexPath);
         if (cell == null) {
@@ -124,17 +124,18 @@ public class IOSPurchasesList extends UITableViewController {
             cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
         }
 
-        SKPaymentTransaction paymentTransaction = purchases.get((int)indexPath.getRow());
+        SKPaymentTransaction paymentTransaction = purchases.get((int) indexPath.getRow());
         String title = StoreManager.getInstance().getTitleForId(paymentTransaction.getPayment().getProductIdentifier());
 
-        // Display the product's title associated with the payment's product identifier if it exists or the product identifier,
+        // Display the product's title associated with the payment's product
+        // identifier if it exists or the product identifier,
         // otherwise
         cell.getTextLabel().setText(title != null ? title : paymentTransaction.getPayment().getProductIdentifier());
 
         return cell;
     }
 
-    private NSDateFormatter newDateFormatter () {
+    private NSDateFormatter newDateFormatter() {
         NSDateFormatter myDateFormatter = new NSDateFormatter();
         myDateFormatter.setDateStyle(NSDateFormatterStyle.Short);
         myDateFormatter.setTimeStyle(NSDateFormatterStyle.Short);
@@ -142,24 +143,27 @@ public class IOSPurchasesList extends UITableViewController {
     }
 
     @Override
-    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         showDetails();
     }
 
     @SuppressWarnings("unchecked")
-    private void showDetails () {
-        String sectionName = sectionNames.get((int)getTableView().getIndexPathForSelectedRow().getSection());
+    private void showDetails() {
+        String sectionName = sectionNames.get((int) getTableView().getIndexPathForSelectedRow().getSection());
         MyModel model = sectionName.equals("PURCHASED") ? allPurchases.get(0) : allPurchases.get(1);
 
-        List<SKPaymentTransaction> purchases = (List<SKPaymentTransaction>)model.getElements();
+        List<SKPaymentTransaction> purchases = (List<SKPaymentTransaction>) model.getElements();
 
-        SKPaymentTransaction paymentTransaction = purchases.get((int)getTableView().getIndexPathForSelectedRow().getRow());
+        SKPaymentTransaction paymentTransaction = purchases.get((int) getTableView().getIndexPathForSelectedRow()
+                .getRow());
         List<MyModel> purchaseDetails = new ArrayList<>();
 
-        // Add the product identifier, transaction id, and transaction date to purchaseDetails
+        // Add the product identifier, transaction id, and transaction date to
+        // purchaseDetails
         purchaseDetails.add(new MyModel("PRODUCT IDENTIFIER", paymentTransaction.getPayment().getProductIdentifier()));
         purchaseDetails.add(new MyModel("TRANSACTION ID", paymentTransaction.getTransactionIdentifier()));
-        purchaseDetails.add(new MyModel("TRANSACTION DATE", newDateFormatter().format(paymentTransaction.getTransactionDate())));
+        purchaseDetails.add(new MyModel("TRANSACTION DATE", newDateFormatter().format(
+                paymentTransaction.getTransactionDate())));
 
         NSArray<SKDownload> allDownloads = paymentTransaction.getDownloads();
         // If this product is hosted, add its first download to purchaseDetails
@@ -170,28 +174,31 @@ public class IOSPurchasesList extends UITableViewController {
             Map<String, String> identifier = newKeyValuePair("Identifier", firstDownload.getContentIdentifier());
             Map<String, String> version = newKeyValuePair("Version", firstDownload.getContentVersion());
             Map<String, String> contentLength = newKeyValuePair("Length",
-                NSByteCountFormatter.format(firstDownload.getContentLength(), NSByteCountFormatterCountStyle.File));
+                    NSByteCountFormatter.format(firstDownload.getContentLength(), NSByteCountFormatterCountStyle.File));
 
-            // Add the identifier, version, and length of a download to purchaseDetails
+            // Add the identifier, version, and length of a download to
+            // purchaseDetails
             purchaseDetails.add(new MyModel("DOWNLOAD", identifier, version, contentLength));
         }
 
-        // If the product is a restored one, add its original transaction's transaction id and transaction date to purchaseDetails
+        // If the product is a restored one, add its original transaction's
+        // transaction id and transaction date to purchaseDetails
         if (paymentTransaction.getOriginalTransaction() != null) {
-            Map<String, String> transactionID = newKeyValuePair("Transaction ID", paymentTransaction.getOriginalTransaction()
-                .getTransactionIdentifier());
+            Map<String, String> transactionID = newKeyValuePair("Transaction ID", paymentTransaction
+                    .getOriginalTransaction()
+                    .getTransactionIdentifier());
             Map<String, String> transactionDate = newKeyValuePair("Transaction Date",
-                newDateFormatter().format(paymentTransaction.getOriginalTransaction().getTransactionDate()));
+                    newDateFormatter().format(paymentTransaction.getOriginalTransaction().getTransactionDate()));
 
             purchaseDetails.add(new MyModel("ORIGINAL TRANSACTION", transactionID, transactionDate));
         }
 
         transactionDetails.setDetails(purchaseDetails);
         transactionDetails.setTitle(StoreManager.getInstance().getTitleForId(
-            paymentTransaction.getPayment().getProductIdentifier()));
+                paymentTransaction.getPayment().getProductIdentifier()));
     }
 
-    private Map<String, String> newKeyValuePair (String key, String value) {
+    private Map<String, String> newKeyValuePair(String key, String value) {
         Map<String, String> pair = new HashMap<>();
         pair.put(key, value);
         return pair;
