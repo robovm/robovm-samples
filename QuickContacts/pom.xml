@@ -1,33 +1,32 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.robovm</groupId>
-    <artifactId>robovm-samples-parent</artifactId>
-    <version>1.0</version>
-  </parent>
+    <parent>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-samples-parent</artifactId>
+        <version>1.0</version>
+    </parent>
 
-  <artifactId>robovm-samples-quickcontacts</artifactId>
-  <name>RoboVM version of Apple's QuickContacts sample</name>
+    <artifactId>robovm-samples-quickcontacts</artifactId>
+    <name>RoboVM port of Apple's QuickContacts sample</name>
 
-  <packaging>jar</packaging>
+    <packaging>jar</packaging>
 
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-  </build>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+    </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.robovm</groupId>
-      <artifactId>robovm-rt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.robovm</groupId>
-      <artifactId>robovm-cocoatouch</artifactId>
-    </dependency>
-  </dependencies>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-rt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-cocoatouch</artifactId>
+        </dependency>
+    </dependencies>
 </project>
