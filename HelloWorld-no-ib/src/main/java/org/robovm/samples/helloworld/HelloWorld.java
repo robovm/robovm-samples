@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 RoboVM AB
+ * Copyright (C) 2014 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,37 @@
  * Portions of this code is based on Apple Inc's HelloWorld sample (v1.8)
  * which is copyright (C) 2008-2010 Apple Inc.
  */
+
 package org.robovm.samples.helloworld;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
+import org.robovm.apple.uikit.UIScreen;
+import org.robovm.apple.uikit.UIWindow;
+import org.robovm.samples.helloworld.viewcontrollers.MyViewController;
 
 public class HelloWorld extends UIApplicationDelegateAdapter {
+    private UIWindow window;
+    private MyViewController rootViewController;
 
     @Override
-    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching (UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        // Set up the view controller.
+        rootViewController = new MyViewController();
+
+        // Create a new window at screen size.
+        window = new UIWindow(UIScreen.getMainScreen().getBounds());
+        // Set our viewcontroller as the root controller for the window.
+        window.setRootViewController(rootViewController);
+        // Make the window visible.
+        window.makeKeyAndVisible();
+
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
             UIApplication.main(args, null, HelloWorld.class);
         }
