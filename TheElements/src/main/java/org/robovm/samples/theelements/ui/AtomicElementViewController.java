@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,13 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.samples.theelements.viewcontrollers;
+package org.robovm.samples.theelements.ui;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIButton;
-import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
@@ -34,12 +33,12 @@ import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewAnimationTransition;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.Selector;
+import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.Method;
 import org.robovm.rt.bro.ptr.VoidPtr;
 import org.robovm.samples.theelements.model.AtomicElement;
-import org.robovm.samples.theelements.views.AtomicElementFlippedView;
-import org.robovm.samples.theelements.views.AtomicElementView;
 
+@CustomClass("AtomicElementViewController")
 public class AtomicElementViewController extends UIViewController {
     private static final double FLIP_TRANSITION_DURATION = 0.75;
     private static final double REFLECTION_FRACTION = 0.35;
@@ -54,16 +53,15 @@ public class AtomicElementViewController extends UIViewController {
     private UIButton flipIndicatorButton;
 
     @Override
-    public void viewDidLoad () {
+    public void viewDidLoad() {
         super.viewDidLoad();
-
-        getView().setBackgroundColor(UIColor.black());
 
         frontViewIsVisible = true;
         CGSize preferredAtomicElementViewSize = AtomicElementView.getPreferredViewSize();
-        CGRect viewRect = new CGRect((getView().getBounds().getWidth() - preferredAtomicElementViewSize.getWidth()) / 2,
-            (getView().getBounds().getHeight() - preferredAtomicElementViewSize.getHeight()) / 2 - 40,
-            preferredAtomicElementViewSize.getWidth(), preferredAtomicElementViewSize.getHeight());
+        CGRect viewRect = new CGRect(
+                (getView().getBounds().getWidth() - preferredAtomicElementViewSize.getWidth()) / 2,
+                (getView().getBounds().getHeight() - preferredAtomicElementViewSize.getHeight()) / 2 - 40,
+                preferredAtomicElementViewSize.getWidth(), preferredAtomicElementViewSize.getHeight());
         // create the atomic element view
         atomicElementView = new AtomicElementView(viewRect);
 
@@ -87,18 +85,20 @@ public class AtomicElementViewController extends UIViewController {
         reflectionView = new UIImageView(reflectionRect);
 
         // determine the size of the reflection to create
-        int reflectionHeight = (int)(atomicElementView.getBounds().getHeight() * REFLECTION_FRACTION);
+        int reflectionHeight = (int) (atomicElementView.getBounds().getHeight() * REFLECTION_FRACTION);
 
-        // create the reflection image, assign it to the UIImageView and add the image view to the view controller's view
+        // create the reflection image, assign it to the UIImageView and add the
+        // image view to the view controller's view
         reflectionView.setImage(atomicElementView.getReflectedImageRepresentation(reflectionHeight));
         reflectionView.setAlpha(REFLECTION_OPACITY);
         getView().addSubview(reflectionView);
 
-        // setup our flip indicator button (placed as a nav bar item to the right)
+        // setup our flip indicator button (placed as a nav bar item to the
+        // right)
         flipIndicatorButton = new UIButton(new CGRect(0, 0, 30, 30));
         flipIndicatorButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 flipCurrentView();
             }
         });
@@ -109,7 +109,7 @@ public class AtomicElementViewController extends UIViewController {
         getNavigationItem().setRightBarButtonItem(flipButtonBarItem, true);
     }
 
-    public void flipCurrentView () {
+    public void flipCurrentView() {
         // disable user interaction during the flip animation
         getView().setUserInteractionEnabled(false);
         flipIndicatorButton.setUserInteractionEnabled(false);
@@ -127,7 +127,7 @@ public class AtomicElementViewController extends UIViewController {
             getView().addSubview(atomicElementFlippedView);
 
             // update the reflection image for the new view
-            int reflectionHeight = (int)(atomicElementFlippedView.getBounds().getHeight() * REFLECTION_FRACTION);
+            int reflectionHeight = (int) (atomicElementFlippedView.getBounds().getHeight() * REFLECTION_FRACTION);
             UIImage reflectedImage = atomicElementFlippedView.getReflectedImageRepresentation(reflectionHeight);
             reflectionView.setImage(reflectedImage);
         } else {
@@ -136,7 +136,7 @@ public class AtomicElementViewController extends UIViewController {
             getView().addSubview(atomicElementView);
 
             // update the reflection image for the new view
-            int reflectionHeight = (int)(atomicElementView.getBounds().getHeight() * REFLECTION_FRACTION);
+            int reflectionHeight = (int) (atomicElementView.getBounds().getHeight() * REFLECTION_FRACTION);
             UIImage reflectedImage = atomicElementView.getReflectedImageRepresentation(reflectionHeight);
             reflectionView.setImage(reflectedImage);
         }
@@ -151,7 +151,7 @@ public class AtomicElementViewController extends UIViewController {
         if (frontViewIsVisible) {
             UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, flipIndicatorButton, true);
             flipIndicatorButton
-                .setBackgroundImage(element.getFlipperImageForAtomicElementNavigationItem(), UIControlState.Normal);
+                    .setBackgroundImage(element.getFlipperImageForAtomicElementNavigationItem(), UIControlState.Normal);
         } else {
             UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, flipIndicatorButton, true);
             flipIndicatorButton.setBackgroundImage(UIImage.create("flipper_list_blue.png"), UIControlState.Normal);
@@ -163,13 +163,13 @@ public class AtomicElementViewController extends UIViewController {
     }
 
     @Method(selector = "myTransitionDidStop:finished:context:")
-    private void myTransitionDidStop (String animationID, NSNumber finished, VoidPtr context) {
+    private void myTransitionDidStop(String animationID, NSNumber finished, VoidPtr context) {
         // re-enable user interaction when the flip animation is completed
         getView().setUserInteractionEnabled(true);
         flipIndicatorButton.setUserInteractionEnabled(true);
     }
 
-    public void setElement (AtomicElement element) {
+    public void setElement(AtomicElement element) {
         this.element = element;
     }
 }

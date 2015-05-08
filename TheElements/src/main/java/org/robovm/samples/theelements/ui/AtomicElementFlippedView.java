@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.samples.theelements.views;
+package org.robovm.samples.theelements.ui;
 
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.foundation.NSURL;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIButtonType;
@@ -39,7 +40,7 @@ import org.robovm.apple.uikit.UIImage;
 public class AtomicElementFlippedView extends AtomicElementView {
     private UIButton wikipediaButton;
 
-    public AtomicElementFlippedView (CGRect frame) {
+    public AtomicElementFlippedView(CGRect frame) {
         super(frame);
 
         setAutoresizesSubviews(true);
@@ -49,7 +50,7 @@ public class AtomicElementFlippedView extends AtomicElementView {
         setBackgroundColor(UIColor.clear());
     }
 
-    private void setupUserInterface () {
+    private void setupUserInterface() {
         CGRect buttonFrame = new CGRect(10, 209, 234, 37);
 
         // create the button
@@ -64,11 +65,13 @@ public class AtomicElementFlippedView extends AtomicElementView {
 
         wikipediaButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
-                // create the string that points to the correct Wikipedia page for the element name
+            public void onTouchUpInside(UIControl control, UIEvent event) {
+                // create the string that points to the correct Wikipedia page
+                // for the element name
                 String wikiPageString = String.format("http://en.wikipedia.org/wiki/%s", element.getName());
                 if (!UIApplication.getSharedApplication().openURL(new NSURL(wikiPageString))) {
-                    // there was an error trying to open the URL. for the moment we'll simply ignore it.
+                    // there was an error trying to open the URL. for the moment
+                    // we'll simply ignore it.
                 }
             }
         });
@@ -76,69 +79,68 @@ public class AtomicElementFlippedView extends AtomicElementView {
     }
 
     @Override
-    public void draw (CGRect rect) {
+    public void draw(CGRect rect) {
         // get the background image for the state of the element
         // position it appropriately and draw the image
         UIImage backgroundImage = element.getStateImageForAtomicElementView();
-        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().getWidth(), backgroundImage.getSize()
-            .getHeight());
+        CGRect elementSymbolRectangle = new CGRect(0, 0, backgroundImage.getSize().getWidth(), backgroundImage
+                .getSize()
+                .getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
         // all the text is drawn in white
         UIColor.white().setFillAndStroke();
 
+        NSAttributedStringAttributes attr = new NSAttributedStringAttributes().setForegroundColor(UIColor.white());
+        attr.setFont(UIFont.getBoldSystemFont(32));
+
         // draw the element number
-        UIFont font = UIFont.getBoldSystemFont(32);
         CGPoint point = new CGPoint(10, 5);
-        NSString atomicNumberString = new NSString(String.valueOf(element.getAtomicNumber()));
-        atomicNumberString.draw(point, font);
+        NSString.draw(String.valueOf(element.getAtomicNumber()), point, attr);
 
         // draw the element symbol
-        NSString symbolString = new NSString(element.getSymbol());
-        CGSize stringSize = symbolString.getSize(font);
+        CGSize stringSize = NSString.getSize(element.getSymbol(), attr);
         point = new CGPoint(getBounds().getSize().getWidth() - stringSize.getWidth() - 10, 5);
-        symbolString.draw(point, font);
+        NSString.draw(element.getSymbol(), point, attr);
 
         // draw the element name
-        font = UIFont.getBoldSystemFont(36);
-        NSString nameString = new NSString(element.getName());
-        stringSize = nameString.getSize(font);
+        attr.setFont(UIFont.getBoldSystemFont(36));
+        stringSize = NSString.getSize(element.getName(), attr);
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, 50);
-        nameString.draw(point, font);
+        NSString.draw(element.getName(), point, attr);
 
         float verticalStartingPoint = 95;
 
         // draw the element weight
-        font = UIFont.getBoldSystemFont(14);
-        NSString atomicWeightString = new NSString(String.format("Atomic Weight: %s", element.getAtomicWeight()));
+        attr.setFont(UIFont.getBoldSystemFont(14));
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint);
-        atomicWeightString.draw(point, font);
+        NSString.draw(String.format("Atomic Weight: %s", element.getAtomicWeight()), point, attr);
 
         // draw the element state
-        font = UIFont.getBoldSystemFont(14);
-        NSString stateString = new NSString(String.format("State: %s", element.getState()));
-        stringSize = stateString.getSize(font);
+        attr.setFont(UIFont.getBoldSystemFont(14));
+        String stateString = String.format("State: %s", element.getState());
+        stringSize = NSString.getSize(stateString, attr);
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 20);
-        stateString.draw(point, font);
+        NSString.draw(stateString, point, attr);
 
         // draw the element period
-        font = UIFont.getBoldSystemFont(14);
-        NSString periodString = new NSString(String.format("Period: %d", element.getPeriod()));
-        stringSize = periodString.getSize(font);
+        attr.setFont(UIFont.getBoldSystemFont(14));
+        String periodString = String.format("Period: %d", element.getPeriod());
+        stringSize = NSString.getSize(periodString, attr);
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 40);
-        periodString.draw(point, font);
+        NSString.draw(periodString, point, attr);
 
         // draw the element group
-        font = UIFont.getBoldSystemFont(14);
-        NSString groupString = new NSString(String.format("Group: %d", element.getGroup()));
-        stringSize = groupString.getSize(font);
+        attr.setFont(UIFont.getBoldSystemFont(14));
+        String groupString = String.format("Group: %d", element.getGroup());
+        stringSize = NSString.getSize(groupString, attr);
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 60);
-        groupString.draw(point, font);
+        NSString.draw(groupString, point, attr);
 
         // draw the discovery year
-        NSString discoveryYearString = new NSString(String.format("Discovered: %s", element.getDiscoveryYear()));
-        stringSize = discoveryYearString.getSize(font);
+        String discoveryYearString = String.format("Discovered: %s", element.getDiscoveryYear());
+        stringSize = NSString.getSize(discoveryYearString, attr);
         point = new CGPoint((getBounds().getSize().getWidth() - stringSize.getWidth()) / 2, verticalStartingPoint + 80);
-        discoveryYearString.draw(point, font);
+        NSString.draw(discoveryYearString, point, attr);
     }
 }

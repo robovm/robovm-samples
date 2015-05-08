@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,41 +26,41 @@ import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.samples.theelements.model.AtomicElement;
 import org.robovm.samples.theelements.model.PeriodicElements;
-import org.robovm.samples.theelements.views.AtomicElementTableViewCell;
+import org.robovm.samples.theelements.ui.AtomicElementTableViewCell;
 
 public class ElementsSortedByAtomicNumberDataSource extends ElementsDataSource {
     @Override
-    public String getName () {
+    public String getName() {
         return "Number";
     }
 
     @Override
-    public String getNavigationBarName () {
+    public String getNavigationBarName() {
         return "Sorted by Atomic Number";
     }
 
     @Override
-    public UIImage getTabBarImage () {
+    public UIImage getTabBarImage() {
         return UIImage.create("number_gray.png");
     }
 
     @Override
-    public UITableViewStyle getTableViewStyle () {
+    public UITableViewStyle getTableViewStyle() {
         return UITableViewStyle.Plain;
     }
 
     @Override
-    public AtomicElement getAtomicElement (NSIndexPath indexPath) {
-        return PeriodicElements.sharedPeriodicElements().getElementsSortedByNumber().get((int)indexPath.getRow());
+    public AtomicElement getAtomicElement(NSIndexPath indexPath) {
+        return PeriodicElements.getSharedPeriodicElements().getElementsSortedByNumber().get((int) indexPath.getRow());
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
-        return PeriodicElements.sharedPeriodicElements().getElementsSortedByNumber().size();
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
+        return PeriodicElements.getSharedPeriodicElements().getElementsSortedByNumber().size();
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         cell.setElement(getAtomicElement(indexPath));
 
@@ -68,7 +68,7 @@ public class ElementsSortedByAtomicNumberDataSource extends ElementsDataSource {
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         return 1;
     }
 }

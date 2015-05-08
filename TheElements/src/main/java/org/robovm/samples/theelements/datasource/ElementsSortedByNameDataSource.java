@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,84 +28,90 @@ import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.samples.theelements.model.AtomicElement;
 import org.robovm.samples.theelements.model.PeriodicElements;
-import org.robovm.samples.theelements.views.AtomicElementTableViewCell;
+import org.robovm.samples.theelements.ui.AtomicElementTableViewCell;
 
 public class ElementsSortedByNameDataSource extends ElementsDataSource {
     @Override
-    public String getName () {
+    public String getName() {
         return "Name";
     }
 
     @Override
-    public String getNavigationBarName () {
+    public String getNavigationBarName() {
         return "Sorted by Name";
     }
 
     @Override
-    public UIImage getTabBarImage () {
+    public UIImage getTabBarImage() {
         return UIImage.create("name_gray.png");
     }
 
     @Override
-    public UITableViewStyle getTableViewStyle () {
+    public UITableViewStyle getTableViewStyle() {
         return UITableViewStyle.Plain;
     }
 
     @Override
-    public AtomicElement getAtomicElement (NSIndexPath indexPath) {
+    public AtomicElement getAtomicElement(NSIndexPath indexPath) {
         return PeriodicElements
-            .sharedPeriodicElements()
-            .getElementsWithInitialLetter(
-                PeriodicElements.sharedPeriodicElements().getElementNameIndexes().get((int)indexPath.getSection()))
-            .get((int)indexPath.getRow());
+                .getSharedPeriodicElements()
+                .getElementsWithInitialLetter(
+                        PeriodicElements.getSharedPeriodicElements().getElementNameIndexes()
+                                .get((int) indexPath.getSection()))
+                .get((int) indexPath.getRow());
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
         cell.setElement(getAtomicElement(indexPath));
         return cell;
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
-        // this table has multiple sections. One for each unique character that an element begins with
+    public long getNumberOfSections(UITableView tableView) {
+        // this table has multiple sections. One for each unique character that
+        // an element begins with
         // [A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,R,S,T,U,V,X,Y,Z]
         // return the size of that array
-        return PeriodicElements.sharedPeriodicElements().getElementNameIndexes().size();
+        return PeriodicElements.getSharedPeriodicElements().getElementNameIndexes().size();
     }
 
     @Override
-    public List<String> getSectionIndexTitles (UITableView tableView) {
-        // returns the array of section titles. There is one entry for each unique character that an element begins with
+    public List<String> getSectionIndexTitles(UITableView tableView) {
+        // returns the array of section titles. There is one entry for each
+        // unique character that an element begins with
         // [A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,R,S,T,U,V,X,Y,Z]
-        return PeriodicElements.sharedPeriodicElements().getElementNameIndexes();
+        return PeriodicElements.getSharedPeriodicElements().getElementNameIndexes();
     }
 
     @Override
-    public long getSectionForSectionIndexTitle (UITableView tableView, String title, long index) {
+    public long getSectionForSectionIndexTitle(UITableView tableView, String title, long index) {
         return index;
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         // the section represents the initial letter of the element
         // return that letter
-        String initialLetter = PeriodicElements.sharedPeriodicElements().getElementNameIndexes().get((int)section);
+        String initialLetter = PeriodicElements.getSharedPeriodicElements().getElementNameIndexes().get((int) section);
 
         // get the array of elements that begin with that letter
-        List<AtomicElement> elementsWithInitialLetter = PeriodicElements.sharedPeriodicElements().getElementsWithInitialLetter(
-            initialLetter);
+        List<AtomicElement> elementsWithInitialLetter = PeriodicElements.getSharedPeriodicElements()
+                .getElementsWithInitialLetter(
+                        initialLetter);
         // return the count
         return elementsWithInitialLetter.size();
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
-        // this table has multiple sections. One for each unique character that an element begins with
+    public String getTitleForHeader(UITableView tableView, long section) {
+        // this table has multiple sections. One for each unique character that
+        // an element begins with
         // [A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,R,S,T,U,V,X,Y,Z]
         // return the letter that represents the requested section
-        // this is actually a delegate method, but we forward the request to the datasource in the view controller
-        return PeriodicElements.sharedPeriodicElements().getElementNameIndexes().get((int)section);
+        // this is actually a delegate method, but we forward the request to the
+        // datasource in the view controller
+        return PeriodicElements.getSharedPeriodicElements().getElementNameIndexes().get((int) section);
     }
 }

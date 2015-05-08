@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,28 @@
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 
-package org.robovm.samples.theelements.viewcontrollers;
+package org.robovm.samples.theelements.ui;
 
 import org.robovm.apple.foundation.NSIndexPath;
+import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.UIBarButtonItem;
+import org.robovm.apple.uikit.UIStoryboardSegue;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewController;
-import org.robovm.apple.uikit.UITableViewDelegateAdapter;
+import org.robovm.objc.annotation.CustomClass;
 import org.robovm.samples.theelements.datasource.ElementsDataSource;
 import org.robovm.samples.theelements.model.AtomicElement;
 
+@CustomClass("ElementsTableViewController")
 public class ElementsTableViewController extends UITableViewController {
     private ElementsDataSource dataSource;
-    private AtomicElementViewController atomicElementViewController;
 
-    public void setDataSource (ElementsDataSource dataSource) {
+    public void setDataSource(ElementsDataSource dataSource) {
         // retain the data source
         this.dataSource = dataSource;
 
         // set the title, and tab bar images from the dataSource
-        // object. These are part of the ElementsDataSource Protocol
+        // object. These are part of the ElementsDataSource class.
         setTitle(dataSource.getName());
         getTabBarItem().setImage(dataSource.getTabBarImage());
 
@@ -45,27 +47,12 @@ public class ElementsTableViewController extends UITableViewController {
     }
 
     @Override
-    public void viewDidLoad () {
+    public void viewDidLoad() {
         super.viewDidLoad();
-
-        atomicElementViewController = new AtomicElementViewController();
 
         UITableView tableView = getTableView();
 
         tableView.setSectionIndexMinimumDisplayRowCount(10);
-        getTableView().setDelegate(new UITableViewDelegateAdapter() {
-            @Override
-            public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
-                AtomicElement element = dataSource.getAtomicElement(indexPath);
-
-                // hide the bottom tabbar when we push this view controller
-                atomicElementViewController.setHidesBottomBarWhenPushed(true);
-
-                // pass the element to this detail view controller
-                atomicElementViewController.setElement(element);
-                getNavigationController().pushViewController(atomicElementViewController, true);
-            }
-        });
         tableView.setDataSource(dataSource);
 
         // create a custom navigation bar button and set it to always say "back"
@@ -75,8 +62,26 @@ public class ElementsTableViewController extends UITableViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         // force the tableview to load
         getTableView().reloadData();
+    }
+
+    @Override
+    public void prepareForSegue(UIStoryboardSegue segue, NSObject sender) {
+        if (segue.getIdentifier().equals("showDetail")) {
+            NSIndexPath selectedIndexPath = getTableView().getIndexPathForSelectedRow();
+
+            // find the right view controller
+            AtomicElement element = dataSource.getAtomicElement(selectedIndexPath);
+            AtomicElementViewController viewController = (AtomicElementViewController) segue
+                    .getDestinationViewController();
+
+            // hide the bottom tabbar when we push this view controller
+            viewController.setHidesBottomBarWhenPushed(true);
+
+            // pass the element to this detail view controller
+            viewController.setElement(element);
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIGraphics;
@@ -45,47 +46,55 @@ public class AtomicElement extends NSObject {
     private int horizPos;
     private boolean radioactive;
 
-    public AtomicElement () {
+    public AtomicElement() {}
+
+    public AtomicElement(NSDictionary<NSString, NSObject> data) { // TODO use
+                                                                  // auto-wrapped
+                                                                  // strings and
+                                                                  // numbers
+        atomicNumber = ((NSNumber) data.get(key("atomicNumber"))).intValue();
+        atomicWeight = ((NSString) data.get(key("atomicWeight"))).toString();
+        discoveryYear = ((NSString) data.get(key("discoveryYear"))).toString();
+        radioactive = Boolean.valueOf(((NSString) data.get(key("radioactive"))).toString());
+        name = ((NSString) data.get(key("name"))).toString();
+        symbol = ((NSString) data.get(key("symbol"))).toString();
+        state = ((NSString) data.get(key("state"))).toString();
+        group = ((NSNumber) data.get(key("group"))).intValue();
+        period = ((NSNumber) data.get(key("period"))).intValue();
+        vertPos = ((NSNumber) data.get(key("vertPos"))).intValue();
+        horizPos = ((NSNumber) data.get(key("horizPos"))).intValue();
     }
 
-    public AtomicElement (NSDictionary<NSString, NSObject> data) {
-        atomicNumber = ((NSNumber)data.get(key("atomicNumber"))).intValue();
-        atomicWeight = ((NSString)data.get(key("atomicWeight"))).toString();
-        discoveryYear = ((NSString)data.get(key("discoveryYear"))).toString();
-        radioactive = Boolean.valueOf(((NSString)data.get(key("radioactive"))).toString());
-        name = ((NSString)data.get(key("name"))).toString();
-        symbol = ((NSString)data.get(key("symbol"))).toString();
-        state = ((NSString)data.get(key("state"))).toString();
-        group = ((NSNumber)data.get(key("group"))).intValue();
-        period = ((NSNumber)data.get(key("period"))).intValue();
-        vertPos = ((NSNumber)data.get(key("vertPos"))).intValue();
-        horizPos = ((NSNumber)data.get(key("horizPos"))).intValue();
-    }
-
-    private static NSString key (String key) {
+    private static NSString key(String key) {
         return new NSString(key);
     }
 
-    /** @return the position of the element in the classic periodic table locations. */
-    public CGPoint getElementPosition () {
+    /**
+     * @return the position of the element in the classic periodic table
+     *         locations.
+     */
+    public CGPoint getElementPosition() {
         return new CGPoint(horizPos * 26 - 8, vertPos * 26 + 35);
     }
 
-    public UIImage getStateImageForAtomicElementTileView () {
+    public UIImage getStateImageForAtomicElementTileView() {
         return UIImage.create(String.format("%s_37.png", state));
     }
 
-    public UIImage getStateImageForAtomicElementView () {
+    public UIImage getStateImageForAtomicElementView() {
         return UIImage.create(String.format("%s_256.png", state));
     }
 
-    public UIImage getStateImageForPeriodicTableView () {
+    public UIImage getStateImageForPeriodicTableView() {
         return UIImage.create(String.format("%s_24.png", state));
     }
 
-    /** @return a 30 x 30 image that is a reduced version of the AtomicElementTileView content this is used to display the flipper
-     *         button in the navigation bar. */
-    public UIImage getFlipperImageForAtomicElementNavigationItem () {
+    /**
+     * @return a 30 x 30 image that is a reduced version of the
+     *         AtomicElementTileView content this is used to display the flipper
+     *         button in the navigation bar.
+     */
+    public UIImage getFlipperImageForAtomicElementNavigationItem() {
         CGSize itemSize = new CGSize(30, 30);
         UIGraphics.beginImageContext(itemSize);
 
@@ -93,56 +102,58 @@ public class AtomicElement extends NSObject {
         CGRect elementSymbolRectangle = new CGRect(0, 0, itemSize.getWidth(), itemSize.getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 
-        // draw the element name
-        UIColor.white().setFillAndStroke();
-
         // draw the element number
-        UIFont font = UIFont.getBoldSystemFont(8);
+        NSAttributedStringAttributes attrs = new NSAttributedStringAttributes().setForegroundColor(UIColor.white());
+        attrs.setFont(UIFont.getBoldSystemFont(8));
+
         CGPoint point = new CGPoint(2, 1);
-        new NSString(String.valueOf(atomicNumber)).draw(point, font);
+        NSString.draw(String.valueOf(atomicNumber), point, attrs);
 
         // draw the element symbol
-        font = UIFont.getBoldSystemFont(13);
-        NSString symbolString = new NSString(symbol);
-        CGSize stringSize = symbolString.getSize(font);
+        attrs.setFont(UIFont.getBoldSystemFont(13));
+        CGSize stringSize = NSString.getSize(symbol, attrs);
         point = new CGPoint((elementSymbolRectangle.getSize().getWidth() - stringSize.getWidth()) / 2, 10);
 
-        symbolString.draw(point, font);
+        NSString.draw(symbol, point, attrs);
 
         UIImage theImage = UIGraphics.getImageFromCurrentImageContext();
         UIGraphics.endImageContext();
         return theImage;
     }
 
-    public int getAtomicNumber () {
+    public int getAtomicNumber() {
         return atomicNumber;
     }
 
-    public String getName () {
+    public String getName() {
         return name.toString();
     }
 
-    public String getSymbol () {
+    public String getSymbol() {
         return symbol.toString();
     }
 
-    public String getState () {
+    public String getState() {
         return state;
     }
 
-    public String getAtomicWeight () {
+    public String getAtomicWeight() {
         return atomicWeight;
     }
 
-    public int getGroup () {
+    public int getGroup() {
         return group;
     }
 
-    public int getPeriod () {
+    public int getPeriod() {
         return period;
     }
 
-    public String getDiscoveryYear () {
+    public String getDiscoveryYear() {
         return discoveryYear;
+    }
+
+    public boolean isRadioactive() {
+        return radioactive;
     }
 }

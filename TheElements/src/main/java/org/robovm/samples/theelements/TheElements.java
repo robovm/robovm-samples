@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,102 +16,83 @@
  * Portions of this code is based on Apple Inc's TheElements sample (v1.12)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
-
 package org.robovm.samples.theelements;
 
-import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSMutableArray;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
+import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UINavigationController;
-import org.robovm.apple.uikit.UIScreen;
+import org.robovm.apple.uikit.UIStoryboard;
 import org.robovm.apple.uikit.UITabBarController;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.apple.uikit.UIWindow;
+import org.robovm.samples.theelements.datasource.ElementsDataSource;
 import org.robovm.samples.theelements.datasource.ElementsSortedByAtomicNumberDataSource;
 import org.robovm.samples.theelements.datasource.ElementsSortedByNameDataSource;
 import org.robovm.samples.theelements.datasource.ElementsSortedByStateDataSource;
 import org.robovm.samples.theelements.datasource.ElementsSortedBySymbolDataSource;
-import org.robovm.samples.theelements.viewcontrollers.ElementsTableViewController;
+import org.robovm.samples.theelements.ui.ElementsTableViewController;
 
 public class TheElements extends UIApplicationDelegateAdapter {
-    private UIWindow window;
-    private UITabBarController tabBarController;
-    private ElementsTableViewController nameController;
-    private ElementsTableViewController numberController;
-    private ElementsTableViewController symbolController;
-    private ElementsTableViewController stateController;
 
     @Override
-    public void didFinishLaunching (UIApplication application) {
-        // Set up the view controller.
-        tabBarController = new UITabBarController();
-
-        // For each tableview 'screen' we need to create a datasource instance
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        // for each tableview 'screen' we need to create a datasource instance
         // (the class that is passed in) we then need to create an instance of
-        // ElementsTableViewController with that datasource instance finally we need to return
-        // a UINaviationController for each screen, with the ElementsTableViewController as the
-        // root view controller.
+        // ElementsTableViewController with that datasource instance finally we
+        // need to return a UINaviationController for each screen, with the
+        // ElementsTableViewController as the root view controller.
 
-        NSArray<UIViewController> viewControllers = new NSMutableArray<>();
+        UITabBarController tabBarController = (UITabBarController) getWindow().getRootViewController();
+
+        ElementsDataSource dataSource;
+
+        UIStoryboard storyboard = UIStoryboard.create("Main", null);
+
+        NSMutableArray<UIViewController> viewControllers = new NSMutableArray<>(4);
+
+        // create our tabbar view controllers, since we already have one defined
+        // in our storyboard we will create 3 more instances of it, and assign
+        // each it's own kind data source
 
         // by name
-        UINavigationController navController = new UINavigationController();
-        nameController = new ElementsTableViewController();
-        navController.addChildViewController(nameController);
-        nameController.setDataSource(new ElementsSortedByNameDataSource());
+        UINavigationController navController = (UINavigationController) storyboard
+                .instantiateViewController("navForTableView");
+        ElementsTableViewController viewController = (ElementsTableViewController) navController.getTopViewController();
+        dataSource = new ElementsSortedByNameDataSource();
+        viewController.setDataSource(dataSource);
         viewControllers.add(navController);
 
         // by atomic number
-        navController = new UINavigationController();
-        numberController = new ElementsTableViewController();
-        navController.addChildViewController(numberController);
-        numberController.setDataSource(new ElementsSortedByAtomicNumberDataSource());
+        navController = (UINavigationController) storyboard.instantiateViewController("navForTableView");
+        viewController = (ElementsTableViewController) navController.getTopViewController();
+        dataSource = new ElementsSortedByAtomicNumberDataSource();
+        viewController.setDataSource(dataSource);
         viewControllers.add(navController);
 
         // by symbol
-        navController = new UINavigationController();
-        symbolController = new ElementsTableViewController();
-        navController.addChildViewController(symbolController);
-        symbolController.setDataSource(new ElementsSortedBySymbolDataSource());
+        navController = (UINavigationController) storyboard.instantiateViewController("navForTableView");
+        viewController = (ElementsTableViewController) navController.getTopViewController();
+        dataSource = new ElementsSortedBySymbolDataSource();
+        viewController.setDataSource(dataSource);
         viewControllers.add(navController);
 
         // by state
-        navController = new UINavigationController();
-        stateController = new ElementsTableViewController();
-        navController.addChildViewController(stateController);
-        stateController.setDataSource(new ElementsSortedByStateDataSource());
+        navController = (UINavigationController) storyboard.instantiateViewController("navForTableView");
+        viewController = (ElementsTableViewController) navController.getTopViewController();
+        dataSource = new ElementsSortedByStateDataSource();
+        viewController.setDataSource(dataSource);
         viewControllers.add(navController);
 
         tabBarController.setViewControllers(viewControllers);
 
-        /*
-         * Retain all of our custom view controllers. These contain the data sources, which should not be released until the
-         * application gets deallocated.
-         */
-        addStrongRef(nameController);
-        addStrongRef(numberController);
-        addStrongRef(symbolController);
-        addStrongRef(stateController);
-
-        // Create a new window at screen size.
-        window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        // Set our viewcontroller as the root controller for the window.
-        window.setRootViewController(tabBarController);
-        // Make the window visible.
-        window.makeKeyAndVisible();
-
-        /*
-         * Retains the window object until the application is deallocated. Prevents Java GC from collecting the window object too
-         * early.
-         */
-        addStrongRef(window);
+        return true;
     }
 
-    public static void main (String[] args) {
-        NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, TheElements.class);
-        pool.close();
+    public static void main(String[] args) {
+        try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
+            UIApplication.main(args, null, TheElements.class);
+        }
     }
 }

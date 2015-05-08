@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ import org.robovm.apple.foundation.NSString;
 public class PeriodicElements extends NSObject {
     private static PeriodicElements instance = new PeriodicElements();
 
-    private PeriodicElements () {
+    private PeriodicElements() {
         setupElementsArray();
     }
 
-    public static PeriodicElements sharedPeriodicElements () {
+    public static PeriodicElements getSharedPeriodicElements() {
         return instance;
     }
 
@@ -53,7 +53,7 @@ public class PeriodicElements extends NSObject {
     private String[] elementPhysicalStates;
 
     @SuppressWarnings("unchecked")
-    private void setupElementsArray () {
+    private void setupElementsArray() {
         // create maps that contain the arrays of element data indexed by name
         elements = new HashMap<>();
         // physical state
@@ -69,8 +69,8 @@ public class PeriodicElements extends NSObject {
 
         // read the element data from the plist
         String path = NSBundle.getMainBundle().findResourcePath("Elements", "plist");
-        NSArray<NSDictionary<NSString, NSObject>> elementsData = (NSArray<NSDictionary<NSString, NSObject>>)NSArray
-            .read(new File(path));
+        NSArray<NSDictionary<NSString, NSObject>> elementsData = (NSArray<NSDictionary<NSString, NSObject>>) NSArray
+                .read(new File(path));
 
         // iterate over the values in the raw elements dictionary
         for (NSDictionary<NSString, NSObject> data : elementsData) {
@@ -80,7 +80,8 @@ public class PeriodicElements extends NSObject {
             // store that item in the elements map with the name as the key
             elements.put(element.getName(), element);
 
-            // add that element to the appropriate array in the physical state dictionary
+            // add that element to the appropriate array in the physical state
+            // dictionary
             states.get(element.getState()).add(element);
 
             // get the element's initial letter
@@ -89,7 +90,8 @@ public class PeriodicElements extends NSObject {
             List<AtomicElement> existingList = nameIndexes.get(firstLetter);
             // if an array already exists in the name index dictionary
             // simply add the element to it, otherwise create an array
-            // and add it to the name index dictionary with the letter as the key
+            // and add it to the name index dictionary with the letter as the
+            // key
 
             if (existingList != null) {
                 existingList.add(element);
@@ -102,7 +104,7 @@ public class PeriodicElements extends NSObject {
 
         // create the dictionary containing the possible element states
         // and presort the states data
-        elementPhysicalStates = new String[] {"Solid", "Liquid", "Gas", "Artificial"};
+        elementPhysicalStates = new String[] { "Solid", "Liquid", "Gas", "Artificial" };
         presortElementsByPhysicalState();
 
         // presort the dictionaries now
@@ -114,31 +116,35 @@ public class PeriodicElements extends NSObject {
         elementsSortedBySymbol = presortElementsBySymbol();
     }
 
-    /** @param state
-     * @return the list of elements for the requested physical state */
-    public List<AtomicElement> getElementsWithPhysicalState (String state) {
+    /**
+     * @param state
+     * @return the list of elements for the requested physical state
+     */
+    public List<AtomicElement> getElementsWithPhysicalState(String state) {
         return states.get(state);
     }
 
-    /** @param letter
-     * @return a list of elements for an initial letter (ie A, B, C, ...) */
-    public List<AtomicElement> getElementsWithInitialLetter (String letter) {
+    /**
+     * @param letter
+     * @return a list of elements for an initial letter (ie A, B, C, ...)
+     */
+    public List<AtomicElement> getElementsWithInitialLetter(String letter) {
         return nameIndexes.get(letter);
     }
 
     /** Presort each of the arrays for the physical states */
-    private void presortElementsByPhysicalState () {
+    private void presortElementsByPhysicalState() {
         for (String state : elementPhysicalStates) {
             presortElementsWithPhysicalState(state);
         }
     }
 
-    private void presortElementsWithPhysicalState (String state) {
+    private void presortElementsWithPhysicalState(String state) {
         sortElements(states.get(state), SortType.NAME);
     }
 
     /** Presort the name index lists so the elements are in the correct order */
-    private void presortElementInitialLetterIndexes () {
+    private void presortElementInitialLetterIndexes() {
         elementNameIndexes = new ArrayList<>(nameIndexes.keySet());
         Collections.sort(elementNameIndexes);
 
@@ -147,26 +153,26 @@ public class PeriodicElements extends NSObject {
         }
     }
 
-    private void presortElementNamesForInitialLetter (String letter) {
+    private void presortElementNamesForInitialLetter(String letter) {
         sortElements(nameIndexes.get(letter), SortType.NAME);
     }
 
-    private List<AtomicElement> presortElementsByNumber () {
+    private List<AtomicElement> presortElementsByNumber() {
         return sortElements(new ArrayList<>(elements.values()), SortType.ATOMIC_NUMBER);
     }
 
-    private List<AtomicElement> presortElementsBySymbol () {
+    private List<AtomicElement> presortElementsBySymbol() {
         return sortElements(new ArrayList<>(elements.values()), SortType.SYMBOL);
     }
 
-    private List<AtomicElement> sortElements (List<AtomicElement> elements, SortType sortType) {
+    private List<AtomicElement> sortElements(List<AtomicElement> elements, SortType sortType) {
         Comparator<AtomicElement> comparator = null;
 
         switch (sortType) {
         case NAME:
             comparator = new Comparator<AtomicElement>() {
                 @Override
-                public int compare (AtomicElement lhs, AtomicElement rhs) {
+                public int compare(AtomicElement lhs, AtomicElement rhs) {
                     return lhs.getName().compareTo(rhs.getName());
                 }
             };
@@ -174,7 +180,7 @@ public class PeriodicElements extends NSObject {
         case ATOMIC_NUMBER:
             comparator = new Comparator<AtomicElement>() {
                 @Override
-                public int compare (AtomicElement lhs, AtomicElement rhs) {
+                public int compare(AtomicElement lhs, AtomicElement rhs) {
                     return lhs.getAtomicNumber() - rhs.getAtomicNumber();
                 }
             };
@@ -182,7 +188,7 @@ public class PeriodicElements extends NSObject {
         case SYMBOL:
             comparator = new Comparator<AtomicElement>() {
                 @Override
-                public int compare (AtomicElement lhs, AtomicElement rhs) {
+                public int compare(AtomicElement lhs, AtomicElement rhs) {
                     return lhs.getSymbol().compareTo(rhs.getSymbol());
                 }
             };
@@ -193,19 +199,19 @@ public class PeriodicElements extends NSObject {
         return elements;
     }
 
-    public List<String> getElementNameIndexes () {
+    public List<String> getElementNameIndexes() {
         return elementNameIndexes;
     }
 
-    public List<AtomicElement> getElementsSortedByNumber () {
+    public List<AtomicElement> getElementsSortedByNumber() {
         return elementsSortedByNumber;
     }
 
-    public List<AtomicElement> getElementsSortedBySymbol () {
+    public List<AtomicElement> getElementsSortedBySymbol() {
         return elementsSortedBySymbol;
     }
 
-    public String[] getElementPhysicalStates () {
+    public String[] getElementPhysicalStates() {
         return elementPhysicalStates;
     }
 

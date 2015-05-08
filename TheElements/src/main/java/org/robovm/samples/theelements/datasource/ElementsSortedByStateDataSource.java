@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,49 +26,53 @@ import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.samples.theelements.model.AtomicElement;
 import org.robovm.samples.theelements.model.PeriodicElements;
-import org.robovm.samples.theelements.views.AtomicElementTableViewCell;
+import org.robovm.samples.theelements.ui.AtomicElementTableViewCell;
 
 public class ElementsSortedByStateDataSource extends ElementsDataSource {
     @Override
-    public String getName () {
+    public String getName() {
         return "State";
     }
 
     @Override
-    public String getNavigationBarName () {
+    public String getNavigationBarName() {
         return "Grouped by State";
     }
 
     @Override
-    public UIImage getTabBarImage () {
+    public UIImage getTabBarImage() {
         return UIImage.create("state_gray.png");
     }
 
     @Override
-    public UITableViewStyle getTableViewStyle () {
+    public UITableViewStyle getTableViewStyle() {
         // atomic state is displayed in a grouped style tableview
         return UITableViewStyle.Grouped;
     }
 
     @Override
-    public AtomicElement getAtomicElement (NSIndexPath indexPath) {
+    public AtomicElement getAtomicElement(NSIndexPath indexPath) {
         // this table has multiple sections. One for each physical state
         // [solid, liquid, gas, artificial]
         // the section represents the index in the state array
         // the row the index into the array of data for a particular state
 
         // get the state
-        String elementState = PeriodicElements.sharedPeriodicElements().getElementPhysicalStates()[(int)indexPath.getSection()];
+        String elementState = PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates()[(int) indexPath
+                .getSection()];
 
         // return the element in the state array
-        return PeriodicElements.sharedPeriodicElements().getElementsWithPhysicalState(elementState).get((int)indexPath.getRow());
+        return PeriodicElements.getSharedPeriodicElements().getElementsWithPhysicalState(elementState)
+                .get((int) indexPath.getRow());
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         AtomicElementTableViewCell cell = getReuseableCell(tableView);
-        // set the element for this cell as specified by the datasource. The atomicElementForIndexPath: is declared
-        // as part of the ElementsDataSource Protocol and will return the appropriate element for the index row
+        // set the element for this cell as specified by the datasource. The
+        // atomicElementForIndexPath: is declared
+        // as part of the ElementsDataSource Protocol and will return the
+        // appropriate element for the index row
         //
         cell.setElement(getAtomicElement(indexPath));
 
@@ -76,33 +80,34 @@ public class ElementsSortedByStateDataSource extends ElementsDataSource {
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         // this table has multiple sections. One for each physical state
         // [solid, liquid, gas, artificial]
         // return the number of items in the states array
 
-        return PeriodicElements.sharedPeriodicElements().getElementPhysicalStates().length;
+        return PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates().length;
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         // this table has multiple sections. One for each physical state
         // [solid, liquid, gas, artificial]
 
         // get the state key for the requested section
-        String state = PeriodicElements.sharedPeriodicElements().getElementPhysicalStates()[(int)section];
+        String state = PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates()[(int) section];
 
         // return the number of items that are in the array for that state
-        return PeriodicElements.sharedPeriodicElements().getElementsWithPhysicalState(state).size();
+        return PeriodicElements.getSharedPeriodicElements().getElementsWithPhysicalState(state).size();
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
         // this table has multiple sections. One for each physical state
 
         // [solid, liquid, gas, artificial]
         // return the state that represents the requested section
-        // this is actually a delegate method, but we forward the request to the datasource in the view controller
-        return PeriodicElements.sharedPeriodicElements().getElementPhysicalStates()[(int)section];
+        // this is actually a delegate method, but we forward the request to the
+        // datasource in the view controller
+        return PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates()[(int) section];
     }
 }

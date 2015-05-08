@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,25 +25,30 @@ import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewDataSourceAdapter;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.samples.theelements.model.AtomicElement;
-import org.robovm.samples.theelements.views.AtomicElementTableViewCell;
+import org.robovm.samples.theelements.ui.AtomicElementTableViewCell;
 
 public abstract class ElementsDataSource extends UITableViewDataSourceAdapter {
-    public abstract String getName ();
+    public abstract String getName();
 
-    public abstract String getNavigationBarName ();
+    public abstract String getNavigationBarName();
 
-    public abstract UIImage getTabBarImage ();
+    public abstract UIImage getTabBarImage();
 
-    public abstract UITableViewStyle getTableViewStyle ();
+    public abstract UITableViewStyle getTableViewStyle();
 
-    /** provides a standardized means of asking for the element at the specific index path, regardless of the sorting or display
-     * technique for the specific datasource
+    /**
+     * provides a standardized means of asking for the element at the specific
+     * index path, regardless of the sorting or display technique for the
+     * specific datasource
+     * 
      * @param indexPath
-     * @return */
-    public abstract AtomicElement getAtomicElement (NSIndexPath indexPath);
+     * @return
+     */
+    public abstract AtomicElement getAtomicElement(NSIndexPath indexPath);
 
-    AtomicElementTableViewCell getReuseableCell (UITableView tableView) {
-        AtomicElementTableViewCell cell = (AtomicElementTableViewCell)tableView.dequeueReusableCell("AtomicElementTableViewCell");
+    AtomicElementTableViewCell getReuseableCell(UITableView tableView) {
+        AtomicElementTableViewCell cell = (AtomicElementTableViewCell) tableView
+                .dequeueReusableCell("AtomicElementTableViewCell");
         if (cell == null) {
             cell = new AtomicElementTableViewCell();
             addStrongRef(cell);
