@@ -10,3 +10,6 @@ robovm-build/
 *.iml
 .idea/
 bin/
+.classpath
+.project
+.settings/
