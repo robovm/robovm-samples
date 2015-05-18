@@ -1,0 +1,88 @@
+buildscript {
+    project.ext.roboVMVersion = "1.2.1-SNAPSHOT"    
+
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.1'
+        classpath group: 'org.robovm', name: 'robovm-gradle-plugin', version: project.roboVMVersion
+    }
+}
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"    
+
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+}
+
+project(":core") {
+    apply plugin: "java"
+
+    dependencies {
+        compile "net.engio:mbassador:1.2.0"
+        compile "org.xerial:sqlite-jdbc:3.7.2"
+        testCompile 'junit:junit:4.12'
+    }
+}
+
+project(":android") {
+    apply plugin: 'com.android.application'
+
+    android {
+        compileSdkVersion 22
+        buildToolsVersion "22.0.1"
+
+        defaultConfig {
+            applicationId "org.robovm.samples.contractr.android"
+            minSdkVersion 9
+            targetSdkVersion 22
+            versionCode 1
+            versionName "1.0"
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_6
+            targetCompatibility JavaVersion.VERSION_1_6
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+
+    dependencies {
+        compile project(":core")        
+        compile 'org.sqldroid:sqldroid:1.0.3'
+        compile 'org.roboguice:roboguice:2.0'                
+        compile 'com.android.support:appcompat-v7:22.1.1'
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+    }
+}
+
+project(":ios") {
+    apply plugin: "java"
+    apply plugin: "robovm"
+    
+    dependencies {        
+        compile project(":core")
+        compile group: 'org.robovm', name: 'robovm-rt', version: project.roboVMVersion
+        compile group: 'org.robovm', name: 'robovm-cocoatouch', version: project.roboVMVersion
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
