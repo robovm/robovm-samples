@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ContractR</string>
+    <string name="title_section_work">Work</string>
+    <string name="title_section_clients">Clients</string>
+    <string name="title_section_tasks">Tasks</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_add">Add</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
