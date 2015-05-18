@@ -28,6 +28,9 @@ allprojects {
 project(":core") {
     apply plugin: "java"
 
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
     dependencies {
         compile "net.engio:mbassador:1.2.0"
         compile "org.xerial:sqlite-jdbc:3.7.2"
@@ -37,6 +40,9 @@ project(":core") {
 
 project(":android") {
     apply plugin: 'com.android.application'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 
     android {
         compileSdkVersion 22
@@ -53,6 +59,10 @@ project(":android") {
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_6
             targetCompatibility JavaVersion.VERSION_1_6
+        }
+
+        lintOptions {
+            abortOnError false
         }
 
         buildTypes {
@@ -75,6 +85,9 @@ project(":android") {
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     
     dependencies {        
         compile project(":core")
