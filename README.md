@@ -59,6 +59,7 @@ To run on a connected device: Right-click the project. Choose *Run As -> iOS Dev
 | ------------------| ----------- | ---------------------------------|
 | [AppPrefs](AppPrefs/)     | Port of Apple's [AppPrefs](https://developer.apple.com/library/ios/samplecode/AppPrefs/Introduction/Intro.html) sample | How to display your app's user configurable options (preferences) in the "Settings" system application. |
 | [BatteryStatus](BatteryStatus/)     | Port of Apple's [BatteryStatus](https://developer.apple.com/library/ios/samplecode/BatteryStatus/Introduction/Intro.html) sample | How to use the battery status properties and notifications provided via the iOS SDK. |
+| [ContractR](ContractR/) | Task tracking app | How to setup a cross-platform iOS/Android app, use SQLite |
 | [CurrentAddress](CurrentAddress/)     | Port of Apple's [CurrentAddress](https://developer.apple.com/library/ios/samplecode/CurrentAddress/Introduction/Intro.html) sample | How to use MapKit, displaying a map view and setting its region to current location. |
 | [DateCell](DateCell/)     | Port of Apple's [DateCell](https://developer.apple.com/library/ios/samplecode/DateCell/Introduction/Intro.html) | How to display formatted date objects in table cells and use UIDatePicker to edit those values. |
 | [DocInteraction](DocInteraction/)     | Port of Apple's [DocInteraction](https://developer.apple.com/library/ios/samplecode/DocInteraction/Introduction/Intro.html) sample | How to use UIDocumentInteractionController to obtain information about documents and how to preview them. |
