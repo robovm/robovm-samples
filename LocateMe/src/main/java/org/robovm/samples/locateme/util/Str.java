@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,63 +13,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's LocateMe sample (v2.2)
- * which is copyright (C) 2008-2010 Apple Inc.
+ * Portions of this code is based on Apple Inc's LocateMe sample (v4.0)
+ * which is copyright (C) 2008-2014 Apple Inc.
  */
 
-package org.robovm.samples.locateme;
+package org.robovm.samples.locateme.util;
 
 import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.foundation.NSString;
 
 public class Str {
-    public static String getLocalizedString (String key) {
+    public static String getLocalizedString(String key) {
         return NSString.getLocalizedString(key);
     }
 
-    public static String getLocalizedCoordinateString (CLLocation location) {
+    public static String getLocalizedCoordinateString(CLLocation location) {
         if (location.getHorizontalAccuracy() < 0) {
             return getLocalizedString("DataUnavailable");
         }
         String latString = (location.getCoordinate().getLatitude() < 0) ? getLocalizedString("South")
-            : getLocalizedString("North");
+                : getLocalizedString("North");
         String lonString = (location.getCoordinate().getLongitude() < 0) ? getLocalizedString("West")
-            : getLocalizedString("East");
+                : getLocalizedString("East");
         return String.format("%.4f° %s, %.4f° %s", Math.abs(location.getCoordinate().getLatitude()), latString,
-            Math.abs(location.getCoordinate().getLongitude()), lonString);
+                Math.abs(location.getCoordinate().getLongitude()), lonString);
     }
 
-    public static String getLocalizedAltitudeString (CLLocation location) {
+    public static String getLocalizedAltitudeString(CLLocation location) {
         if (location.getVerticalAccuracy() < 0) {
             return getLocalizedString("DataUnavailable");
         }
         String seaLevelString = (location.getAltitude() < 0) ? getLocalizedString("BelowSeaLevel")
-            : getLocalizedString("AboveSeaLevel");
+                : getLocalizedString("AboveSeaLevel");
         return String.format("%.2f meters %s", Math.abs(location.getAltitude()), seaLevelString);
     }
 
-    public static String getLocalizedHorizontalAccuracyString (CLLocation location) {
+    public static String getLocalizedHorizontalAccuracyString(CLLocation location) {
         if (location.getHorizontalAccuracy() < 0) {
             return getLocalizedString("DataUnavailable");
         }
         return String.format("%.2f meters", location.getHorizontalAccuracy());
     }
 
-    public static String getLocalizedVerticalAccuracyString (CLLocation location) {
+    public static String getLocalizedVerticalAccuracyString(CLLocation location) {
         if (location.getVerticalAccuracy() < 0) {
             return getLocalizedString("DataUnavailable");
         }
         return String.format("%.2f meters", location.getVerticalAccuracy());
     }
 
-    public static String getLocalizedCourseString (CLLocation location) {
+    public static String getLocalizedCourseString(CLLocation location) {
         if (location.getCourse() < 0) {
             return getLocalizedString("DataUnavailable");
         }
         return String.format("%.4f° Clockwise from North", location.getCourse());
     }
 
-    public static String getLocalizedSpeedString (CLLocation location) {
+    public static String getLocalizedSpeedString(CLLocation location) {
         if (location.getSpeed() < 0) {
             return getLocalizedString("DataUnavailable");
         }

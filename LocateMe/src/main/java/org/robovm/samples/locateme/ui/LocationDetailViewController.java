@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's LocateMe sample (v2.2)
- * which is copyright (C) 2008-2010 Apple Inc.
+ * Portions of this code is based on Apple Inc's LocateMe sample (v4.0)
+ * which is copyright (C) 2008-2014 Apple Inc.
  */
 
-package org.robovm.samples.locateme.viewcontrollers;
+package org.robovm.samples.locateme.ui;
 
 import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSIndexPath;
+import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITableViewStyle;
-import org.robovm.samples.locateme.Str;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.samples.locateme.util.Str;
 
+@CustomClass("LocationDetailViewController")
 public class LocationDetailViewController extends UITableViewController {
     private CLLocation location;
-    private final NSDateFormatter dateFormatter;
+    private NSDateFormatter dateFormatter;
 
-    public LocationDetailViewController (UITableViewStyle style) {
+    public LocationDetailViewController(UITableViewStyle style) {
         super(style);
+    }
+
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
 
         dateFormatter = new NSDateFormatter();
         dateFormatter.setDateStyle(NSDateFormatterStyle.Medium);
@@ -44,24 +52,26 @@ public class LocationDetailViewController extends UITableViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
+
+        setTitle(NSString.getLocalizedString("LocationInfo"));
         getTableView().reloadData();
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         return 3;
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         return (section == 0) ? 3 : 2;
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
-        switch ((int)section) {
+    public String getTitleForHeader(UITableView tableView, long section) {
+        switch ((int) section) {
         case 0:
             return Str.getLocalizedString("Attributes");
         case 1:
@@ -72,15 +82,15 @@ public class LocationDetailViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         final String locationAttributeCellID = "LocationAttributeCellID";
         UITableViewCell cell = tableView.dequeueReusableCell(locationAttributeCellID);
         if (cell == null) {
             cell = new UITableViewCell(UITableViewCellStyle.Value2, locationAttributeCellID);
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
         }
-        int section = (int)indexPath.getSection();
-        int row = (int)indexPath.getRow();
+        int section = indexPath.getSection();
+        int row = indexPath.getRow();
         if (section == 0) {
             switch (row) {
             case 0:
@@ -122,7 +132,7 @@ public class LocationDetailViewController extends UITableViewController {
         return cell;
     }
 
-    public void setLocation (CLLocation location) {
+    public void setLocation(CLLocation location) {
         this.location = location;
     }
 }

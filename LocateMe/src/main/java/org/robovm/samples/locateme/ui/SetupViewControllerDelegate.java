@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's LocateMe sample (v2.2)
- * which is copyright (C) 2008-2010 Apple Inc.
+ * Portions of this code is based on Apple Inc's LocateMe sample (v4.0)
+ * which is copyright (C) 2008-2014 Apple Inc.
  */
 
-package org.robovm.samples.locateme.viewcontrollers;
+package org.robovm.samples.locateme.ui;
 
 import java.util.Map;
 
 public interface SetupViewControllerDelegate {
-    public void didFinishSetup (SetupViewController viewController, Map<String, Double> setupInfo);
+    public void didFinishSetup(SetupViewController viewController, Map<String, Double> setupInfo);
 }
