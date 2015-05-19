@@ -172,7 +172,7 @@ public class MyTableViewController extends UITableViewController {
             if (targetedDatePicker != null) {
                 // we found a UIDatePicker in this cell, so update it's date
                 // value
-                CellData itemData = data.get(datePickerIndexPath.getRow() - 1);
+                CellData itemData = data.get((int)datePickerIndexPath.getRow() - 1);
                 targetedDatePicker.setDate(itemData.date, false);
             }
         }
@@ -258,7 +258,7 @@ public class MyTableViewController extends UITableViewController {
         // if we have a date picker open whose cell is above the cell we want to
         // update,
         // then we have one more cell than the model allows
-        int modelRow = indexPath.getRow();
+        int modelRow = (int)indexPath.getRow();
         if (datePickerIndexPath != null && datePickerIndexPath.getRow() <= indexPath.getRow()) {
             modelRow--;
         }
@@ -356,7 +356,7 @@ public class MyTableViewController extends UITableViewController {
      */
     private void displayExternalDatePickerForRow(NSIndexPath indexPath) {
         // first update the date picker's date value according to our model
-        CellData itemData = data.get(indexPath.getRow());
+        CellData itemData = data.get((int)indexPath.getRow());
         pickerView.setDate(itemData.date, true);
 
         // the date picker might already be showing, so don't add it to our view
@@ -428,7 +428,7 @@ public class MyTableViewController extends UITableViewController {
         UIDatePicker targetedDatePicker = (UIDatePicker) sender;
 
         // update our data model
-        CellData itemData = data.get(targetedCellIndexPath.getRow());
+        CellData itemData = data.get((int)targetedCellIndexPath.getRow());
         itemData.date = targetedDatePicker.getDate();
 
         // update the cell's date string
