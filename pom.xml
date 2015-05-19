@@ -95,11 +95,11 @@
         <module>Regions</module>
         <module>SamplePhotosApp</module>
         <module>StreetScroller</module>
-        <module>TableSearch</module>
+        <!--<module>TableSearch</module>-->
         <module>Tabster</module>
         <module>Tabster-no-ib</module>
         <module>Teslameter</module>
-        <module>TheElements</module>
+        <!--<module>TheElements</module>-->
         <module>Touches</module>
         <module>UICatalog</module>
         <module>VideoRecorder</module>
