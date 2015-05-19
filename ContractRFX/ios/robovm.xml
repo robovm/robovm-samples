@@ -1,0 +1,59 @@
+<config>
+  <executableName>${app.executable}</executableName>
+  <mainClass>${app.mainclass}</mainClass>
+  <os>ios</os>
+  <arch>thumbv7</arch>
+  <resources>
+    <resource>
+      <directory>resources</directory>
+    </resource>
+  </resources>
+  <target>ios</target>
+  <iosInfoPList>Info.plist.xml</iosInfoPList>
+  <forceLinkClasses>
+    <pattern>SQLite.JDBCDriver</pattern>
+    <pattern>SQLite.JDBC2z.JDBCConnection</pattern>
+
+    <pattern>java.util.logging.LoggingProxyImpl</pattern>
+    <pattern>com.sun.javafx.tk.quantum.QuantumToolkit</pattern>
+    <pattern>com.sun.prism.es2.ES2Pipeline</pattern>
+    <pattern>com.sun.prism.es2.IOSGLFactory</pattern>
+    <pattern>com.sun.glass.ui.ios.**.*</pattern>
+    <pattern>javafx.scene.CssStyleHelper</pattern>
+    <pattern>javafx.scene.control.ToolBar</pattern>
+    <pattern>com.sun.prism.shader.**.*</pattern>
+    <pattern>com.sun.scenario.effect.impl.prism.**</pattern>
+    <pattern>com.sun.scenario.effect.impl.es2.ES2ShaderSource</pattern>
+    <pattern>com.sun.javafx.font.coretext.CTFactory</pattern>
+    
+    <pattern>java.util.logging.SimpleFormatter</pattern>
+    <pattern>java.util.logging.ConsoleHandler</pattern>
+    
+    <pattern>com.fasterxml.aalto.stax.InputFactoryImpl</pattern>
+    <pattern>org.codehaus.stax2.XMLInputFactory2</pattern>
+    
+    <pattern>jfxtras.labs.**</pattern>
+  </forceLinkClasses>
+  <libs>
+    <lib>lib/libprism_common.a</lib>
+    <lib>lib/libprism_es2.a</lib>
+    <lib>lib/libglass.a</lib>
+    <lib>lib/libjavafx_font.a</lib>
+    <lib>lib/libjavafx_iio.a</lib>
+    <lib>lib/libjavafx_ios_webnode.a</lib>
+    <lib>lib/libjfxmedia.a</lib>
+  </libs>
+  <frameworks>
+    <framework>UIKit</framework>
+    <framework>OpenGLES</framework>
+    <framework>QuartzCore</framework>
+    <framework>CoreGraphics</framework>
+    <framework>CoreText</framework>
+    <framework>ImageIO</framework>
+    <framework>MobileCoreServices</framework>
+    <framework>AVFoundation</framework>
+    <framework>CoreMedia</framework>
+    <framework>MediaPlayer</framework>
+    <framework>AudioToolbox</framework>
+  </frameworks>
+</config>
