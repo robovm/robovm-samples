@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * which is copyright (C) 2009-2014 Apple Inc.
  */
 
-package org.robovm.samples.datecell.viewcontrollers;
+package org.robovm.samples.datecell.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,210 +33,184 @@ import org.robovm.apple.foundation.NSLocale;
 import org.robovm.apple.foundation.NSNotificationCenter;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.UIBarButtonItem;
-import org.robovm.apple.uikit.UIBarButtonSystemItem;
 import org.robovm.apple.uikit.UIControl;
 import org.robovm.apple.uikit.UIDatePicker;
-import org.robovm.apple.uikit.UIDatePickerMode;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCell;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
-import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITableViewRowAnimation;
-import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.apple.uikit.UIView;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBAction;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.objc.block.VoidBooleanBlock;
 
+@CustomClass("MyTableViewController")
 public class MyTableViewController extends UITableViewController {
-    private static final double PICKER_ANIMATION_DURATION = 0.40; // duration for the animation to slide the date picker into view
-    private static final double PICKER_CELL_ROW_HEIGHT = 216;
-    private static final long DATE_PICKER_TAG = 99; // view tag identifiying the date picker view
+    /**
+     * duration for the animation to slide the date picker into view
+     */
+    private static final double PICKER_ANIMATION_DURATION = 0.40;
+    /**
+     * view tag identifying the date picker view
+     */
+    private static final long DATE_PICKER_TAG = 99;
 
     // keep track of which rows have date cells
     private static final int DATE_START_ROW = 1;
     private static final int DATE_END_ROW = 2;
 
-    private static final String DATE_CELL_ID = "dateCell"; // the cells with the start or end date
-    private static final String DATE_PICKER_ID = "datePicker"; // the cell containing the date picker
-    private static final String OTHER_CELL_ID = "otherCell"; // the remaining cells at the end
+    /**
+     * the cells with the start or end date
+     */
+    private static final String DATE_CELL_ID = "dateCell";
+    /**
+     * the cell containing the date picker
+     */
+    private static final String DATE_PICKER_ID = "datePicker";
+    /**
+     * the remaining cells at the end
+     */
+    private static final String OTHER_CELL_ID = "otherCell";
 
     public class CellData {
         String title;
         NSDate date;
 
-        public CellData (String title, NSDate date) {
+        public CellData(String title, NSDate date) {
             this.title = title;
             this.date = date;
         }
     }
 
-    public class DateViewCell extends UITableViewCell {
-        @Override
-        protected long init (UITableViewCellStyle style, String reuseIdentifier) {
-            // ignore the style argument and force the creation with a specific style
-            return super.init(UITableViewCellStyle.Value1, reuseIdentifier);
-        }
-    }
-
-    private final List<CellData> data = new ArrayList<>();
-    private final NSDateFormatter dateFormatter = new NSDateFormatter();
+    private List<CellData> data;
+    private NSDateFormatter dateFormatter;
 
     // keep track which indexPath points to the cell with UIDatePicker
     private NSIndexPath datePickerIndexPath;
 
-    private final UIDatePicker pickerView;
+    private double pickerCellRowHeight;
 
-    // this button appears only when the date picker is shown (iOS 6.1.x or earlier)
-    private final UIBarButtonItem doneButton;
+    private UIDatePicker pickerView;
 
-    private final NSObject localeNotif;
+    // this button appears only when the date picker is shown (iOS 6.1.x or
+    // earlier)
+    private UIBarButtonItem doneButton;
 
-    public MyTableViewController () {
-        setTitle("DateCell");
+    private NSObject localeNotif;
 
-        setTableView(new UITableView(new CGRect(0, 64, 320, 460), UITableViewStyle.Grouped));
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
 
         // setup our data source
+        data = new ArrayList<>();
         data.add(new CellData("Tap a cell to change its date:", null));
         data.add(new CellData("Start Date", new NSDate()));
         data.add(new CellData("End Date", new NSDate()));
         data.add(new CellData("(other item1)", null));
         data.add(new CellData("(other item2)", null));
 
+        dateFormatter = new NSDateFormatter();
         dateFormatter.setDateStyle(NSDateFormatterStyle.Short);
         dateFormatter.setTimeStyle(NSDateFormatterStyle.No);
 
-        pickerView = new UIDatePicker(new CGRect(0, 0, 320, 216));
-        pickerView.setDatePickerMode(UIDatePickerMode.Date);
-        pickerView.addOnValueChangedListener(new UIControl.OnValueChangedListener() {
-            /** User chose to change the date by changing the values inside the UIDatePicker.
-             * @param control */
-            @Override
-            public void onValueChanged (UIControl control) {
-                NSIndexPath targetedCellIndexPath = null;
+        // obtain the picker view cell's height, works because the cell was
+        // pre-defined in our storyboard
+        UITableViewCell pickerViewCellToCheck = getTableView().dequeueReusableCell(DATE_PICKER_ID);
+        pickerCellRowHeight = pickerViewCellToCheck.getFrame().getHeight();
 
-                if (hasInlineDatePicker()) {
-                    // inline date picker: update the cell's date "above" the date picker cell
-                    targetedCellIndexPath = NSIndexPath.createWithRow(datePickerIndexPath.getRow() - 1, 0);
-                } else {
-                    // external date picker: update the current "selected" cell's date
-                    targetedCellIndexPath = getTableView().getIndexPathForSelectedRow();
-                }
-
-                UITableViewCell cell = getTableView().getCellForRow(targetedCellIndexPath);
-                UIDatePicker targetedDatePicker = pickerView;
-
-                // update our data model
-                CellData itemData = data.get((int)targetedCellIndexPath.getRow());
-                itemData.date = targetedDatePicker.getDate();
-
-                // update the cell's date string
-                cell.getDetailTextLabel().setText(dateFormatter.format(targetedDatePicker.getDate()));
-            }
-        });
-
-        doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done, new UIBarButtonItem.OnClickListener() {
-            /** User chose to finish using the UIDatePicker by pressing the "Done" button (used only for "non-inline" date picker,
-             * iOS 6.1.x or earlier)
-             * @param barButtonItem */
-            @Override
-            public void onClick (UIBarButtonItem barButtonItem) {
-                final CGRect pickerFrame = pickerView.getFrame();
-                pickerFrame.getOrigin().setY(getView().getFrame().getHeight());
-
-                // animate the date picker out of view
-                UIView.animate(PICKER_ANIMATION_DURATION, new Runnable() {
-                    @Override
-                    public void run () {
-                        pickerView.setFrame(pickerFrame);
-                    }
-                }, new VoidBooleanBlock() {
-                    @Override
-                    public void invoke (boolean v) {
-                        pickerView.removeFromSuperview();
-                    }
-                });
-
-                // remove the "Done" button in the navigation bar
-                getNavigationItem().setRightBarButtonItem(null);
-
-                // deselect the current table cell
-                NSIndexPath indexPath = getTableView().getIndexPathForSelectedRow();
-                getTableView().deselectRow(indexPath, true);
-            }
-        });
-
-        // if the local changes while in the background, we need to be notified so we can update the date
-        // format in the table view cells
+        // if the locale changes while in the background, we need to be notified
+        // so we can update the date format in the table view cells
         localeNotif = NSLocale.Notifications.observeCurrentLocaleDidChange(new Runnable() {
             @Override
-            public void run () {
-                // the user changed the locale (region format) in Settings, so we are notified here to
+            public void run() {
+                // the user changed the locale (region format) in Settings, so
+                // we are notified here to
                 // update the date format in the table view cells
                 getTableView().reloadData();
             }
         });
-
-        getTableView().registerReusableCellClass(DateViewCell.class, DATE_CELL_ID);
-        getTableView().registerReusableCellClass(UITableViewCell.class, DATE_PICKER_ID);
-        getTableView().registerReusableCellClass(UITableViewCell.class, OTHER_CELL_ID);
     }
 
     @Override
-    protected void dispose (boolean finalizing) {
+    protected void dispose(boolean finalizing) {
         NSNotificationCenter.getDefaultCenter().removeObserver(localeNotif);
         super.dispose(finalizing);
     }
 
-    /** Determines if the given indexPath has a cell below it with a UIDatePicker.
-     * @param indexPath The indexPath to check if its cell has a UIDatePicker below it. */
-    private boolean hasPickerForIndexPath (NSIndexPath indexPath) {
+    /**
+     * Determines if the given indexPath has a cell below it with a
+     * UIDatePicker.
+     * 
+     * @param indexPath The indexPath to check if its cell has a UIDatePicker
+     *            below it.
+     */
+    private boolean hasPickerForIndexPath(NSIndexPath indexPath) {
         boolean hasDatePicker = false;
 
         long targetedRow = indexPath.getRow();
         targetedRow++;
 
         UITableViewCell checkDatePickerCell = getTableView().getCellForRow(NSIndexPath.createWithRow(targetedRow, 0));
-        UIDatePicker checkDatePicker = (UIDatePicker)checkDatePickerCell.getViewWithTag(DATE_PICKER_TAG);
+        UIDatePicker checkDatePicker = (UIDatePicker) checkDatePickerCell.getViewWithTag(DATE_PICKER_TAG);
 
         hasDatePicker = checkDatePicker != null;
         return hasDatePicker;
     }
 
-    /** Updates the UIDatePicker's value to match with the date of the cell above it. */
-    private void updateDatePicker () {
+    /**
+     * Updates the UIDatePicker's value to match with the date of the cell above
+     * it.
+     */
+    private void updateDatePicker() {
         if (datePickerIndexPath != null) {
             UITableViewCell associatedDatePickerCell = getTableView().getCellForRow(datePickerIndexPath);
 
-            UIDatePicker targetedDatePicker = (UIDatePicker)associatedDatePickerCell.getViewWithTag(DATE_PICKER_TAG);
+            UIDatePicker targetedDatePicker = (UIDatePicker) associatedDatePickerCell.getViewWithTag(DATE_PICKER_TAG);
             if (targetedDatePicker != null) {
-                // we found a UIDatePicker in this cell, so update it's date value
-                CellData itemData = data.get((int)datePickerIndexPath.getRow() - 1);
+                // we found a UIDatePicker in this cell, so update it's date
+                // value
+                CellData itemData = data.get(datePickerIndexPath.getRow() - 1);
                 targetedDatePicker.setDate(itemData.date, false);
             }
         }
     }
 
-    /** @return if the UITableViewController has a UIDatePicker in any of its cells. */
-    private boolean hasInlineDatePicker () {
+    /**
+     * @return if the UITableViewController has a UIDatePicker in any of its
+     *         cells.
+     */
+    private boolean hasInlineDatePicker() {
         return datePickerIndexPath != null;
     }
 
-    /** Determines if the given indexPath points to a cell that contains the UIDatePicker.
-     * @param indexPath The indexPath to check if it represents a cell with the UIDatePicker.
-     * @return */
-    private boolean indexPathHasPicker (NSIndexPath indexPath) {
+    /**
+     * Determines if the given indexPath points to a cell that contains the
+     * UIDatePicker.
+     * 
+     * @param indexPath The indexPath to check if it represents a cell with the
+     *            UIDatePicker.
+     * @return
+     */
+    private boolean indexPathHasPicker(NSIndexPath indexPath) {
         return hasInlineDatePicker() && datePickerIndexPath.getRow() == indexPath.getRow();
     }
 
-    /** Determines if the given indexPath points to a cell that contains the start/end dates.
-     * @param indexPath The indexPath to check if it represents start/end date cell.
-     * @return */
-    private boolean indexPathHasDate (NSIndexPath indexPath) {
+    /**
+     * Determines if the given indexPath points to a cell that contains the
+     * start/end dates.
+     * 
+     * @param indexPath The indexPath to check if it represents start/end date
+     *            cell.
+     * @return
+     */
+    private boolean indexPathHasDate(NSIndexPath indexPath) {
         boolean hasDate = false;
 
         if ((indexPath.getRow() == DATE_START_ROW)
-            || (indexPath.getRow() == DATE_END_ROW || (hasInlineDatePicker() && (indexPath.getRow() == DATE_END_ROW + 1)))) {
+                || (indexPath.getRow() == DATE_END_ROW || (hasInlineDatePicker() && (indexPath.getRow() == DATE_END_ROW + 1)))) {
             hasDate = true;
         }
 
@@ -244,14 +218,15 @@ public class MyTableViewController extends UITableViewController {
     }
 
     @Override
-    public double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
-        return indexPathHasPicker(indexPath) ? PICKER_CELL_ROW_HEIGHT : tableView.getRowHeight();
+    public double getHeightForRow(UITableView tableView, NSIndexPath indexPath) {
+        return indexPathHasPicker(indexPath) ? pickerCellRowHeight : tableView.getRowHeight();
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         if (hasInlineDatePicker()) {
-            // we have a date picker, so allow for it in the number of rows in this section
+            // we have a date picker, so allow for it in the number of rows in
+            // this section
             int numRows = data.size();
             return ++numRows;
         }
@@ -259,7 +234,7 @@ public class MyTableViewController extends UITableViewController {
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = null;
 
         String cellID = OTHER_CELL_ID;
@@ -273,18 +248,17 @@ public class MyTableViewController extends UITableViewController {
         }
 
         cell = getTableView().dequeueReusableCell(cellID);
-        if (cellID.equals(DATE_PICKER_ID)) {
-            cell.getContentView().addSubview(pickerView);
-        }
 
         if (indexPath.getRow() == 0) {
-            // we decide here that first cell in the table is not selectable (it's just an indicator)
+            // we decide here that first cell in the table is not selectable
+            // (it's just an indicator)
             cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
         }
 
-        // if we have a date picker open whose cell is above the cell we want to update,
+        // if we have a date picker open whose cell is above the cell we want to
+        // update,
         // then we have one more cell than the model allows
-        int modelRow = (int)indexPath.getRow();
+        int modelRow = indexPath.getRow();
         if (datePickerIndexPath != null && datePickerIndexPath.getRow() <= indexPath.getRow()) {
             modelRow--;
         }
@@ -307,9 +281,12 @@ public class MyTableViewController extends UITableViewController {
         return cell;
     }
 
-    /** Adds or removes a UIDatePicker cell below the given indexPath.
-     * @param indexPath The indexPath to reveal the UIDatePicker. */
-    private void toggleDatePicker (NSIndexPath indexPath) {
+    /**
+     * Adds or removes a UIDatePicker cell below the given indexPath.
+     * 
+     * @param indexPath The indexPath to reveal the UIDatePicker.
+     */
+    private void toggleDatePicker(NSIndexPath indexPath) {
         getTableView().beginUpdates();
 
         NSArray<NSIndexPath> indexPaths = new NSArray<>(NSIndexPath.createWithRow(indexPath.getRow() + 1, 0));
@@ -326,13 +303,19 @@ public class MyTableViewController extends UITableViewController {
         getTableView().endUpdates();
     }
 
-    /** Reveals the date picker inline for the given indexPath, called by "didSelectRowAtIndexPath".
-     * @param indexPath The indexPath to reveal the UIDatePicker. */
-    private void displayInlineDatePickerForRow (NSIndexPath indexPath) {
+    /**
+     * Reveals the date picker inline for the given indexPath, called by
+     * "didSelectRowAtIndexPath".
+     * 
+     * @param indexPath The indexPath to reveal the UIDatePicker.
+     */
+    private void displayInlineDatePickerForRow(NSIndexPath indexPath) {
         // display the date picker inline with the table content
         getTableView().beginUpdates();
 
-        boolean before = false; // indicates if the date picker is below "indexPath", help us determine which row to reveal
+        boolean before = false; // indicates if the date picker is below
+                                // "indexPath", help us determine which row to
+                                // reveal
         if (hasInlineDatePicker()) {
             before = datePickerIndexPath.getRow() < indexPath.getRow();
         }
@@ -341,8 +324,9 @@ public class MyTableViewController extends UITableViewController {
 
         // remove any date picker cell if it exists
         if (hasInlineDatePicker()) {
-            getTableView().deleteRows(new NSArray<NSIndexPath>(NSIndexPath.createWithRow(datePickerIndexPath.getRow(), 0)),
-                UITableViewRowAnimation.Fade);
+            getTableView().deleteRows(
+                    new NSArray<NSIndexPath>(NSIndexPath.createWithRow(datePickerIndexPath.getRow(), 0)),
+                    UITableViewRowAnimation.Fade);
             datePickerIndexPath = null;
         }
 
@@ -364,11 +348,15 @@ public class MyTableViewController extends UITableViewController {
         updateDatePicker();
     }
 
-    /** Reveals the UIDatePicker as an external slide-in view, iOS 6.1.x and earlier, called by "didSelectRowAtIndexPath".
-     * @param indexPath The indexPath used to display the UIDatePicker. */
-    private void displayExternalDatePickerForRow (NSIndexPath indexPath) {
+    /**
+     * Reveals the UIDatePicker as an external slide-in view, iOS 6.1.x and
+     * earlier, called by "didSelectRow".
+     * 
+     * @param indexPath The indexPath used to display the UIDatePicker.
+     */
+    private void displayExternalDatePickerForRow(NSIndexPath indexPath) {
         // first update the date picker's date value according to our model
-        CellData itemData = data.get((int)indexPath.getRow());
+        CellData itemData = data.get(indexPath.getRow());
         pickerView.setDate(itemData.date, true);
 
         // the date picker might already be showing, so don't add it to our view
@@ -389,12 +377,12 @@ public class MyTableViewController extends UITableViewController {
             // animate the date picker into view
             UIView.animate(PICKER_ANIMATION_DURATION, new Runnable() {
                 @Override
-                public void run () {
+                public void run() {
                     pickerView.setFrame(endFrame);
                 }
             }, new VoidBooleanBlock() {
                 @Override
-                public void invoke (boolean v) {
+                public void invoke(boolean v) {
                     // add the "Done" button to the nav bar
                     getNavigationItem().setRightBarButtonItem(doneButton);
                 }
@@ -403,7 +391,7 @@ public class MyTableViewController extends UITableViewController {
     }
 
     @Override
-    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = tableView.getCellForRow(indexPath);
         if (cell.getReuseIdentifier().equals(DATE_CELL_ID)) {
             if (Foundation.getMajorSystemVersion() >= 7) {
@@ -414,5 +402,78 @@ public class MyTableViewController extends UITableViewController {
         } else {
             tableView.deselectRow(indexPath, true);
         }
+    }
+
+    /**
+     * User chose to change the date by changing the values inside the
+     * UIDatePicker.
+     * 
+     * @param control
+     */
+    @IBAction
+    private void dateAction(UIControl sender) {
+        NSIndexPath targetedCellIndexPath = null;
+
+        if (hasInlineDatePicker()) {
+            // inline date picker: update the cell's date "above" the
+            // date picker cell
+            targetedCellIndexPath = NSIndexPath.createWithRow(datePickerIndexPath.getRow() - 1, 0);
+        } else {
+            // external date picker: update the current "selected"
+            // cell's date
+            targetedCellIndexPath = getTableView().getIndexPathForSelectedRow();
+        }
+
+        UITableViewCell cell = getTableView().getCellForRow(targetedCellIndexPath);
+        UIDatePicker targetedDatePicker = (UIDatePicker) sender;
+
+        // update our data model
+        CellData itemData = data.get(targetedCellIndexPath.getRow());
+        itemData.date = targetedDatePicker.getDate();
+
+        // update the cell's date string
+        cell.getDetailTextLabel().setText(dateFormatter.format(targetedDatePicker.getDate()));
+    }
+
+    /**
+     * User chose to finish using the UIDatePicker by pressing the "Done" button
+     * (used only for "non-inline" date picker, iOS 6.1.x or earlier)
+     * 
+     * @param control
+     */
+    @IBAction
+    private void doneAction(UIBarButtonItem sender) {
+        final CGRect pickerFrame = pickerView.getFrame();
+        pickerFrame.getOrigin().setY(getView().getFrame().getHeight());
+
+        // animate the date picker out of view
+        UIView.animate(PICKER_ANIMATION_DURATION, new Runnable() {
+            @Override
+            public void run() {
+                pickerView.setFrame(pickerFrame);
+            }
+        }, new VoidBooleanBlock() {
+            @Override
+            public void invoke(boolean v) {
+                pickerView.removeFromSuperview();
+            }
+        });
+
+        // remove the "Done" button in the navigation bar
+        getNavigationItem().setRightBarButtonItem(null);
+
+        // deselect the current table cell
+        NSIndexPath indexPath = getTableView().getIndexPathForSelectedRow();
+        getTableView().deselectRow(indexPath, true);
+    }
+
+    @IBOutlet
+    private void setPickerView(UIDatePicker pickerView) {
+        this.pickerView = pickerView;
+    }
+
+    @IBOutlet
+    private void setDoneButton(UIBarButtonItem doneButton) {
+        this.doneButton = doneButton;
     }
 }
