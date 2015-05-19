@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * which is copyright (C) 2010-2014 Apple Inc.
  */
 
-package org.robovm.samples.docinteraction;
+package org.robovm.samples.docinteraction.ui;
 
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSURL;
@@ -26,17 +26,17 @@ import org.robovm.apple.quicklook.QLPreviewItem;
 public class QLBasicPreviewItem extends NSObject implements QLPreviewItem {
     private final NSURL url;
 
-    public QLBasicPreviewItem (NSURL url) {
+    public QLBasicPreviewItem(NSURL url) {
         this.url = url;
     }
 
     @Override
-    public NSURL getURL () {
+    public NSURL getURL() {
         return url;
     }
 
     @Override
-    public String getTitle () {
+    public String getTitle() {
         return url.getLastPathComponent();
     }
 }

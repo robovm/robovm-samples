@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * which is copyright (C) 2010-2014 Apple Inc.
  */
 
-package org.robovm.samples.docinteraction.viewcontrollers;
+package org.robovm.samples.docinteraction.ui;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,17 +50,22 @@ import org.robovm.apple.uikit.UITableViewCellAccessoryType;
 import org.robovm.apple.uikit.UITableViewCellStyle;
 import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.samples.docinteraction.QLBasicPreviewItem;
+import org.robovm.objc.annotation.CustomClass;
 
-public class DITableViewController extends UITableViewController {
-    private static String[] documents = new String[] { "Text Document.txt", "Image Document.jpg", "PDF Document.pdf",
-        "HTML Document.html" };
+@CustomClass("DITableViewController")
+public class DITableViewController extends UITableViewController implements UIGestureRecognizer.OnGestureListener {
+    private static final int ROW_HEIGHT = 58;
+    private static final String[] documents = new String[] { "Text Document.txt", "Image Document.jpg",
+        "PDF Document.pdf", "HTML Document.html" };
 
-    private final List<NSURL> documentURLs = new ArrayList<>();
+    private List<NSURL> documentURLs;
     private UIDocumentInteractionController docInteractionController;
 
-    public DITableViewController() {
-        setTitle("DocInteraction");
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
+
+        documentURLs = new ArrayList<>();
 
         // scan for existing documents
         readDirectory();
@@ -160,11 +165,11 @@ public class DITableViewController extends UITableViewController {
         NSURL fileURL;
         if (indexPath.getSection() == 0) {
             // first section is our build-in documents
-            fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(documents[(int) indexPath.getRow()],
+            fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(documents[indexPath.getRow()],
                     null)));
         } else {
             // second section is the contents of the Documents folder
-            fileURL = documentURLs.get((int) indexPath.getRow());
+            fileURL = documentURLs.get(indexPath.getRow());
         }
         setupDocumentController(fileURL);
 
@@ -189,35 +194,7 @@ public class DITableViewController extends UITableViewController {
             // cell.getContentView().setGestureRecognizers(docInteractionController.getGestureRecognizers());
             // or
             // add a custom gesture recognizer in lieu of using the canned ones
-            UILongPressGestureRecognizer longPressGesture = new UILongPressGestureRecognizer(
-                    new UIGestureRecognizer.OnGestureListener() {
-                        // if we installed a custom UIGestureRecognizer (i.e.
-                        // long-hold), then this would be called
-                        @Override
-                        public void onGesture(UIGestureRecognizer gestureRecognizer) {
-                            UILongPressGestureRecognizer longPressGesture = (UILongPressGestureRecognizer) gestureRecognizer;
-                            if (longPressGesture.getState() == UIGestureRecognizerState.Began) {
-                                NSIndexPath cellIndexPath = getTableView().getIndexPathForRow(
-                                        longPressGesture.getLocationInView(getTableView()));
-
-                                NSURL fileURL;
-                                if (cellIndexPath.getSection() == 0) {
-                                    // for section 0, we preview the docs built
-                                    // into our app
-                                    fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(
-                                            documents[(int) cellIndexPath.getRow()], null)));
-                                } else {
-                                    // for secton 1, we preview the docs found
-                                    // in the Documents folder
-                                    fileURL = documentURLs.get((int) cellIndexPath.getRow());
-                                }
-                                docInteractionController.setURL(fileURL);
-
-                                docInteractionController.presentOptionsMenu(longPressGesture.getView().getFrame(),
-                                        longPressGesture.getView(), true);
-                            }
-                        }
-                    });
+            UILongPressGestureRecognizer longPressGesture = new UILongPressGestureRecognizer(this);
             cell.getImageView().addGestureRecognizer(longPressGesture);
             cell.getImageView().setUserInteractionEnabled(true);// this is by
                                                                 // default
@@ -233,7 +210,7 @@ public class DITableViewController extends UITableViewController {
 
     @Override
     public double getHeightForRow(UITableView tableView, NSIndexPath indexPath) {
-        return 58;
+        return ROW_HEIGHT;
     }
 
     @Override
@@ -264,7 +241,6 @@ public class DITableViewController extends UITableViewController {
          */
 
         // for case 3 we use the QuickLook APIs directly to preview the document
-        // -
         QLPreviewController previewController = new QLPreviewController();
         previewController.setDataSource(new QLPreviewControllerDataSourceAdapter() {
             // Returns the number of items that the preview controller should
@@ -309,5 +285,32 @@ public class DITableViewController extends UITableViewController {
         // start previewing the document at the current section index
         previewController.setCurrentPreviewItemIndex(indexPath.getRow());
         getNavigationController().pushViewController(previewController, true);
+    }
+
+    // if we installed a custom UIGestureRecognizer (i.e.
+    // long-hold), then this would be called
+    @Override
+    public void onGesture(UIGestureRecognizer gestureRecognizer) {
+        UILongPressGestureRecognizer longPressGesture = (UILongPressGestureRecognizer) gestureRecognizer;
+        if (longPressGesture.getState() == UIGestureRecognizerState.Began) {
+            NSIndexPath cellIndexPath = getTableView().getIndexPathForRow(
+                    longPressGesture.getLocationInView(getTableView()));
+
+            NSURL fileURL;
+            if (cellIndexPath.getSection() == 0) {
+                // for section 0, we preview the docs built
+                // into our app
+                fileURL = new NSURL(new File(NSBundle.getMainBundle().findResourcePath(
+                        documents[cellIndexPath.getRow()], null)));
+            } else {
+                // for secton 1, we preview the docs found
+                // in the Documents folder
+                fileURL = documentURLs.get(cellIndexPath.getRow());
+            }
+            docInteractionController.setURL(fileURL);
+
+            docInteractionController.presentOptionsMenu(longPressGesture.getView().getFrame(),
+                    longPressGesture.getView(), true);
+        }
     }
 }
