@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * which is copyright (C) 2010-2012 Apple Inc.
  */
 
-package org.robovm.samples.photoscroller.views;
+package org.robovm.samples.photoscroller.ui;
 
 import java.io.File;
 
@@ -41,11 +41,14 @@ import org.robovm.apple.uikit.UIScrollViewDelegateAdapter;
 import org.robovm.apple.uikit.UIView;
 
 public class ImageScrollView extends UIScrollView {
-    private static final boolean TILE_IMAGES = true; // turn on to use tiled images, if off, we use whole images
+    private static final boolean TILE_IMAGES = true; // turn on to use tiled
+                                                     // images, if off, we use
+                                                     // whole images
 
     private static NSArray<?> imageData;
 
-    private UIImageView zoomView; // if tiling, this contains a very low-res placeholder image,
+    private UIImageView zoomView; // if tiling, this contains a very low-res
+                                  // placeholder image,
     // otherwise it contains the full image.
     private CGSize imageSize;
     private TilingView tilingView;
@@ -55,20 +58,20 @@ public class ImageScrollView extends UIScrollView {
     private CGPoint pointToCenterAfterResize;
     private double scaleToRestoreAfterResize;
 
-    public ImageScrollView () {
+    public ImageScrollView() {
         setShowsHorizontalScrollIndicator(false);
         setShowsHorizontalScrollIndicator(false);
         setBouncesZoom(true);
         setDecelerationRate(UIScrollView.getFastDecelerationRate());
         setDelegate(new UIScrollViewDelegateAdapter() {
             @Override
-            public UIView getViewForZooming (UIScrollView scrollView) {
+            public UIView getViewForZooming(UIScrollView scrollView) {
                 return zoomView;
             }
         });
     }
 
-    public void setIndex (int index) {
+    public void setIndex(int index) {
         this.index = index;
 
         if (TILE_IMAGES) {
@@ -79,10 +82,11 @@ public class ImageScrollView extends UIScrollView {
     }
 
     @Override
-    public void layoutSubviews () {
+    public void layoutSubviews() {
         super.layoutSubviews();
 
-        // center the zoom view as it becomes smaller than the size of the screen
+        // center the zoom view as it becomes smaller than the size of the
+        // screen
         CGSize boundsSize = getBounds().getSize();
         CGRect frameToCenter = zoomView.getFrame();
 
@@ -102,7 +106,7 @@ public class ImageScrollView extends UIScrollView {
     }
 
     @Override
-    public void setFrame (CGRect frame) {
+    public void setFrame(CGRect frame) {
         boolean sizeChanging = !frame.getSize().equalsTo(getFrame().getSize());
         if (sizeChanging) {
             prepareToResize();
@@ -114,7 +118,7 @@ public class ImageScrollView extends UIScrollView {
         }
     }
 
-    private void displayTiledImage (String imageName, CGSize imageSize) {
+    private void displayTiledImage(String imageName, CGSize imageSize) {
         // clear views for the previous image
         if (zoomView != null) {
             zoomView.removeFromSuperview();
@@ -137,7 +141,7 @@ public class ImageScrollView extends UIScrollView {
         configureForImageSize(imageSize);
     }
 
-    private void displayImage (UIImage image) {
+    private void displayImage(UIImage image) {
         // clear the previous image
         if (zoomView != null) {
             zoomView.removeFromSuperview();
@@ -154,30 +158,48 @@ public class ImageScrollView extends UIScrollView {
         configureForImageSize(image.getSize());
     }
 
-    private void configureForImageSize (CGSize imageSize) {
+    private void configureForImageSize(CGSize imageSize) {
         this.imageSize = imageSize;
         setContentSize(imageSize);
         setMaxMinZoomScalesForCurrentBounds();
         setZoomScale(getMinimumZoomScale());
     }
 
-    private void setMaxMinZoomScalesForCurrentBounds () {
+    private void setMaxMinZoomScalesForCurrentBounds() {
         CGSize boundsSize = getBounds().getSize();
 
         // calculate min/max zoomscale
-        double xScale = boundsSize.getWidth() / imageSize.getWidth(); // the scale needed to perfectly fit the image width-wise
-        double yScale = boundsSize.getHeight() / imageSize.getHeight(); // the scale needed to perfectly fit the image height-wise
+        double xScale = boundsSize.getWidth() / imageSize.getWidth(); // the
+                                                                      // scale
+                                                                      // needed
+                                                                      // to
+                                                                      // perfectly
+                                                                      // fit the
+                                                                      // image
+                                                                      // width-wise
+        double yScale = boundsSize.getHeight() / imageSize.getHeight(); // the
+                                                                        // scale
+                                                                        // needed
+                                                                        // to
+                                                                        // perfectly
+                                                                        // fit
+                                                                        // the
+                                                                        // image
+                                                                        // height-wise
 
-        // fill width if the image and phone are both portrait or both landscape; otherwise take smaller scale
+        // fill width if the image and phone are both portrait or both
+        // landscape; otherwise take smaller scale
         boolean imagePortrait = imageSize.getHeight() > imageSize.getWidth();
         boolean phonePortrait = boundsSize.getHeight() > boundsSize.getWidth();
         double minScale = imagePortrait == phonePortrait ? xScale : Math.min(xScale, yScale);
 
-        // on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the
+        // on high resolution screens we have double the pixel density, so we
+        // will be seeing every pixel if we limit the
         // maximum zoom scale to 0.5.
         double maxScale = 1.0 / UIScreen.getMainScreen().getScale();
 
-        // don't let minScale exceed maxScale. (If the image is smaller than the screen, we don't want to force it to be zoomed.)
+        // don't let minScale exceed maxScale. (If the image is smaller than the
+        // screen, we don't want to force it to be zoomed.)
         if (minScale > maxScale) {
             minScale = maxScale;
         }
@@ -185,33 +207,36 @@ public class ImageScrollView extends UIScrollView {
         setMinimumZoomScale(minScale);
     }
 
-    private void prepareToResize () {
+    private void prepareToResize() {
         CGPoint boundsCenter = new CGPoint(getBounds().getMidX(), getBounds().getMidY());
         pointToCenterAfterResize = convertPointToView(boundsCenter, zoomView);
         scaleToRestoreAfterResize = getZoomScale();
 
-        // If we're at the minimum zoom scale, preserve that by returning 0, which will be converted to the minimum
+        // If we're at the minimum zoom scale, preserve that by returning 0,
+        // which will be converted to the minimum
         // allowable scale when the scale is restored.
         if (scaleToRestoreAfterResize <= getMinimumZoomScale() + 1.19209290E-07F) {
             scaleToRestoreAfterResize = 0;
         }
     }
 
-    private void recoverFromResizing () {
+    private void recoverFromResizing() {
         setMaxMinZoomScalesForCurrentBounds();
 
-        // Step 1: restore zoom scale, first making sure it is within the allowable range.
+        // Step 1: restore zoom scale, first making sure it is within the
+        // allowable range.
         double maxZoomScale = Math.max(getMinimumZoomScale(), scaleToRestoreAfterResize);
         setZoomScale(Math.min(getMaximumZoomScale(), maxZoomScale));
 
-        // Step 2: restore center point, first making sure it is within the allowable range.
+        // Step 2: restore center point, first making sure it is within the
+        // allowable range.
 
         // 2a: convert our desired center point back to our own coordinate space
         CGPoint boundsCenter = convertPointFromView(pointToCenterAfterResize, zoomView);
 
         // 2b: calculate the content offset that would yield that center point
         CGPoint offset = new CGPoint(boundsCenter.getX() - getBounds().getSize().getWidth() / 2.0, boundsCenter.getY()
-            - getBounds().getSize().getHeight() / 2.0);
+                - getBounds().getSize().getHeight() / 2.0);
 
         // 2c: restore offset, adjusted to be within the allowable range
         CGPoint maxOffset = getMaximumContentOffset();
@@ -226,23 +251,24 @@ public class ImageScrollView extends UIScrollView {
         setContentOffset(offset);
     }
 
-    private CGPoint getMaximumContentOffset () {
+    private CGPoint getMaximumContentOffset() {
         CGSize contentSize = getContentSize();
         CGSize boundsSize = getBounds().getSize();
-        return new CGPoint(contentSize.getWidth() - boundsSize.getWidth(), contentSize.getHeight() - boundsSize.getHeight());
+        return new CGPoint(contentSize.getWidth() - boundsSize.getWidth(), contentSize.getHeight()
+                - boundsSize.getHeight());
     }
 
-    private CGPoint getMinimumContentOffset () {
+    private CGPoint getMinimumContentOffset() {
         return CGPoint.Zero();
     }
 
-    private static NSArray<?> getImageData () {
+    private static NSArray<?> getImageData() {
         if (imageData == null) {
             String path = NSBundle.getMainBundle().findResourcePath("ImageData", "plist");
             NSData plistData = NSData.read(new File(path));
             try {
-                imageData = (NSArray<?>)NSPropertyListSerialization.getPropertyListFromData(plistData,
-                    NSPropertyListMutabilityOptions.None);
+                imageData = (NSArray<?>) NSPropertyListSerialization.getPropertyListFromData(plistData,
+                        NSPropertyListMutabilityOptions.None);
             } catch (NSErrorException e) {
                 System.err.println("Unable to read image data: " + e.getError());
             }
@@ -250,37 +276,38 @@ public class ImageScrollView extends UIScrollView {
         return imageData;
     }
 
-    public static int getImageCount () {
+    public static int getImageCount() {
         NSArray<?> imageData = getImageData();
-        if (imageData == null) return 0;
+        if (imageData == null)
+            return 0;
         return imageData.size();
     }
 
     @SuppressWarnings("unchecked")
-    private static String getImageName (int index) {
-        NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>)getImageData().get(index);
+    private static String getImageName(int index) {
+        NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>) getImageData().get(index);
         return info.get(new NSString("name")).toString();
     }
 
-    private static UIImage getImage (int index) {
+    private static UIImage getImage(int index) {
         String imageName = getImageName(index);
-        String path = NSBundle.getMainBundle().findResourcePath(String.format("Full_Images/%s", imageName), "jpg");
+        String path = NSBundle.getMainBundle().findResourcePath(String.format("Full Images/%s", imageName), "jpg");
         return UIImage.create(new File(path));
     }
 
     @SuppressWarnings("unchecked")
-    private static CGSize getImageSize (int index) {
-        NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>)getImageData().get(index);
+    private static CGSize getImageSize(int index) {
+        NSDictionary<NSString, NSObject> info = (NSDictionary<NSString, NSObject>) getImageData().get(index);
         float width = Float.valueOf(info.get(new NSString("width")).toString());
         float height = Float.valueOf(info.get(new NSString("height")).toString());
         return new CGSize(width, height);
     }
 
-    private static UIImage getPlaceholderImage (String name) {
-        return UIImage.create(String.format("Placeholder_Images/%s_Placeholder", name));
+    private static UIImage getPlaceholderImage(String name) {
+        return UIImage.create(String.format("Placeholder Images/%s_Placeholder", name));
     }
 
-    public int getPageIndex () {
+    public int getPageIndex() {
         return index;
     }
 }

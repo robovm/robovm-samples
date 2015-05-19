@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,37 @@
  * which is copyright (C) 2010-2012 Apple Inc.
  */
 
-package org.robovm.samples.photoscroller.viewcontrollers;
+package org.robovm.samples.photoscroller.ui;
 
 import org.robovm.apple.uikit.UIInterfaceOrientationMask;
 import org.robovm.apple.uikit.UIViewAutoresizing;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.samples.photoscroller.views.ImageScrollView;
 
 public class PhotoViewController extends UIViewController {
-    private PhotoViewController (int pageIndex) {
+    private PhotoViewController(int pageIndex) {
         ImageScrollView scrollView = new ImageScrollView();
         scrollView.setIndex(pageIndex);
         scrollView.setAutoresizingMask(UIViewAutoresizing.with(UIViewAutoresizing.FlexibleWidth,
-            UIViewAutoresizing.FlexibleHeight));
+                UIViewAutoresizing.FlexibleHeight));
         setView(scrollView);
     }
 
-    public static PhotoViewController create (int pageIndex) {
+    public static PhotoViewController create(int pageIndex) {
         if (pageIndex >= 0 && pageIndex < ImageScrollView.getImageCount()) {
             return new PhotoViewController(pageIndex);
         }
         return null;
     }
 
-    public int getPageIndex () {
-        ImageScrollView scrollView = (ImageScrollView)getView();
+    public int getPageIndex() {
+        ImageScrollView scrollView = (ImageScrollView) getView();
         return scrollView.getPageIndex();
     }
 
-    // (this can also be defined in Info.plist via UISupportedInterfaceOrientations)
+    // (this can also be defined in Info.plist via
+    // UISupportedInterfaceOrientations)
     @Override
-    public UIInterfaceOrientationMask getSupportedInterfaceOrientations () {
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
         return UIInterfaceOrientationMask.AllButUpsideDown;
     }
 }
