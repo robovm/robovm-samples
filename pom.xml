@@ -18,6 +18,19 @@
         <robovm.maven.version>1.2.1-SNAPSHOT</robovm.maven.version>
     </properties>
 
+    <pluginRepositories>
+      <pluginRepository>
+        <id>oss-sonatype</id>
+        <name>oss-sonatype</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
+
+
+
     <build>
         <pluginManagement>
             <plugins>
