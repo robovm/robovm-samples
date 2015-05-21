@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's Footprint sample (v1.0)
+ * Portions of this code is based on Apple Inc's FootPrint sample (v1.0)
  * which is copyright (C) 2014 Apple Inc.
  */
 
-package org.robovm.samples.footprint.viewcontrollers;
+package org.robovm.samples.footprint.ui;
 
 import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.coregraphics.CGPoint;
@@ -36,9 +36,12 @@ public class AAPLCoordinateConverter {
         public AAPLGeoAnchor toAnchor;
     }
 
-    /** Class that contains a point in meters (east and south) with respect to an origin point (in geographic space) We use East &
-     * South because when drawing on an image, origin (0,0) is on the top-left. So +eastMeters corresponds to +x and +southMeters
-     * corresponds to +y */
+    /**
+     * Class that contains a point in meters (east and south) with respect to an
+     * origin point (in geographic space) We use East & South because when
+     * drawing on an image, origin (0,0) is on the top-left. So +eastMeters
+     * corresponds to +x and +southMeters corresponds to +y
+     */
     public static class AAPLEastSouthDistance {
         public double east;
         public double south;
@@ -47,16 +50,18 @@ public class AAPLCoordinateConverter {
     // Floorplan pixels per meter
     private final double pixelsPerMeter;
     private final double radiansRotated;
-    // We pick one of the anchors on the floorplan as an origin point that we will compute distance relative to.
+    // We pick one of the anchors on the floorplan as an origin point that we
+    // will compute distance relative to.
     private final MKMapPoint fromAnchorMKPoint;
     private final CGPoint fromAnchorFloorplanPoint;
 
-    public AAPLCoordinateConverter (CLLocationCoordinate2D topLeft, CLLocationCoordinate2D bottomRight, CGSize imageSize) {
+    public AAPLCoordinateConverter(CLLocationCoordinate2D topLeft, CLLocationCoordinate2D bottomRight, CGSize imageSize) {
         this(createAnchorPair(topLeft, bottomRight, imageSize));
     }
 
-    public AAPLCoordinateConverter (AAPLGeoAnchorPair anchors) {
-        // To compute the distance between two geographical co-ordinates, we first need to
+    public AAPLCoordinateConverter(AAPLGeoAnchorPair anchors) {
+        // To compute the distance between two geographical co-ordinates, we
+        // first need to
         // convert to MapKit co-ordinates...
         fromAnchorFloorplanPoint = anchors.fromAnchor.pixel;
         fromAnchorMKPoint = MKMapPoint.create(anchors.fromAnchor.latitudeLongitude);
@@ -72,7 +77,8 @@ public class AAPLCoordinateConverter {
         // Distance between two points in pixels (on the floorplan image)
         double distanceBetweenPointsPixels = Math.hypot(xDistance, yDistance);
 
-        // Get the 2nd anchor's eastward/southward distance in meters from the first anchor point.
+        // Get the 2nd anchor's eastward/southward distance in meters from the
+        // first anchor point.
         AAPLEastSouthDistance hyp = convertPoint(fromAnchorMKPoint, toAnchorMapkitPoint);
 
         // This gives us pixels/meter
@@ -89,8 +95,9 @@ public class AAPLCoordinateConverter {
         radiansRotated = angleFromHorizontal - angleFromEast;
     }
 
-    private static AAPLGeoAnchorPair createAnchorPair (CLLocationCoordinate2D topLeft, CLLocationCoordinate2D bottomRight,
-        CGSize imageSize) {
+    private static AAPLGeoAnchorPair createAnchorPair(CLLocationCoordinate2D topLeft,
+            CLLocationCoordinate2D bottomRight,
+            CGSize imageSize) {
         AAPLGeoAnchor topLeftAnchor = new AAPLGeoAnchor();
         topLeftAnchor.latitudeLongitude = topLeft;
         topLeftAnchor.pixel = new CGPoint(0, 0);
@@ -106,11 +113,15 @@ public class AAPLCoordinateConverter {
         return anchorPair;
     }
 
-    /** Convenience function to convert a MapKit co-ordinate into a co-ordinate meters East/South relative to some origin.
+    /**
+     * Convenience function to convert a MapKit co-ordinate into a co-ordinate
+     * meters East/South relative to some origin.
+     * 
      * @param fromAnchorMKPoint
      * @param toPoint
-     * @return */
-    public static AAPLEastSouthDistance convertPoint (MKMapPoint from, MKMapPoint to) {
+     * @return
+     */
+    public static AAPLEastSouthDistance convertPoint(MKMapPoint from, MKMapPoint to) {
         double metersPerMapPoint = MKMapPoint.getMetersPerMapPoint(from.toCoordinate().getLatitude());
 
         AAPLEastSouthDistance eastSouthDistance = new AAPLEastSouthDistance();
@@ -121,13 +132,16 @@ public class AAPLCoordinateConverter {
     }
 
     // Returns a CGPoint for where coordinates sit on the floorplan
-    public CGPoint getPointFromCoordinate (CLLocationCoordinate2D coordinate) {
-        // Get the distance east & south with respect to the first anchor point in meters
+    public CGPoint getPointFromCoordinate(CLLocationCoordinate2D coordinate) {
+        // Get the distance east & south with respect to the first anchor point
+        // in meters
         AAPLEastSouthDistance toFix = convertPoint(fromAnchorMKPoint, MKMapPoint.create(coordinate));
 
-        // Convert the east-south anchor point distance to pixels (still in east-south)
-        CGPoint pixelsXYInEastSouth = new CGPoint(toFix.east, toFix.south).apply(CGAffineTransform.createScale(pixelsPerMeter,
-            pixelsPerMeter));
+        // Convert the east-south anchor point distance to pixels (still in
+        // east-south)
+        CGPoint pixelsXYInEastSouth = new CGPoint(toFix.east, toFix.south).apply(CGAffineTransform.createScale(
+                pixelsPerMeter,
+                pixelsPerMeter));
 
         // Rotate the east-south distance to be relative to floorplan horizontal
         // This gives us an xy distance in pixels from the anchor point.
@@ -141,7 +155,7 @@ public class AAPLCoordinateConverter {
         return xy;
     }
 
-    public double getPixelsPerMeter () {
+    public double getPixelsPerMeter() {
         return pixelsPerMeter;
     }
 }
