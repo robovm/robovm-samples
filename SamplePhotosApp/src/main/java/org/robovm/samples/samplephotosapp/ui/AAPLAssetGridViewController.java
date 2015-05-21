@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's Example app using Photos framework (v2.0)
+ * Portions of this code is based on Apple Inc's SamplePhotosApp sample (v2.0)
  * which is copyright (C) 2014 Apple Inc.
  */
 
-package org.robovm.samples.photos.viewcontrollers;
+package org.robovm.samples.samplephotosapp.ui;
 
 import org.robovm.apple.coregraphics.CGBlendMode;
 import org.robovm.apple.coregraphics.CGRect;
@@ -44,79 +44,57 @@ import org.robovm.apple.photos.PHImageContentMode;
 import org.robovm.apple.photos.PHPhotoLibrary;
 import org.robovm.apple.photos.PHPhotoLibraryChangeObserver;
 import org.robovm.apple.uikit.UIBarButtonItem;
-import org.robovm.apple.uikit.UIBarButtonSystemItem;
 import org.robovm.apple.uikit.UICollectionView;
 import org.robovm.apple.uikit.UICollectionViewCell;
 import org.robovm.apple.uikit.UICollectionViewController;
 import org.robovm.apple.uikit.UICollectionViewFlowLayout;
 import org.robovm.apple.uikit.UICollectionViewLayoutAttributes;
 import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIEdgeInsets;
 import org.robovm.apple.uikit.UIGraphics;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIScrollView;
+import org.robovm.apple.uikit.UIStoryboardSegue;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBAction;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.objc.block.VoidBlock1;
 import org.robovm.objc.block.VoidBlock2;
 import org.robovm.rt.bro.ptr.BooleanPtr;
-import org.robovm.samples.photos.views.AAPLGridViewCell;
 
+@CustomClass("AAPLAssetGridViewController")
 public class AAPLAssetGridViewController extends UICollectionViewController implements PHPhotoLibraryChangeObserver {
     private static final String CellReuseIdentifier = "Cell";
-    private static final UICollectionViewFlowLayout collectionViewLayout = new UICollectionViewFlowLayout();
 
-    static {
-        collectionViewLayout.setItemSize(new CGSize(80, 80));
-        collectionViewLayout.setMinimumLineSpacing(0);
-        collectionViewLayout.setMinimumInteritemSpacing(0);
-        collectionViewLayout.setHeaderReferenceSize(new CGSize());
-        collectionViewLayout.setFooterReferenceSize(new CGSize());
-        collectionViewLayout.setSectionInset(new UIEdgeInsets());
-    }
-
-    private final CGSize ASSET_GRID_THUMBNAIL_SIZE;
-    private final AAPLAssetViewController assetViewController;
+    private CGSize assetGridThumbnailSize;
 
     private PHFetchResult assetsFetchResults;
     private PHAssetCollection assetCollection;
 
-    private final UIBarButtonItem addButton;
-    private final PHCachingImageManager imageManager = new PHCachingImageManager();
+    private UIBarButtonItem addButton;
+    private PHCachingImageManager imageManager = new PHCachingImageManager();
     private CGRect previousPreheatRect;
 
-    public AAPLAssetGridViewController () {
-        super(collectionViewLayout);
-
-        assetViewController = new AAPLAssetViewController();
-
-        getCollectionView().registerReusableCellClass(AAPLGridViewCell.class, CellReuseIdentifier);
-        getCollectionView().setBackgroundColor(UIColor.white());
-
-        addButton = new UIBarButtonItem(UIBarButtonSystemItem.Add, new UIBarButtonItem.OnClickListener() {
-            @Override
-            public void onClick (UIBarButtonItem barButtonItem) {
-                addButtonPressed();
-            }
-        });
-        getNavigationItem().setRightBarButtonItem(addButton);
-
+    @Override
+    public void awakeFromNib() {
+        imageManager = new PHCachingImageManager();
         resetCachedAssets();
         PHPhotoLibrary.getSharedPhotoLibrary().registerChangeObserver(this);
-
-        double scale = UIScreen.getMainScreen().getScale();
-        CGSize cellSize = ((UICollectionViewFlowLayout)getCollectionViewLayout()).getItemSize();
-        ASSET_GRID_THUMBNAIL_SIZE = new CGSize(cellSize.getWidth() * scale, cellSize.getHeight() * scale);
     }
 
     @Override
-    protected void dispose (boolean finalizing) {
+    protected void dispose(boolean finalizing) {
         PHPhotoLibrary.getSharedPhotoLibrary().unregisterChangeObserver(this);
         super.dispose(finalizing);
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
+
+        double scale = UIScreen.getMainScreen().getScale();
+        CGSize cellSize = ((UICollectionViewFlowLayout) getCollectionViewLayout()).getItemSize();
+        assetGridThumbnailSize = new CGSize(cellSize.getWidth() * scale, cellSize.getHeight() * scale);
 
         if (assetCollection == null || assetCollection.canPerformEditOperation(PHCollectionEditOperation.AddContent)) {
             getNavigationItem().setRightBarButtonItem(addButton);
@@ -126,20 +104,30 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     }
 
     @Override
-    public void viewDidAppear (boolean animated) {
+    public void viewDidAppear(boolean animated) {
         super.viewDidAppear(animated);
         updateCachedAssets();
     }
 
     @Override
-    public void didChange (final PHChange changeInstance) {
-        // Call might come on any background queue. Re-dispatch to the main queue to handle it.
+    public void prepareForSegue(UIStoryboardSegue segue, NSObject sender) {
+        NSIndexPath indexPath = getCollectionView().getIndexPathForCell((UICollectionViewCell) sender);
+        AAPLAssetViewController assetViewController = (AAPLAssetViewController) segue.getDestinationViewController();
+        assetViewController.setAsset((PHAsset) assetsFetchResults.get(indexPath.getItem()));
+        assetViewController.setAssetCollection(assetCollection);
+    }
+
+    @Override
+    public void didChange(final PHChange changeInstance) {
+        // Call might come on any background queue. Re-dispatch to the main
+        // queue to handle it.
         DispatchQueue.getMainQueue().async(new Runnable() {
             @Override
-            public void run () {
-                // check if there are changes to the assets (insertions, deletions, updates)
+            public void run() {
+                // check if there are changes to the assets (insertions,
+                // deletions, updates)
                 final PHFetchResultChangeDetails collectionChanges = changeInstance
-                    .getChangeDetailsForFetchResult(assetsFetchResults);
+                        .getChangeDetailsForFetchResult(assetsFetchResults);
                 if (collectionChanges != null) {
                     // get the new fetch result
                     assetsFetchResults = collectionChanges.getFetchResultAfterChanges();
@@ -147,13 +135,15 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
                     final UICollectionView collectionView = getCollectionView();
 
                     if (!collectionChanges.hasIncrementalChanges() || collectionChanges.hasMoves()) {
-                        // we need to reload all if the incremental diffs are not available
+                        // we need to reload all if the incremental diffs are
+                        // not available
                         collectionView.reloadData();
                     } else {
-                        // if we have incremental diffs, tell the collection view to animate insertions and deletions
+                        // if we have incremental diffs, tell the collection
+                        // view to animate insertions and deletions
                         collectionView.performBatchUpdates(new Runnable() {
                             @Override
-                            public void run () {
+                            public void run() {
                                 NSIndexSet removedIndexes = collectionChanges.getRemovedIndexes();
                                 if (removedIndexes != null && removedIndexes.size() > 0) {
                                     collectionView.deleteItems(getIndexPathsFromIndexesWithSection(removedIndexes, 0));
@@ -176,53 +166,48 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     }
 
     @Override
-    public long getNumberOfItemsInSection (UICollectionView collectionView, long section) {
+    public long getNumberOfItemsInSection(UICollectionView collectionView, long section) {
         return assetsFetchResults.size();
     }
 
     @Override
-    public UICollectionViewCell getCellForItem (UICollectionView collectionView, NSIndexPath indexPath) {
-        final AAPLGridViewCell cell = (AAPLGridViewCell)collectionView.dequeueReusableCell(CellReuseIdentifier, indexPath);
+    public UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath) {
+        final AAPLGridViewCell cell = (AAPLGridViewCell) collectionView.dequeueReusableCell(CellReuseIdentifier,
+                indexPath);
 
         // Increment the cell's tag
         final long currentTag = cell.getTag() + 1;
         cell.setTag(currentTag);
 
-        PHAsset asset = (PHAsset)assetsFetchResults.get((int)indexPath.getItem());
-        imageManager.requestImageForAsset(asset, ASSET_GRID_THUMBNAIL_SIZE, PHImageContentMode.AspectFill, null,
-            new VoidBlock2<UIImage, NSDictionary<NSString, NSObject>>() {
-                @Override
-                public void invoke (UIImage result, NSDictionary<NSString, NSObject> b) {
-                    // Only update the thumbnail if the cell tag hasn't changed. Otherwise, the cell has been re-used.
-                    if (cell.getTag() == currentTag) {
-                        cell.setThumbnailImage(result);
+        PHAsset asset = (PHAsset) assetsFetchResults.get(indexPath.getItem());
+        imageManager.requestImageForAsset(asset, assetGridThumbnailSize, PHImageContentMode.AspectFill, null,
+                new VoidBlock2<UIImage, NSDictionary<NSString, NSObject>>() {
+                    @Override
+                    public void invoke(UIImage result, NSDictionary<NSString, NSObject> b) {
+                        // Only update the thumbnail if the cell tag hasn't
+                        // changed. Otherwise, the cell has been re-used.
+                        if (cell.getTag() == currentTag) {
+                            cell.setThumbnailImage(result);
+                        }
                     }
-                }
-            });
+                });
         return cell;
     }
 
     @Override
-    public void didSelectItem (UICollectionView collectionView, NSIndexPath indexPath) {
-        assetViewController.setAsset((PHAsset)assetsFetchResults.get((int)indexPath.getItem()));
-        assetViewController.setAssetCollection(assetCollection);
-
-        getNavigationController().pushViewController(assetViewController, true);
-    }
-
-    @Override
-    public void didScroll (UIScrollView scrollView) {
+    public void didScroll(UIScrollView scrollView) {
         updateCachedAssets();
     }
 
-    private void resetCachedAssets () {
+    private void resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets();
         previousPreheatRect = CGRect.Zero();
     }
 
-    private void updateCachedAssets () {
+    private void updateCachedAssets() {
         boolean isViewVisible = isViewLoaded() && getView().getWindow() != null;
-        if (!isViewVisible) return;
+        if (!isViewVisible)
+            return;
 
         // The preheat window is twice the height of the visible rect
         CGRect preheatRect = getCollectionView().getBounds();
@@ -237,7 +222,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
 
             computeDifferenceBetweenRects(previousPreheatRect, preheatRect, new VoidBlock1<CGRect>() {
                 @Override
-                public void invoke (CGRect removedRect) {
+                public void invoke(CGRect removedRect) {
                     NSArray<NSIndexPath> indexPaths = getIndexPathsForElementsInRect(removedRect);
                     if (indexPaths != null) {
                         removedIndexPaths.addAll(indexPaths);
@@ -245,7 +230,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
                 }
             }, new VoidBlock1<CGRect>() {
                 @Override
-                public void invoke (CGRect addedRect) {
+                public void invoke(CGRect addedRect) {
                     NSArray<NSIndexPath> indexPaths = getIndexPathsForElementsInRect(addedRect);
                     if (indexPaths != null) {
                         addedIndexPaths.addAll(indexPaths);
@@ -256,17 +241,17 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
             NSArray<PHAsset> assetsToStartCaching = getAssetsAtIndexPaths(addedIndexPaths);
             NSArray<PHAsset> assetsToStopCaching = getAssetsAtIndexPaths(removedIndexPaths);
 
-            imageManager.startCachingImagesForAssets(assetsToStartCaching, ASSET_GRID_THUMBNAIL_SIZE,
-                PHImageContentMode.AspectFill, null);
-            imageManager.stopCachingImagesForAssets(assetsToStopCaching, ASSET_GRID_THUMBNAIL_SIZE,
-                PHImageContentMode.AspectFill, null);
+            imageManager.startCachingImagesForAssets(assetsToStartCaching, assetGridThumbnailSize,
+                    PHImageContentMode.AspectFill, null);
+            imageManager.stopCachingImagesForAssets(assetsToStopCaching, assetGridThumbnailSize,
+                    PHImageContentMode.AspectFill, null);
 
             previousPreheatRect = preheatRect;
         }
     }
 
-    private void computeDifferenceBetweenRects (CGRect oldRect, CGRect newRect, VoidBlock1<CGRect> removedHandler,
-        VoidBlock1<CGRect> addedHandler) {
+    private void computeDifferenceBetweenRects(CGRect oldRect, CGRect newRect, VoidBlock1<CGRect> removedHandler,
+            VoidBlock1<CGRect> addedHandler) {
         if (newRect.intersects(oldRect)) {
             double oldMaxY = oldRect.getMaxY();
             double oldMinY = oldRect.getMinY();
@@ -274,23 +259,27 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
             double newMinY = newRect.getMinY();
 
             if (newMaxY > oldMaxY) {
-                CGRect rectToAdd = new CGRect(newRect.getOrigin().getX(), oldMaxY, newRect.getSize().getWidth(), newMaxY
-                    - oldMaxY);
+                CGRect rectToAdd = new CGRect(newRect.getOrigin().getX(), oldMaxY, newRect.getSize().getWidth(),
+                        newMaxY
+                                - oldMaxY);
                 addedHandler.invoke(rectToAdd);
             }
             if (oldMinY > newMinY) {
-                CGRect rectToAdd = new CGRect(newRect.getOrigin().getX(), newMinY, newRect.getSize().getWidth(), oldMinY
-                    - newMinY);
+                CGRect rectToAdd = new CGRect(newRect.getOrigin().getX(), newMinY, newRect.getSize().getWidth(),
+                        oldMinY
+                                - newMinY);
                 addedHandler.invoke(rectToAdd);
             }
             if (newMaxY < oldMaxY) {
-                CGRect rectToRemove = new CGRect(newRect.getOrigin().getX(), newMaxY, newRect.getSize().getWidth(), oldMaxY
-                    - newMaxY);
+                CGRect rectToRemove = new CGRect(newRect.getOrigin().getX(), newMaxY, newRect.getSize().getWidth(),
+                        oldMaxY
+                                - newMaxY);
                 removedHandler.invoke(rectToRemove);
             }
             if (oldMinY < newMinY) {
-                CGRect rectToRemove = new CGRect(newRect.getOrigin().getX(), oldMinY, newRect.getSize().getWidth(), newMinY
-                    - oldMinY);
+                CGRect rectToRemove = new CGRect(newRect.getOrigin().getX(), oldMinY, newRect.getSize().getWidth(),
+                        newMinY
+                                - oldMinY);
                 removedHandler.invoke(rectToRemove);
             }
         } else {
@@ -299,18 +288,20 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         }
     }
 
-    private NSArray<PHAsset> getAssetsAtIndexPaths (NSArray<NSIndexPath> indexPaths) {
-        if (indexPaths.size() == 0) return null;
+    private NSArray<PHAsset> getAssetsAtIndexPaths(NSArray<NSIndexPath> indexPaths) {
+        if (indexPaths.size() == 0)
+            return null;
 
         NSArray<PHAsset> assets = new NSMutableArray<>();
         for (NSIndexPath indexPath : indexPaths) {
-            PHAsset asset = (PHAsset)assetsFetchResults.get((int)indexPath.getItem());
+            PHAsset asset = (PHAsset) assetsFetchResults.get(indexPath.getItem());
             assets.add(asset);
         }
         return assets;
     }
 
-    private void addButtonPressed () {
+    @IBAction
+    private void handleAddButtonItem(NSObject sender) {
         // Create a random dummy image.
         CGRect rect = Math.random() % 2 == 0 ? new CGRect(0, 0, 400, 300) : new CGRect(0, 0, 300, 400);
         UIGraphics.beginImageContext(rect.getSize(), false, 1.0);
@@ -322,17 +313,18 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         // Add it to the photo library
         PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 PHAssetChangeRequest assetChangeRequest = PHAssetChangeRequest.createImageAssetCreationRequest(image);
 
                 if (assetCollection != null) {
                     PHAssetCollectionChangeRequest assetCollectionChangeRequest = PHAssetCollectionChangeRequest.create(assetCollection);
-                    assetCollectionChangeRequest.addAssets(new NSArray<>(assetChangeRequest.getPlaceholderForCreatedAsset()));
+                    assetCollectionChangeRequest.addAssets(new NSArray<>(assetChangeRequest
+                            .getPlaceholderForCreatedAsset()));
                 }
             }
         }, new VoidBlock2<Boolean, NSError>() {
             @Override
-            public void invoke (Boolean success, NSError error) {
+            public void invoke(Boolean success, NSError error) {
                 if (!success) {
                     System.err.println("Error creating asset: " + error);
                 }
@@ -340,21 +332,23 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         });
     }
 
-    private NSArray<NSIndexPath> getIndexPathsFromIndexesWithSection (NSIndexSet indexSet, final long section) {
+    private NSArray<NSIndexPath> getIndexPathsFromIndexesWithSection(NSIndexSet indexSet, final long section) {
         final NSArray<NSIndexPath> indexPaths = new NSMutableArray<>(indexSet.size());
         indexSet.enumerateIndexes(new VoidBlock2<Long, BooleanPtr>() {
             @Override
-            public void invoke (Long idx, BooleanPtr stop) {
+            public void invoke(Long idx, BooleanPtr stop) {
                 indexPaths.add(NSIndexPath.createWithItem(idx, section));
             }
         });
         return indexPaths;
     }
 
-    private NSArray<NSIndexPath> getIndexPathsForElementsInRect (CGRect rect) {
-        NSArray<UICollectionViewLayoutAttributes> allLayoutAttributes = getCollectionViewLayout().getLayoutAttributesForElements(
-            rect);
-        if (allLayoutAttributes.size() == 0) return null;
+    private NSArray<NSIndexPath> getIndexPathsForElementsInRect(CGRect rect) {
+        NSArray<UICollectionViewLayoutAttributes> allLayoutAttributes = getCollectionViewLayout()
+                .getLayoutAttributesForElements(
+                        rect);
+        if (allLayoutAttributes.size() == 0)
+            return null;
         NSArray<NSIndexPath> indexPaths = new NSMutableArray<>(allLayoutAttributes.size());
         for (UICollectionViewLayoutAttributes layoutAttributes : allLayoutAttributes) {
             NSIndexPath indexPath = layoutAttributes.getIndexPath();
@@ -363,11 +357,16 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         return indexPaths;
     }
 
-    public void setAssetsFetchResults (PHFetchResult assetsFetchResults) {
+    public void setAssetsFetchResults(PHFetchResult assetsFetchResults) {
         this.assetsFetchResults = assetsFetchResults;
     }
 
-    public void setAssetCollection (PHAssetCollection assetCollection) {
+    public void setAssetCollection(PHAssetCollection assetCollection) {
         this.assetCollection = assetCollection;
+    }
+
+    @IBOutlet
+    private void setAddButton(UIBarButtonItem addButton) {
+        this.addButton = addButton;
     }
 }
