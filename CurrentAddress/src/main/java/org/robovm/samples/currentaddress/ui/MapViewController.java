@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 RoboVM AB
+ * Copyright (C) 2013-2015 RoboVM AB
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,10 @@
  * limitations under the License. 
  * 
  * Portions of this code is based on Apple Inc's CurrentAddress sample (v1.4)
- * which is copyright (C) 2009-2013 Apple Inc.
+ * which is copyright (C) 2009 - 2013 Apple Inc.
  */
 
-package org.robovm.samples.currentaddress.viewcontrollers;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.robovm.samples.currentaddress.ui;
 
 import org.robovm.apple.corelocation.CLGeocoder;
 import org.robovm.apple.corelocation.CLLocationManager;
@@ -29,75 +26,34 @@ import org.robovm.apple.dispatch.Dispatch;
 import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
-import org.robovm.apple.foundation.NSObjectProtocol;
+import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.mapkit.MKMapView;
 import org.robovm.apple.mapkit.MKMapViewDelegateAdapter;
 import org.robovm.apple.mapkit.MKUserLocation;
-import org.robovm.apple.uikit.NSLayoutConstraint;
-import org.robovm.apple.uikit.NSLayoutFormatOptions;
 import org.robovm.apple.uikit.UIBarButtonItem;
-import org.robovm.apple.uikit.UIBarButtonItemStyle;
-import org.robovm.apple.uikit.UIBarButtonSystemItem;
-import org.robovm.apple.uikit.UIBarStyle;
-import org.robovm.apple.uikit.UIColor;
-import org.robovm.apple.uikit.UIToolbar;
-import org.robovm.apple.uikit.UIView;
+import org.robovm.apple.uikit.UIStoryboardSegue;
 import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
 import org.robovm.objc.block.VoidBlock2;
 
+@CustomClass("MapViewController")
 public class MapViewController extends UIViewController {
-    private final MKMapView mapView;
-    private final UIBarButtonItem getAddressButton;
-    private final CLGeocoder geocoder;
+    private MKMapView mapView;
+    private UIBarButtonItem getAddressButton;
+
+    private CLGeocoder geocoder;
     private CLPlacemark placemark;
-    private final CLLocationManager locationManager;
 
-    private final PlaceMarkViewController placeMarkViewController;
+    @Override
+    public void viewDidLoad() {
+        // Create a geocoder and save it for later.
+        geocoder = new CLGeocoder();
 
-    public MapViewController() {
-        setTitle("Current Address");
-
-        locationManager = new CLLocationManager();
-
-        UIView view = getView();
-        view.setBackgroundColor(UIColor.fromWhiteAlpha(0.75, 1));
-
-        mapView = new MKMapView();
-        mapView.setMultipleTouchEnabled(true);
-        mapView.setShowsUserLocation(true);
-        mapView.setTranslatesAutoresizingMaskIntoConstraints(false);
-        view.addSubview(mapView);
-
-        UIToolbar toolbar = new UIToolbar();
-        toolbar.setBarStyle(UIBarStyle.Black);
-        toolbar.setTranslatesAutoresizingMaskIntoConstraints(false);
-
-        getAddressButton = new UIBarButtonItem("Get Current Address", UIBarButtonItemStyle.Plain,
-                new UIBarButtonItem.OnClickListener() {
-                    @Override
-                    public void onClick(UIBarButtonItem barButtonItem) {
-                        // Get the destination view controller and set the
-                        // placemark data that it should display.
-                        placeMarkViewController.setPlacemark(placemark);
-                        getNavigationController().pushViewController(placeMarkViewController, true);
-                    }
-                });
-        getAddressButton.setEnabled(false);
-        toolbar.setItems(new NSArray<>(new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null),
-                getAddressButton,
-                new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace, null)));
-        view.addSubview(toolbar);
-
-        // Layout
-        Map<String, NSObjectProtocol> views = new HashMap<>();
-        views.put("top", getTopLayoutGuide());
-        views.put("map", mapView);
-        views.put("toolbar", toolbar);
-
-        view.addConstraints(NSLayoutConstraint.create("H:|[map]|", NSLayoutFormatOptions.None, null, views));
-        view.addConstraints(NSLayoutConstraint.create("H:|[toolbar]|", NSLayoutFormatOptions.None, null, views));
-        view.addConstraints(NSLayoutConstraint
-                .create("V:[top][map][toolbar]|", NSLayoutFormatOptions.None, null, views));
+        if (Foundation.getMajorSystemVersion() >= 8) {
+            CLLocationManager locationManager = new CLLocationManager();
+            locationManager.requestWhenInUseAuthorization();
+        }
 
         mapView.setDelegate(new MKMapViewDelegateAdapter() {
             @Override
@@ -135,16 +91,25 @@ public class MapViewController extends UIViewController {
                         });
             }
         });
-
-        placeMarkViewController = new PlaceMarkViewController();
-        // Create a geocoder and save it for later.
-        geocoder = new CLGeocoder();
     }
 
     @Override
-    public void viewDidLoad() {
-        if (Foundation.getMajorSystemVersion() >= 8) {
-            locationManager.requestWhenInUseAuthorization();
+    public void prepareForSegue(UIStoryboardSegue segue, NSObject sender) {
+        if (segue.getIdentifier().equals("pushToDetail")) {
+            // Get the destination view controller and set the placemark data
+            // that it should display.
+            PlacemarkViewController viewController = (PlacemarkViewController) segue.getDestinationViewController();
+            viewController.setPlacemark(placemark);
         }
+    }
+
+    @IBOutlet
+    private void setMapView(MKMapView mapView) {
+        this.mapView = mapView;
+    }
+
+    @IBOutlet
+    private void setGetAddressButton(UIBarButtonItem getAddressButton) {
+        this.getAddressButton = getAddressButton;
     }
 }
