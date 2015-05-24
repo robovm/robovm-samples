@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Apple Inc's LaunchMe sample (v170)
+ * Portions of this code is based on Apple Inc's LaunchMe sample (v1.7)
  * which is copyright (C) 2008-2013 Apple Inc.
  */
 package org.robovm.samples.launchme.ui;
