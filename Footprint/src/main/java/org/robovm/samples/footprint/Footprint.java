@@ -23,7 +23,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 
-public class FootPrint extends UIApplicationDelegateAdapter {
+public class Footprint extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
@@ -32,7 +32,7 @@ public class FootPrint extends UIApplicationDelegateAdapter {
 
     public static void main(String[] args) {
         try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
-            UIApplication.main(args, null, FootPrint.class);
+            UIApplication.main(args, null, Footprint.class);
         }
     }
 }
