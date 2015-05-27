@@ -69,7 +69,7 @@
     <modules>
         <module>Adventure</module>
         <module>AppPrefs</module>
-        <module>AQTapDemo</module>
+       <!-- <module>AQTapDemo</module> -->
         <module>AudioRecorder</module>
         <module>BatteryStatus</module>
         <module>CurrentAddress</module>

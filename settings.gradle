@@ -1,6 +1,6 @@
 include 'Adventure'
 include 'AppPrefs'
-include 'AQTapDemo'
+//include 'AQTapDemo'
 include 'AudioRecorder'
 include 'BatteryStatus'
 include 'CurrentAddress'
