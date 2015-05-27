@@ -19,14 +19,14 @@
     </properties>
 
     <pluginRepositories>
-      <pluginRepository>
-        <id>oss-sonatype</id>
-        <name>oss-sonatype</name>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
-      </pluginRepository>
+        <pluginRepository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
 
 
@@ -69,7 +69,7 @@
     <modules>
         <module>Adventure</module>
         <module>AppPrefs</module>
-        <module>AQTapDemo</module>
+       <!-- <module>AQTapDemo</module> -->
         <module>AudioRecorder</module>
         <module>BatteryStatus</module>
         <module>CurrentAddress</module>
@@ -79,6 +79,7 @@
         <module>Footprint</module>
         <module>HelloGL</module>
         <module>HelloWorld</module>
+        <module>HelloWorld-no-ib</module>
         <module>IAPStoreProductViewController</module>
         <module>InAppPurchases</module>
         <module>LaunchMe</module>
@@ -95,12 +96,13 @@
         <module>Regions</module>
         <module>SamplePhotosApp</module>
         <module>StreetScroller</module>
-        <!--<module>TableSearch</module>-->
+        <module>TableSearch</module>
         <module>Tabster</module>
         <module>Tabster-no-ib</module>
         <module>Teslameter</module>
-        <!--<module>TheElements</module>-->
-        <module>Touches</module>
+        <module>TheElements</module>
+        <module>TouchesGesture</module>
+        <module>TouchesResponder</module>
         <module>UICatalog</module>
         <module>VideoRecorder</module>
     </modules>

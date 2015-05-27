@@ -20,23 +20,14 @@
         <string>${app.version}</string>
         <key>CFBundleSignature</key>
         <string>????</string>
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleTypeRole</key>
-                <string>Editor</string>
-                <key>CFBundleURLName</key>
-                <string>${app.mainclass}</string>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>launchme</string>
-                </array>
-            </dict>
-        </array>
         <key>CFBundleVersion</key>
         <string>${app.build}</string>
         <key>LSRequiresIPhoneOS</key>
         <true />
+        <key>UIMainStoryboardFile</key>
+        <string>Main</string>
+        <key>MinimumOSVersion</key>
+        <string>8.0</string>
         <key>UIDeviceFamily</key>
         <array>
             <integer>1</integer>
@@ -49,38 +40,28 @@
         <key>UISupportedInterfaceOrientations</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
         <key>UISupportedInterfaceOrientations~ipad</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
             <string>UIInterfaceOrientationPortraitUpsideDown</string>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
-        <key>CFBundleIcons</key>
-        <dict>
-            <key>CFBundlePrimaryIcon</key>
+        <key>CFBundleURLTypes</key>
+        <array>
             <dict>
-                <key>CFBundleIconFiles</key>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLName</key>
+                <string>org.robovm.sample.launchme</string>
+                <key>CFBundleURLSchemes</key>
                 <array>
-                    <string>Icon-Small</string>
-                    <string>Icon-Small-40</string>
-                    <string>Icon</string>
-                    <string>Icon-60</string>
-                    <string>Icon-72</string>
+                    <string>launchme</string>
                 </array>
             </dict>
-        </dict>
-        <key>CFBundleIcons~ipad</key>
-        <dict>
-            <key>CFBundlePrimaryIcon</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>Icon-Small</string>
-                    <string>Icon-Small-40</string>
-                    <string>Icon-72</string>
-                    <string>Icon-76</string>
-                </array>
-            </dict>
-        </dict>
+        </array>
     </dict>
 </plist>
