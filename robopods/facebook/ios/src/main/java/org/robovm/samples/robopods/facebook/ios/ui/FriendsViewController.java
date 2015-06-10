@@ -24,6 +24,8 @@ public class FriendsViewController extends UITableViewController {
             @SuppressWarnings("unchecked")
             @Override
             public void onSuccess(NSObject result) {
+                FacebookHandler.log("Friends result: %s", result);
+
                 NSDictionary<NSString, ?> root = (NSDictionary<NSString, ?>) result;
                 friends = (NSArray<NSDictionary<NSString, ?>>) root
                         .get(new NSString("data"));

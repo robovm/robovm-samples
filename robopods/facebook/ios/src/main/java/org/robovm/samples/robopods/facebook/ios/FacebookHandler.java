@@ -1,5 +1,6 @@
 package org.robovm.samples.robopods.facebook.ios;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,19 +44,24 @@ public class FacebookHandler {
     }
 
     public void logIn(final List<String> readPermissions, final LoginListener listener) {
+        log("Trying to login with read permissions (%s)...", readPermissions);
         loginManager.logInWithReadPermissions(readPermissions,
                 new VoidBlock2<FBSDKLoginManagerLoginResult, NSError>() {
                     @Override
                     public void invoke(FBSDKLoginManagerLoginResult result, NSError error) {
                         if (error != null) {
+                            log("Failed to login: %s", error.getLocalizedDescription());
                             listener.onError("An unknown error happened!");
                         } else if (result.isCancelled()) {
+                            log("Cancelled login!");
                             listener.onCancel();
                         } else {
                             if (!result.getGrantedPermissions().containsAll(readPermissions)) {
+                                log("Failed to login: Permissions declined (%s)", result.getDeclinedPermissions());
                                 listener.onError("The following permissions have been declined: "
                                         + result.getDeclinedPermissions().toString());
                             } else {
+                                log("Successfully logged in!");
                                 listener.onSuccess();
                             }
                         }
@@ -65,6 +71,7 @@ public class FacebookHandler {
 
     public void logOut() {
         loginManager.logOut();
+        log("Successfully logged out!");
     }
 
     public FBSDKProfile getCurrentProfile() {
@@ -83,12 +90,14 @@ public class FacebookHandler {
     }
 
     public void requestPermissionsIfNecessary(final List<String> permissions, final RequestListener listener) {
+        log("Checking for required permissions (%s)...", permissions);
         if (isLoggedIn()) {
             requestGraph("me/permissions", null, "GET", new RequestListener() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public void onSuccess(NSObject result) {
-                    int grantedPermissions = 0;
+                    log("Successfully fetched permissions...");
+                    List<String> declinedPermissions = new ArrayList<String>(permissions);
 
                     NSDictionary<NSString, ?> root = (NSDictionary<NSString, ?>) result;
                     NSArray<NSDictionary<NSString, ?>> p = (NSArray<NSDictionary<NSString, ?>>) root.get(new NSString(
@@ -97,17 +106,19 @@ public class FacebookHandler {
                     for (NSDictionary<NSString, ?> pData : p) {
                         String permission = pData.get(new NSString("permission")).toString();
                         boolean granted = "granted".equals(pData.get(new NSString("status")).toString());
-                        if (granted && permissions.contains(permission)) {
-                            grantedPermissions++;
+                        if (granted && declinedPermissions.contains(permission)) {
+                            declinedPermissions.remove(permission);
                         }
                     }
 
-                    if (grantedPermissions == permissions.size()) {
+                    if (declinedPermissions.size() == 0) {
+                        log("Required permissions are all granted!");
                         if (listener != null) {
                             listener.onSuccess(null);
                         }
                     } else {
-                        requestPublishPermissions(permissions, new LoginListener() {
+                        log("Missing required permission!");
+                        requestPublishPermissions(declinedPermissions, new LoginListener() {
                             @Override
                             public void onSuccess() {
                                 if (listener != null) {
@@ -134,6 +145,7 @@ public class FacebookHandler {
 
                 @Override
                 public void onError(String message) {
+                    log("Failed to fetch permissions: %s", message);
                     if (listener != null) {
                         listener.onError(message);
                     }
@@ -141,12 +153,14 @@ public class FacebookHandler {
 
                 @Override
                 public void onCancel() {
+                    log("Cancelled fetch for permissions!");
                     if (listener != null) {
                         listener.onCancel();
                     }
                 }
             });
         } else {
+            log("Not logged in!");
             if (listener != null) {
                 listener.onError(null);
             }
@@ -154,19 +168,25 @@ public class FacebookHandler {
     }
 
     public void requestPublishPermissions(final List<String> publishPermissions, final LoginListener listener) {
+        log("Requesting publish permissions (%s)...", publishPermissions);
         loginManager.logInWithPublishPermissions(publishPermissions,
                 new VoidBlock2<FBSDKLoginManagerLoginResult, NSError>() {
                     @Override
                     public void invoke(FBSDKLoginManagerLoginResult result, NSError error) {
                         if (error != null) {
+                            log("Failed to request publish permissions: %s", error);
                             listener.onError("An unknown error happened!");
                         } else if (result.isCancelled()) {
+                            log("Cancelled request for publish permissions!");
                             listener.onCancel();
                         } else {
                             if (!result.getGrantedPermissions().containsAll(publishPermissions)) {
+                                log("Failed to request publish permissions: Permissions declined (%s)",
+                                        result.getDeclinedPermissions());
                                 listener.onError("The following permissions have been declined: "
                                         + result.getDeclinedPermissions().toString());
                             } else {
+                                log("Successfully requested publish permissions");
                                 listener.onSuccess();
                             }
                         }
@@ -213,13 +233,18 @@ public class FacebookHandler {
                 FBSDKGraphRequestConnection connection = new FBSDKGraphRequestConnection();
                 FBSDKGraphRequest request = new FBSDKGraphRequest(path, convertStringMapToDictionary(params),
                         httpMethod);
+                log("Requesting graph path %s...", path);
                 connection.addRequest(request, new VoidBlock3<FBSDKGraphRequestConnection, NSObject, NSError>() {
                     @Override
                     public void invoke(FBSDKGraphRequestConnection connection, NSObject result, NSError error) {
-                        if (listener != null) {
-                            if (error != null) {
+                        if (error != null) {
+                            log("Failed to request graph path: %s", error.getLocalizedDescription());
+                            if (listener != null) {
                                 listener.onError(error.getLocalizedDescription());
-                            } else {
+                            }
+                        } else {
+                            log("Successfully requested graph path %s!", path);
+                            if (listener != null) {
                                 listener.onSuccess(result);
                             }
                         }
@@ -238,6 +263,10 @@ public class FacebookHandler {
             }
         }
         return result;
+    }
+
+    public static void log(String message, Object... args) {
+        System.out.println(String.format(message, args));
     }
 
     public interface LoginListener {

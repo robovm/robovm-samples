@@ -97,7 +97,7 @@ public class MainMenuViewController extends UITableViewController {
     public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = super.getCellForRow(tableView, indexPath);
         if (indexPath.getSection() == 0) {
-            cell.getTextLabel().setText(FacebookHandler.getInstance().isLoggedIn() ? "Logout" : "Login");
+            cell.getTextLabel().setText(FacebookHandler.getInstance().isLoggedIn() ? "logout" : "login");
         }
         return cell;
     }
