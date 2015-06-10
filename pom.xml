@@ -29,8 +29,6 @@
         </pluginRepository>
     </pluginRepositories>
 
-
-
     <build>
         <pluginManagement>
             <plugins>
@@ -67,6 +65,8 @@
     </dependencyManagement>
 
     <modules>
+        <module>robopods</module>
+    
         <module>Adventure</module>
         <module>AppPrefs</module>
        <!-- <module>AQTapDemo</module> -->
