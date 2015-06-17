@@ -11,8 +11,7 @@
   <target>ios</target>
   <iosInfoPList>Info.plist.xml</iosInfoPList>
   <forceLinkClasses>
-    <pattern>SQLite.JDBCDriver</pattern>
-    <pattern>SQLite.JDBC2z.JDBCConnection</pattern>
+    <pattern>SQLite.**</pattern>
   </forceLinkClasses>
   <libs>
     <lib>lib/libiOSPlot.a</lib>
@@ -20,4 +19,5 @@
   <frameworks>
     <framework>CoreGraphics</framework>
   </frameworks>
+  <treeShaker>aggressive</treeShaker>
 </config>
