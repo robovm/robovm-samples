@@ -14,8 +14,8 @@
     <version>1.0</version>
 
     <properties>
-        <robovm.version>1.3.0</robovm.version>
-        <robovm.maven.version>1.3.0</robovm.maven.version>
+        <robovm.version>1.4.0</robovm.version>
+        <robovm.maven.version>1.4.0</robovm.maven.version>
     </properties>
 
     <pluginRepositories>
@@ -28,8 +28,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-
 
     <build>
         <pluginManagement>
@@ -67,6 +65,8 @@
     </dependencyManagement>
 
     <modules>
+        <module>robopods</module>
+    
         <module>Adventure</module>
         <module>AppPrefs</module>
        <!-- <module>AQTapDemo</module> -->
