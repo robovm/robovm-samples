@@ -74,6 +74,7 @@
         <module>BatteryStatus</module>
         <module>CurrentAddress</module>
         <module>CustomAnimatableProperty</module>
+        <module>CustomFrameworks</module>
         <module>DateCell</module>
         <module>DocInteraction</module>
         <module>Footprint</module>
