@@ -406,6 +406,7 @@
 				760D46B11B39995600CD7EB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		760D46B21B39995600CD7EB1 /* Build configuration list for PBXNativeTarget "MySwiftFrameworkTests" */ = {
 			isa = XCConfigurationList;
@@ -414,6 +415,7 @@
 				760D46B41B39995600CD7EB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

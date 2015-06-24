@@ -9,7 +9,7 @@
 import Foundation
 
 @objc
-public class SwiftAdder {
+public class SwiftAdder: NSObject {
     public func add(a: Int32, b: Int32) -> Int32 {
         return a + b;
     }
