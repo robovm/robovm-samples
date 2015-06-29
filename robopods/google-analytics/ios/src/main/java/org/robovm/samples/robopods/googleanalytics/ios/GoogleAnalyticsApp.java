@@ -38,7 +38,7 @@ public class GoogleAnalyticsApp extends UIApplicationDelegateAdapter {
 
         // Optional: configure GAI options.
         GAI gai = GAI.getSharedInstance();
-        gai.trackUncaughtExceptions();
+        gai.enableCrashReporting();
         gai.getLogger().setLogLevel(GAILogLevel.Verbose);
 
         // Set a white background so that patterns are showcased.
