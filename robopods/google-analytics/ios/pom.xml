@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.robovm</groupId>
+        <artifactId>robopods-samples-google-analytics-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>robopods-samples-google-analytics-ios</artifactId>
+    <name>RoboPods iOS sample for Google Analytics</name>
+
+    <packaging>jar</packaging>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-rt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-cocoatouch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robopods-google-analytics-ios</artifactId>
+            <version>${robopods.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -5,17 +5,13 @@
 
     <parent>
         <groupId>org.robovm</groupId>
-        <artifactId>robovm-samples-parent</artifactId>
+        <artifactId>robopods-samples-parent</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>robopods-samples-parent</artifactId>
-    <name>RoboVM RoboPods Samples Parent</name>
+    <artifactId>robopods-samples-google-analytics-parent</artifactId>
+    <name>RoboPods Samples for Google Analytics Parent</name>
     <packaging>pom</packaging>
-
-    <properties>
-        <robopods.version>1.0.0-SNAPSHOT</robopods.version>
-    </properties>
 
     <licenses>
         <license>
@@ -39,7 +35,6 @@
     </build>
 
     <modules>
-        <module>facebook</module>
-        <module>google-analytics</module>
+        <module>ios</module>
     </modules>
 </project>
