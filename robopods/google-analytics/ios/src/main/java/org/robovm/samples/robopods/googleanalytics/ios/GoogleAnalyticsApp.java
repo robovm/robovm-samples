@@ -13,38 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.samples.robopods.facebook.ios;
+package org.robovm.samples.robopods.googleanalytics.ios;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.foundation.NSPropertyList;
-import org.robovm.apple.foundation.NSURL;
+import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
-import org.robovm.pods.facebook.core.FBSDKAppEvents;
-import org.robovm.pods.facebook.core.FBSDKApplicationDelegate;
+import org.robovm.apple.uikit.UIColor;
+import org.robovm.pods.google.GGLContext;
+import org.robovm.pods.google.analytics.GAI;
+import org.robovm.pods.google.analytics.GAILogLevel;
 
-public class FacebookApp extends UIApplicationDelegateAdapter {
+public class GoogleAnalyticsApp extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        FBSDKApplicationDelegate.getSharedInstance().didFinishLaunching(application, launchOptions);
+        // Configure tracker from GoogleService-Info.plist.
+        try {
+            GGLContext.getSharedInstance().configure();
+        } catch (NSErrorException e) {
+            System.err.println("Error configuring the Google context: " + e.getError());
+        }
+
+        // Optional: configure GAI options.
+        GAI gai = GAI.getSharedInstance();
+        gai.trackUncaughtExceptions();
+        gai.getLogger().setLogLevel(GAILogLevel.Verbose);
+
+        // Set a white background so that patterns are showcased.
+        getWindow().setBackgroundColor(UIColor.white());
+
         return true;
-    }
-
-    @Override
-    public boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSPropertyList annotation) {
-        return FBSDKApplicationDelegate.getSharedInstance().openURL(application, url, sourceApplication, annotation);
-    }
-
-    @Override
-    public void didBecomeActive(UIApplication application) {
-        FBSDKAppEvents.activateApp();
     }
 
     public static void main(String[] args) {
         try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
-            UIApplication.main(args, null, FacebookApp.class);
+            UIApplication.main(args, null, GoogleAnalyticsApp.class);
         }
     }
 }
