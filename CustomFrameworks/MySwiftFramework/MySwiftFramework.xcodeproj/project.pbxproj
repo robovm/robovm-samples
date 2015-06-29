@@ -11,6 +11,7 @@
 		760D46A51B39995600CD7EB1 /* MySwiftFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760D46991B39995600CD7EB1 /* MySwiftFramework.framework */; };
 		760D46AC1B39995600CD7EB1 /* MySwiftFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D46AB1B39995600CD7EB1 /* MySwiftFrameworkTests.swift */; };
 		760D46B61B39997D00CD7EB1 /* SwiftAdder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D46B51B39997D00CD7EB1 /* SwiftAdder.swift */; };
+		761838BF1B417C5900EBEDD1 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761838BE1B417C5900EBEDD1 /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		760D46AA1B39995600CD7EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		760D46AB1B39995600CD7EB1 /* MySwiftFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySwiftFrameworkTests.swift; sourceTree = "<group>"; };
 		760D46B51B39997D00CD7EB1 /* SwiftAdder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAdder.swift; sourceTree = "<group>"; };
+		761838BE1B417C5900EBEDD1 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				760D469E1B39995600CD7EB1 /* MySwiftFramework.h */,
 				760D469C1B39995600CD7EB1 /* Supporting Files */,
 				760D46B51B39997D00CD7EB1 /* SwiftAdder.swift */,
+				761838BE1B417C5900EBEDD1 /* Storyboard.storyboard */,
 			);
 			path = MySwiftFramework;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 		760D46901B39995600CD7EB1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Mario Zechner";
 				TargetAttributes = {
@@ -195,6 +199,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				761838BF1B417C5900EBEDD1 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
