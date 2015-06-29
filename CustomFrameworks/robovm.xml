@@ -13,7 +13,7 @@
     </resources>
     <frameworks>
     	<framework>MyObjectiveCFramework</framework>
-    	<framework>MySwiftFramework</framework>
+    	<framework>MySwiftFramework</framework>   	
     </frameworks>
     <frameworkPaths>
     	<path>MyObjectiveCFramework/build</path>
