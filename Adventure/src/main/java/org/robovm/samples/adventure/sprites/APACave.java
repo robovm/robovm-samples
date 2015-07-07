@@ -166,12 +166,12 @@ public class APACave extends APAEnemyCharacter {
 
         runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.fadeAlphaTo(0.0, 0.5), SKAction.removeFromParent())));
 
-        smokeEmitter.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(2.0), SKAction.runBlock(new Runnable() {
+        smokeEmitter.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(2.0), SKAction.run(new Runnable() {
             @Override
             public void run () {
                 smokeEmitter.setParticleBirthRate(2.0);
             }
-        }), SKAction.wait(2.0), SKAction.runBlock(new Runnable() {
+        }), SKAction.wait(2.0), SKAction.run(new Runnable() {
             @Override
             public void run () {
                 smokeEmitter.setParticleBirthRate(0.0);

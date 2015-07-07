@@ -102,7 +102,7 @@ public class APAGoblin extends APAEnemyCharacter {
         case Death:
             removeAllActions();
             runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(0.75), SKAction.fadeOut(1.0), SKAction
-                    .runBlock(new Runnable() {
+                    .run(new Runnable() {
                         @Override
                         public void run() {
                             removeFromParent();

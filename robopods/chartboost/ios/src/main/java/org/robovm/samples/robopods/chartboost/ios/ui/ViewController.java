@@ -65,7 +65,7 @@ public class ViewController extends UIViewController {
         super.viewDidLoad();
 
         // Setup PIA number in NSUserDefaults
-        long globalLevel = NSUserDefaults.getStandardUserDefaults().getInteger(PIA_GLOBAL_LEVEL_NUMBER_KEY);
+        long globalLevel = NSUserDefaults.getStandardUserDefaults().getInt(PIA_GLOBAL_LEVEL_NUMBER_KEY);
         if (globalLevel <= 0) {
             NSUserDefaults.getStandardUserDefaults().put(PIA_GLOBAL_LEVEL_NUMBER_KEY, 0);
             NSUserDefaults.getStandardUserDefaults().synchronize();
@@ -226,7 +226,7 @@ public class ViewController extends UIViewController {
     @IBAction
     private void sendPIALevelTracking(UIResponder sender) {
         System.out.println("sendPIA level tracking");
-        long highestLevel = NSUserDefaults.getStandardUserDefaults().getInteger(PIA_GLOBAL_LEVEL_NUMBER_KEY);
+        long highestLevel = NSUserDefaults.getStandardUserDefaults().getInt(PIA_GLOBAL_LEVEL_NUMBER_KEY);
         CBLevelType levelType = CBLevelType.HIGHEST_LEVEL_REACHED;
         String eventLabel = "character level";
         String eventDescription = "highest level";
