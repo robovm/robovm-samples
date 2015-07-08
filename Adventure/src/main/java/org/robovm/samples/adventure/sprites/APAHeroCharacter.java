@@ -100,7 +100,7 @@ public abstract class APAHeroCharacter extends APACharacter {
             addChild(emitter);
             APAUtils.runOneShotEmitter(emitter, 4.5);
 
-            runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(4.0), SKAction.runBlock(new Runnable() {
+            runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(4.0), SKAction.run(new Runnable() {
                 @Override
                 public void run () {
                     scene.heroWasKilled(APAHeroCharacter.this);

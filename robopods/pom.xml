@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <robopods.version>1.0-SNAPSHOT</robopods.version>
+        <robopods.version>1.4.1-SNAPSHOT</robopods.version>
     </properties>
 
     <licenses>
@@ -39,6 +39,9 @@
     </build>
 
     <modules>
+        <module>chartboost</module>
         <module>facebook</module>
+        <module>flurry</module>
+        <module>google-analytics</module>
     </modules>
 </project>

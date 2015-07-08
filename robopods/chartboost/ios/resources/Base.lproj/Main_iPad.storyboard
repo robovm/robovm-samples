@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zmz-6H-s8l"/>
+                        <viewControllerLayoutGuide type="bottom" id="WUD-tY-Ecj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleAspectFit" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpa-Y4-C4b">
+                                <rect key="frame" x="91" y="467" width="250" height="70"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="Rewarded Video" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showRewardedVideo" destination="BYZ-38-t0r" eventType="touchUpInside" id="KvK-fU-kCd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N53-4J-OrL" userLabel="Button - Show Newsfeed">
+                                <rect key="frame" x="427" y="464" width="250" height="73"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="Support" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showSupport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SI5-Jt-Ei4"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Chartboost-LogoH1.png" translatesAutoresizingMaskIntoConstraints="NO" id="PJS-E6-5f4">
+                                <rect key="frame" x="133" y="-21" width="503" height="198"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teK-NY-1Nc">
+                                <rect key="frame" x="427" y="185" width="250" height="73"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="InPlay" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInPlay:" destination="dkx-z0-nzr" eventType="touchUpInside" id="M5d-43-PDh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ILG-bg-JAz">
+                                <rect key="frame" x="427" y="320" width="250" height="73"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <state key="normal" title="LevelTracking(PIA)" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendPIALevelTracking:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OqH-5x-qRQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dHw-VE-hCT">
+                                <rect key="frame" x="91" y="185" width="250" height="73"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="Interstitial" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInterstitial" destination="BYZ-38-t0r" eventType="touchUpInside" id="M0n-d2-EcP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NQG-Cg-JXm">
+                                <rect key="frame" x="91" y="320" width="250" height="73"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="MoreApps" backgroundImage="Demo-Button.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showMoreApps" destination="BYZ-38-t0r" eventType="touchUpInside" id="gp7-dW-mXC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="dHw-VE-hCT" firstAttribute="top" secondItem="PJS-E6-5f4" secondAttribute="bottom" constant="8" id="74d-zQ-514"/>
+                            <constraint firstAttribute="centerX" secondItem="PJS-E6-5f4" secondAttribute="centerX" constant="-0.5" id="BpX-h0-pHn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="N53-4J-OrL" secondAttribute="trailing" constant="75" id="FPM-EB-U42"/>
+                            <constraint firstItem="NQG-Cg-JXm" firstAttribute="top" secondItem="dHw-VE-hCT" secondAttribute="bottom" constant="62" id="Inw-90-C4l"/>
+                            <constraint firstItem="teK-NY-1Nc" firstAttribute="top" secondItem="PJS-E6-5f4" secondAttribute="bottom" constant="8" id="Qtv-dZ-wKL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ILG-bg-JAz" secondAttribute="trailing" constant="75" id="R0o-0h-l43"/>
+                            <constraint firstItem="lpa-Y4-C4b" firstAttribute="top" secondItem="NQG-Cg-JXm" secondAttribute="bottom" constant="62" id="RaX-Sr-ffU"/>
+                            <constraint firstItem="lpa-Y4-C4b" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="75" id="TNb-cA-oxH"/>
+                            <constraint firstItem="N53-4J-OrL" firstAttribute="top" secondItem="ILG-bg-JAz" secondAttribute="bottom" constant="62" id="WyP-Qm-kjG"/>
+                            <constraint firstItem="ILG-bg-JAz" firstAttribute="top" secondItem="teK-NY-1Nc" secondAttribute="bottom" constant="62" id="YKb-yP-cVP"/>
+                            <constraint firstItem="dHw-VE-hCT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="75" id="aOq-Pl-xHx"/>
+                            <constraint firstItem="NQG-Cg-JXm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="75" id="aaF-JK-cj6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PJS-E6-5f4" secondAttribute="trailing" constant="116" id="g8x-SZ-exf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="teK-NY-1Nc" secondAttribute="trailing" constant="75" id="gMB-W3-Tf2"/>
+                            <constraint firstItem="PJS-E6-5f4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="117" id="xvE-Rn-n1a"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Chartboost-LogoH1.png" width="960" height="150"/>
+        <image name="Demo-Button.png" width="229" height="73"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackOpaque"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+</document>

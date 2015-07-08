@@ -136,7 +136,7 @@ public class RootViewController extends UITableViewController {
         // The value for the 'Text Color' setting is stored as an integer
         // between
         // one and three inclusive. Convert the integer into a UIColor object.
-        int textColor = (int) standardDefaults.getInteger(NAME_COLOR_KEY);
+        int textColor = standardDefaults.getInt(NAME_COLOR_KEY);
 
         switch (textColor) {
         case 1:

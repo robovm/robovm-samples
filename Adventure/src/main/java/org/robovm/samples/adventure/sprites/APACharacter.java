@@ -241,7 +241,7 @@ public abstract class APACharacter extends APAParallaxSprite {
         activeAnimationKey = key;
 
         runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.animate(frames, animationSpeed, true, false), SKAction
-            .runBlock(new Runnable() {
+            .run(new Runnable() {
                 @Override
                 public void run () {
                     animationHasCompleted(animationState);

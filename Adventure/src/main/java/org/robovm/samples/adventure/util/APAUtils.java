@@ -238,7 +238,7 @@ public class APAUtils {
     }
 
     public static void runOneShotEmitter (final SKEmitterNode emitter, double duration) {
-        emitter.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(duration), SKAction.runBlock(new Runnable() {
+        emitter.runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.wait(duration), SKAction.run(new Runnable() {
             @Override
             public void run () {
                 emitter.setParticleBirthRate(0);

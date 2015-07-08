@@ -14,8 +14,8 @@
     <version>1.0</version>
 
     <properties>
-        <robovm.version>1.4.0</robovm.version>
-        <robovm.maven.version>1.4.0</robovm.maven.version>
+        <robovm.version>1.4.1-SNAPSHOT</robovm.version>
+        <robovm.maven.version>1.4.1-SNAPSHOT</robovm.maven.version>
     </properties>
 
     <pluginRepositories>
@@ -74,6 +74,7 @@
         <module>BatteryStatus</module>
         <module>CurrentAddress</module>
         <module>CustomAnimatableProperty</module>
+        <module>CustomFrameworks</module>
         <module>DateCell</module>
         <module>DocInteraction</module>
         <module>Footprint</module>
