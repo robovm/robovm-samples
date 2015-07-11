@@ -16,7 +16,7 @@
  * Portions of this code is based on Google Inc's Google Analytics sample
  * which is copyright (C) 2015 Google Inc.
  */
-package org.robovm.samples.robopods.googleanalytics.ios.ui;
+package org.robovm.samples.robopods.google.analytics.ios.ui;
 
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.CustomClass;

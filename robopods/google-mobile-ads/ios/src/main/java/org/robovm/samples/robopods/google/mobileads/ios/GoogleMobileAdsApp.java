@@ -13,46 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  * 
- * Portions of this code is based on Google Inc's Google Analytics sample
+ * Portions of this code is based on Google Inc's Google Mobile Ads sample
  * which is copyright (C) 2015 Google Inc.
  */
-package org.robovm.samples.robopods.googleanalytics.ios;
+package org.robovm.samples.robopods.google.mobileads.ios;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
-import org.robovm.apple.uikit.UIColor;
-import org.robovm.pods.google.GGLContext;
-import org.robovm.pods.google.analytics.GAI;
-import org.robovm.pods.google.analytics.GAILogLevel;
+import org.robovm.pods.google.GGLContextMobileAds;
 
-public class GoogleAnalyticsApp extends UIApplicationDelegateAdapter {
+public class GoogleMobileAdsApp extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        // Configure tracker from GoogleService-Info.plist.
         try {
-            GGLContext.getSharedInstance().configure();
+            GGLContextMobileAds.getSharedInstance().configure();
         } catch (NSErrorException e) {
-            System.err.println("Error configuring the Google context: " + e.getError());
+            System.err.println("Error configuring the Google context: " + e);
         }
-
-        // Optional: configure GAI options.
-        GAI gai = GAI.getSharedInstance();
-        gai.enableCrashReporting();
-        gai.getLogger().setLogLevel(GAILogLevel.Verbose);
-
-        // Set a white background so that patterns are showcased.
-        getWindow().setBackgroundColor(UIColor.white());
 
         return true;
     }
 
     public static void main(String[] args) {
         try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
-            UIApplication.main(args, null, GoogleAnalyticsApp.class);
+            UIApplication.main(args, null, GoogleMobileAdsApp.class);
         }
     }
 }
