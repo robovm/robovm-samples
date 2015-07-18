@@ -1,0 +1,6 @@
+<config>
+    <executableName>${app.executable}</executableName>
+    <mainClass>${app.mainclass}</mainClass>
+    <target>console</target>
+    <treeShaker>aggressive</treeShaker>
+</config>
