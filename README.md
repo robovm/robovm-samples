@@ -20,6 +20,10 @@ To run on a connected device:
 ```
 ./gradlew launchIOSDevice
 ```
+To run a console app sample:
+```
+./gradlew launchConsole
+```
 
 ## Compile & Run using Maven
 
@@ -34,6 +38,10 @@ mvn compile robovm:ipad-sim
 To run on a connected device:
 ```
 mvn compile robovm:ios-device
+```
+To run a console app sample:
+```
+mvn compile robovm:console
 ```
 
 ## Run using Eclipse
