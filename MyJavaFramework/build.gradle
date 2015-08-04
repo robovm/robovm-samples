@@ -1,0 +1,5 @@
+robovm {
+    // The Xcode project expects the framework to be in target/robovm rather
+    // than build/robovm which is the default installDir
+    installDir = "target/robovm"
+}

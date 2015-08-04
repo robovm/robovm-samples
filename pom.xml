@@ -89,6 +89,7 @@
         <module>MessageComposer</module>
         <module>MoveMe</module>
         <module>MoviePlayer</module>
+        <module>MyJavaFramework</module>
         <module>PhotoMap</module>
         <module>PhotoPicker</module>
         <module>PhotoScroller</module>
