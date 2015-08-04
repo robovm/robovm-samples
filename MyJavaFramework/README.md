@@ -19,7 +19,7 @@ This will create the framework in `target/robovm/MyJavaFramework.framework`.
 The native app using this framework can then be launched using the `CounterUI`
 Xcode project.
 
-*NOTE* The Xcode project depends on
+*NOTE*: The Xcode project depends on
 [Carthage](https://github.com/Carthage/Carthage). Carthage must be installed
 in `/usr/local/bin/carthage` in order for this sample to work.
 
