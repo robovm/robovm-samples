@@ -29,8 +29,9 @@ import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPFindFriendsViewController;
-import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPSettingsActionSheet;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.PAPSettingsActionSheet;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.friends.PAPFindFriendsViewController;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.photo.PAPPhotoTimelineViewController;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.PAPSettingsButtonItem;
 
 public class PAPHomeViewController extends PAPPhotoTimelineViewController {

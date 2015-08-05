@@ -16,7 +16,7 @@
  * Portions of this code is based on Parse's AnyPic sample
  * which is copyright (C) 2013 Parse.
  */
-package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings;
+package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers;
 
 import org.robovm.apple.uikit.UIActionSheet;
 import org.robovm.apple.uikit.UIActionSheetDelegateAdapter;
@@ -24,6 +24,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.samples.robopods.parse.anypic.ios.AnyPicApp;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPUser;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.friends.PAPFindFriendsViewController;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.home.PAPAccountViewController;
 
 public class PAPSettingsActionSheet extends UIActionSheet {

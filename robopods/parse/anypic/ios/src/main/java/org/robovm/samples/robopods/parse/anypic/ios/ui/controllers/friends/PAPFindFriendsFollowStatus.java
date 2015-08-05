@@ -16,7 +16,7 @@
  * Portions of this code is based on Parse's AnyPic sample
  * which is copyright (C) 2013 Parse.
  */
-package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings;
+package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.friends;
 
 public enum PAPFindFriendsFollowStatus {
     NONE, ALL, SOME

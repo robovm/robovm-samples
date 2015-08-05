@@ -16,7 +16,7 @@
  * Portions of this code is based on Parse's AnyPic sample
  * which is copyright (C) 2013 Parse.
  */
-package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.home;
+package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.photo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,10 +29,7 @@ import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
-import org.robovm.apple.foundation.NSLocale;
 import org.robovm.apple.foundation.NSNotification;
-import org.robovm.apple.foundation.NSNumber;
-import org.robovm.apple.foundation.NSNumberFormatter;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIButton;
@@ -52,7 +49,6 @@ import org.robovm.apple.uikit.UIView;
 import org.robovm.objc.block.VoidBlock1;
 import org.robovm.pods.parse.PFCachePolicy;
 import org.robovm.pods.parse.PFFindCallback;
-import org.robovm.pods.parse.PFObject;
 import org.robovm.pods.parse.PFQuery;
 import org.robovm.pods.parse.PFSaveCallback;
 import org.robovm.pods.parse.ui.PFQueryTableViewController;
@@ -64,7 +60,7 @@ import org.robovm.samples.robopods.parse.anypic.ios.model.PAPCache;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPPhoto;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPPhotoAttributes;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPUser;
-import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.photo.PAPPhotoDetailsViewController;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.home.PAPAccountViewController;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.tablecells.PAPLoadMoreCell;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.tablecells.PAPPhotoCell;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.timeline.PAPPhotoHeaderButtons;
@@ -78,15 +74,13 @@ import org.robovm.samples.robopods.parse.anypic.ios.util.PAPUtility;
 public class PAPPhotoTimelineViewController extends PFQueryTableViewController<PAPPhoto> implements
         PAPPhotoHeaderViewDelegate {
     private boolean shouldReloadOnAppear;
-    private final List<PAPPhotoHeaderView> reusableSectionHeaderViews;
-    private final Map<Integer, Integer> outstandingSectionHeaderQueries;
+    private List<PAPPhotoHeaderView> reusableSectionHeaderViews;
+    private Map<Integer, Integer> outstandingSectionHeaderQueries;
 
     private NSObject[] notifications;
 
     public PAPPhotoTimelineViewController(UITableViewStyle style) {
         super(style, PAPPhoto.class);
-
-        outstandingSectionHeaderQueries = new HashMap<>();
 
         // Whether the built-in pull-to-refresh is enabled
         setPullToRefreshEnabled(true);
@@ -96,9 +90,6 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
         // The number of objects to show per page
         setObjectsPerPage(10);
-
-        // Improve scrolling performance by reusing UITableView section headers
-        reusableSectionHeaderViews = new ArrayList<>(3);
 
         // The Loading text clashes with the dark Anypic design
         setLoadingViewEnabled(false);
@@ -119,6 +110,11 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
     @Override
     public void viewDidLoad() {
+        // Improve scrolling performance by reusing UITableView section headers
+        reusableSectionHeaderViews = new ArrayList<>(3);
+
+        outstandingSectionHeaderQueries = new HashMap<>();
+
         getTableView().setSeparatorStyle(UITableViewCellSeparatorStyle.None);
 
         super.viewDidLoad();
@@ -227,12 +223,76 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
         super.didSelectRow(tableView, indexPath);
 
+        if (indexPath.getRow() > getObjects().size() - 1) {
+            return;
+        }
+
         tableView.deselectRow(indexPath, true);
 
         if (getObject(indexPath) == null) {
             // Load More Cell
             loadNextPage();
         }
+    }
+
+    @Override
+    public PAPPhoto getObject(NSIndexPath indexPath) {
+        int index = getIndexForObjectAt(indexPath);
+        NSArray<PAPPhoto> objects = getObjects();
+        if (index < objects.size()) {
+            return objects.get(index);
+        }
+        return null;
+    }
+
+    @Override
+    public PFTableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath, PAPPhoto photo) {
+        final String cellIdentifier = "Cell";
+
+        int index = getIndexForObjectAt(indexPath);
+
+        if (indexPath.getRow() % 2 == 0) {
+            // Header
+            return getDetailPhotoCellForRow(indexPath);
+        } else {
+            // Photo
+            PAPPhotoCell cell = (PAPPhotoCell) getTableView().dequeueReusableCell(cellIdentifier);
+
+            if (cell == null) {
+                cell = new PAPPhotoCell(UITableViewCellStyle.Default, cellIdentifier);
+                cell.getPhotoButton().addOnTouchUpInsideListener(didTapOnPhotoAction);
+            }
+
+            cell.getPhotoButton().setTag(index);
+            cell.getImageView().setImage(UIImage.create("PlaceholderPhoto"));
+
+            if (photo != null) {
+                cell.getImageView().setFile(photo.getPicture());
+
+                // PFQTVC will take care of asynchronously downloading files,
+                // but will only load them when the tableview is not moving. If
+                // the data is there, let's load it right away.
+                if (cell.getImageView().getFile().isDataAvailable()) {
+                    cell.getImageView().loadInBackground();
+                }
+            }
+
+            return cell;
+        }
+    }
+
+    @Override
+    public PFTableViewCell getCellForNextPage(UITableView tableView, NSIndexPath indexPath) {
+        final String loadMoreCellIdentifier = "LoadMoreCell";
+
+        PAPLoadMoreCell cell = (PAPLoadMoreCell) tableView.dequeueReusableCell(loadMoreCellIdentifier);
+        if (cell == null) {
+            cell = new PAPLoadMoreCell(UITableViewCellStyle.Default, loadMoreCellIdentifier);
+            cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
+            cell.setHideSeparatorBottom(true);
+            cell.getMainView().setBackgroundColor(UIColor.clear());
+        }
+        return cell;
     }
 
     @Override
@@ -308,56 +368,6 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
          * preceding query.
          */
         return query;
-    }
-
-    @Override
-    public PFTableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath, PAPPhoto photo) {
-        final String cellIdentifier = "Cell";
-
-        int index = getIndexForObjectAt(indexPath);
-
-        if (indexPath.getRow() % 2 == 0) {
-            // Header
-            return getDetailPhotoCellForRow(indexPath);
-        } else {
-            // Photo
-            PAPPhotoCell cell = (PAPPhotoCell) getTableView().dequeueReusableCell(cellIdentifier);
-
-            if (cell == null) {
-                cell = new PAPPhotoCell(UITableViewCellStyle.Default, cellIdentifier);
-                cell.getPhotoButton().addOnTouchUpInsideListener(didTapOnPhotoAction);
-            }
-
-            cell.getPhotoButton().setTag(index);
-            cell.getImageView().setImage(UIImage.create("PlaceholderPhoto"));
-
-            if (photo != null) {
-                cell.getImageView().setFile(photo.getPicture());
-
-                // PFQTVC will take care of asynchronously downloading files,
-                // but will only load them when the tableview is not moving. If
-                // the data is there, let's load it right away.
-                if (cell.getImageView().getFile().isDataAvailable()) {
-                    cell.getImageView().loadInBackground();
-                }
-            }
-
-            return cell;
-        }
-    }
-
-    @Override
-    public PFTableViewCell getCellForNextPage(UITableView tableView, NSIndexPath indexPath) {
-        final String loadMoreCellIdentifier = "LoadMoreCell";
-
-        PAPLoadMoreCell cell = (PAPLoadMoreCell) tableView.dequeueReusableCell(loadMoreCellIdentifier);
-        if (cell == null) {
-            cell = new PAPLoadMoreCell(UITableViewCellStyle.Default, loadMoreCellIdentifier);
-            cell.setSelectionStyle(UITableViewCellSelectionStyle.None);
-            cell.setHideSeparatorBottom(true);
-            cell.getMainView().setBackgroundColor(UIColor.clear());
-        }
-        return cell;
     }
 
     private PAPPhotoHeaderView dequeueReusableSectionHeaderView() {
@@ -486,17 +496,6 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
         return headerView;
     }
 
-    private NSIndexPath getIndexPathForObject(PFObject targetObject) {
-        NSArray<PAPPhoto> objects = getObjects();
-        for (int i = 0, n = objects.size(); i < n; i++) {
-            PAPPhoto object = objects.get(i);
-            if (object.getObjectId().equals(targetObject.getObjectId())) {
-                return NSIndexPath.createWithRow(i * 2 + 1, 0);
-            }
-        }
-        return null;
-    }
-
     private final UIControl.OnTouchUpInsideListener didTapOnPhotoAction = new UIControl.OnTouchUpInsideListener() {
         @Override
         public void onTouchUpInside(UIControl control, UIEvent event) {
@@ -507,17 +506,6 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
             }
         }
     };
-
-    /*
-     * For each object in self.objects, we display two cells. If pagination is
-     * enabled, there will be an extra cell at the end. NSIndexPath index
-     * self.objects 0 0 HEADER 0 0 1 PHOTO 0 0 2 HEADER 1 0 3 PHOTO 1 0 4 LOAD
-     * MORE
-     */
-
-    private NSIndexPath getIndexPathForObjectAt(int index, boolean header) {
-        return NSIndexPath.createWithItem(index * 2 + (header ? 0 : 1), 0);
-    }
 
     private int getIndexForObjectAt(NSIndexPath indexPath) {
         return indexPath.getRow() / 2;
@@ -540,23 +528,20 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
         final String originalButtonTitle = button.getTitleLabel().getText();
 
-        NSNumberFormatter numberFormatter = new NSNumberFormatter();
-        numberFormatter.setLocale(new NSLocale("en_US"));
-
-        NSNumber likeCount = numberFormatter.parse(button.getTitleLabel().getText());
+        int likeCount = Integer.valueOf(button.getTitleLabel().getText());
         if (liked) {
-            likeCount = NSNumber.valueOf(likeCount.intValue() + 1);
+            likeCount = likeCount + 1;
             PAPCache.getSharedCache().incrementPhotoLikerCount(photo);
         } else {
-            if (likeCount.intValue() > 0) {
-                likeCount = NSNumber.valueOf(likeCount.intValue() - 1);
+            if (likeCount > 0) {
+                likeCount = likeCount - 1;
             }
             PAPCache.getSharedCache().decrementPhotoLikerCount(photo);
         }
 
         PAPCache.getSharedCache().setPhotoIsLikedByCurrentUser(photo, liked);
 
-        button.setTitle(numberFormatter.format(likeCount), UIControlState.Normal);
+        button.setTitle(String.valueOf(likeCount), UIControlState.Normal);
 
         if (liked) {
             PAPUtility.likePhotoInBackground(photo, new PFSaveCallback() {
