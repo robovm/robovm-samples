@@ -209,10 +209,14 @@ public class PAPUtility {
 
         if (mediumImageData.getLength() > 0) {
             final PFFile fileMediumImage = new PFFile(mediumImageData);
+            System.out.println("MEDIUM: " + fileMediumImage);
             fileMediumImage.saveInBackground(new PFSaveCallback() {
                 @Override
                 public void done(boolean success, NSError error) {
                     if (error == null) {
+                        System.out.println(fileMediumImage);
+                        // TODO <-- fileMediumImage should be a PFFile but it is
+                        // a random type???
                         PAPUser.getCurrentUser().setProfilePicMedium(fileMediumImage);
                         PAPUser.getCurrentUser().saveInBackground();
                     }
@@ -222,10 +226,14 @@ public class PAPUtility {
 
         if (smallRoundedImageData.getLength() > 0) {
             final PFFile fileSmallRoundedImage = new PFFile(smallRoundedImageData);
+            System.out.println("SMALL: " + fileSmallRoundedImage);
             fileSmallRoundedImage.saveInBackground(new PFSaveCallback() {
                 @Override
                 public void done(boolean success, NSError error) {
                     if (error == null) {
+                        System.out.println(fileSmallRoundedImage);
+                        // TODO <-- fileSmallRoundedImage should be a PFFile but
+                        // it is a random type???
                         PAPUser.getCurrentUser().setProfilePicSmall(fileSmallRoundedImage);
                         PAPUser.getCurrentUser().saveInBackground();
                     }

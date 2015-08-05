@@ -8,7 +8,6 @@ import org.robovm.pods.parse.ParseClassName;
 public class PAPUser extends PFUser implements Comparable<PAPUser> {
     public static final String DISPLAY_NAME_KEY = "displayName";
     public static final String FACEBOOK_ID_KEY = "facebookId";
-    public static final String PHOTO_ID_KEY = "photoId";
     public static final String PROFILE_PIC_SMALL_KEY = "profilePictureSmall";
     public static final String PROFILE_PIC_MEDIUM_KEY = "profilePictureMedium";
     public static final String FACEBOOK_FRIENDS_KEY = "facebookFriends";
@@ -34,14 +33,6 @@ public class PAPUser extends PFUser implements Comparable<PAPUser> {
 
     public void setFacebookId(String facebookId) {
         put(FACEBOOK_ID_KEY, facebookId);
-    }
-
-    public String getPhotoId() {
-        return getString(PHOTO_ID_KEY);
-    }
-
-    public void setPhotoID(String photoId) {
-        put(PHOTO_ID_KEY, photoId);
     }
 
     public PFFile getProfilePicSmall() {
