@@ -13,10 +13,6 @@
     <name>RoboVM RoboPods Samples Parent</name>
     <packaging>pom</packaging>
 
-    <properties>
-        <robopods.version>1.5.1-SNAPSHOT</robopods.version>
-    </properties>
-
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>

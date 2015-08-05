@@ -16,6 +16,7 @@
     <properties>
         <robovm.version>1.5.1-SNAPSHOT</robovm.version>
         <robovm.maven.version>1.5.1-SNAPSHOT</robovm.maven.version>
+        <robopods.version>1.5.1-SNAPSHOT</robopods.version>
     </properties>
 
     <pluginRepositories>
@@ -28,6 +29,17 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>
