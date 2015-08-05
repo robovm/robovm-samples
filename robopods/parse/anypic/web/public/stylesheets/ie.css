@@ -1,0 +1,1112 @@
+/* Welcome to Compass. Use this file to write IE specific override styles.
+ * Import this file using the following HTML or equivalent:
+ * <!--[if IE]>
+ *   <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+ * <![endif]--> */
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* line 17, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../.rvm/gems/ruby-1.9.2-p180/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 77, ../sass/screen.scss */
+a {
+  text-decoration: none;
+  color: #e18532;
+}
+/* line 81, ../sass/screen.scss */
+a:visited {
+  color: #e18532;
+}
+/* line 85, ../sass/screen.scss */
+a:hover {
+  text-decoration: underline;
+  color: #c36c1d;
+}
+/* line 90, ../sass/screen.scss */
+a:focus {
+  outline: thin dotted;
+  color: #c36c1d;
+}
+/* line 95, ../sass/screen.scss */
+a:hover, a:active {
+  outline: 0;
+}
+
+/* line 100, ../sass/screen.scss */
+body {
+  text-align: center;
+  padding: 0 25px;
+  background: #f1e1c6 url("../images/background.png");
+  background-repeat: repeat-x repeat-y;
+  background-position: center center;
+  font-size: 75%;
+}
+
+/* line 109, ../sass/screen.scss */
+html > body {
+  font-size: 12px;
+}
+
+/* line 113, ../sass/screen.scss */
+p {
+  line-height: 1.5em;
+}
+
+/* line 117, ../sass/screen.scss */
+#homepage {
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+/* line 123, ../sass/screen.scss */
+#homepage header {
+  margin: 0 auto;
+  width: 768px;
+  height: 100%;
+}
+
+/* line 131, ../sass/screen.scss */
+.leather {
+  background: #f1e1c6 url("../images/leather_bg.jpg");
+  background-repeat: repeat-x;
+  background-position: center top;
+  -webkit-background-size: 1400px 626px;
+  -moz-background-size: 1400px 626px;
+  -o-background-size: 1400px 626px;
+  background-size: 1400px 626px;
+  width: 100%;
+  height: 626px;
+}
+
+/* line 141, ../sass/screen.scss */
+#left {
+  position: relative;
+  float: left;
+  width: 55%;
+  height: 100%;
+  text-align: left;
+  padding-left: 0;
+}
+/* line 148, ../sass/screen.scss */
+#left img.frame {
+  position: absolute;
+  top: 101px;
+  left: -120px;
+}
+/* line 153, ../sass/screen.scss */
+#left img.reflection {
+  position: absolute;
+  top: 101px;
+  left: -120px;
+  z-index: 102;
+}
+
+/* line 161, ../sass/screen.scss */
+#right {
+  position: relative;
+  float: right;
+  width: 45%;
+  text-align: left;
+  padding-top: 12em;
+}
+/* line 168, ../sass/screen.scss */
+#right img {
+  vertical-align: middle;
+}
+/* line 173, ../sass/screen.scss */
+#right img.logo {
+  vertical-align: top;
+  padding-top: 6px;
+  padding-left: 20px;
+}
+/* line 179, ../sass/screen.scss */
+#right h1 {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: left;
+  line-height: 1.2em;
+  color: white;
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 35px;
+}
+/* line 187, ../sass/screen.scss */
+#right h2 {
+  margin-top: 0;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  text-align: left;
+  color: silver;
+  font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 20px;
+}
+/* line 196, ../sass/screen.scss */
+#right p {
+  margin-top: 0;
+  color: #a7a7a7;
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* line 203, ../sass/screen.scss */
+.downloadbutton {
+  background-color: #bc3406;
+  border: 1px solid #bc3406;
+  display: block;
+  width: 250px;
+  text-decoration: none;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eeb478), color-stop(100%, #bc3406));
+  background-image: -webkit-linear-gradient(#eeb478, #bc3406);
+  background-image: -moz-linear-gradient(#eeb478, #bc3406);
+  background-image: -o-linear-gradient(#eeb478, #bc3406);
+  background-image: linear-gradient(#eeb478, #bc3406);
+  text-align: left;
+  padding: 16px 16px 16px 20px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+  -o-border-radius: 16px;
+  -ms-border-radius: 16px;
+  color: white;
+  font-size: 26px;
+  text-shadow: #933609 0 -1px 0;
+  -webkit-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  -moz-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  cursor: pointer;
+  margin-top: 25px;
+  border-top: 1px solid #000;
+  font-size: 26px;
+  -webkit-border-radius: 28px;
+  -moz-border-radius: 28px;
+  -ms-border-radius: 28px;
+  -o-border-radius: 28px;
+  border-radius: 28px;
+  -o-border-radius: 28px;
+  -ms-border-radius: 28px;
+}
+/* line 229, ../sass/screen.scss */
+.downloadbutton img {
+  float: right;
+  padding: 0px 10px 0 0;
+}
+/* line 234, ../sass/screen.scss */
+.downloadbutton a {
+  color: white;
+  text-decoration: none;
+}
+/* line 238, ../sass/screen.scss */
+.downloadbutton a:hover {
+  color: white;
+  text-decoration: none;
+}
+/* line 242, ../sass/screen.scss */
+.downloadbutton a:visited {
+  color: white;
+  text-decoration: none;
+}
+/* line 246, ../sass/screen.scss */
+.downloadbutton a:active {
+  color: white;
+  text-decoration: none;
+}
+/* line 250, ../sass/screen.scss */
+.downloadbutton:hover {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9d2ab), color-stop(100%, #ec6418));
+  background-image: -webkit-linear-gradient(#f9d2ab, #ec6418);
+  background-image: -moz-linear-gradient(#f9d2ab, #ec6418);
+  background-image: -o-linear-gradient(#f9d2ab, #ec6418);
+  background-image: linear-gradient(#f9d2ab, #ec6418);
+  -webkit-box-shadow: 0 0 13px rgba(238, 180, 120, 0.45);
+  -moz-box-shadow: 0 0 13px rgba(238, 180, 120, 0.45);
+  box-shadow: 0 0 13px rgba(238, 180, 120, 0.45);
+}
+/* line 255, ../sass/screen.scss */
+.downloadbutton:active {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ac722a), color-stop(100%, #933609));
+  background-image: -webkit-linear-gradient(#ac722a, #933609);
+  background-image: -moz-linear-gradient(#ac722a, #933609);
+  background-image: -o-linear-gradient(#ac722a, #933609);
+  background-image: linear-gradient(#ac722a, #933609);
+  -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 2px 2px inset, rgba(255, 255, 255, 0.4) 0 1px 0;
+  -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 2px 2px inset, rgba(255, 255, 255, 0.4) 0 1px 0;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 2px 2px inset, rgba(255, 255, 255, 0.4) 0 1px 0;
+  color: #bcbdbe;
+  border-top: 1px solid #68461a;
+}
+
+/* line 263, ../sass/screen.scss */
+.footer {
+  background: #f1e1c6 url("../images/bottom_bg.jpg");
+  background-repeat: repeat-x;
+  background-position: center top;
+  width: 100%;
+  text-align: center;
+  padding: 72px 0 50px 0;
+  margin: 0 auto;
+}
+
+/* line 273, ../sass/screen.scss */
+#photo-list {
+  display: none;
+  height: 174px;
+  padding: 0 0 0 20px;
+}
+
+/* line 279, ../sass/screen.scss */
+.credits {
+  clear: both;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  text-shadow: #FFFFFF 0 1px 0;
+  padding-top: 20px;
+}
+/* line 287, ../sass/screen.scss */
+.credits h1 {
+  color: #6c5140;
+  font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 27px;
+  padding-bottom: 16px;
+}
+/* line 292, ../sass/screen.scss */
+.credits h2 {
+  color: #6c5140;
+  font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 18px;
+  padding-bottom: 16px;
+}
+
+/* line 298, ../sass/screen.scss */
+#copyright {
+  color: #6c5140;
+  font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 13px;
+  margin-top: 30px;
+}
+
+/* line 303, ../sass/screen.scss */
+#landingpage {
+  background: #f1e1c6 url("../images/background.png");
+  background-repeat: repeat-x repeat-y;
+  background-position: center;
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+/* line 314, ../sass/screen.scss */
+#landingpage header {
+  text-align: left;
+  width: 100%;
+  height: 68px;
+  background: #f1e1c6 url("../images/header_bg.png");
+  background-repeat: repeat-x repeat-y;
+  background-position: center;
+}
+/* line 322, ../sass/screen.scss */
+#landingpage header img.logo {
+  padding: 12px 12px 0 60px;
+}
+/* line 326, ../sass/screen.scss */
+#landingpage header img.appstore {
+  float: right;
+}
+
+/* line 332, ../sass/screen.scss */
+#content {
+  text-align: center;
+  margin: 40px 0 0 0;
+  height: 800px;
+  width: 100%;
+}
+/* line 338, ../sass/screen.scss */
+#content img.spinner {
+  margin: 300px auto;
+}
+
+/* line 343, ../sass/screen.scss */
+.spinner {
+  display: none;
+}
+
+/* line 347, ../sass/screen.scss */
+#photo-container {
+  display: none;
+  height: 800px;
+  width: 620px;
+  text-align: center;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+}
+/* line 356, ../sass/screen.scss */
+#photo-container h1 {
+  float: left;
+  margin: 20px 0 0 20px;
+  color: #6c5140;
+  font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 27px;
+  text-shadow: #FFFFFF 0 1px 0;
+  font-weight: bold;
+}
+/* line 364, ../sass/screen.scss */
+#photo-container div.avatar {
+  width: 60px;
+  height: 60px;
+  margin-left: 40px;
+  float: left;
+  border: 4px solid white;
+  padding: 0;
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+}
+/* line 374, ../sass/screen.scss */
+#photo-container div.avatar img {
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+  -o-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  margin-top: 1px;
+  width: 60px;
+  height: 60px;
+}
+/* line 382, ../sass/screen.scss */
+#photo-container img.photo {
+  border: 5px solid white;
+  padding: 0;
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  position: relative;
+  margin: 20px 20px 20px 0;
+  padding-top: 0;
+}
+
+/* line 390, ../sass/screen.scss */
+div.photo-thumb {
+  float: left;
+  width: 144px;
+  height: 144px;
+  background-color: #000000;
+  border: 5px solid white;
+  padding: 0;
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+  margin: 0 0 20px 18px;
+}
+/* line 398, ../sass/screen.scss */
+div.photo-thumb img {
+  -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+  margin-top: 1px;
+  width: 144px;
+  height: 144px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  /* Styles */
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) and (max-width: 767px) {
+  /* Styles */
+  /* line 1, ../sass/_480.scss */
+  .photo-thumb {
+    float: left;
+    width: 200px;
+    height: 200px;
+    border: 5px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    margin: 0 20px 2em 0;
+  }
+  /* line 9, ../sass/_480.scss */
+  .photo-thumb img {
+    -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    margin-top: 1px;
+    width: 200px;
+    height: 200px;
+  }
+
+  /* line 17, ../sass/_480.scss */
+  #homepage header {
+    width: 480px;
+    height: 100%;
+  }
+
+  /* line 23, ../sass/_480.scss */
+  .leather {
+    -webkit-background-size: 1400px 626px;
+    -moz-background-size: 1400px 626px;
+    -o-background-size: 1400px 626px;
+    background-size: 1400px 626px;
+    height: 220px;
+  }
+
+  /* line 28, ../sass/_480.scss */
+  #latest {
+    margin: 0 auto;
+    width: 480px;
+  }
+
+  /* line 33, ../sass/_480.scss */
+  .footer {
+    padding: 2em 0 50px 0;
+  }
+
+  /* line 37, ../sass/_480.scss */
+  #photo-list {
+    padding: 0 0 0 20px;
+  }
+
+  /* line 41, ../sass/_480.scss */
+  .credits {
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 2em;
+  }
+  /* line 46, ../sass/_480.scss */
+  .credits h1 {
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 24px;
+    padding-bottom: 16px;
+  }
+  /* line 51, ../sass/_480.scss */
+  .credits h2 {
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 16px;
+  }
+
+  /* line 56, ../sass/_480.scss */
+  #copyright {
+    margin-top: 2em;
+  }
+
+  /* line 60, ../sass/_480.scss */
+  #left {
+    display: none;
+    float: left;
+  }
+
+  /* line 65, ../sass/_480.scss */
+  #right {
+    float: left;
+    padding: 1em;
+    width: 480px;
+  }
+  /* line 70, ../sass/_480.scss */
+  #right img {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+  }
+  /* line 76, ../sass/_480.scss */
+  #right img.logo {
+    vertical-align: top;
+    padding-top: 6px;
+    padding-left: 10px;
+    width: 57px;
+    height: 24px;
+  }
+  /* line 84, ../sass/_480.scss */
+  #right h1 {
+    padding-top: 0;
+    text-align: left;
+    line-height: 1.2em;
+    color: white;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 16px;
+  }
+  /* line 91, ../sass/_480.scss */
+  #right h2 {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: left;
+    color: silver;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 14px;
+  }
+  /* line 100, ../sass/_480.scss */
+  #right p {
+    margin-top: 0;
+    width: 460px;
+    color: #a7a7a7;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  /* line 108, ../sass/_480.scss */
+  .downloadbutton {
+    margin: 0.5em 10px 0 0;
+    width: 250px;
+  }
+
+  /* line 113, ../sass/_480.scss */
+  #photo-container {
+    width: 480px;
+  }
+
+  /* line 119, ../sass/_480.scss */
+  #landingpage header img.logo {
+    position: absolute;
+    padding: 12px 12px 0 10px;
+  }
+
+  /* line 127, ../sass/_480.scss */
+  #content {
+    margin: 10px 0 0 0;
+    height: 420px;
+  }
+  /* line 131, ../sass/_480.scss */
+  #content img.spinner {
+    margin: 60px auto;
+  }
+
+  /* line 136, ../sass/_480.scss */
+  #photo-container {
+    height: 100%;
+    width: 480px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  /* line 144, ../sass/_480.scss */
+  #photo-container h1 {
+    margin: 20px 0 0 20px;
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 27px;
+    text-shadow: #FFFFFF 0 1px 0;
+  }
+  /* line 150, ../sass/_480.scss */
+  #photo-container div.avatar {
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    float: left;
+    border: 4px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+  }
+  /* line 160, ../sass/_480.scss */
+  #photo-container div.avatar img {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+    -o-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    margin-top: 1px;
+    width: 60px;
+    height: 60px;
+  }
+  /* line 168, ../sass/_480.scss */
+  #photo-container img.photo {
+    width: 300px;
+    height: 300px;
+    border: 5px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    position: relative;
+    margin: 20px 0 20px 0;
+    padding-top: 0;
+  }
+}
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  /* Styles */
+  /* line 1, ../sass/_320.scss */
+  .photo-thumb {
+    float: left;
+    width: 280px;
+    height: 280px;
+    border: 5px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    margin: 0 0 2em 0;
+  }
+  /* line 9, ../sass/_320.scss */
+  .photo-thumb img {
+    -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    margin-top: 1px;
+    width: 280px;
+    height: 280px;
+  }
+
+  /* line 17, ../sass/_320.scss */
+  #homepage header {
+    width: 320px;
+    height: 100%;
+  }
+
+  /* line 23, ../sass/_320.scss */
+  .leather {
+    -webkit-background-size: 1400px 626px;
+    -moz-background-size: 1400px 626px;
+    -o-background-size: 1400px 626px;
+    background-size: 1400px 626px;
+    height: 360px;
+  }
+
+  /* line 28, ../sass/_320.scss */
+  #latest {
+    margin: 0 auto;
+    width: 320px;
+  }
+
+  /* line 33, ../sass/_320.scss */
+  .footer {
+    padding: 2em 0 50px 0;
+  }
+
+  /* line 37, ../sass/_320.scss */
+  #photo-list {
+    padding: 0 0 0 14px;
+  }
+
+  /* line 41, ../sass/_320.scss */
+  .credits {
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 2em;
+  }
+  /* line 46, ../sass/_320.scss */
+  .credits h1 {
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 24px;
+    padding-bottom: 16px;
+  }
+  /* line 51, ../sass/_320.scss */
+  .credits h2 {
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 16px;
+  }
+
+  /* line 56, ../sass/_320.scss */
+  #copyright {
+    margin-top: 2em;
+  }
+
+  /* line 60, ../sass/_320.scss */
+  #left {
+    display: none;
+    float: left;
+  }
+
+  /* line 65, ../sass/_320.scss */
+  #right {
+    float: left;
+    padding-top: 1em;
+    padding-left: 10px;
+    width: 300px;
+  }
+  /* line 71, ../sass/_320.scss */
+  #right h1 {
+    padding-top: 0;
+    text-align: left;
+    line-height: 1.2em;
+    color: white;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 24px;
+  }
+  /* line 78, ../sass/_320.scss */
+  #right h2 {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: left;
+    color: silver;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 20px;
+  }
+  /* line 87, ../sass/_320.scss */
+  #right p {
+    margin-top: 0;
+    color: #a7a7a7;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 16px;
+    text-align: left;
+  }
+
+  /* line 94, ../sass/_320.scss */
+  .downloadbutton {
+    margin: 10px 10px 0 0;
+    width: 260px;
+  }
+
+  /* line 99, ../sass/_320.scss */
+  #photo-container {
+    width: 320px;
+  }
+
+  /* line 105, ../sass/_320.scss */
+  #landingpage header img.logo {
+    position: absolute;
+    padding: 12px 12px 0 10px;
+  }
+
+  /* line 113, ../sass/_320.scss */
+  #content {
+    margin: 10px 0 0 0;
+    height: 420px;
+  }
+  /* line 117, ../sass/_320.scss */
+  #content img.spinner {
+    margin: 60px auto;
+  }
+
+  /* line 122, ../sass/_320.scss */
+  #photo-container {
+    height: 100%;
+    width: 320px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  /* line 130, ../sass/_320.scss */
+  #photo-container h1 {
+    margin: 20px 0 0 20px;
+    color: #6c5140;
+    font-family: "HelveticaNeueRegular", "HelveticaNeue-Regular", "Helvetica Neue Regular", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    font-size: 27px;
+    text-shadow: #FFFFFF 0 1px 0;
+  }
+  /* line 136, ../sass/_320.scss */
+  #photo-container div.avatar {
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    float: left;
+    border: 4px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+  }
+  /* line 146, ../sass/_320.scss */
+  #photo-container div.avatar img {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+    -o-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    margin-top: 1px;
+    width: 60px;
+    height: 60px;
+  }
+  /* line 154, ../sass/_320.scss */
+  #photo-container img.photo {
+    width: 300px;
+    height: 300px;
+    border: 5px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    position: relative;
+    margin: 20px 0 20px 0;
+    padding-top: 0;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  /* line 1, ../sass/_1400.scss */
+  .photo-thumb {
+    float: left;
+    width: 144px;
+    height: 144px;
+    border: 5px solid white;
+    padding: 0;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+    margin: 0 0 20px 18px;
+  }
+  /* line 8, ../sass/_1400.scss */
+  .photo-thumb img {
+    -webkit-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 -1px 0 1px rgba(0, 0, 0, 0.6);
+    margin-top: 1px;
+    width: 144px;
+    height: 144px;
+  }
+
+  /* line 15, ../sass/_1400.scss */
+  #latest {
+    margin: 0 auto;
+    width: 1400px;
+  }
+}
+/* line 4, ../sass/slides.scss */
+img.screenshot {
+  width: 246px;
+  height: 354px;
+}
+
+/*
+  Slideshow
+*/
+/* line 13, ../sass/slides.scss */
+#slides {
+  display: none;
+  position: absolute;
+  top: 216px;
+  left: 36px;
+  z-index: 100;
+  /*
+    Next/prev buttons
+  */
+}
+/* line 22, ../sass/slides.scss */
+#slides .next, #slides .prev {
+  position: absolute;
+  top: 107px;
+  left: -39px;
+  width: 24px;
+  height: 43px;
+  display: block;
+  z-index: 101;
+}
+/* line 31, ../sass/slides.scss */
+#slides .next {
+  left: 585px;
+}
+
+/*
+  Slides container
+  Important:
+  Set the width of your slides container
+  Set to display none, prevents content flash
+*/
+/* line 43, ../sass/slides.scss */
+.slides_container {
+  width: 246px;
+  overflow: hidden;
+  position: relative;
+  display: none;
+  /*
+  Each slide
+  Important:
+  Set the width of your slides
+  If height not specified height will be set by the slide content
+  Set to display block
+  */
+}
+/* line 56, ../sass/slides.scss */
+.slides_container a {
+  width: 246px;
+  height: 354px;
+  display: block;
+}
+/* line 60, ../sass/slides.scss */
+.slides_container a img {
+  display: block;
+}
+
+/*
+  Pagination
+*/
+/* line 70, ../sass/slides.scss */
+.pagination {
+  z-index: 103;
+  margin: 10px 0 0 106px;
+  width: 100px;
+}
+/* line 74, ../sass/slides.scss */
+.pagination li {
+  float: left;
+  margin: 0 1px;
+  list-style: none;
+}
+/* line 78, ../sass/slides.scss */
+.pagination li a {
+  display: block;
+  width: 8px;
+  height: 0;
+  padding-top: 8px;
+  background-image: url("../images/smallDots.png");
+  background-position: 100% 0;
+  float: left;
+  overflow: hidden;
+}
+/* line 89, ../sass/slides.scss */
+.pagination li.current a {
+  background-position: 0 0;
+}
+
+/* line 10, ../sass/ie.scss */
+.downloadbutton {
+  background-color: #e58e34;
+}
+/* line 13, ../sass/ie.scss */
+.downloadbutton:hover {
+  background-color: #eba761;
+}
+/* line 17, ../sass/ie.scss */
+.downloadbutton:active {
+  background-color: #cd751a;
+}

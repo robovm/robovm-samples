@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.5.0"
+  },
+  "applications": {
+    "AnyPic": {
+      "applicationId": "qFCDZFYvqQh8o362On3TS89BonXkTErHno9ES2VD",
+      "masterKey": "g1LLpk8Y48gaOhWdfFnbUNYabBJAJsJnrFXYv8F0"
+    },
+    "_default": {
+      "link": "AnyPic"
+    }
+  }
+}
