@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2013-2015 RoboVM AB
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. 
+ * 
+ * Portions of this code is based on Parse's AnyPic sample
+ * which is copyright (C) 2013 Parse.
+ */
 package org.robovm.samples.robopods.parse.anypic.ios.util;
 
 import java.util.ArrayList;
@@ -209,14 +227,10 @@ public class PAPUtility {
 
         if (mediumImageData.getLength() > 0) {
             final PFFile fileMediumImage = new PFFile(mediumImageData);
-            System.out.println("MEDIUM: " + fileMediumImage);
             fileMediumImage.saveInBackground(new PFSaveCallback() {
                 @Override
                 public void done(boolean success, NSError error) {
                     if (error == null) {
-                        System.out.println(fileMediumImage);
-                        // TODO <-- fileMediumImage should be a PFFile but it is
-                        // a random type???
                         PAPUser.getCurrentUser().setProfilePicMedium(fileMediumImage);
                         PAPUser.getCurrentUser().saveInBackground();
                     }
@@ -226,14 +240,10 @@ public class PAPUtility {
 
         if (smallRoundedImageData.getLength() > 0) {
             final PFFile fileSmallRoundedImage = new PFFile(smallRoundedImageData);
-            System.out.println("SMALL: " + fileSmallRoundedImage);
             fileSmallRoundedImage.saveInBackground(new PFSaveCallback() {
                 @Override
                 public void done(boolean success, NSError error) {
                     if (error == null) {
-                        System.out.println(fileSmallRoundedImage);
-                        // TODO <-- fileSmallRoundedImage should be a PFFile but
-                        // it is a random type???
                         PAPUser.getCurrentUser().setProfilePicSmall(fileSmallRoundedImage);
                         PAPUser.getCurrentUser().saveInBackground();
                     }
