@@ -123,14 +123,14 @@ public class PAPWelcomeViewController extends UIViewController implements PAPLog
         presentedLoginViewController = true;
         PAPLoginViewController loginViewController = new PAPLoginViewController();
         loginViewController.setDelegate(this);
-        presentViewController(loginViewController, animated, null);
+        getNavigationController().presentViewController(loginViewController, animated, null);
     }
 
     @Override
     public void didLogin(PAPLoginViewController logInViewController) {
         if (presentedLoginViewController) {
             presentedLoginViewController = false;
-            dismissViewController(true, null);
+            getNavigationController().dismissViewController(true, null);
         }
     }
 

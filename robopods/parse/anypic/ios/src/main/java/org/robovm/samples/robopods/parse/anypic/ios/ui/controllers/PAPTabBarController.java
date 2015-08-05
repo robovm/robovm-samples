@@ -72,7 +72,8 @@ public class PAPTabBarController extends UITabBarController {
         super.setViewControllers(viewControllers, animated);
 
         UIButton cameraButton = UIButton.create(UIButtonType.Custom);
-        cameraButton.setFrame(new CGRect(94, 0, 131, getTabBar().getBounds().getSize().getHeight()));
+        cameraButton.setFrame(new CGRect((getTabBar().getBounds().getSize().getWidth() - 131) / 2, 0, 131, getTabBar()
+                .getBounds().getSize().getHeight()));
         cameraButton.setImage(UIImage.create("ButtonCamera"), UIControlState.Normal);
         cameraButton.setImage(UIImage.create("ButtonCameraSelected"), UIControlState.Highlighted);
         cameraButton.addOnTouchUpInsideListener(photoCaptureButtonAction);
@@ -176,9 +177,10 @@ public class PAPTabBarController extends UITabBarController {
     private final UIActionSheetDelegate actionSheetDelegate = new UIActionSheetDelegateAdapter() {
         @Override
         public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-            if (buttonIndex == 0) {
+            System.out.println(buttonIndex);
+            if (buttonIndex == 1) {
                 shouldStartCameraController();
-            } else if (buttonIndex == 1) {
+            } else if (buttonIndex == 2) {
                 shouldStartPhotoLibraryPickerController();
             }
         }

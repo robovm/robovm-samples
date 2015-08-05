@@ -26,8 +26,6 @@ import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSNotification;
 import org.robovm.apple.foundation.NSObject;
-import org.robovm.apple.uikit.UIActionSheet;
-import org.robovm.apple.uikit.UIActionSheetDelegateAdapter;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIButtonType;
@@ -37,7 +35,6 @@ import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImageView;
-import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIStatusBarStyle;
 import org.robovm.apple.uikit.UITableView;
 import org.robovm.apple.uikit.UITableViewCellSelectionStyle;
@@ -59,6 +56,7 @@ import org.robovm.samples.robopods.parse.anypic.ios.model.PAPUser;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.home.PAPAccountViewController;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.photo.PAPPhotoDetailsViewController;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPFindFriendsViewController;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPSettingsActionSheet;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.PAPSettingsButtonItem;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.tablecells.PAPActivityCell;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.tablecells.PAPActivityCellDelegate;
@@ -70,8 +68,6 @@ import org.robovm.samples.robopods.parse.anypic.ios.util.PAPNotificationManager;
 
 public class PAPActivityFeedViewController extends PFQueryTableViewController<PAPActivity> implements
         PAPActivityCellDelegate {
-    private final UINavigationController presentingAccountNavController;
-    private final UINavigationController presentingFriendNavController;
     private NSDate lastRefresh;
     private UIView blankTimelineView;
 
@@ -91,12 +87,6 @@ public class PAPActivityFeedViewController extends PFQueryTableViewController<PA
 
         // The Loading text clashes with the dark Anypic design
         setLoadingViewEnabled(false);
-
-        PAPAccountViewController accountViewController = new PAPAccountViewController(PAPUser.getCurrentUser());
-        presentingAccountNavController = new UINavigationController(accountViewController);
-
-        PAPFindFriendsViewController findFriendsVC = new PAPFindFriendsViewController();
-        presentingFriendNavController = new UINavigationController(findFriendsVC);
     }
 
     @Override
@@ -306,25 +296,7 @@ public class PAPActivityFeedViewController extends PFQueryTableViewController<PA
     private final UIControl.OnTouchUpInsideListener settingsButtonAction = new UIControl.OnTouchUpInsideListener() {
         @Override
         public void onTouchUpInside(UIControl control, UIEvent event) {
-            UIActionSheet actionSheet = new UIActionSheet(null, new UIActionSheetDelegateAdapter() {
-                @Override
-                public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-                    switch ((int) buttonIndex) {
-                    case 0:
-                        presentViewController(presentingAccountNavController, true, null);
-                        break;
-                    case 1:
-                        presentViewController(presentingFriendNavController, true, null);
-                        break;
-                    case 2:
-                        // Log out user and present the login view controller
-                        ((AnyPicApp) UIApplication.getSharedApplication().getDelegate()).logOut();
-                        break;
-                    default:
-                        break;
-                    }
-                }
-            }, "Cancel", null, "My Profile", "Find Friends", "Log Out");
+            PAPSettingsActionSheet actionSheet = new PAPSettingsActionSheet(getNavigationController());
             actionSheet.showFrom(getTabBarController().getTabBar());
         }
     };

@@ -58,7 +58,6 @@ import org.robovm.apple.uikit.UIWindow;
 import org.robovm.pods.facebook.core.FBSDKAppEvents;
 import org.robovm.pods.facebook.core.FBSDKApplicationDelegate;
 import org.robovm.pods.facebook.core.FBSDKProfile;
-import org.robovm.pods.facebook.login.FBSDKLoginManager;
 import org.robovm.pods.parse.PFACL;
 import org.robovm.pods.parse.PFAnalytics;
 import org.robovm.pods.parse.PFCachePolicy;
@@ -313,10 +312,9 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
         PFQuery.clearAllCachedResults();
 
         // Log out
-        PFUser.logOut();
+        PFUser.logOutInBackground();
 
-        FBSDKLoginManager loginManager = new FBSDKLoginManager();
-        loginManager.logOut();
+        PFFacebookUtils.getFacebookLoginManager().logOut();
 
         // clear out cached data, view controllers, etc
         navController.popToRootViewController(false);

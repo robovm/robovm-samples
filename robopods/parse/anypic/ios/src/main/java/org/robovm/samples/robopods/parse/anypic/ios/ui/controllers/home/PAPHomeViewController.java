@@ -20,9 +20,6 @@ package org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.home;
 
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSError;
-import org.robovm.apple.uikit.UIActionSheet;
-import org.robovm.apple.uikit.UIActionSheetDelegateAdapter;
-import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIButtonType;
 import org.robovm.apple.uikit.UIControl;
@@ -30,36 +27,22 @@ import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImageView;
-import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.samples.robopods.parse.anypic.ios.AnyPicApp;
-import org.robovm.samples.robopods.parse.anypic.ios.model.PAPUser;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPFindFriendsViewController;
+import org.robovm.samples.robopods.parse.anypic.ios.ui.controllers.settings.PAPSettingsActionSheet;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.PAPSettingsButtonItem;
 
 public class PAPHomeViewController extends PAPPhotoTimelineViewController {
     private boolean firstLaunch;
-    private UINavigationController presentingAccountNavController;
-    private UINavigationController presentingFriendNavController;
     private UIView blankTimelineView;
 
     public PAPHomeViewController() {
         super(UITableViewStyle.Plain);
-        setup();
     }
 
     public PAPHomeViewController(UITableViewStyle style) {
         super(style);
-        setup();
-    }
-
-    private void setup() {
-        PAPAccountViewController accountViewController = new PAPAccountViewController(PAPUser.getCurrentUser());
-        presentingAccountNavController = new UINavigationController(accountViewController);
-
-        PAPFindFriendsViewController findFriendsVC = new PAPFindFriendsViewController(UITableViewStyle.Plain);
-        presentingFriendNavController = new UINavigationController(findFriendsVC);
     }
 
     @Override
@@ -106,25 +89,7 @@ public class PAPHomeViewController extends PAPPhotoTimelineViewController {
     private final UIControl.OnTouchUpInsideListener settingsButtonAction = new UIControl.OnTouchUpInsideListener() {
         @Override
         public void onTouchUpInside(UIControl control, UIEvent event) {
-            UIActionSheet actionSheet = new UIActionSheet(null, new UIActionSheetDelegateAdapter() {
-                @Override
-                public void clicked(UIActionSheet actionSheet, long buttonIndex) {
-                    switch ((int) buttonIndex) {
-                    case 0:
-                        presentViewController(presentingAccountNavController, true, null);
-                        break;
-                    case 1:
-                        presentViewController(presentingFriendNavController, true, null);
-                        break;
-                    case 2:
-//                      // Log out user and present the login view controller
-                        ((AnyPicApp) UIApplication.getSharedApplication().getDelegate()).logOut();
-                        break;
-                    default:
-                        break;
-                    }
-                }
-            }, "Cancel", null, "My Profile", "Find Friends", "Log Out");
+            PAPSettingsActionSheet actionSheet = new PAPSettingsActionSheet(getNavigationController());
             actionSheet.showFrom(getTabBarController().getTabBar());
         }
     };
