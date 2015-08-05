@@ -159,9 +159,9 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
         // Download from cloud if necessary
         options.setNetworkAccessAllowed(true);
-        options.setProgressHandler(new VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<NSString, NSObject>>() {
+        options.setProgressHandler(new VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<?, ?>>() {
             @Override
-            public void invoke(final Double progress, NSError error, BooleanPtr c, NSDictionary<NSString, NSObject> d) {
+            public void invoke(final Double progress, NSError error, BooleanPtr c, NSDictionary<?, ?> d) {
                 DispatchQueue.getMainQueue().async(new Runnable() {
                     @Override
                     public void run() {
