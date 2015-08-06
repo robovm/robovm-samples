@@ -92,6 +92,7 @@
         <module>Footprint</module>
         <module>HelloGL</module>
         <module>HelloWorld</module>
+        <module>HelloWorld-console</module>
         <module>HelloWorld-no-ib</module>
         <module>IAPStoreProductViewController</module>
         <module>InAppPurchases</module>
