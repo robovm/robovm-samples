@@ -28,7 +28,6 @@ import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSDate;
-import org.robovm.apple.foundation.NSDateComponentsFormatter;
 import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSMutableDictionary;
@@ -62,10 +61,11 @@ import org.robovm.samples.robopods.parse.anypic.ios.ui.views.PAPProfileImageView
 import org.robovm.samples.robopods.parse.anypic.ios.util.PAPNotification;
 import org.robovm.samples.robopods.parse.anypic.ios.util.PAPNotificationManager;
 import org.robovm.samples.robopods.parse.anypic.ios.util.PAPUtility;
+import org.robovm.samples.robopods.parse.anypic.ios.util.TTTTimeIntervalFormatter;
 
 public class PAPPhotoDetailsHeaderView extends UIView {
     private static final double BASE_HORIZONTAL_OFFSET = 0;
-    private static final double BASE_WIDTH = 320;
+    private static final double BASE_WIDTH = UIScreen.getMainScreen().getBounds().getWidth();
 
     private static final double HORI_BORDER_SPACING = 6;
     private static final double HORI_MEDIUM_SPACING = 8;
@@ -137,31 +137,18 @@ public class PAPPhotoDetailsHeaderView extends UIView {
     private UIView likeBarView;
     private List<PAPProfileImageView> currentLikeAvatars;
 
-    private final NSDateComponentsFormatter timeFormatter;
+    private final TTTTimeIntervalFormatter timeFormatter;
 
     public PAPPhotoDetailsHeaderView(CGRect frame, PAPPhoto photo) {
         super(frame);
         this.photo = photo;
 
-        timeFormatter = new NSDateComponentsFormatter();
+        timeFormatter = new TTTTimeIntervalFormatter();
+
         photographer = photo.getUser();
 
         setBackgroundColor(UIColor.clear());
         createView();
-    }
-
-    public PAPPhotoDetailsHeaderView(CGRect frame, PAPPhoto photo, PAPUser photographer, List<PAPUser> likeUsers) {
-        this.photo = photo;
-
-        timeFormatter = new NSDateComponentsFormatter();
-        this.photographer = photographer;
-        this.likeUsers = likeUsers;
-
-        setBackgroundColor(UIColor.clear());
-
-        if (photo != null && photographer != null && likeUsers != null) {
-            createView();
-        }
     }
 
     public static CGRect getRectForView() {
@@ -180,13 +167,13 @@ public class PAPPhotoDetailsHeaderView extends UIView {
     public void setLikeUsers(List<PAPUser> users) {
         Collections.sort(users);
 
+        currentLikeAvatars = new ArrayList<>(likeUsers.size());
+
         for (PAPProfileImageView image : currentLikeAvatars) {
             image.removeFromSuperview();
         }
 
         likeButton.setTitle(String.valueOf(likeUsers.size()), UIControlState.Normal);
-
-        currentLikeAvatars = new ArrayList<>(likeUsers.size());
 
         int numOfPics = numLikePics > likeUsers.size() ? likeUsers.size() : numLikePics;
 
@@ -302,8 +289,7 @@ public class PAPPhotoDetailsHeaderView extends UIView {
 
                 // Create time label
                 String timeString = timeFormatter.format(new NSDate(), photo.getCreatedAt());
-                CGSize timeLabelSize = NSString.getBoundingRect(
-                        timeString,
+                CGSize timeLabelSize = NSString.getBoundingRect(timeString,
                         new CGSize(TIME_LABEL_MAX_WIDTH, Float.MAX_VALUE),
                         NSStringDrawingOptions.with(NSStringDrawingOptions.TruncatesLastVisibleLine,
                                 NSStringDrawingOptions.UsesLineFragmentOrigin),

@@ -29,7 +29,6 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSError;
-import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSMutableDictionary;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIImage;
@@ -59,12 +58,8 @@ public class PAPUtility {
             @Override
             public void done(NSArray<PAPActivity> objects, NSError error) {
                 if (error == null) {
-                    try {
-                        for (PAPActivity activity : objects) {
-                            activity.delete();
-                        }
-                    } catch (NSErrorException e) {
-                        e.printStackTrace();
+                    for (PAPActivity activity : objects) {
+                        activity.deleteInBackground();
                     }
                 }
 
@@ -144,12 +139,10 @@ public class PAPUtility {
             @Override
             public void done(NSArray<PAPActivity> objects, NSError error) {
                 if (error == null) {
-                    try {
-                        for (PAPActivity activity : objects) {
-                            activity.delete();
-                        }
-                    } catch (NSErrorException e) {
-                        e.printStackTrace();
+                    System.out.println("unlike"); // TODO
+                    for (PAPActivity activity : objects) {
+                        System.out.println(activity.getObjectId());
+//                        activity.deleteInBackground();
                     }
 
                     if (completion != null) {

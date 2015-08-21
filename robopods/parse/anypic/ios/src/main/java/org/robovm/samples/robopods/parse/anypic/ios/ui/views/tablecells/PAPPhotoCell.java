@@ -41,12 +41,12 @@ public class PAPPhotoCell extends PFTableViewCell {
 
         setBackgroundColor(UIColor.clear());
 
-        getImageView().setFrame(new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getWidth()));
+        getImageView().setFrame(new CGRect(0, 0, getBounds().getWidth(), getBounds().getWidth()));
         getImageView().setBackgroundColor(UIColor.black());
         getImageView().setContentMode(UIViewContentMode.ScaleAspectFit);
 
         photoButton = UIButton.create(UIButtonType.Custom);
-        photoButton.setFrame(new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getWidth()));
+        photoButton.setFrame(new CGRect(0, 0, getBounds().getWidth(), getBounds().getWidth()));
         photoButton.setBackgroundColor(UIColor.clear());
         getContentView().addSubview(photoButton);
 
@@ -56,8 +56,8 @@ public class PAPPhotoCell extends PFTableViewCell {
     @Override
     public void layoutSubviews() {
         super.layoutSubviews();
-        getImageView().setFrame(new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getWidth()));
-        photoButton.setFrame(new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getWidth()));
+        getImageView().setFrame(new CGRect(0, 0, getBounds().getWidth(), getBounds().getWidth()));
+        photoButton.setFrame(new CGRect(0, 0, getBounds().getWidth(), getBounds().getWidth()));
     }
 
     public UIButton getPhotoButton() {
