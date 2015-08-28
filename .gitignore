@@ -14,3 +14,5 @@ bin/
 .project
 .settings/
 local.properties
+xcshareddata/
+xcuserdata/
