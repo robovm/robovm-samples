@@ -27,9 +27,9 @@ import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.messageui.MFMailComposeResult;
 import org.robovm.apple.messageui.MFMailComposeViewController;
 import org.robovm.apple.messageui.MFMailComposeViewControllerDelegate;
+import org.robovm.apple.messageui.MFMessageComposeResult;
 import org.robovm.apple.messageui.MFMessageComposeViewController;
 import org.robovm.apple.messageui.MFMessageComposeViewControllerDelegate;
-import org.robovm.apple.messageui.MessageComposeResult;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.CustomClass;
@@ -167,7 +167,7 @@ public class MessageComposerViewController extends UIViewController implements M
      * the operation.
      */
     @Override
-    public void didFinish(MFMessageComposeViewController controller, MessageComposeResult result) {
+    public void didFinish(MFMessageComposeViewController controller, MFMessageComposeResult result) {
         feedbackMsg.setHidden(false);
 
         String resultText;
