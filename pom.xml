@@ -85,6 +85,7 @@
         <module>AudioRecorder</module>
         <module>BatteryStatus</module>
         <module>CollectionView-Simple</module>
+        <module>ContractR</module>
         <module>CurrentAddress</module>
         <module>CustomAnimatableProperty</module>
         <module>CustomFrameworks</module>
