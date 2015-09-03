@@ -49,7 +49,7 @@ public class ViewController extends UICollectionViewController {
         cell.getLabel().setText(String.format("{%d,%d}", indexPath.getRow(), indexPath.getSection()));
 
         // load the image for this cell
-        cell.getImage().setImage(UIImage.create(String.valueOf(indexPath.getRow()) + ".JPG"));
+        cell.getImage().setImage(UIImage.create(String.valueOf(indexPath.getRow()) + ".jpg"));
 
         return cell;
     }
