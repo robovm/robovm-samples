@@ -74,21 +74,29 @@ public class PAPCache {
 
     public int getPhotoLikeCount(PAPPhoto photo) {
         PAPPhotoAttributes attributes = getPhotoAttributes(photo);
+        if (attributes == null)
+            return 0;
         return attributes.getLikeCount();
     }
 
     public int getPhotoCommentCount(PAPPhoto photo) {
         PAPPhotoAttributes attributes = getPhotoAttributes(photo);
+        if (attributes == null)
+            return 0;
         return attributes.getCommentCount();
     }
 
     public List<PAPUser> getPhotoLikers(PAPPhoto photo) {
         PAPPhotoAttributes attributes = getPhotoAttributes(photo);
+        if (attributes == null)
+            return null;
         return attributes.getLikers();
     }
 
     public List<PAPUser> getPhotoCommenters(PAPPhoto photo) {
         PAPPhotoAttributes attributes = getPhotoAttributes(photo);
+        if (attributes == null)
+            return null;
         return attributes.getCommenters();
     }
 
@@ -100,6 +108,8 @@ public class PAPCache {
 
     public boolean isPhotoLikedByCurrentUser(PAPPhoto photo) {
         PAPPhotoAttributes attributes = getPhotoAttributes(photo);
+        if (attributes == null)
+            return false;
         return attributes.isLikedByCurrentUser();
     }
 

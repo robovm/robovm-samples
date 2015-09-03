@@ -74,8 +74,8 @@ import org.robovm.samples.robopods.parse.anypic.ios.util.PAPUtility;
 public class PAPPhotoTimelineViewController extends PFQueryTableViewController<PAPPhoto> implements
         PAPPhotoHeaderViewDelegate {
     private boolean shouldReloadOnAppear;
-    private List<PAPPhotoHeaderView> reusableSectionHeaderViews;
-    private Map<Integer, Integer> outstandingSectionHeaderQueries;
+    private final List<PAPPhotoHeaderView> reusableSectionHeaderViews;
+    private final Map<Integer, Integer> outstandingSectionHeaderQueries;
 
     private NSObject[] notifications;
 
@@ -94,6 +94,10 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
         // The Loading text clashes with the dark Anypic design
         setLoadingViewEnabled(false);
 
+        // Improve scrolling performance by reusing UITableView section headers
+        reusableSectionHeaderViews = new ArrayList<>(3);
+        outstandingSectionHeaderQueries = new HashMap<>();
+
         shouldReloadOnAppear = false;
     }
 
@@ -110,11 +114,6 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
     @Override
     public void viewDidLoad() {
-        // Improve scrolling performance by reusing UITableView section headers
-        reusableSectionHeaderViews = new ArrayList<>(3);
-
-        outstandingSectionHeaderQueries = new HashMap<>();
-
         getTableView().setSeparatorStyle(UITableViewCellSeparatorStyle.None);
 
         super.viewDidLoad();
@@ -392,7 +391,7 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
         PAPPhotoHeaderView headerView = (PAPPhotoHeaderView) getTableView().dequeueReusableCell(cellIdentifier);
         if (headerView == null) {
-            headerView = new PAPPhotoHeaderView(new CGRect(0, 0, getView().getBounds().getSize().getWidth(), 44),
+            headerView = new PAPPhotoHeaderView(new CGRect(0, 0, getTableView().getBounds().getWidth(), 44),
                     PAPPhotoHeaderButtons.getDefault());
             headerView.setDelegate(this);
             headerView.setSelectionStyle(UITableViewCellSelectionStyle.None);
@@ -426,8 +425,8 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
                 synchronized (this) {
                     // check if we can update the cache
-                    int outstandingSectionHeaderQueryStatus = outstandingSectionHeaderQueries.get(index);
-                    if (outstandingSectionHeaderQueryStatus != 0) {
+                    Integer outstandingSectionHeaderQueryStatus = outstandingSectionHeaderQueries.get(index);
+                    if (outstandingSectionHeaderQueryStatus != null && outstandingSectionHeaderQueryStatus != 0) {
                         PFQuery<PAPActivity> query = PAPUtility.queryActivities(photo, PFCachePolicy.NetworkOnly);
                         query.findInBackground(new PFFindCallback<PAPActivity>() {
                             @Override
@@ -528,7 +527,8 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
 
         final String originalButtonTitle = button.getTitleLabel().getText();
 
-        int likeCount = Integer.valueOf(button.getTitleLabel().getText());
+        String likeText = button.getTitleLabel().getText();
+        int likeCount = Integer.valueOf(likeText != null ? likeText : "0");
         if (liked) {
             likeCount = likeCount + 1;
             PAPCache.getSharedCache().incrementPhotoLikerCount(photo);
@@ -549,11 +549,13 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
                 public void done(boolean success, NSError error) {
                     PAPPhotoHeaderView actualHeaderView = (PAPPhotoHeaderView) getViewForHeader(getTableView(),
                             button.getTag());
-                    actualHeaderView.shouldEnableLikeButton(true);
-                    actualHeaderView.setLikeStatus(success);
+                    if (actualHeaderView != null) {
+                        actualHeaderView.shouldEnableLikeButton(true);
+                        actualHeaderView.setLikeStatus(success);
 
-                    if (!success) {
-                        actualHeaderView.getLikeButton().setTitle(originalButtonTitle, UIControlState.Normal);
+                        if (!success) {
+                            actualHeaderView.getLikeButton().setTitle(originalButtonTitle, UIControlState.Normal);
+                        }
                     }
                 }
             });
@@ -563,11 +565,13 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
                 public void done(boolean success, NSError error) {
                     PAPPhotoHeaderView actualHeaderView = (PAPPhotoHeaderView) getViewForHeader(getTableView(),
                             button.getTag());
-                    actualHeaderView.shouldEnableLikeButton(true);
-                    actualHeaderView.setLikeStatus(!success);
+                    if (actualHeaderView != null) {
+                        actualHeaderView.shouldEnableLikeButton(true);
+                        actualHeaderView.setLikeStatus(!success);
 
-                    if (!success) {
-                        actualHeaderView.getLikeButton().setTitle(originalButtonTitle, UIControlState.Normal);
+                        if (!success) {
+                            actualHeaderView.getLikeButton().setTitle(originalButtonTitle, UIControlState.Normal);
+                        }
                     }
                 }
             });

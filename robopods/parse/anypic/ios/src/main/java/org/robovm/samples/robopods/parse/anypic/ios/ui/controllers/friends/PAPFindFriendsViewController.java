@@ -45,10 +45,10 @@ import org.robovm.apple.messageui.MFMailComposeResult;
 import org.robovm.apple.messageui.MFMailComposeViewController;
 import org.robovm.apple.messageui.MFMailComposeViewControllerDelegate;
 import org.robovm.apple.messageui.MFMailComposeViewControllerDelegateAdapter;
+import org.robovm.apple.messageui.MFMessageComposeResult;
 import org.robovm.apple.messageui.MFMessageComposeViewController;
 import org.robovm.apple.messageui.MFMessageComposeViewControllerDelegate;
 import org.robovm.apple.messageui.MFMessageComposeViewControllerDelegateAdapter;
-import org.robovm.apple.messageui.MessageComposeResult;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.NSStringDrawingOptions;
 import org.robovm.apple.uikit.UIActionSheet;
@@ -634,7 +634,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
 
     private final MFMessageComposeViewControllerDelegate messageComposeDelegate = new MFMessageComposeViewControllerDelegateAdapter() {
         @Override
-        public void didFinish(MFMessageComposeViewController controller, MessageComposeResult result) {
+        public void didFinish(MFMessageComposeViewController controller, MFMessageComposeResult result) {
             dismissViewController(true, null);
         }
     };

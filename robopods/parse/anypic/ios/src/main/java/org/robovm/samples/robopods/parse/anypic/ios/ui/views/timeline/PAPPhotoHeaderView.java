@@ -21,7 +21,6 @@ package org.robovm.samples.robopods.parse.anypic.ios.ui.views.timeline;
 import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
-import org.robovm.apple.foundation.NSDateComponentsFormatter;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.NSLineBreakMode;
@@ -45,6 +44,7 @@ import org.robovm.samples.robopods.parse.anypic.ios.model.PAPUser;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.PAPProfileImageView;
 import org.robovm.samples.robopods.parse.anypic.ios.ui.views.timeline.PAPPhotoHeaderButtons.PAPPhotoHeaderButton;
 import org.robovm.samples.robopods.parse.anypic.ios.util.PAPUtility;
+import org.robovm.samples.robopods.parse.anypic.ios.util.TTTTimeIntervalFormatter;
 
 public class PAPPhotoHeaderView extends PFTableViewCell {
     private PAPPhoto photo;
@@ -59,7 +59,7 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
 
     private UIButton userButton;
     private final UILabel timestampLabel;
-    private final NSDateComponentsFormatter timeIntervalFormatter;
+    private final TTTTimeIntervalFormatter timeFormatter;
 
     /**
      * Initializes the view with the specified interaction elements.
@@ -133,7 +133,7 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
             userButton.getTitleLabel().setLineBreakMode(NSLineBreakMode.TruncatingTail);
         }
 
-        timeIntervalFormatter = new NSDateComponentsFormatter();
+        timeFormatter = new TTTTimeIntervalFormatter();
 
         // timestamp
         timestampLabel = new UILabel(new CGRect(50, 24, containerView.getBounds().getSize().getWidth() - 50 - 72, 18));
@@ -226,7 +226,7 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
         userButton.setFrame(userButtonFrame);
 
         double timeInterval = photo.getCreatedAt().getTimeIntervalSinceNow();
-        String timestamp = timeIntervalFormatter.format(timeInterval);
+        String timestamp = timeFormatter.format(timeInterval);
         timestampLabel.setText(timestamp);
 
         setNeedsDisplay();

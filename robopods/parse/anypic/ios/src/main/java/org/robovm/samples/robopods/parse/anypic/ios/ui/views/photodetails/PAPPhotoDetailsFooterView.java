@@ -39,7 +39,7 @@ public class PAPPhotoDetailsFooterView extends UIView {
 
         setBackgroundColor(UIColor.clear());
 
-        mainView = new UIView(new CGRect(0, 0, 320, 51));
+        mainView = new UIView(new CGRect(0, 0, UIScreen.getMainScreen().getBounds().getWidth(), 51));
         mainView.setBackgroundColor(UIColor.white());
         addSubview(mainView);
 

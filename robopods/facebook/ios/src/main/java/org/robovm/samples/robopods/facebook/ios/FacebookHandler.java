@@ -29,12 +29,14 @@ import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSOperationQueue;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIAlertView;
+import org.robovm.objc.block.VoidBlock1;
 import org.robovm.objc.block.VoidBlock2;
 import org.robovm.objc.block.VoidBlock3;
 import org.robovm.pods.facebook.core.FBSDKAccessToken;
 import org.robovm.pods.facebook.core.FBSDKGraphRequest;
 import org.robovm.pods.facebook.core.FBSDKGraphRequestConnection;
 import org.robovm.pods.facebook.core.FBSDKProfile;
+import org.robovm.pods.facebook.core.FBSDKProfileChangeNotification;
 import org.robovm.pods.facebook.login.FBSDKDefaultAudience;
 import org.robovm.pods.facebook.login.FBSDKLoginManager;
 import org.robovm.pods.facebook.login.FBSDKLoginManagerLoginResult;
@@ -48,6 +50,15 @@ public class FacebookHandler {
         loginManager = new FBSDKLoginManager();
         loginManager.setDefaultAudience(FBSDKDefaultAudience.Everyone);
         FBSDKProfile.enableUpdatesOnAccessTokenChange(true);
+        FBSDKProfile.Notifications.observeCurrentProfileDidChange(new VoidBlock1<FBSDKProfileChangeNotification>() {
+            @Override
+            public void invoke(FBSDKProfileChangeNotification notification) {
+                if (notification != null && notification.getNewProfile() != null) {
+                    FBSDKProfile currentProfile = notification.getNewProfile();
+                    // TODO Store the profile and update the profile ui.
+                }
+            }
+        });
     }
 
     public static FacebookHandler getInstance() {
