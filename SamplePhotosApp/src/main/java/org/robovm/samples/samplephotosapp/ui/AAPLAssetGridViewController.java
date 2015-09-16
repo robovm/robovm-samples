@@ -68,7 +68,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
 
     private CGSize assetGridThumbnailSize;
 
-    private PHFetchResult assetsFetchResults;
+    private PHFetchResult<PHAsset> assetsFetchResults;
     private PHAssetCollection assetCollection;
 
     private UIBarButtonItem addButton;
@@ -113,7 +113,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     public void prepareForSegue(UIStoryboardSegue segue, NSObject sender) {
         NSIndexPath indexPath = getCollectionView().getIndexPathForCell((UICollectionViewCell) sender);
         AAPLAssetViewController assetViewController = (AAPLAssetViewController) segue.getDestinationViewController();
-        assetViewController.setAsset((PHAsset) assetsFetchResults.get(indexPath.getItem()));
+        assetViewController.setAsset(assetsFetchResults.get(indexPath.getItem()));
         assetViewController.setAssetCollection(assetCollection);
     }
 
@@ -126,7 +126,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
             public void run() {
                 // check if there are changes to the assets (insertions,
                 // deletions, updates)
-                final PHFetchResultChangeDetails collectionChanges = changeInstance
+                final PHFetchResultChangeDetails<PHAsset> collectionChanges = changeInstance
                         .getChangeDetailsForFetchResult(assetsFetchResults);
                 if (collectionChanges != null) {
                     // get the new fetch result
@@ -179,7 +179,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         final long currentTag = cell.getTag() + 1;
         cell.setTag(currentTag);
 
-        PHAsset asset = (PHAsset) assetsFetchResults.get(indexPath.getItem());
+        PHAsset asset = assetsFetchResults.get(indexPath.getItem());
         imageManager.requestImageForAsset(asset, assetGridThumbnailSize, PHImageContentMode.AspectFill, null,
                 new VoidBlock2<UIImage, NSDictionary<NSString, NSObject>>() {
                     @Override
@@ -294,7 +294,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
 
         NSArray<PHAsset> assets = new NSMutableArray<>();
         for (NSIndexPath indexPath : indexPaths) {
-            PHAsset asset = (PHAsset) assetsFetchResults.get(indexPath.getItem());
+            PHAsset asset = assetsFetchResults.get(indexPath.getItem());
             assets.add(asset);
         }
         return assets;
@@ -317,7 +317,8 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
                 PHAssetChangeRequest assetChangeRequest = PHAssetChangeRequest.createImageAssetCreationRequest(image);
 
                 if (assetCollection != null) {
-                    PHAssetCollectionChangeRequest assetCollectionChangeRequest = PHAssetCollectionChangeRequest.create(assetCollection);
+                    PHAssetCollectionChangeRequest assetCollectionChangeRequest = new PHAssetCollectionChangeRequest(
+                            assetCollection);
                     assetCollectionChangeRequest.addAssets(new NSArray<>(assetChangeRequest
                             .getPlaceholderForCreatedAsset()));
                 }
@@ -337,7 +338,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         indexSet.enumerateIndexes(new VoidBlock2<Long, BooleanPtr>() {
             @Override
             public void invoke(Long idx, BooleanPtr stop) {
-                indexPaths.add(NSIndexPath.createWithItem(idx, section));
+                indexPaths.add(NSIndexPath.item(idx, section));
             }
         });
         return indexPaths;
@@ -357,7 +358,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
         return indexPaths;
     }
 
-    public void setAssetsFetchResults(PHFetchResult assetsFetchResults) {
+    public void setAssetsFetchResults(PHFetchResult<PHAsset> assetsFetchResults) {
         this.assetsFetchResults = assetsFetchResults;
     }
 

@@ -48,13 +48,13 @@ public class APAArcher extends APAHeroCharacter {
     private static SKAction sharedDamageAction;
 
     public APAArcher(CGPoint position, APAPlayer player) {
-        super(SKTextureAtlas.create("Archer/Archer_Idle").getTexture("archer_idle_0001.png"), position, player);
+        super(new SKTextureAtlas("Archer/Archer_Idle").getTexture("archer_idle_0001.png"), position, player);
     }
 
     public static void loadSharedAssets() {
         // Load only once
         if (sharedProjectile == null) {
-            sharedProjectile = SKSpriteNode.create(UIColor.white(), new CGSize(2.0, 24.0));
+            sharedProjectile = new SKSpriteNode(UIColor.white(), new CGSize(2.0, 24.0));
             sharedProjectile.setPhysicsBody(SKPhysicsBody.createCircle(PROJECTILE_COLLISION_RADIUS));
             sharedProjectile.setName("Projectile");
             sharedProjectile.getPhysicsBody().setCategoryBitMask(APAColliderType.Projectile);

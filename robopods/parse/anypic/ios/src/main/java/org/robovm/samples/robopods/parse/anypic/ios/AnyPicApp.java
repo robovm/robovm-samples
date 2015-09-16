@@ -251,9 +251,9 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
         UINavigationController emptyNavigationController = new UINavigationController();
         UINavigationController activityFeedNavigationController = new UINavigationController(activityViewController);
 
-        UITabBarItem homeTabBarItem = new UITabBarItem(NSString.getLocalizedString("Home"), UIImage.create(
-                "IconHome").create(UIImageRenderingMode.AlwaysOriginal), UIImage.create("IconHomeSelected")
-                .create(UIImageRenderingMode.AlwaysOriginal));
+        UITabBarItem homeTabBarItem = new UITabBarItem(NSString.getLocalizedString("Home"), UIImage.getImage(
+                "IconHome").newImage(UIImageRenderingMode.AlwaysOriginal), UIImage.getImage("IconHomeSelected")
+                .newImage(UIImageRenderingMode.AlwaysOriginal));
         homeTabBarItem.setTitleTextAttributes(new NSAttributedStringAttributes().setForegroundColor(UIColor.white())
                 .setFont(UIFont.getBoldSystemFont(13)), UIControlState.Selected);
         homeTabBarItem.setTitleTextAttributes(
@@ -262,9 +262,10 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
                         UIFont.getBoldSystemFont(13)),
                 UIControlState.Normal);
 
-        UITabBarItem activityFeedTabBarItem = new UITabBarItem(NSString.getLocalizedString("Activity"), UIImage.create(
-                "IconTimeline").create(UIImageRenderingMode.AlwaysOriginal), UIImage.create(
-                "IconTimelineSelected").create(UIImageRenderingMode.AlwaysOriginal));
+        UITabBarItem activityFeedTabBarItem = new UITabBarItem(NSString.getLocalizedString("Activity"), UIImage
+                .getImage(
+                        "IconTimeline").newImage(UIImageRenderingMode.AlwaysOriginal), UIImage.getImage(
+                "IconTimelineSelected").newImage(UIImageRenderingMode.AlwaysOriginal));
         activityFeedTabBarItem.setTitleTextAttributes(
                 new NSAttributedStringAttributes().setForegroundColor(UIColor.white()).setFont(
                         UIFont.getBoldSystemFont(13)), UIControlState.Selected);
@@ -294,7 +295,7 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
         // Register for Push Notitications
         UIUserNotificationType userNotificationTypes = UIUserNotificationType.with(UIUserNotificationType.Alert,
                 UIUserNotificationType.Badge, UIUserNotificationType.Sound);
-        UIUserNotificationSettings settings = UIUserNotificationSettings.create(userNotificationTypes, null);
+        UIUserNotificationSettings settings = new UIUserNotificationSettings(userNotificationTypes, null);
         UIApplication.getSharedApplication().registerUserNotificationSettings(settings);
         UIApplication.getSharedApplication().registerForRemoteNotifications();
     }

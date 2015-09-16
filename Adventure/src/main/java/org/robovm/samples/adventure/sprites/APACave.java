@@ -254,7 +254,7 @@ public class APACave extends APAEnemyCharacter {
     public static void loadSharedAssets () {
         // Load only once
         if (sharedCaveBase == null) {
-            SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
+            SKTextureAtlas atlas = new SKTextureAtlas("Environment");
 
             SKEmitterNode fire = APAUtils.getEmitterNodeByName("CaveFire");
             fire.setZPosition(1);
@@ -265,7 +265,7 @@ public class APACave extends APAEnemyCharacter {
             torch.addChild(fire);
             torch.addChild(smoke);
 
-            sharedCaveBase = SKSpriteNode.create(atlas.getTexture("cave_base.png"));
+            sharedCaveBase = new SKSpriteNode(atlas.getTexture("cave_base.png"));
 
             // Add two torches either side of the entrance.
             torch.setPosition(new CGPoint(83, 83));
@@ -274,9 +274,9 @@ public class APACave extends APAEnemyCharacter {
             torchB.setPosition(new CGPoint(-83, 83));
             sharedCaveBase.addChild(torchB);
 
-            sharedCaveTop = SKSpriteNode.create(atlas.getTexture("cave_top.png"));
+            sharedCaveTop = new SKSpriteNode(atlas.getTexture("cave_top.png"));
 
-            sharedDeathSplort = SKSpriteNode.create(atlas.getTexture("cave_destroyed.png"));
+            sharedDeathSplort = new SKSpriteNode(atlas.getTexture("cave_destroyed.png"));
 
             sharedDamageEmitter = APAUtils.getEmitterNodeByName("CaveDamage");
             sharedDeathEmitter = APAUtils.getEmitterNodeByName("CaveDeathSmoke");

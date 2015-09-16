@@ -216,7 +216,7 @@ public class PAPPhotoDetailsHeaderView extends UIView {
          * Create middle section of the header view; the image
          */
         photoImageView = new PFImageView(new CGRect(MAIN_IMAGE_X, MAIN_IMAGE_Y, MAIN_IMAGE_WIDTH, MAIN_IMAGE_HEIGHT));
-        photoImageView.setImage(UIImage.create("PlaceholderPhoto"));
+        photoImageView.setImage(UIImage.getImage("PlaceholderPhoto"));
         photoImageView.setBackgroundColor(UIColor.black());
         photoImageView.setContentMode(UIViewContentMode.ScaleAspectFit);
 
@@ -258,7 +258,7 @@ public class PAPPhotoDetailsHeaderView extends UIView {
 
                 // Create name label
                 String nameString = photographer.getDisplayName();
-                UIButton userButton = UIButton.create(UIButtonType.Custom);
+                UIButton userButton = new UIButton(UIButtonType.Custom);
                 nameHeaderView.addSubview(userButton);
                 userButton.setBackgroundColor(UIColor.clear());
                 userButton.getTitleLabel().setFont(UIFont.getBoldSystemFont(15));
@@ -315,7 +315,7 @@ public class PAPPhotoDetailsHeaderView extends UIView {
         addSubview(likeBarView);
 
         // Create the heart-shaped like button
-        likeButton = UIButton.create(UIButtonType.Custom);
+        likeButton = new UIButton(UIButtonType.Custom);
         likeButton.setFrame(new CGRect(LIKE_BUTTON_X, LIKE_BUTTON_Y, LIKE_BUTTON_DIM, LIKE_BUTTON_DIM));
         likeButton.setBackgroundColor(UIColor.clear());
         likeButton.setTitleColor(UIColor.fromRGBA(254f / 255f, 149f / 255f, 50f / 255f, 1), UIControlState.Normal);
@@ -326,14 +326,14 @@ public class PAPPhotoDetailsHeaderView extends UIView {
         likeButton.getTitleLabel().setAdjustsFontSizeToFitWidth(true);
         likeButton.setAdjustsImageWhenDisabled(false);
         likeButton.setAdjustsImageWhenHighlighted(false);
-        likeButton.setBackgroundImage(UIImage.create("ButtonLike"), UIControlState.Normal);
-        likeButton.setBackgroundImage(UIImage.create("ButtonLikeSelected"), UIControlState.Selected);
+        likeButton.setBackgroundImage(UIImage.getImage("ButtonLike"), UIControlState.Normal);
+        likeButton.setBackgroundImage(UIImage.getImage("ButtonLikeSelected"), UIControlState.Selected);
         likeButton.addOnTouchUpInsideListener(didTapLikePhotoButton);
         likeBarView.addSubview(likeButton);
 
         reloadLikeBar();
 
-        UIImageView separator = new UIImageView(UIImage.create("SeparatorComments").createResizable(
+        UIImageView separator = new UIImageView(UIImage.getImage("SeparatorComments").newResizableImage(
                 new UIEdgeInsets(0, 1, 0, 1)));
         separator.setFrame(new CGRect(0, likeBarView.getFrame().getSize().getHeight() - 1, likeBarView.getFrame()
                 .getSize().getWidth(), 1));

@@ -18,7 +18,7 @@ public class CustomCellBackground extends UIView {
         CGContext context = UIGraphics.getCurrentContext();
         context.saveGState();
 
-        UIBezierPath bezierPath = UIBezierPath.createFromRoundedRect(rect, 5);
+        UIBezierPath bezierPath = UIBezierPath.newRoundedRect(rect, 5);
         bezierPath.setLineWidth(5);
         UIColor.black().setStroke();
 

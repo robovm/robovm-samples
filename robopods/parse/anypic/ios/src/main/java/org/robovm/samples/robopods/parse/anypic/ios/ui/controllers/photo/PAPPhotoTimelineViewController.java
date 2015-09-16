@@ -128,7 +128,7 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
                     @Override
                     public void invoke(NSNotification notification) {
                         if (getObjects().size() > 0) {
-                            getTableView().scrollToRow(NSIndexPath.createWithRow(0, 0), UITableViewScrollPosition.Top,
+                            getTableView().scrollToRow(NSIndexPath.row(0, 0), UITableViewScrollPosition.Top,
                                     true);
                         }
                         loadObjects();
@@ -263,7 +263,7 @@ public class PAPPhotoTimelineViewController extends PFQueryTableViewController<P
             }
 
             cell.getPhotoButton().setTag(index);
-            cell.getImageView().setImage(UIImage.create("PlaceholderPhoto"));
+            cell.getImageView().setImage(UIImage.getImage("PlaceholderPhoto"));
 
             if (photo != null) {
                 cell.getImageView().setFile(photo.getPicture());

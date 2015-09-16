@@ -60,13 +60,13 @@ public class AAPLSliderViewController extends UITableViewController implements O
     }
 
     private void configureCustomSlider() {
-        UIImage leftTrackImage = UIImage.create("slider_blue_track");
+        UIImage leftTrackImage = UIImage.getImage("slider_blue_track");
         customSlider.setMinimumTrackImage(leftTrackImage, UIControlState.Normal);
 
-        UIImage rightTrackImage = UIImage.create("slider_green_track");
+        UIImage rightTrackImage = UIImage.getImage("slider_green_track");
         customSlider.setMaximumTrackImage(rightTrackImage, UIControlState.Normal);
 
-        UIImage thumbImage = UIImage.create("slider_thumb");
+        UIImage thumbImage = UIImage.getImage("slider_thumb");
         customSlider.setThumbImage(thumbImage, UIControlState.Normal);
 
         customSlider.setMinimumValue(0);

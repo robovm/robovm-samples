@@ -66,10 +66,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String message = "A message should be a short, complete sentence.";
         String cancelButtonTitle = "OK";
 
-        UIAlertController alertController = UIAlertController.create(title, message, UIAlertControllerStyle.Alert);
+        UIAlertController alertController = new UIAlertController(title, message, UIAlertControllerStyle.Alert);
 
         // Create the action.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -92,10 +92,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String cancelButtonTitle = "Cancel";
         String otherButtonTitle = "OK";
 
-        UIAlertController alertController = UIAlertController.create(title, message, UIAlertControllerStyle.Alert);
+        UIAlertController alertController = new UIAlertController(title, message, UIAlertControllerStyle.Alert);
 
         // Create the actions.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -103,7 +103,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherAction = UIAlertAction.create(otherButtonTitle, UIAlertActionStyle.Default,
+        UIAlertAction otherAction = new UIAlertAction(otherButtonTitle, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -126,10 +126,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String otherButtonTitleOne = "Choice One";
         String otherButtonTitleTwo = "Choice Two";
 
-        UIAlertController alertController = UIAlertController.create(title, message, UIAlertControllerStyle.Alert);
+        UIAlertController alertController = new UIAlertController(title, message, UIAlertControllerStyle.Alert);
 
         // Create the actions.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -137,7 +137,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherButtonOneAction = UIAlertAction.create(otherButtonTitleOne, UIAlertActionStyle.Default,
+        UIAlertAction otherButtonOneAction = new UIAlertAction(otherButtonTitleOne, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -145,7 +145,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherButtonTwoAction = UIAlertAction.create(otherButtonTitleTwo, UIAlertActionStyle.Default,
+        UIAlertAction otherButtonTwoAction = new UIAlertAction(otherButtonTitleTwo, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -170,7 +170,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String cancelButtonTitle = "Cancel";
         String otherButtonTitle = "OK";
 
-        UIAlertController alertController = UIAlertController.create(title, message, UIAlertControllerStyle.Alert);
+        UIAlertController alertController = new UIAlertController(title, message, UIAlertControllerStyle.Alert);
 
         // Add the text field for text entry.
         alertController.addTextField(new VoidBlock1<UITextField>() {
@@ -181,7 +181,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         });
 
         // Create the actions.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -189,7 +189,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherAction = UIAlertAction.create(otherButtonTitle, UIAlertActionStyle.Default,
+        UIAlertAction otherAction = new UIAlertAction(otherButtonTitle, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction textField) {
@@ -211,7 +211,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String cancelButtonTitle = "Cancel";
         String otherButtonTitle = "OK";
 
-        UIAlertController alertController = UIAlertController.create(title, message, UIAlertControllerStyle.Alert);
+        UIAlertController alertController = new UIAlertController(title, message, UIAlertControllerStyle.Alert);
 
         // Add the text field for the secure text entry.
         alertController.addTextField(new VoidBlock1<UITextField>() {
@@ -237,7 +237,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         });
 
         // Create the actions.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -248,7 +248,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherAction = UIAlertAction.create(otherButtonTitle, UIAlertActionStyle.Default,
+        UIAlertAction otherAction = new UIAlertAction(otherButtonTitle, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -283,10 +283,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String cancelButtonTitle = "Cancel";
         String destructiveButtonTitle = "OK";
 
-        UIAlertController alertController = UIAlertController.create(null, null, UIAlertControllerStyle.ActionSheet);
+        UIAlertController alertController = new UIAlertController(null, null, UIAlertControllerStyle.ActionSheet);
 
         // Create the actions.
-        UIAlertAction cancelAction = UIAlertAction.create(cancelButtonTitle, UIAlertActionStyle.Cancel,
+        UIAlertAction cancelAction = new UIAlertAction(cancelButtonTitle, UIAlertActionStyle.Cancel,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -294,7 +294,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction destructiveAction = UIAlertAction.create(destructiveButtonTitle, UIAlertActionStyle.Destructive,
+        UIAlertAction destructiveAction = new UIAlertAction(destructiveButtonTitle, UIAlertActionStyle.Destructive,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -329,10 +329,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
         String destructiveButtonTitle = "Destructive Choice";
         String otherButtonTitle = "Safe Choice";
 
-        UIAlertController alertController = UIAlertController.create(null, null, UIAlertControllerStyle.ActionSheet);
+        UIAlertController alertController = new UIAlertController(null, null, UIAlertControllerStyle.ActionSheet);
 
         // Create the actions.
-        UIAlertAction destructiveAction = UIAlertAction.create(destructiveButtonTitle, UIAlertActionStyle.Destructive,
+        UIAlertAction destructiveAction = new UIAlertAction(destructiveButtonTitle, UIAlertActionStyle.Destructive,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -340,7 +340,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                     }
                 });
 
-        UIAlertAction otherAction = UIAlertAction.create(otherButtonTitle, UIAlertActionStyle.Default,
+        UIAlertAction otherAction = new UIAlertAction(otherButtonTitle, UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override
                     public void invoke(UIAlertAction a) {
@@ -369,10 +369,10 @@ public class AAPLAlertControllerViewController extends UITableViewController {
     // Determine the action to perform based on the selected cell.
     @Override
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
-        Section section = Section.values()[(int) indexPath.getSection()];
+        Section section = Section.values()[indexPath.getSection()];
 
         if (section == Section.Alert) {
-            AlertRow row = AlertRow.values()[(int) indexPath.getRow()];
+            AlertRow row = AlertRow.values()[indexPath.getRow()];
 
             switch (row) {
             case Simple:
@@ -394,7 +394,7 @@ public class AAPLAlertControllerViewController extends UITableViewController {
                 break;
             }
         } else if (section == Section.ActionSheet) {
-            ActionSheetRow row = ActionSheetRow.values()[(int) indexPath.getRow()];
+            ActionSheetRow row = ActionSheetRow.values()[indexPath.getRow()];
 
             switch (row) {
             case OkayCancel:

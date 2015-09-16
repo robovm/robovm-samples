@@ -179,11 +179,11 @@ public class AAPLTextViewController extends UIViewController implements UIBarBut
 
         // Add an image attachment.
         NSTextAttachment textAttachment = new NSTextAttachment();
-        UIImage image = UIImage.create("text_view_attachment");
+        UIImage image = UIImage.getImage("text_view_attachment");
         textAttachment.setImage(image);
         textAttachment.setBounds(new CGRect(0, 0, image.getSize().getWidth(), image.getSize().getHeight()));
 
-        NSAttributedString textAttachmentString = NSAttributedString.create(textAttachment);
+        NSAttributedString textAttachmentString = new NSAttributedString(textAttachment);
         attributedText.append(textAttachmentString);
 
         textView.setAttributedText(attributedText);

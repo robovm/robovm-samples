@@ -45,7 +45,7 @@ public class PAPPhotoCell extends PFTableViewCell {
         getImageView().setBackgroundColor(UIColor.black());
         getImageView().setContentMode(UIViewContentMode.ScaleAspectFit);
 
-        photoButton = UIButton.create(UIButtonType.Custom);
+        photoButton = new UIButton(UIButtonType.Custom);
         photoButton.setFrame(new CGRect(0, 0, getBounds().getWidth(), getBounds().getWidth()));
         photoButton.setBackgroundColor(UIColor.clear());
         getContentView().addSubview(photoButton);

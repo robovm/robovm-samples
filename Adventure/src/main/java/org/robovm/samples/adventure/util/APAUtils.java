@@ -104,7 +104,7 @@ public class APAUtils {
     private static CGImage getCGImage (String name) {
         int ix = name.lastIndexOf('/');
         if (ix != -1) name = name.substring(ix);
-        UIImage uiImage = UIImage.create(name);
+        UIImage uiImage = UIImage.getImage(name);
         return uiImage.getCGImage();
     }
 
@@ -227,7 +227,7 @@ public class APAUtils {
     public static NSArray<SKTexture> loadFramesFromAtlas (String atlasName, String baseFileName, int numberOfFrames) {
         NSArray<SKTexture> frames = new NSMutableArray<>(numberOfFrames);
 
-        SKTextureAtlas atlas = SKTextureAtlas.create(atlasName);
+        SKTextureAtlas atlas = new SKTextureAtlas(atlasName);
         for (int i = 1; i <= numberOfFrames; i++) {
             String fileName = String.format("%s%04d.png", baseFileName, i);
             SKTexture texture = atlas.getTexture(fileName);

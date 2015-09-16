@@ -56,7 +56,7 @@ public class PAPLoadMoreCell extends PFTableViewCell {
             mainView.setBackgroundColor(UIColor.black());
         }
 
-        loadMoreImageView = new UIImageView(UIImage.create("CellLoadMore"));
+        loadMoreImageView = new UIImageView(UIImage.getImage("CellLoadMore"));
         mainView.addSubview(loadMoreImageView);
 
         getContentView().addSubview(mainView);

@@ -34,6 +34,7 @@ import org.robovm.apple.foundation.NSSet;
 import org.robovm.apple.gamecontroller.GCController;
 import org.robovm.apple.gamecontroller.GCControllerButtonInput;
 import org.robovm.apple.gamecontroller.GCControllerDirectionPad;
+import org.robovm.apple.gamecontroller.GCControllerPlayerIndex;
 import org.robovm.apple.spritekit.SKAction;
 import org.robovm.apple.spritekit.SKEmitterNode;
 import org.robovm.apple.spritekit.SKLabelHorizontalAlignmentMode;
@@ -175,8 +176,8 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             public void invoke(GCController controller) {
                 System.out.println("Connected game controller: " + controller);
 
-                int playerIndex = (int) controller.getPlayerIndex();
-                if (playerIndex == -1) {
+                GCControllerPlayerIndex playerIndex = controller.getPlayerIndex();
+                if (playerIndex == GCControllerPlayerIndex.Unset) {
                     assignUnknownController(controller);
                 } else {
                     assignPresetController(controller, playerIndex);
@@ -215,8 +216,8 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
     private void configureConnectedGameControllers() {
         // First deal with the controllers previously set to a player.
         for (GCController controller : GCController.getControllers()) {
-            int playerIndex = (int) controller.getPlayerIndex();
-            if (playerIndex == -1) {
+            GCControllerPlayerIndex playerIndex = controller.getPlayerIndex();
+            if (playerIndex == GCControllerPlayerIndex.Unset) {
                 continue;
             }
 
@@ -225,8 +226,8 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
 
         // Now deal with the unset controllers.
         for (GCController controller : GCController.getControllers()) {
-            long playerIndex = controller.getPlayerIndex();
-            if (playerIndex == -1) {
+            GCControllerPlayerIndex playerIndex = controller.getPlayerIndex();
+            if (playerIndex == GCControllerPlayerIndex.Unset) {
                 continue;
             }
 
@@ -249,18 +250,19 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             }
 
             // Found an unlinked player.
-            controller.setPlayerIndex(playerIndex);
+            controller.setPlayerIndex(GCControllerPlayerIndex.valueOf(playerIndex));
             configureController(controller, player);
             return;
         }
     }
 
-    private void assignPresetController(GCController controller, int playerIndex) {
+    private void assignPresetController(GCController controller, GCControllerPlayerIndex playerIndex) {
+        int pi = (int)playerIndex.value();
         // Check whether this index is free.
-        APAPlayer player = players.get(playerIndex);
+        APAPlayer player = players.get(pi);
         if (player == null) {
             player = new APAPlayer();
-            players.set(playerIndex, player);
+            players.set(pi, player);
             updateHUD(player, APAHUDState.Connected, "CONTROLLER");
         }
 
@@ -395,7 +397,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
         SKNode hud = new SKNode();
 
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            SKSpriteNode avatar = SKSpriteNode.create(iconNames[i]);
+            SKSpriteNode avatar = new SKSpriteNode(iconNames[i]);
             avatar.setScale(0.5);
             avatar.setAlpha(0.5);
             avatar.setPosition(new CGPoint(hudX + i * hudD + (avatar.getSize().getWidth() * 0.5), getFrame().getSize()
@@ -403,8 +405,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             hudAvatars.add(avatar);
             hud.addChild(avatar);
 
-            SKLabelNode label = SKLabelNode.createWithFont("Copperplate");
-            label.setText("NO PLAYER");
+            SKLabelNode label = new SKLabelNode("NO PLAYER", "Copperplate");
             label.setFontColor(colors[i]);
             label.setFontSize(16);
             label.setHorizontalAlignmentMode(SKLabelHorizontalAlignmentMode.Left);
@@ -412,8 +413,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
             hudLabels.add(label);
             hud.addChild(label);
 
-            SKLabelNode score = SKLabelNode.createWithFont("Copperplate");
-            score.setText("SCORE: 0");
+            SKLabelNode score = new SKLabelNode("SCORE: 0", "Copperplate");
             score.setFontColor(colors[i]);
             score.setFontSize(16);
             score.setHorizontalAlignmentMode(SKLabelHorizontalAlignmentMode.Left);
@@ -423,7 +423,7 @@ public abstract class APAMultiplayerLayeredCharacterScene extends SKScene {
 
             hudLifeHeartArrays.add(new NSMutableArray<SKSpriteNode>(APAPlayer.START_LIVES));
             for (int j = 0; j < APAPlayer.START_LIVES; j++) {
-                SKSpriteNode heart = SKSpriteNode.create("lives.png");
+                SKSpriteNode heart = new SKSpriteNode("lives.png");
                 heart.setScale(0.4);
                 heart.setPosition(new CGPoint(hudX + i * hudD + (avatar.getSize().getWidth() * 1.0) + 18
                         + ((heart.getSize().getWidth() + 5) * j), hudY - 10));

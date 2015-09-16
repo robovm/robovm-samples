@@ -46,7 +46,7 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
     private final UILabel enterURLLabel;
     private final UIButton playButton;
 
-    public MyStreamingMovieViewController () {
+    public MyStreamingMovieViewController() {
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.66, 1));
 
@@ -57,14 +57,14 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
         enterURLLabel.setNumberOfLines(5);
         view.addSubview(enterURLLabel);
 
-        playButton = UIButton.create(UIButtonType.RoundedRect);
+        playButton = new UIButton(UIButtonType.RoundedRect);
         playButton.setFrame(new CGRect(106, 194, 108, 44));
         playButton.setBackgroundColor(UIColor.fromWhiteAlpha(0.66, 0.5));
         playButton.setTitle("Play Movie", UIControlState.Normal);
         playButton.getTitleLabel().setFont(UIFont.getSystemFont(18));
         playButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 playStreamingMovie();
             }
         });
@@ -82,9 +82,10 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
         movieURLTextField.setText("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8");
         movieURLTextField.setDelegate(new UITextFieldDelegateAdapter() {
             @Override
-            public boolean shouldReturn (UITextField textField) {
+            public boolean shouldReturn(UITextField textField) {
                 /*
-                 * When the user presses return, take focus away from the text field so that the keyboard is dismissed.
+                 * When the user presses return, take focus away from the text
+                 * field so that the keyboard is dismissed.
                  */
                 if (textField == movieURLTextField) {
                     movieURLTextField.resignFirstResponder();
@@ -97,7 +98,7 @@ public class MyStreamingMovieViewController extends MyMovieViewController {
         setTabBarItem(new UITabBarItem("Streaming", UIImage.create("images/streaming.png"), 0));
     }
 
-    public void playStreamingMovie () {
+    public void playStreamingMovie() {
         /* Has the user entered a movie URL? */
         if (movieURLTextField.getText().length() > 0) {
             NSURL theMovieURL = new NSURL(movieURLTextField.getText());

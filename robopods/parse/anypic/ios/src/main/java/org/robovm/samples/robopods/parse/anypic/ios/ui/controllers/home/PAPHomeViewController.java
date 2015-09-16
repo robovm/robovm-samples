@@ -50,15 +50,15 @@ public class PAPHomeViewController extends PAPPhotoTimelineViewController {
     public void viewDidLoad() {
         super.viewDidLoad();
 
-        getNavigationItem().setTitleView(new UIImageView(UIImage.create("LogoNavigationBar")));
+        getNavigationItem().setTitleView(new UIImageView(UIImage.getImage("LogoNavigationBar")));
 
         getNavigationItem().setRightBarButtonItem(new PAPSettingsButtonItem(settingsButtonAction));
 
         blankTimelineView = new UIView(getTableView().getBounds());
 
-        UIButton button = UIButton.create(UIButtonType.Custom);
+        UIButton button = new UIButton(UIButtonType.Custom);
         button.setFrame(new CGRect(33, 96, 253, 173));
-        button.setBackgroundImage(UIImage.create("HomeTimelineBlank"), UIControlState.Normal);
+        button.setBackgroundImage(UIImage.getImage("HomeTimelineBlank"), UIControlState.Normal);
         button.addOnTouchUpInsideListener(inviteFriendsButtonAction);
         blankTimelineView.addSubview(button);
     }

@@ -173,7 +173,7 @@ public class PAPPhotoDetailsViewController extends PFQueryTableViewController<PA
 
                     // If more than 5 seconds pass since we post a comment, stop
                     // waiting for the server to respond
-                    final NSTimer timer = NSTimer.createScheduled(5, new VoidBlock1<NSTimer>() {
+                    final NSTimer timer = new NSTimer(5, new VoidBlock1<NSTimer>() {
                         @Override
                         public void invoke(NSTimer timer) {
 //                            [MBProgressHUD hideHUDForView:self.view.superview animated:YES]; TODO
@@ -182,7 +182,7 @@ public class PAPPhotoDetailsViewController extends PFQueryTableViewController<PA
                                     null, null, "Dismiss");
                             alert.show();
                         }
-                    }, false);
+                    }, null, false, true);
 
                     comment.saveEventually(new PFSaveCallback() {
                         @Override
@@ -435,7 +435,7 @@ public class PAPPhotoDetailsViewController extends PFQueryTableViewController<PA
                         }
                     }
 
-                    activityItems.add(UIImage.create(data));
+                    activityItems.add(new UIImage(data));
                     activityItems.add(new NSURL(String.format("https://anypic.org/#pic/%s", photo.getObjectId())));
 
                     UIActivityViewController activityViewController = new UIActivityViewController(activityItems, null);

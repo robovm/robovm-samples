@@ -24,45 +24,35 @@ import org.robovm.apple.uikit.UIView;
  * 
  */
 public class NSLayoutConstraintUtil {
-
-    public static NSLayoutConstraint centerHorizontally(UIView view, UIView container,
-            double multipler, double c) {
-
-        return NSLayoutConstraint.create(
+    public static NSLayoutConstraint centerHorizontally(UIView view, UIView container, double multipler, double c) {
+        return new NSLayoutConstraint(
                 view, NSLayoutAttribute.CenterX,
                 NSLayoutRelation.Equal,
                 container, NSLayoutAttribute.CenterX,
                 multipler, c);
     }
 
-    public static NSLayoutConstraint centerVertically(UIView view, UIView container,
-            double multipler, double c) {
-
-        return NSLayoutConstraint.create(
+    public static NSLayoutConstraint centerVertically(UIView view, UIView container, double multipler, double c) {
+        return new NSLayoutConstraint(
                 view, NSLayoutAttribute.CenterY,
                 NSLayoutRelation.Equal,
                 container, NSLayoutAttribute.CenterY,
                 multipler, c);
     }
 
-    public static NSLayoutConstraint equalWidth(UIView view, UIView container,
-            double multipler, double c) {
-
-        return NSLayoutConstraint.create(
+    public static NSLayoutConstraint equalWidth(UIView view, UIView container, double multipler, double c) {
+        return new NSLayoutConstraint(
                 view, NSLayoutAttribute.Width,
                 NSLayoutRelation.Equal,
                 container, NSLayoutAttribute.Width,
                 multipler, c);
     }
 
-    public static NSLayoutConstraint equalHeight(UIView view, UIView container,
-            double multipler, double c) {
-
-        return NSLayoutConstraint.create(
+    public static NSLayoutConstraint equalHeight(UIView view, UIView container, double multipler, double c) {
+        return new NSLayoutConstraint(
                 view, NSLayoutAttribute.Height,
                 NSLayoutRelation.Equal,
                 container, NSLayoutAttribute.Height,
                 multipler, c);
     }
-
 }

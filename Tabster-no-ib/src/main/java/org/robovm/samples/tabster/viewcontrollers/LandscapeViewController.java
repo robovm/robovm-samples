@@ -35,7 +35,7 @@ public class LandscapeViewController extends UIViewController {
     private UIImage image;
     private final UIImageView imageView;
 
-    public LandscapeViewController () {
+    public LandscapeViewController() {
         UIView view = getView();
         view.setBackgroundColor(UIColor.white());
 
@@ -43,11 +43,12 @@ public class LandscapeViewController extends UIViewController {
         view.addSubview(imageView);
 
         UIButton button = new UIButton(new CGRect(20, 259, 49, 41));
-        button.setImage(UIImage.create("left"), UIControlState.Normal);
-        button.setImage(UIImage.create("left_pressed"), UIControlState.with(UIControlState.Selected, UIControlState.Highlighted));
+        button.setImage(UIImage.getImage("left"), UIControlState.Normal);
+        button.setImage(UIImage.getImage("left_pressed"),
+                UIControlState.with(UIControlState.Selected, UIControlState.Highlighted));
         button.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 dismissViewController(false, null);
             }
         });
@@ -55,22 +56,22 @@ public class LandscapeViewController extends UIViewController {
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
         imageView.setImage(image);
     }
 
     @Override
-    public UIInterfaceOrientationMask getSupportedInterfaceOrientations () {
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
         return UIInterfaceOrientationMask.Landscape;
     }
 
     @Override
-    public boolean shouldAutorotate () {
+    public boolean shouldAutorotate() {
         return true;
     }
 
-    public void setImage (UIImage image) {
+    public void setImage(UIImage image) {
         this.image = image;
     }
 }

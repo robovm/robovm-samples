@@ -104,7 +104,7 @@ public class AtomicElementViewController extends UIViewController {
         });
 
         // front view is always visible at first
-        flipIndicatorButton.setBackgroundImage(UIImage.create("flipper_list_blue.png"), UIControlState.Normal);
+        flipIndicatorButton.setBackgroundImage(UIImage.getImage("flipper_list_blue.png"), UIControlState.Normal);
         UIBarButtonItem flipButtonBarItem = new UIBarButtonItem(flipIndicatorButton);
         getNavigationItem().setRightBarButtonItem(flipButtonBarItem, true);
     }
@@ -154,7 +154,7 @@ public class AtomicElementViewController extends UIViewController {
                     .setBackgroundImage(element.getFlipperImageForAtomicElementNavigationItem(), UIControlState.Normal);
         } else {
             UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, flipIndicatorButton, true);
-            flipIndicatorButton.setBackgroundImage(UIImage.create("flipper_list_blue.png"), UIControlState.Normal);
+            flipIndicatorButton.setBackgroundImage(UIImage.getImage("flipper_list_blue.png"), UIControlState.Normal);
         }
         UIView.commitAnimations();
 

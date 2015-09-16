@@ -133,7 +133,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
         getTableView().setSeparatorStyle(UITableViewCellSeparatorStyle.None);
         getTableView().setBackgroundColor(UIColor.black());
 
-        getNavigationItem().setTitleView(new UIImageView(UIImage.create("TitleFindFriends")));
+        getNavigationItem().setTitleView(new UIImageView(UIImage.getImage("TitleFindFriends")));
 
         if (getNavigationController().getViewControllers().first() == this) {
             UIBarButtonItem dismissLeftBarButtonItem = new UIBarButtonItem("Back", UIBarButtonItemStyle.Plain,
@@ -151,7 +151,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
         if (MFMailComposeViewController.canSendMail() || MFMessageComposeViewController.canSendText()) {
             headerView = new UIView(new CGRect(0, 0, 320, 67));
             headerView.setBackgroundColor(UIColor.black());
-            UIButton clearButton = UIButton.create(UIButtonType.Custom);
+            UIButton clearButton = new UIButton(UIButtonType.Custom);
             clearButton.setBackgroundColor(UIColor.clear());
             clearButton.addOnTouchUpInsideListener(inviteFriendsButtonAction);
             clearButton.setFrame(headerView.getFrame());
@@ -485,7 +485,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
                     UITableView tableView = getTableView();
                     for (int i = 0, n = objects.size(); i < n; i++) {
                         PAPUser user = objects.get(i);
-                        NSIndexPath indexPath = NSIndexPath.createWithRow(i, 0);
+                        NSIndexPath indexPath = NSIndexPath.row(i, 0);
                         PAPFindFriendsCell cell = (PAPFindFriendsCell) getCellForRow(tableView, indexPath, user);
                         cell.getFollowButton().setSelected(true);
                         indexPaths.add(indexPath);
@@ -494,7 +494,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
                     tableView.reloadRows(indexPaths, UITableViewRowAnimation.None);
 //        [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES]; TODO
 
-                    final NSTimer timer = NSTimer.createScheduled(2, followUsersTimerRunnable, false);
+                    final NSTimer timer = new NSTimer(2, followUsersTimerRunnable, null, false, true);
                     PAPUtility.followUsersEventually(objects, new PFSaveCallback() {
                         @Override
                         public void done(boolean success, NSError error) {
@@ -530,7 +530,7 @@ public class PAPFindFriendsViewController extends PFQueryTableViewController<PAP
                     UITableView tableView = getTableView();
                     for (int i = 0, n = objects.size(); i < n; i++) {
                         PAPUser user = objects.get(i);
-                        NSIndexPath indexPath = NSIndexPath.createWithRow(i, 0);
+                        NSIndexPath indexPath = NSIndexPath.row(i, 0);
                         PAPFindFriendsCell cell = (PAPFindFriendsCell) getCellForRow(tableView, indexPath, user);
                         cell.getFollowButton().setSelected(false);
                         indexPaths.add(indexPath);
