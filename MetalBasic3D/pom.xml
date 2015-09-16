@@ -38,5 +38,21 @@
             <groupId>org.robovm</groupId>
             <artifactId>robovm-cocoatouch</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-robovm</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-platform</artifactId>
+            <version>1.6.5</version>
+            <classifier>natives-ios</classifier>
+        </dependency>
     </dependencies>
 </project>

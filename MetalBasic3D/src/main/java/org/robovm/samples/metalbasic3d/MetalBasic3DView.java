@@ -39,7 +39,9 @@ import org.robovm.apple.metal.MTLStoreAction;
 import org.robovm.apple.metal.MTLTexture;
 import org.robovm.apple.metal.MTLTextureDescriptor;
 import org.robovm.apple.metal.MTLTextureType;
+import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIView;
+import org.robovm.apple.uikit.UIWindow;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.Method;
 import org.robovm.rt.bro.annotation.ByVal;
@@ -121,6 +123,11 @@ public class MetalBasic3DView extends UIView {
         // this is the default but if we wanted to perform compute on the final
         // rendering layer we could set this to false
         metalLayer.setFramebufferOnly(true);
+    }
+
+    @Override
+    public void didMoveToWindow() {
+        setContentScaleFactor(getWindow().getScreen().getNativeScale());
     }
 
     @Override
@@ -248,11 +255,6 @@ public class MetalBasic3DView extends UIView {
                 stencilAttachment.setClearStencil(0);
             }
         } // stencil
-    }
-
-    @Override
-    public void didMoveToWindow() {
-        setContentScaleFactor(getWindow().getScreen().getNativeScale());
     }
 
     public MTLRenderPassDescriptor renderPassDescriptor() {

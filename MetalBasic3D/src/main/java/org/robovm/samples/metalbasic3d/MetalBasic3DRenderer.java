@@ -18,10 +18,15 @@
  */
 package org.robovm.samples.metalbasic3d;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.Semaphore;
 
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.BufferUtils;
 import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.metal.MTLBuffer;
 import org.robovm.apple.metal.MTLCommandBuffer;
@@ -45,26 +50,24 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
     private static final int kInFlightCommandBuffers = 3;
     private static final int kNumberOfBoxes = 2;
 
+    private static final float[][] kBoxAmbientColors = {
+            {0.18f, 0.24f, 0.8f, 1.0f},
+            {0.8f, 0.24f, 0.1f, 1.0f}
+    };
+
+    private static final float[][] kBoxDiffuseColors = {
+            {0.4f, 0.4f, 1.0f, 1.0f},
+            {0.8f, 0.4f, 0.4f, 1.0f}
+    };
+
     private static final float kFOVY    = 65.0f;
-    private static final float[] kEye    = {0.0f, 0.0f, 0.0f};
-    private static final float[] kCenter = {0.0f, 0.0f, 1.0f};
-    private static final float[] kUp     = {0.0f, 1.0f, 0.0f};
+    private static final Vector3 kEye    = new Vector3(0, 0, 0);
+    private static final Vector3 kCenter = new Vector3(0, 0, 1);
+    private static final Vector3 kUp     = new Vector3(0, 1, 0);
 
     private static final float kWidth  = 0.75f;
     private static final float kHeight = 0.75f;
     private static final float kDepth  = 0.75f;
-    
-    private static final int sizeOfConstantT = 175;
-
-    private static final float[][] kBoxAmbientColors = {
-        {0.18f, 0.24f, 0.8f, 1.0f},
-        {0.8f, 0.24f, 0.1f, 1.0f}
-    };
-
-    private static final float[][] kBoxDiffuseColors = {
-        {0.4f, 0.4f, 1.0f, 1.0f},
-        {0.8f, 0.4f, 0.4f, 1.0f}
-    };
     
     private static final float[] kCubeVertexData = {
         kWidth, -kHeight, kDepth,   0.0f, -1.0f,  0.0f,
@@ -109,7 +112,8 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
         kWidth, -kHeight, -kDepth,  0.0f,  0.0f, -1.0f,
         -kWidth, kHeight, -kDepth,  0.0f, 0.0f, -1.0f
     };
-    
+
+    private Semaphore inflightSemaphore = new Semaphore(kInFlightCommandBuffers);
     private MTLBuffer[] dynamicConstantBuffer = new MTLBuffer[kInFlightCommandBuffers];
 
     private MTLDevice device;
@@ -119,17 +123,22 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
     private MTLBuffer vertexBuffer;
     private MTLDepthStencilState depthState;
 
-    private long maxBufferBytesPerFrame = sizeOfConstantT * kNumberOfBoxes;
-    
     // globals used in update calculation
     Matrix4 projectionMatrix = new Matrix4();
     Matrix4 viewMatrix = new Matrix4();
     private float rotation;
 
+    private static final int sizeOfConstantT = 175;
+    private long maxBufferBytesPerFrame = sizeOfConstantT * kNumberOfBoxes;
     private int constantDataBufferIndex = 0;
-    
-    private Semaphore inflightSemaphore = new Semaphore(kInFlightCommandBuffers);
-    
+    private int float4x4Size = 4 * 4 * 4;
+    private int float4Size = 4 * 4;
+    private int modelViewProjectionMatrixOffset = 0;
+    private int normalMatrixOffset = float4x4Size;
+    private int ambientColorOffset = float4x4Size * 2;
+    private int diffuseColorOffset = float4x4Size * 2 + float4Size;
+    private int multiplierOffset = float4x4Size * 2 + float4Size * 2;
+
     public void configure(MetalBasic3DView view) {
         // find a usable Device
         device = view.getDevice();
@@ -160,44 +169,71 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
         // In this case triple buffering is the optimal way to go so we cycle through 3 memory buffers
         for (int i = 0; i < kInFlightCommandBuffers; i++) {
             dynamicConstantBuffer[i] = device.newBuffer(maxBufferBytesPerFrame, MTLResourceOptions.CPUCacheModeDefaultCache);
-            dynamicConstantBuffer[i].setLabel("ConstantBuffer" + 1);
+            dynamicConstantBuffer[i].setLabel("ConstantBuffer" + i);
             
             // write initial color values for both cubes (at each offset).
             // Note, these will get animated during update
             ByteBuffer constant_buffer = dynamicConstantBuffer[i].getContents();
-            System.out.println(constant_buffer.order());
             constant_buffer.order(ByteOrder.nativeOrder());
-//            constants_t *constant_buffer = (constants_t *)[_dynamicConstantBuffer[i] contents];
+
             for (int j = 0; j < kNumberOfBoxes; j++) {
                 if (j % 2 == 0) {
-//                  constant_buffer[j].multiplier = 1;
-                    constant_buffer.putInt((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 * 2, 1);
-//                    constant_buffer[j].ambient_color = kBoxAmbientColors[0];
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 0, kBoxAmbientColors[0][0]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 1, kBoxAmbientColors[0][1]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 2, kBoxAmbientColors[0][2]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 3, kBoxAmbientColors[0][3]);
-//                    constant_buffer[j].diffuse_color = kBoxDiffuseColors[0];
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 0, kBoxDiffuseColors[0][0]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 1, kBoxDiffuseColors[0][1]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 2, kBoxDiffuseColors[0][2]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 3, kBoxDiffuseColors[0][3]);
+                    constant_buffer.position((sizeOfConstantT * j) + ambientColorOffset);
+                    BufferUtils.copy(kBoxAmbientColors[0], 0, 4, constant_buffer);
+                    constant_buffer.position((sizeOfConstantT * j) + diffuseColorOffset);
+                    BufferUtils.copy(kBoxDiffuseColors[0], 0, 4, constant_buffer);
+                    constant_buffer.putInt((sizeOfConstantT * j) + multiplierOffset, 1);
                 } else {
-//                    constant_buffer[j].multiplier = -1;
-                    constant_buffer.putInt((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 * 2, -1);
-//                    constant_buffer[j].ambient_color = kBoxAmbientColors[1];
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 0, kBoxAmbientColors[1][0]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 1, kBoxAmbientColors[1][1]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 2, kBoxAmbientColors[1][2]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 3, kBoxAmbientColors[1][3]);
-//                    constant_buffer[j].diffuse_color = kBoxDiffuseColors[1];
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 0, kBoxDiffuseColors[1][0]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 1, kBoxDiffuseColors[1][1]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 2, kBoxDiffuseColors[1][2]);
-                    constant_buffer.putFloat((sizeOfConstantT * j) + 4 * 4 * 4 * 2 + 4 * 4 + 4 * 3, kBoxDiffuseColors[1][3]);
+                    constant_buffer.position((sizeOfConstantT * j) + ambientColorOffset);
+                    BufferUtils.copy(kBoxAmbientColors[1], 0, 4, constant_buffer);
+                    constant_buffer.position((sizeOfConstantT * j) + diffuseColorOffset);
+                    BufferUtils.copy(kBoxDiffuseColors[1], 0, 4, constant_buffer);
+                    constant_buffer.putInt((sizeOfConstantT * j) + multiplierOffset, -1);
                 }
+                printConstantT(constant_buffer, j);
             }
         }
+    }
+
+    private void printConstantT(ByteBuffer constant_buffer, int index) {
+        int base = index * sizeOfConstantT;
+
+        System.out.println("modelview_projection_matrix");
+        for(int i = 0; i < 16; i++) {
+            System.out.print(constant_buffer.getFloat(base) + ",");
+            if((i + 1) % 4 == 0) {
+                System.out.println();
+            }
+            base += 4;
+        }
+        System.out.println();
+
+        System.out.println("normal_matrix");
+        for(int i = 0; i < 16; i++) {
+            System.out.print(constant_buffer.getFloat(base) + ",");
+            if((i + 1) % 4 == 0) {
+                System.out.println();
+            }
+            base += 4;
+        }
+        System.out.println();
+
+        System.out.println("ambient_color");
+        for(int i = 0; i < 4; i++) {
+            System.out.print(constant_buffer.getFloat(base) + ",");
+            base += 4;
+        }
+        System.out.println();
+
+        System.out.println("diffuse_color");
+        for(int i = 0; i < 4; i++) {
+            System.out.print(constant_buffer.getFloat(base) + ",");
+            base += 4;
+        }
+        System.out.println();
+
+        System.out.println("multiplier");
+        System.out.println(constant_buffer.getInt(base));
     }
     
     private void preparePipelineState(MetalBasic3DView view) {
@@ -213,11 +249,12 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
             throw new Error(">> ERROR: Couldn't load vertex function from default library");
         }
         
-        // setup the vertex buffers
-        byte[] data = new byte[kCubeVertexData.length * 4];
-        ByteBuffer.wrap(data).asFloatBuffer().put(kCubeVertexData);
-        vertexBuffer = device.newBuffer(data, MTLResourceOptions.CPUCacheModeDefaultCache);
+        // setup the vertex buffers;
+        vertexBuffer = device.newBuffer(kCubeVertexData.length * 4, MTLResourceOptions.CPUCacheModeDefaultCache);
         vertexBuffer.setLabel("Vertices");
+        ByteBuffer b = vertexBuffer.getContents();
+        b.order(ByteOrder.nativeOrder());
+        b.asFloatBuffer().put(kCubeVertexData);
         
         // create a pipeline state descriptor which can be used to create a compiled pipeline state object
         MTLRenderPipelineDescriptor pipelineStateDescriptor = new MTLRenderPipelineDescriptor();
@@ -236,14 +273,6 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
         } catch (NSErrorException e) {
             throw new Error(">> ERROR: Failed Aquiring pipeline state: ", e);
         }
-    }
-    
-    @Override
-    public void reshape(MetalBasic3DView view) {
-        // when reshape is called, update the view and projection matricies since this means the view orientation or size changed
-        float aspect = (float) Math.abs(view.getBounds().getSize().getWidth() / view.getBounds().getSize().getHeight());
-        projectionMatrix = perspective_fov(kFOVY, aspect, 0.1f, 100.0f);
-        viewMatrix = lookAt(kEye, kCenter, kUp);
     }
 
     @Override
@@ -306,11 +335,63 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
         constantDataBufferIndex = (constantDataBufferIndex + 1) % kInFlightCommandBuffers;
     }
 
+    @Override
+    public void reshape(MetalBasic3DView view) {
+        // when reshape is called, update the view and projection matricies since this means the view orientation or size changed
+        float aspect = (float) Math.abs(view.getBounds().getSize().getWidth() / view.getBounds().getSize().getHeight());
+        projectionMatrix.setToProjection(0.1f, 100.0f, kFOVY, aspect);
+        projectionMatrix.set(new float[] {
+                2.09291387f, 0, 0, 0,
+                0, 1.56968534f, 0, 0,
+                0, 0, 1.001001f, 1,
+                0, 0, -0.1001001f, 0
+        });
+        viewMatrix.setToLookAt(kEye, kCenter, kUp);
+        viewMatrix.set(new float[] {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                -0, -0, -0, 1
+        });
+    }
+
+    boolean[] printed = new boolean[3];
+
     private void updateConstantBuffer() {
-        Matrix4 baseModelViewMatrix = new Matrix4().identity().translate(0.0f,  0.0f,  0.5f);
+        Matrix4 baseModelViewMatrix = new Matrix4().idt().translate(0.0f,  0.0f,  0.5f);
+        ByteBuffer constant_buffer = dynamicConstantBuffer[constantDataBufferIndex].getContents();
+        constant_buffer.order(ByteOrder.nativeOrder());
+        for (int j = 0; j < kNumberOfBoxes; j++) {
+            Matrix4 normalMatrix = new Matrix4(viewMatrix).mul(baseModelViewMatrix).tra().inv();
+            normalMatrix.set(new float[] {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, -5,
+                    0, 0, 0, 1
+            });
+            constant_buffer.position((sizeOfConstantT * j) + normalMatrixOffset);
+            BufferUtils.copy(normalMatrix.getValues(), 0, 16, constant_buffer);
+
+            Matrix4 combinedMatrix = new Matrix4(projectionMatrix).mul(viewMatrix).mul(baseModelViewMatrix);
+            combinedMatrix.set(new float[] {
+                    2.09291387f, 0, 0, 0,
+                    0, 1.56968534f, 0, 0,
+                    0, 0, 1.001001f, 1,
+                    0, 0, 4.90490484f, 5
+            });
+            constant_buffer.position((sizeOfConstantT * j) + modelViewProjectionMatrixOffset);
+            BufferUtils.copy(combinedMatrix.getValues(), 0, 16, constant_buffer);
+        }
+
+        if(!printed[constantDataBufferIndex]) {
+            printConstantT(constant_buffer, 0);
+            printConstantT(constant_buffer, 1);
+            printed[constantDataBufferIndex] = true;
+        }
+
         /*    float4x4 baseModelViewMatrix = translate(0.0f, 0.0f, 5.0f) * rotate(_rotation, 1.0f, 1.0f, 1.0f);
         baseModelViewMatrix = _viewMatrix * baseModelViewMatrix;
-        
+
         constants_t *constant_buffer = (constants_t *)[_dynamicConstantBuffer[_constantDataBufferIndex] contents];
         for (int i = 0; i < kNumberOfBoxes; i++)
         {
