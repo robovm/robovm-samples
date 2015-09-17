@@ -190,50 +190,8 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
                     BufferUtils.copy(kBoxDiffuseColors[1], 0, 4, constant_buffer);
                     constant_buffer.putInt((sizeOfConstantT * j) + multiplierOffset, -1);
                 }
-                printConstantT(constant_buffer, j);
             }
         }
-    }
-
-    private void printConstantT(ByteBuffer constant_buffer, int index) {
-        int base = index * sizeOfConstantT;
-
-        System.out.println("modelview_projection_matrix");
-        for(int i = 0; i < 16; i++) {
-            System.out.print(constant_buffer.getFloat(base) + ",");
-            if((i + 1) % 4 == 0) {
-                System.out.println();
-            }
-            base += 4;
-        }
-        System.out.println();
-
-        System.out.println("normal_matrix");
-        for(int i = 0; i < 16; i++) {
-            System.out.print(constant_buffer.getFloat(base) + ",");
-            if((i + 1) % 4 == 0) {
-                System.out.println();
-            }
-            base += 4;
-        }
-        System.out.println();
-
-        System.out.println("ambient_color");
-        for(int i = 0; i < 4; i++) {
-            System.out.print(constant_buffer.getFloat(base) + ",");
-            base += 4;
-        }
-        System.out.println();
-
-        System.out.println("diffuse_color");
-        for(int i = 0; i < 4; i++) {
-            System.out.print(constant_buffer.getFloat(base) + ",");
-            base += 4;
-        }
-        System.out.println();
-
-        System.out.println("multiplier");
-        System.out.println(constant_buffer.getInt(base));
     }
     
     private void preparePipelineState(MetalBasic3DView view) {
@@ -340,81 +298,32 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
         // when reshape is called, update the view and projection matricies since this means the view orientation or size changed
         float aspect = (float) Math.abs(view.getBounds().getSize().getWidth() / view.getBounds().getSize().getHeight());
         projectionMatrix.setToProjection(0.1f, 100.0f, kFOVY, aspect);
-        projectionMatrix.set(new float[] {
-                2.09291387f, 0, 0, 0,
-                0, 1.56968534f, 0, 0,
-                0, 0, 1.001001f, 1,
-                0, 0, -0.1001001f, 0
-        });
         viewMatrix.setToLookAt(kEye, kCenter, kUp);
-        viewMatrix.set(new float[] {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                -0, -0, -0, 1
-        });
     }
 
-    boolean[] printed = new boolean[3];
+    // scratch matrices to avoid GC
+    Matrix4 baseModelViewMatrix = new Matrix4();
+    Matrix4 modelViewMatrix = new Matrix4();
+    Matrix4 normalMatrix = new Matrix4();
+    Matrix4 combinedMatrix = new Matrix4();
 
     private void updateConstantBuffer() {
-        Matrix4 baseModelViewMatrix = new Matrix4().idt().translate(0.0f,  0.0f,  0.5f);
+        baseModelViewMatrix.set(viewMatrix).translate(0.0f,  0.0f,  5f).rotate(1, 1, 1, rotation);
         ByteBuffer constant_buffer = dynamicConstantBuffer[constantDataBufferIndex].getContents();
         constant_buffer.order(ByteOrder.nativeOrder());
-        for (int j = 0; j < kNumberOfBoxes; j++) {
-            Matrix4 normalMatrix = new Matrix4(viewMatrix).mul(baseModelViewMatrix).tra().inv();
-            normalMatrix.set(new float[] {
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, -5,
-                    0, 0, 0, 1
-            });
-            constant_buffer.position((sizeOfConstantT * j) + normalMatrixOffset);
+        for (int i = 0; i < kNumberOfBoxes; i++) {
+            int multiplier = ((i % 2) == 0?1: -1);
+            modelViewMatrix.set(baseModelViewMatrix).translate(0, 0, multiplier * 1.5f).rotate(1, 1, 1, rotation);
+
+            normalMatrix.set(modelViewMatrix).tra().inv();
+            constant_buffer.position((sizeOfConstantT *i) + normalMatrixOffset);
             BufferUtils.copy(normalMatrix.getValues(), 0, 16, constant_buffer);
 
-            Matrix4 combinedMatrix = new Matrix4(projectionMatrix).mul(viewMatrix).mul(baseModelViewMatrix);
-            combinedMatrix.set(new float[] {
-                    2.09291387f, 0, 0, 0,
-                    0, 1.56968534f, 0, 0,
-                    0, 0, 1.001001f, 1,
-                    0, 0, 4.90490484f, 5
-            });
-            constant_buffer.position((sizeOfConstantT * j) + modelViewProjectionMatrixOffset);
+            combinedMatrix.set(projectionMatrix).mul(modelViewMatrix);
+            constant_buffer.position((sizeOfConstantT * i) + modelViewProjectionMatrixOffset);
             BufferUtils.copy(combinedMatrix.getValues(), 0, 16, constant_buffer);
         }
-
-        if(!printed[constantDataBufferIndex]) {
-            printConstantT(constant_buffer, 0);
-            printConstantT(constant_buffer, 1);
-            printed[constantDataBufferIndex] = true;
-        }
-
-        /*    float4x4 baseModelViewMatrix = translate(0.0f, 0.0f, 5.0f) * rotate(_rotation, 1.0f, 1.0f, 1.0f);
-        baseModelViewMatrix = _viewMatrix * baseModelViewMatrix;
-
-        constants_t *constant_buffer = (constants_t *)[_dynamicConstantBuffer[_constantDataBufferIndex] contents];
-        for (int i = 0; i < kNumberOfBoxes; i++)
-        {
-            // calculate the Model view projection matrix of each box
-            // for each box, if its odd, create a negative multiplier to offset boxes in space
-            int multiplier = ((i % 2 == 0)?1:-1);
-            simd::float4x4 modelViewMatrix = AAPL::translate(0.0f, 0.0f, multiplier*1.5f) * AAPL::rotate(_rotation, 1.0f, 1.0f, 1.0f);
-            modelViewMatrix = baseModelViewMatrix * modelViewMatrix;
-            
-            constant_buffer[i].normal_matrix = inverse(transpose(modelViewMatrix));
-            constant_buffer[i].modelview_projection_matrix = _projectionMatrix * modelViewMatrix;
-            
-            // change the color each frame
-            // reverse direction if we've reached a boundary
-            if (constant_buffer[i].ambient_color.y >= 0.8) {
-                constant_buffer[i].multiplier = -1;
-                constant_buffer[i].ambient_color.y = 0.79;
-            } else if (constant_buffer[i].ambient_color.y <= 0.2) {
-                constant_buffer[i].multiplier = 1;
-                constant_buffer[i].ambient_color.y = 0.21;
-            } else
-                constant_buffer[i].ambient_color.y += constant_buffer[i].multiplier * 0.01*i;
-        }*/
+        rotation += 0.01;
     }
     
     @Override
@@ -426,9 +335,5 @@ public class MetalBasic3DRenderer implements MetalBasic3DViewControllerDelegate,
     public void willPause(MetalBasic3DViewController controller, boolean pause) {
         // timer is suspended/resumed
         // Can do any non-rendering related background work here when suspended
-    }
-    
-    private static class Uniform {
-        
     }
 }
