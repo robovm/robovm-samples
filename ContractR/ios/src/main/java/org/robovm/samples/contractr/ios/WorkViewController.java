@@ -42,7 +42,7 @@ public class WorkViewController extends UIViewController {
             UIColor.fromRGBA(1.0, 0, 0, 1.0);
 
     private final TaskModel taskModel;
-    private final SelectTaskViewController selectTaskViewController;
+    private SelectTaskViewController selectTaskViewController;
     private final UINavigationController selectTaskNavigationController;
 
     private UIButton startStopButton;

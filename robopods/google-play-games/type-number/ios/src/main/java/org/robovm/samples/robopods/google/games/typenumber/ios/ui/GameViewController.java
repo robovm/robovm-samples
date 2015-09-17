@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
-import org.robovm.apple.uikit.UIInterfaceOrientation;
+import org.robovm.apple.uikit.UIInterfaceOrientationMask;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIResponder;
 import org.robovm.apple.uikit.UITextField;
@@ -286,8 +286,8 @@ public class GameViewController extends UIViewController {
     }
 
     @Override
-    public boolean shouldAutorotate(UIInterfaceOrientation toInterfaceOrientation) {
-        return toInterfaceOrientation == UIInterfaceOrientation.Portrait;
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
+        return UIInterfaceOrientationMask.Portrait;
     }
 
     public void setDifficulty(DifficultyLevel difficulty) {
