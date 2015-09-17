@@ -16,15 +16,14 @@ import java.nio.ByteOrder;
 
 public class MetalBasic2DViewController extends UIViewController {
     float quadVertexData[] = {
-            0.5f, -0.5f, 0.0f, 1.0f,     1.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 1.0f,     0.0f, 1.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f, 1.0f,     0.0f, 0.0f, 1.0f, 1.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
 
-            0.5f,  0.5f, 0.0f, 1.0f,     1.0f, 1.0f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.0f, 1.0f,     1.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f, 1.0f,     0.0f, 0.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
     };
-
 
     CAMetalLayer metalLayer;
     MTLDevice device;
@@ -102,7 +101,7 @@ public class MetalBasic2DViewController extends UIViewController {
         MTLCommandBuffer commandBuffer = commandQueue.getCommandBuffer();
         CAMetalDrawable drawable = getCurrentDrawable();
 
-        if(drawable != null) {
+        if (drawable != null) {
             MTLRenderPassDescriptor renderPassDescriptor = renderPassDescriptor(drawable.getTexture());
             MTLRenderCommandEncoder renderEncoder = commandBuffer.newRenderCommandEncoder(renderPassDescriptor);
 
@@ -118,8 +117,8 @@ public class MetalBasic2DViewController extends UIViewController {
     }
 
     private void update() {
-        float cos = (float)Math.cos(rotationAngle);
-        float sin = (float)Math.sin(rotationAngle);
+        float cos = (float) Math.cos(rotationAngle);
+        float sin = (float) Math.sin(rotationAngle);
         float matrix[] = {
                 cos, sin, 0, 0,
                 -sin, cos, 0, 0,
@@ -137,7 +136,6 @@ public class MetalBasic2DViewController extends UIViewController {
     private void redraw() {
         try (NSAutoreleasePool pool = new NSAutoreleasePool()) {
             if (layerSizeDidUpdate) {
-                // Ensure that the drawable size of the Metal layer is equal to its dimensions in pixels
                 double nativeScale = getView().getWindow().getScreen().getNativeScale();
                 CGSize drawableSize = metalLayer.getBounds().getSize();
                 drawableSize.setWidth(drawableSize.getWidth() * nativeScale);
@@ -146,7 +144,6 @@ public class MetalBasic2DViewController extends UIViewController {
                 layerSizeDidUpdate = false;
             }
 
-            // Draw the scene
             render();
             ((NSObject) currentDrawable).dispose();
             currentDrawable = null;
@@ -158,7 +155,7 @@ public class MetalBasic2DViewController extends UIViewController {
         layerSizeDidUpdate = true;
 
         CGSize parentSize = getView().getBounds().getSize();
-        float minSize = (float)Math.min(parentSize.getWidth(), parentSize.getHeight());
+        float minSize = (float) Math.min(parentSize.getWidth(), parentSize.getHeight());
         CGRect frame = new CGRect((parentSize.getWidth() - minSize) / 2,
                 (parentSize.getHeight() - minSize) / 2,
                 minSize,
@@ -167,7 +164,7 @@ public class MetalBasic2DViewController extends UIViewController {
     }
 
     private CAMetalDrawable getCurrentDrawable() {
-        if(currentDrawable == null) {
+        if (currentDrawable == null) {
             currentDrawable = metalLayer.nextDrawable();
         }
         return currentDrawable;
