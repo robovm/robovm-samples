@@ -37,6 +37,7 @@ import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UIControlState;
 import org.robovm.apple.uikit.UIEvent;
+import org.robovm.apple.uikit.UIInterfaceOrientationMask;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIResponder;
 import org.robovm.apple.uikit.UITextField;
@@ -282,6 +283,11 @@ public class GameViewController extends UIViewController {
     public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
         presentNewGame();
+    }
+
+    @Override
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
+        return UIInterfaceOrientationMask.Portrait;
     }
 
     public void setDifficulty(DifficultyLevel difficulty) {

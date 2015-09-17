@@ -28,6 +28,7 @@ import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.uikit.UIActivityIndicatorView;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIButton;
+import org.robovm.apple.uikit.UIInterfaceOrientationMask;
 import org.robovm.apple.uikit.UIResponder;
 import org.robovm.apple.uikit.UIStoryboardSegue;
 import org.robovm.apple.uikit.UIView;
@@ -235,6 +236,11 @@ public class InitViewController extends UIViewController implements GPGStatusDel
                 refreshInterface();
             }
         });
+    }
+
+    @Override
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
+        return UIInterfaceOrientationMask.Portrait;
     }
 
     /* TODO remove when not needed */
