@@ -102,7 +102,7 @@ public class PeopleListTableViewController extends UITableViewController {
             cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
         }
         if (personToShow.getImage() != null) {
-            cell.getImageView().setImage(UIImage.create(NSData.read(new NSURL(personToShow.getImage().getUrl()))));
+            cell.getImageView().setImage(new UIImage(NSData.read(new NSURL(personToShow.getImage().getUrl()))));
         }
 
         Log.d("Person image is %s", personToShow.getImage().getUrl());
