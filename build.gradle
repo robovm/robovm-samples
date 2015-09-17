@@ -1,7 +1,7 @@
 // Pull the plugin from Maven Central
 buildscript {
-    project.ext.roboVMVersion = "1.7.0"
-    project.ext.roboVMGradleVersion = "1.7.0"    
+    project.ext.roboVMVersion = "1.8.0"
+    project.ext.roboVMGradleVersion = "1.8.0"    
 
     repositories {
         mavenLocal()
