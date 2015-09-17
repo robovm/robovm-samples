@@ -102,6 +102,8 @@
         <module>LazyTableImages</module>
         <module>LocateMe</module>
         <module>MessageComposer</module>
+        <module>MetalBasic3D</module>
+        <module>MetalBasic2D</module>
         <module>MoveMe</module>
         <module>MoviePlayer</module>
         <module>MyJavaFramework</module>

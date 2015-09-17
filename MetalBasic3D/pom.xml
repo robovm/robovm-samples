@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-samples-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>robovm-samples-metalbasic3d</artifactId>
+    <name>RoboVM port of Apple's MetalBasic3D sample</name>
+
+    <packaging>jar</packaging>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-rt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-cocoatouch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-robovm</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-platform</artifactId>
+            <version>1.6.5</version>
+            <classifier>natives-ios</classifier>
+        </dependency>
+    </dependencies>
+</project>

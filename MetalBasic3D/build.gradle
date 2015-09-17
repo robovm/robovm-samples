@@ -1,0 +1,9 @@
+ext {
+    mainClassName = "org.robovm.samples.metalbasic3d.MetalBasic3D"
+}
+
+dependencies {
+	compile "com.badlogicgames.gdx:gdx:1.6.5"
+	compile "com.badlogicgames.gdx:gdx-backend-robovm:1.6.5"
+	compile "com.badlogicgames.gdx:gdx-platform:1.6.5:natives-ios"
+}
