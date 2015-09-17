@@ -13,6 +13,11 @@ public class MetalBasic2D extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
+        // Metal samples can only be run on device
+        if(System.getProperty("os.name").toLowerCase().contains("simulator")) {
+            throw new Error("Metal samples can only be run on physical devices");
+        }
+
         // Set up the view controller.
         rootViewController = new MetalBasic2DViewController();
 
