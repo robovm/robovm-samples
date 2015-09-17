@@ -44,12 +44,12 @@ public class MyViewController extends UIViewController {
     private UILabel label;
     private String string;
 
-    public MyViewController () {
+    public MyViewController() {
         UIView view = getView();
 
         // Setup background.
-        UIImageView background = new UIImageView(UIImage.create("Background.png"));
-        background.setFrame(UIScreen.getMainScreen().getApplicationFrame());
+        UIImageView background = new UIImageView(UIImage.getImage("Background.png"));
+        background.setFrame(UIScreen.getMainScreen().getBounds());
         view.addSubview(background);
 
         // Setup textfield.
@@ -63,8 +63,9 @@ public class MyViewController extends UIViewController {
         textField.setClearButtonMode(UITextFieldViewMode.WhileEditing);
         textField.setDelegate(new UITextFieldDelegateAdapter() {
             @Override
-            public boolean shouldReturn (UITextField theTextField) {
-                // When the user presses return, take focus away from the text field so that the keyboard is dismissed.
+            public boolean shouldReturn(UITextField theTextField) {
+                // When the user presses return, take focus away from the text
+                // field so that the keyboard is dismissed.
                 if (theTextField == textField) {
                     textField.resignFirstResponder();
                     // Invoke the method that changes the greeting.
@@ -80,13 +81,14 @@ public class MyViewController extends UIViewController {
         label.setFont(UIFont.getSystemFont(24));
         label.setTextColor(UIColor.white());
         label.setTextAlignment(NSTextAlignment.Center);
-        // When the view first loads, display the placeholder text that's in the text field in the label.
+        // When the view first loads, display the placeholder text that's in the
+        // text field in the label.
         label.setText(textField.getPlaceholder());
         view.addSubview(label);
     }
 
     @Override
-    public void touchesBegan (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesBegan(NSSet<UITouch> touches, UIEvent event) {
         // Dismiss the keyboard when the view outside the text field is touched.
         textField.resignFirstResponder();
         // Revert the text field to the previous value.
@@ -95,10 +97,11 @@ public class MyViewController extends UIViewController {
         super.touchesBegan(touches, event);
     }
 
-    public void updateString () {
+    public void updateString() {
         // Store the text of the text field in the 'string' instance variable.
         string = textField.getText();
-        // Set the text of the label to the value of the 'string' instance variable.
+        // Set the text of the label to the value of the 'string' instance
+        // variable.
         label.setText(string);
     }
 }

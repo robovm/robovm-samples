@@ -155,7 +155,7 @@ public class APLMoveMeView extends UIView {
         CALayer welcomeLayer = placardView.getLayer();
 
         // Create a keyframe animation to follow a path back to the center.
-        CAKeyframeAnimation bounceAnimation = CAKeyframeAnimation.create("position");
+        CAKeyframeAnimation bounceAnimation = new CAKeyframeAnimation("position");
         bounceAnimation.setRemovedOnCompletion(false);
 
         double animationDuration = 1.5;
@@ -194,7 +194,7 @@ public class APLMoveMeView extends UIView {
         bounceAnimation.setDuration(animationDuration);
 
         // Create a basic animation to restore the size of the placard.
-        CABasicAnimation transformAnimation = CABasicAnimation.create("transform");
+        CABasicAnimation transformAnimation = new CABasicAnimation("transform");
         transformAnimation.setRemovedOnCompletion(true);
         transformAnimation.setDuration(animationDuration);
         transformAnimation.setToValue(NSValue.valueOf(CATransform3D.Identity()));
@@ -215,7 +215,7 @@ public class APLMoveMeView extends UIView {
             }
         });
         group.setDuration(animationDuration);
-        group.setTimingFunction(CAMediaTimingFunction.create(CAMediaTimingFunctionName.EaseIn));
+        group.setTimingFunction(new CAMediaTimingFunction(CAMediaTimingFunctionName.EaseIn));
 
         group.setAnimations(new NSArray<CAAnimation>(bounceAnimation, transformAnimation));
 

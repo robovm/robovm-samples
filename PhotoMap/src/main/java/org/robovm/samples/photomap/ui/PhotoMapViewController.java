@@ -139,7 +139,7 @@ public class PhotoMapViewController extends UIViewController {
 
                     annotationView.setCanShowCallout(true);
 
-                    UIButton disclosureButton = UIButton.create(UIButtonType.DetailDisclosure);
+                    UIButton disclosureButton = new UIButton(UIButtonType.DetailDisclosure);
                     annotationView.setRightCalloutAccessoryView(disclosureButton);
 
                     return annotationView;
@@ -276,8 +276,8 @@ public class PhotoMapViewController extends UIViewController {
         Comparator<MKAnnotation> comparator = new Comparator<MKAnnotation>() {
             @Override
             public int compare(MKAnnotation lhs, MKAnnotation rhs) {
-                MKMapPoint mapPoint1 = MKMapPoint.create(lhs.getCoordinate());
-                MKMapPoint mapPoint2 = MKMapPoint.create(rhs.getCoordinate());
+                MKMapPoint mapPoint1 = new MKMapPoint(lhs.getCoordinate());
+                MKMapPoint mapPoint2 = new MKMapPoint(rhs.getCoordinate());
 
                 double distance1 = MKMapPoint.getMetersBetween(mapPoint1, centerMapPoint);
                 double distance2 = MKMapPoint.getMetersBetween(mapPoint2, centerMapPoint);
@@ -325,7 +325,7 @@ public class PhotoMapViewController extends UIViewController {
         CLLocationCoordinate2D rightCoordinate = mapView.convertPointToCoordinateFromView(new CGPoint(bucketSize, 0),
                 getView());
 
-        double gridSize = MKMapPoint.create(rightCoordinate).getX() - MKMapPoint.create(leftCoordinate).getX();
+        double gridSize = new MKMapPoint(rightCoordinate).getX() - new MKMapPoint(leftCoordinate).getX();
         MKMapRect gridMapRect = new MKMapRect(0, 0, gridSize, gridSize);
 
         // condense annotations, with a padding of two squares, around the

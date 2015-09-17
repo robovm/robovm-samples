@@ -40,7 +40,7 @@ public class FourViewController extends UIViewController {
         // we could do it in Interface Builder, but this is just to illustrate a
         // point about using awakeFromNib vs. viewDidLoad.
 
-        UITabBarItem customTab = new UITabBarItem("Four", UIImage.create("tab4.png"), 0);
+        UITabBarItem customTab = new UITabBarItem("Four", UIImage.getImage("tab4.png"), 0);
         setTabBarItem(customTab);
     }
 

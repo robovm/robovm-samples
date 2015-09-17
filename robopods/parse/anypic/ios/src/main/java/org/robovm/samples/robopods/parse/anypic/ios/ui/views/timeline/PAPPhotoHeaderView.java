@@ -87,7 +87,7 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
         containerView.addSubview(avatarImageView);
 
         if (buttons.contains(PAPPhotoHeaderButton.Comment)) {
-            commentButton = UIButton.create(UIButtonType.Custom);
+            commentButton = new UIButton(UIButtonType.Custom);
             containerView.addSubview(commentButton);
             commentButton.setFrame(new CGRect(282, 10, 29, 29));
             commentButton.setBackgroundColor(UIColor.clear());
@@ -98,12 +98,12 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
             commentButton.getTitleLabel().setFont(UIFont.getSystemFont(12));
             commentButton.getTitleLabel().setMinimumScaleFactor(0.8);
             commentButton.getTitleLabel().setAdjustsFontSizeToFitWidth(true);
-            commentButton.setBackgroundImage(UIImage.create("IconComment"), UIControlState.Normal);
+            commentButton.setBackgroundImage(UIImage.getImage("IconComment"), UIControlState.Normal);
             commentButton.setSelected(false);
         }
 
         if (buttons.contains(PAPPhotoHeaderButton.Like)) {
-            likeButton = UIButton.create(UIButtonType.Custom);
+            likeButton = new UIButton(UIButtonType.Custom);
             containerView.addSubview(likeButton);
             likeButton.setFrame(new CGRect(246, 9, 29, 29));
             likeButton.setBackgroundColor(UIColor.clear());
@@ -116,15 +116,15 @@ public class PAPPhotoHeaderView extends PFTableViewCell {
             likeButton.getTitleLabel().setAdjustsFontSizeToFitWidth(true);
             likeButton.setAdjustsImageWhenHighlighted(false);
             likeButton.setAdjustsImageWhenDisabled(false);
-            likeButton.setBackgroundImage(UIImage.create("ButtonLike"), UIControlState.Normal);
-            likeButton.setBackgroundImage(UIImage.create("ButtonLikeSelected"), UIControlState.Normal);
+            likeButton.setBackgroundImage(UIImage.getImage("ButtonLike"), UIControlState.Normal);
+            likeButton.setBackgroundImage(UIImage.getImage("ButtonLikeSelected"), UIControlState.Normal);
             likeButton.setSelected(false);
         }
 
         if (buttons.contains(PAPPhotoHeaderButton.User)) {
             // This is the user's display name, on a button so that we can tap
             // on it
-            userButton = UIButton.create(UIButtonType.Custom);
+            userButton = new UIButton(UIButtonType.Custom);
             containerView.addSubview(userButton);
             userButton.setBackgroundColor(UIColor.clear());
             userButton.getTitleLabel().setFont(UIFont.getBoldSystemFont(15));

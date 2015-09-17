@@ -41,7 +41,7 @@ public class ElementsSortedByStateDataSource extends ElementsDataSource {
 
     @Override
     public UIImage getTabBarImage() {
-        return UIImage.create("state_gray.png");
+        return UIImage.getImage("state_gray.png");
     }
 
     @Override
@@ -58,12 +58,12 @@ public class ElementsSortedByStateDataSource extends ElementsDataSource {
         // the row the index into the array of data for a particular state
 
         // get the state
-        String elementState = PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates()[(int) indexPath
+        String elementState = PeriodicElements.getSharedPeriodicElements().getElementPhysicalStates()[indexPath
                 .getSection()];
 
         // return the element in the state array
         return PeriodicElements.getSharedPeriodicElements().getElementsWithPhysicalState(elementState)
-                .get((int) indexPath.getRow());
+                .get(indexPath.getRow());
     }
 
     @Override

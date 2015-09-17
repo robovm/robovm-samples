@@ -37,8 +37,8 @@ import org.robovm.apple.uikit.UIViewController;
 public class FourViewController extends UIViewController {
     private final UILabel titleLabel;
 
-    public FourViewController () {
-        setTabBarItem(new UITabBarItem("Four", UIImage.create("tab4"), 0));
+    public FourViewController() {
+        setTabBarItem(new UITabBarItem("Four", UIImage.getImage("tab4"), 0));
 
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromRGBA(0.32, 1, 0.3, 1));
@@ -54,18 +54,20 @@ public class FourViewController extends UIViewController {
         views.put("parent", view);
         views.put("title", titleLabel);
 
-        view.addConstraints(NSLayoutConstraint.create("H:[parent]-(<=1)-[title]", NSLayoutFormatOptions.AlignAllCenterY, null,
-            views));
-        view.addConstraints(NSLayoutConstraint.create("V:[parent]-(<=1)-[title]", NSLayoutFormatOptions.AlignAllCenterX, null,
-            views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("H:[parent]-(<=1)-[title]",
+                NSLayoutFormatOptions.AlignAllCenterY, null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("V:[parent]-(<=1)-[title]",
+                NSLayoutFormatOptions.AlignAllCenterX, null, views));
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
-        // if we were navigated to through the More screen table, then we have a navigation bar which
-        // also means we have a title. So hide the title label in this case, otherwise, we need it
+        // if we were navigated to through the More screen table, then we have a
+        // navigation bar which
+        // also means we have a title. So hide the title label in this case,
+        // otherwise, we need it
         if (getParentViewController() instanceof UINavigationController) {
             titleLabel.setHidden(true);
         } else {

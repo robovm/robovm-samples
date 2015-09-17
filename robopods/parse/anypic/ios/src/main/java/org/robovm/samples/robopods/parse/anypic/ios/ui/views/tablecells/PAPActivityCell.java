@@ -65,7 +65,7 @@ public class PAPActivityCell extends PAPBaseTextCell {
         activityImageView.setOpaque(true);
         mainView.addSubview(activityImageView);
 
-        activityImageButton = UIButton.create(UIButtonType.Custom);
+        activityImageButton = new UIButton(UIButtonType.Custom);
         activityImageButton.setBackgroundColor(UIColor.clear());
         activityImageButton.addOnTouchUpInsideListener(didTapActivityButton);
         mainView.addSubview(activityImageButton);

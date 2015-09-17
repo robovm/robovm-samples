@@ -52,7 +52,7 @@ public class APAGoblin extends APAEnemyCharacter {
     private APACave cave;
 
     public APAGoblin(CGPoint position) {
-        super(SKTextureAtlas.create("Goblin/Goblin_Idle").getTexture("goblin_idle_0001.png"), position);
+        super(new SKTextureAtlas("Goblin/Goblin_Idle").getTexture("goblin_idle_0001.png"), position);
 
         movementSpeed = MOVEMENT_SPEED * Math.random(); // set a random movement
                                                         // speed
@@ -160,7 +160,7 @@ public class APAGoblin extends APAEnemyCharacter {
     public static void loadSharedAssets() {
         // Load only once
         if (sharedDamageEmitter == null) {
-            SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
+            SKTextureAtlas atlas = new SKTextureAtlas("Environment");
 
             sharedIdleAnimationFrames = APAUtils
                     .loadFramesFromAtlas("Goblin/Goblin_Idle", "goblin_idle_", DEFAULT_NUMBER_OF_IDLE_FRAMES);
@@ -173,7 +173,7 @@ public class APAGoblin extends APAEnemyCharacter {
             sharedDeathAnimationFrames = APAUtils.loadFramesFromAtlas("Goblin/Goblin_Death", "goblin_death_",
                     DEATH_FRAMES);
             sharedDamageEmitter = APAUtils.getEmitterNodeByName("Damage");
-            sharedDeathSplort = SKSpriteNode.create(atlas.getTexture("minionSplort.png"));
+            sharedDeathSplort = new SKSpriteNode(atlas.getTexture("minionSplort.png"));
             sharedDamageAction = SKAction.sequence(new NSArray<SKAction>(SKAction.colorize(UIColor.white(), 1.0, 0.0),
                     SKAction
                             .wait(0.75), SKAction.colorize(0.0, 0.1)));

@@ -192,10 +192,10 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
             public void run() {
                 // check if there are changes to the album we're interested on
                 // (to its metadata, not to its collection of assets)
-                PHObjectChangeDetails changeDetails = changeInstance.getChangeDetailsForObject(asset);
+                PHObjectChangeDetails<PHAsset> changeDetails = changeInstance.getChangeDetailsForObject(asset);
                 if (changeDetails != null) {
                     // it changed, we need to fetch a new one
-                    asset = (PHAsset) changeDetails.getObjectAfterChanges();
+                    asset = changeDetails.getObjectAfterChanges();
                     if (changeDetails.assetContentChanged()) {
                         updateImage();
 
@@ -249,7 +249,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                         PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
                             @Override
                             public void run() {
-                                PHAssetChangeRequest request = PHAssetChangeRequest.create(asset);
+                                PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
                                 request.setContentEditingOutput(contentEditingOutput);
                             }
                         }, new VoidBlock2<Boolean, NSError>() {
@@ -266,21 +266,21 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
     @IBAction
     private void handleEditButtonItem(NSObject sender) {
-        UIAlertController alertController = UIAlertController.create(null, null, UIAlertControllerStyle.ActionSheet);
-        alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Cancel"),
+        UIAlertController alertController = new UIAlertController(null, null, UIAlertControllerStyle.ActionSheet);
+        alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Cancel"),
                 UIAlertActionStyle.Cancel, null));
 
         if (asset.canPerformEditOperation(PHAssetEditOperation.Properties)) {
             String favoriteActionTitle = !asset.isFavorite() ? NSString.getLocalizedString("Favorite") : NSString
                     .getLocalizedString("Unfavorite");
-            alertController.addAction(UIAlertAction.create(favoriteActionTitle, UIAlertActionStyle.Default,
+            alertController.addAction(new UIAlertAction(favoriteActionTitle, UIAlertActionStyle.Default,
                     new VoidBlock1<UIAlertAction>() {
                         @Override
                         public void invoke(UIAlertAction a) {
                             PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
                                 @Override
                                 public void run() {
-                                    PHAssetChangeRequest request = PHAssetChangeRequest.create(asset);
+                                    PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
                                     request.setFavorite(!asset.isFavorite());
                                 }
                             }, new VoidBlock2<Boolean, NSError>() {
@@ -296,7 +296,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
         }
         if (asset.canPerformEditOperation(PHAssetEditOperation.Content)) {
             if (asset.getMediaType() == PHAssetMediaType.Image) {
-                alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Sepia"),
+                alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Sepia"),
                         UIAlertActionStyle.Default,
                         new VoidBlock1<UIAlertAction>() {
                             @Override
@@ -304,7 +304,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                                 applyFilter("CISepiaTone");
                             }
                         }));
-                alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Chrome"),
+                alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Chrome"),
                         UIAlertActionStyle.Default,
                         new VoidBlock1<UIAlertAction>() {
                             @Override
@@ -313,7 +313,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                             }
                         }));
             }
-            alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Revert"),
+            alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Revert"),
                     UIAlertActionStyle.Default,
                     new VoidBlock1<UIAlertAction>() {
                         @Override
@@ -321,7 +321,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                             PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
                                 @Override
                                 public void run() {
-                                    PHAssetChangeRequest request = PHAssetChangeRequest.create(asset);
+                                    PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
                                     request.revertAssetContentToOriginal();
                                 }
                             }, new VoidBlock2<Boolean, NSError>() {
@@ -365,7 +365,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
             PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
                 @Override
                 public void run() {
-                    PHAssetCollectionChangeRequest changeRequest = PHAssetCollectionChangeRequest.create(assetCollection);
+                    PHAssetCollectionChangeRequest changeRequest = new PHAssetCollectionChangeRequest(assetCollection);
                     changeRequest.removeAssets(new NSArray<PHAsset>(asset));
                 }
             }, completionHandler);
@@ -395,7 +395,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                                         AVPlayerItem playerItem = new AVPlayerItem(avAsset);
                                         playerItem.setAudioMix(audioMix);
                                         AVPlayer player = new AVPlayer(playerItem);
-                                        AVPlayerLayer playerLayer = AVPlayerLayer.create(player);
+                                        AVPlayerLayer playerLayer = new AVPlayerLayer(player);
                                         playerLayer.setVideoGravity(AVLayerVideoGravity.ResizeAspect);
 
                                         CALayer layer = getView().getLayer();

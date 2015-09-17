@@ -37,51 +37,51 @@ public class PlacemarkViewController extends UITableViewController {
 
         // Get the thoroughfare table cell and set the detail text to show the
         // thoroughfare.
-        UITableViewCell cell = getTableView().getCellForRow(NSIndexPath.createWithRow(0, 0));
+        UITableViewCell cell = getTableView().getCellForRow(NSIndexPath.row(0, 0));
         cell.getDetailTextLabel().setText(placemark.getThoroughfare());
 
         // Get the sub-thoroughfare table cell and set the detail text to show
         // the sub-thoroughfare.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(1, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(1, 0));
         cell.getDetailTextLabel().setText(placemark.getSubThoroughfare());
 
         // Get the locality table cell and set the detail text to show the
         // locality.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(2, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(2, 0));
         cell.getDetailTextLabel().setText(placemark.getLocality());
 
         // Get the sub-locality table cell and set the detail text to show the
         // sub-locality.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(3, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(3, 0));
         cell.getDetailTextLabel().setText(placemark.getSubLocality());
 
         // Get the administrative area table cell and set the detail text to
         // show the administrative area.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(4, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(4, 0));
         cell.getDetailTextLabel().setText(placemark.getAdministrativeArea());
 
         // Get the sub-administrative area table cell and set the detail text to
         // show the sub-administrative area.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(5, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(5, 0));
         cell.getDetailTextLabel().setText(placemark.getSubAdministrativeArea());
 
         // Get the postal code table cell and set the detail text to show the
         // postal code.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(6, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(6, 0));
         cell.getDetailTextLabel().setText(placemark.getPostalCode());
 
         // Get the country table cell and set the detail text to show the
         // country.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(7, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(7, 0));
         cell.getDetailTextLabel().setText(placemark.getCountry());
 
         // Get the ISO country code table cell and set the detail text to show
         // the ISO country code.
-        cell = getTableView().getCellForRow(NSIndexPath.createWithRow(8, 0));
+        cell = getTableView().getCellForRow(NSIndexPath.row(8, 0));
         cell.getDetailTextLabel().setText(placemark.getISOcountryCode());
 
         // Tell the table to reload section zero of the table.
-        getTableView().reloadSections(NSIndexSet.create(0), UITableViewRowAnimation.None);
+        getTableView().reloadSections(new NSIndexSet(0), UITableViewRowAnimation.None);
     }
 
     public CLPlacemark getPlacemark() {

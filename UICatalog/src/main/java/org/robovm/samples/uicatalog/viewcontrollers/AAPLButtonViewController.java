@@ -77,7 +77,7 @@ public class AAPLButtonViewController extends UITableViewController implements U
 
         imageButton.setTintColor(Colors.PURPLE);
 
-        UIImage imageButtonNormalImage = UIImage.create("x_icon");
+        UIImage imageButtonNormalImage = UIImage.getImage("x_icon");
         imageButton.setImage(imageButtonNormalImage, UIControlState.Normal);
 
         // Add an accessibility label to the image.

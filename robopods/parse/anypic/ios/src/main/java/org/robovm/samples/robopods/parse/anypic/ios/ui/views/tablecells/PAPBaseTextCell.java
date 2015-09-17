@@ -105,7 +105,7 @@ public class PAPBaseTextCell extends PFTableViewCell {
         avatarImageView.getLayer().setMasksToBounds(true);
         mainView.addSubview(avatarImageView);
 
-        nameButton = UIButton.create(UIButtonType.Custom);
+        nameButton = new UIButton(UIButtonType.Custom);
         nameButton.setBackgroundColor(UIColor.clear());
 
         if (reuseIdentifier.equals("ActivityCell")) {
@@ -141,13 +141,13 @@ public class PAPBaseTextCell extends PFTableViewCell {
         timeLabel.setBackgroundColor(UIColor.clear());
         mainView.addSubview(timeLabel);
 
-        avatarImageButton = UIButton.create(UIButtonType.Custom);
+        avatarImageButton = new UIButton(UIButtonType.Custom);
         avatarImageButton.setBackgroundColor(UIColor.clear());
         avatarImageButton.addOnTouchUpInsideListener(didTapUserButton);
 
         mainView.addSubview(avatarImageButton);
 
-        separatorImage = new UIImageView(UIImage.create("SeparatorComments").createResizable(
+        separatorImage = new UIImageView(UIImage.getImage("SeparatorComments").newResizableImage(
                 new UIEdgeInsets(0, 1, 0, 1)));
 
         getContentView().addSubview(mainView);

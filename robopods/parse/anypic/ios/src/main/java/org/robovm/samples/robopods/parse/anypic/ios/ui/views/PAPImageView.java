@@ -37,7 +37,7 @@ public class PAPImageView extends UIImageView {
             @Override
             public void done(NSData data, NSError error) {
                 if (error == null) {
-                    UIImage image = UIImage.create(data);
+                    UIImage image = new UIImage(data);
                     if (requestURL.equals(url)) {
                         setImage(image);
                         setNeedsDisplay();

@@ -37,7 +37,7 @@ public class TwoViewController extends UITableViewController {
     private final List<String> dataList;
     private LandscapeViewController landscapeViewController;
 
-    public TwoViewController () {
+    public TwoViewController() {
         dataList = Arrays.asList("Cherry Lake", "Lake Don Pedro");
 
         landscapeViewController = new LandscapeViewController();
@@ -47,12 +47,12 @@ public class TwoViewController extends UITableViewController {
         tableView.setBackgroundColor(UIColor.white());
         tableView.setDataSource(new UITableViewDataSourceAdapter() {
             @Override
-            public long getNumberOfRowsInSection (UITableView tableView, long section) {
+            public long getNumberOfRowsInSection(UITableView tableView, long section) {
                 return dataList.size();
             }
 
             @Override
-            public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+            public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
                 final String cellID = "cellIDTwo";
 
                 UITableViewCell cell = tableView.dequeueReusableCell(cellID);
@@ -60,21 +60,21 @@ public class TwoViewController extends UITableViewController {
                     cell = new UITableViewCell(UITableViewCellStyle.Default, cellID);
                     cell.setAccessoryType(UITableViewCellAccessoryType.DisclosureIndicator);
                 }
-                cell.getTextLabel().setText(dataList.get((int)indexPath.getRow()));
+                cell.getTextLabel().setText(dataList.get(indexPath.getRow()));
 
                 return cell;
             }
         });
         tableView.setDelegate(new UITableViewDelegateAdapter() {
             @Override
-            public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
+            public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
                 UITableViewCell cell = tableView.getCellForRow(indexPath);
                 UIImage image = null;
                 String text = cell.getTextLabel().getText();
                 if (text.equals("Cherry Lake")) {
-                    image = UIImage.create("cherrylake");
+                    image = UIImage.getImage("cherrylake");
                 } else if (text.equals("Lake Don Pedro")) {
-                    image = UIImage.create("lakedonpedro");
+                    image = UIImage.getImage("lakedonpedro");
                 }
                 landscapeViewController.setImage(image);
                 presentViewController(landscapeViewController, true, null);
@@ -84,7 +84,7 @@ public class TwoViewController extends UITableViewController {
     }
 
     @Override
-    public void viewDidLoad () {
+    public void viewDidLoad() {
         super.viewDidLoad();
 
         getNavigationItem().setTitle("Two");

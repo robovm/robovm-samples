@@ -106,7 +106,7 @@ public class PAPActivityFeedViewController extends PFQueryTableViewController<PA
         texturedBackgroundView.setBackgroundColor(UIColor.black());
         getTableView().setBackgroundView(texturedBackgroundView);
 
-        getNavigationItem().setTitleView(new UIImageView(UIImage.create("LogoNavigationBar")));
+        getNavigationItem().setTitleView(new UIImageView(UIImage.getImage("LogoNavigationBar")));
 
         // Add Settings button
         getNavigationItem().setRightBarButtonItem(new PAPSettingsButtonItem(settingsButtonAction));
@@ -121,8 +121,8 @@ public class PAPActivityFeedViewController extends PFQueryTableViewController<PA
 
         blankTimelineView = new UIView(getTableView().getBounds());
 
-        UIButton button = UIButton.create(UIButtonType.Custom);
-        button.setBackgroundImage(UIImage.create("ActivityFeedBlank"), UIControlState.Normal);
+        UIButton button = new UIButton(UIButtonType.Custom);
+        button.setBackgroundImage(UIImage.getImage("ActivityFeedBlank"), UIControlState.Normal);
         button.setFrame(new CGRect(24, 113, 271, 140));
         button.addOnTouchUpInsideListener(inviteFriendsButtonAction);
         blankTimelineView.addSubview(button);

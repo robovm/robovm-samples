@@ -77,7 +77,7 @@ public class AAPLSegmentedControlViewController extends UITableViewController im
 
         int i = 0;
         for (Map.Entry<String, String> entry : imageToAccessibilityLabelMappings.entrySet()) {
-            UIImage image = UIImage.create(entry.getKey());
+            UIImage image = UIImage.getImage(entry.getKey());
             image.setAccessibilityLabel(entry.getValue());
 
             customSegmentsSegmentedControl.setImage(image, i);
@@ -93,20 +93,20 @@ public class AAPLSegmentedControlViewController extends UITableViewController im
         customBackgroundSegmentedControl.setSelectedSegment(2);
 
         // Set the background images for each control state.
-        UIImage normalSegmentBackgroundImage = UIImage.create("stepper_and_segment_background");
+        UIImage normalSegmentBackgroundImage = UIImage.getImage("stepper_and_segment_background");
         customBackgroundSegmentedControl.setBackgroundImage(normalSegmentBackgroundImage, UIControlState.Normal,
                 UIBarMetrics.Default);
 
-        UIImage disabledSegmentBackgroundImage = UIImage.create("stepper_and_segment_background_disabled");
+        UIImage disabledSegmentBackgroundImage = UIImage.getImage("stepper_and_segment_background_disabled");
         customBackgroundSegmentedControl.setBackgroundImage(disabledSegmentBackgroundImage, UIControlState.Disabled,
                 UIBarMetrics.Default);
 
-        UIImage highlightedSegmentBackgroundImage = UIImage.create("stepper_and_segment_background_highlighted");
+        UIImage highlightedSegmentBackgroundImage = UIImage.getImage("stepper_and_segment_background_highlighted");
         customBackgroundSegmentedControl.setBackgroundImage(highlightedSegmentBackgroundImage,
                 UIControlState.Highlighted, UIBarMetrics.Default);
 
         // Set the divider image.
-        UIImage segmentDividerImage = UIImage.create("stepper_and_segment_segment_divider");
+        UIImage segmentDividerImage = UIImage.getImage("stepper_and_segment_segment_divider");
         customBackgroundSegmentedControl.setDividerImage(segmentDividerImage, UIControlState.Normal,
                 UIControlState.Normal, UIBarMetrics.Default);
 

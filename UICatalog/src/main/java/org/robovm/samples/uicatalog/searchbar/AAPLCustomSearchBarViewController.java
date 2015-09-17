@@ -67,13 +67,13 @@ public class AAPLCustomSearchBarViewController extends UIViewController {
 
         searchBar.setTintColor(Colors.PURPLE);
 
-        searchBar.setBackgroundImage(UIImage.create("search_bar_background"));
+        searchBar.setBackgroundImage(UIImage.getImage("search_bar_background"));
 
         // Set the bookmark image for both normal and highlighted states.
-        UIImage bookmarkImage = UIImage.create("bookmark_icon");
+        UIImage bookmarkImage = UIImage.getImage("bookmark_icon");
         searchBar.setImageForSearchBarIcon(bookmarkImage, UISearchBarIcon.Bookmark, UIControlState.Normal);
 
-        UIImage bookmarkHighlightedImage = UIImage.create("bookmark_icon_highlighted");
+        UIImage bookmarkHighlightedImage = UIImage.getImage("bookmark_icon_highlighted");
         searchBar.setImageForSearchBarIcon(bookmarkHighlightedImage, UISearchBarIcon.Bookmark,
                 UIControlState.Highlighted);
     }

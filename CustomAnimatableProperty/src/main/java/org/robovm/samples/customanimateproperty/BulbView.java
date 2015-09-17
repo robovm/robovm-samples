@@ -47,8 +47,11 @@ import org.robovm.apple.uikit.UITouch;
 import org.robovm.apple.uikit.UIView;
 import org.robovm.objc.annotation.Method;
 
-/** View that hosts the custom CALayer subclass. Since the view hosts the layer in this case, it executes the animations when
- * explicit animations are the enabled animation trigger. */
+/**
+ * View that hosts the custom CALayer subclass. Since the view hosts the layer
+ * in this case, it executes the animations when explicit animations are the
+ * enabled animation trigger.
+ */
 public class BulbView extends UIView {
 
     private double red, green, blue;
@@ -58,25 +61,26 @@ public class BulbView extends UIView {
     private UIImage image;
     private UIColor color;
 
-    public BulbView () {
+    public BulbView() {
         super();
         // define a default frame.
-        this.image = UIImage.create("bulb.png");
+        this.image = UIImage.getImage("bulb.png");
         this.setFrame(new CGRect(0, 0, this.image.getSize().getWidth(), this.image.getSize().getHeight()));
         System.err.println("bulbview");
         generalInit();
     }
 
-    public BulbView (CGRect frame) {
+    public BulbView(CGRect frame) {
         super(frame);
         generalInit();
     }
 
     // General bulb initialization.
-    void generalInit () {
+    void generalInit() {
 
-        // Grab the bulb image and log whether or not we succeeded to load the image.
-        this.image = UIImage.create("bulb.png");
+        // Grab the bulb image and log whether or not we succeeded to load the
+        // image.
+        this.image = UIImage.getImage("bulb.png");
 
         // Get our layer to do a small custom configuration.
         CALayer layer = this.getLayer();
@@ -85,12 +89,12 @@ public class BulbView extends UIView {
 
         layer.setDelegate(new CALayerDelegateAdapter() {
             @Override
-            public void drawLayer (CALayer layer, CGContext ctx) {
+            public void drawLayer(CALayer layer, CGContext ctx) {
                 System.err.println("delegate called!");
                 // super.drawLayer(layer, ctx);
                 // Get the current state of the bulb's "brightness"
                 // Core Animation is animating this value on our behalf.
-                double brightness = ((BulbLayer)layer).getBrightness();
+                double brightness = ((BulbLayer) layer).getBrightness();
 
                 // Calculate the bulbs current color (via RGB components) based
                 // on
@@ -110,7 +114,7 @@ public class BulbView extends UIView {
                 UIColor color = new UIColor(curRed / 255.0, curGreen / 255.0, curBlue / 255.0, 1.0);
                 color.setFillAndStroke(); // @TODO check this
 
-                UIBezierPath path = UIBezierPath.createFromRect(currentContext.getClipBoundingBox());
+                UIBezierPath path = UIBezierPath.newRect(currentContext.getClipBoundingBox());
                 path.fill();
 
                 // Draw the bulb image into the context.
@@ -118,7 +122,7 @@ public class BulbView extends UIView {
                 UIImage image = UIGraphics.getImageFromCurrentImageContext();
 
                 UIGraphics.endImageContext();
-                double[] maskingColors = new double[] {248.0, 255.0, 248.0, 255.0, 248.0, 255.0};
+                double[] maskingColors = new double[] { 248.0, 255.0, 248.0, 255.0, 248.0, 255.0 };
                 CGImage finalImage = CGImage.createWithMaskingColors(image.getCGImage(), maskingColors);
 
                 CGRect contextRect = currentContext.getClipBoundingBox();
@@ -128,15 +132,17 @@ public class BulbView extends UIView {
 
         });
 
-        // By setting opaque to NO it defines our backing store to include an alpha channel.
+        // By setting opaque to NO it defines our backing store to include an
+        // alpha channel.
         layer.setOpaque(false);
         // The default bulb color is red.
         this.setColor(UIColor.red());
         System.err.println("General Init");
     }
 
-    // When a bulb color is set we define the color components used during our custom animation
-    public void setColor (UIColor color) {
+    // When a bulb color is set we define the color components used during our
+    // custom animation
+    public void setColor(UIColor color) {
         this.color = color;
         CGColor cgColor = this.color.getCGColor();
         double[] colors = cgColor.getComponentsD();
@@ -146,19 +152,22 @@ public class BulbView extends UIView {
     }
 
     @Method(selector = "layerClass")
-    public static Class<? extends CALayer> getLayerClass () {
+    public static Class<? extends CALayer> getLayerClass() {
         System.err.println("gets layer class");
         return BulbLayer.class;
     }
 
-    /** setOn
+    /**
+     * setOn
+     * 
      * @param on
-     * @param animated */
-    private void setOn (boolean on, boolean animated) {
+     * @param animated
+     */
+    private void setOn(boolean on, boolean animated) {
         System.err.println("on is set maybe");
         if (!animated) {
             // if (this.getLayer() instanceof BulbLayer) {
-            ((BulbLayer)this.getLayer()).setBrightness((on == true) ? 255 : 0);
+            ((BulbLayer) this.getLayer()).setBrightness((on == true) ? 255 : 0);
             // }
             return;
         }
@@ -187,7 +196,7 @@ public class BulbView extends UIView {
         }
 
         // if (this.getLayer() instanceof BulbLayer) {
-        ((BulbLayer)this.getLayer()).setBrightness((on == true) ? 255 : 0);
+        ((BulbLayer) this.getLayer()).setBrightness((on == true) ? 255 : 0);
         // }
 
         if (Constants.ANIMATION_TRIGGER_EXPLICIT) {
@@ -196,18 +205,20 @@ public class BulbView extends UIView {
 
     }
 
-    private void animateFrom (double from, double to) {
+    private void animateFrom(double from, double to) {
 
         CAAnimation theAnimation = null;
         if (Constants.ANIMATION_TYPE_KEYFRAME) {
 
             // Create a basic interpolation for "briteness" animation
-            theAnimation = CAKeyframeAnimation.create();
+            theAnimation = new CAKeyframeAnimation();
             theAnimation.setDuration(1.0);
 
-            // Hint: the previous value of the property is stored in the presentationLayer
-            // Since for implicit animations, the model property is already set to the new value.
-            ((CAKeyframeAnimation)theAnimation).setCalculationMode(CAAnimationCalculationMode.Discrete);
+            // Hint: the previous value of the property is stored in the
+            // presentationLayer
+            // Since for implicit animations, the model property is already set
+            // to the new value.
+            ((CAKeyframeAnimation) theAnimation).setCalculationMode(CAAnimationCalculationMode.Discrete);
             NSMutableArray<NSObject> animationValues = new NSMutableArray<>();
             animationValues.add(NSNumber.valueOf(0.0));
             animationValues.add(NSNumber.valueOf(255.0));
@@ -228,19 +239,19 @@ public class BulbView extends UIView {
 
         } else {
 
-            theAnimation = CABasicAnimation.create();
+            theAnimation = new CABasicAnimation();
             theAnimation.setDuration(1.0);
-            theAnimation.setTimingFunction(CAMediaTimingFunction.create(CAMediaTimingFunctionName.EaseOut));
+            theAnimation.setTimingFunction(new CAMediaTimingFunction(CAMediaTimingFunctionName.EaseOut));
 
-            ((CABasicAnimation)theAnimation).setFromValue(NSNumber.valueOf(from));
-            ((CABasicAnimation)theAnimation).setToValue(NSNumber.valueOf(to));
+            ((CABasicAnimation) theAnimation).setFromValue(NSNumber.valueOf(from));
+            ((CABasicAnimation) theAnimation).setToValue(NSNumber.valueOf(to));
 
         }
         this.getLayer().addAnimation(theAnimation, "brightness");
     }
 
     @Override
-    public void touchesBegan (NSSet<UITouch> touches, UIEvent event) {
+    public void touchesBegan(NSSet<UITouch> touches, UIEvent event) {
         System.err.println("touch");
         this.setOn(this.on, true);
     }

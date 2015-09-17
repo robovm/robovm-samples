@@ -43,7 +43,8 @@ import org.robovm.apple.uikit.UITableViewStyle;
 import org.robovm.objc.block.VoidBlock2;
 import org.robovm.samples.iap.Product;
 
-public class IAPStoreProductViewController extends UITableViewController implements SKStoreProductViewControllerDelegate {
+public class IAPStoreProductViewController extends UITableViewController implements
+        SKStoreProductViewControllerDelegate {
     // Height for the Audio Books row
     private static final double UIAudioBooksRowHeight = 81.0;
 
@@ -51,7 +52,7 @@ public class IAPStoreProductViewController extends UITableViewController impleme
     private final SKStoreProductViewController storeProductViewController;
 
     @SuppressWarnings("unchecked")
-    public IAPStoreProductViewController () {
+    public IAPStoreProductViewController() {
         getNavigationItem().setTitle("Store");
 
         // Create a store product view controller
@@ -60,76 +61,85 @@ public class IAPStoreProductViewController extends UITableViewController impleme
 
         // Fetch all the products
         String plistPath = NSBundle.getMainBundle().findResourcePath("Products", "plist");
-        NSArray<NSDictionary<NSString, NSObject>> temp = (NSArray<NSDictionary<NSString, NSObject>>)NSArray.read(new File(
-            plistPath));
+        NSArray<NSDictionary<NSString, NSObject>> temp = (NSArray<NSDictionary<NSString, NSObject>>) NSArray
+                .read(new File(
+                        plistPath));
 
         for (NSDictionary<NSString, NSObject> item : temp) {
-            // Create an Product object to store its category, title, and identifier properties
+            // Create an Product object to store its category, title, and
+            // identifier properties
             Product product = new Product(item);
 
             // Keep track of all the products
             myProducts.add(product);
         }
 
-        UITableView tableView = new UITableView(UIScreen.getMainScreen().getApplicationFrame(), UITableViewStyle.Grouped);
+        UITableView tableView = new UITableView(UIScreen.getMainScreen().getBounds(), UITableViewStyle.Grouped);
         tableView.registerReusableCellClass(UITableViewCell.class, "productID");
         setTableView(tableView);
     }
 
     @Override
-    public long getNumberOfSections (UITableView tableView) {
+    public long getNumberOfSections(UITableView tableView) {
         // Return the number of sections
         return myProducts.size();
     }
 
     @Override
-    public String getTitleForHeader (UITableView tableView, long section) {
-        Product item = myProducts.get((int)section);
+    public String getTitleForHeader(UITableView tableView, long section) {
+        Product item = myProducts.get((int) section);
         // Return the title of the section header
         return item.getCategory();
     }
 
     @Override
-    public double getHeightForRow (UITableView tableView, NSIndexPath indexPath) {
-        Product item = myProducts.get((int)indexPath.getSection());
+    public double getHeightForRow(UITableView tableView, NSIndexPath indexPath) {
+        Product item = myProducts.get(indexPath.getSection());
         // Change the height if "AUDIO BOOKS" is the specified row
         return item.getCategory().equals("AUDIO BOOKS") ? UIAudioBooksRowHeight : tableView.getRowHeight();
     }
 
     @Override
-    public long getNumberOfRowsInSection (UITableView tableView, long section) {
+    public long getNumberOfRowsInSection(UITableView tableView, long section) {
         return 1;
     }
 
     @Override
-    public UITableViewCell getCellForRow (UITableView tableView, NSIndexPath indexPath) {
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = tableView.dequeueReusableCell("productID", indexPath);
         if (cell == null) {
             cell = new UITableViewCell(UITableViewCellStyle.Default, "productID");
             cell.setSelectionStyle(UITableViewCellSelectionStyle.Blue);
         }
 
-        Product item = myProducts.get((int)indexPath.getSection());
+        Product item = myProducts.get(indexPath.getSection());
         cell.getTextLabel().setText(item.getTitle());
 
         return cell;
     }
 
-    /** Loads and launches a store product view controller with a selected product
+    /**
+     * Loads and launches a store product view controller with a selected
+     * product
+     * 
      * @param tableView
-     * @param indexPath */
+     * @param indexPath
+     */
     @Override
-    public void didSelectRow (UITableView tableView, NSIndexPath indexPath) {
-        Product item = myProducts.get((int)indexPath.getSection());
+    public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
+        Product item = myProducts.get(indexPath.getSection());
 
-        // Create a product dictionary using the selected product's iTunes identifer
-        SKStoreProductParameters parameters = new SKStoreProductParameters().setITunesItemIdentifier(item.getProductID());
+        // Create a product dictionary using the selected product's iTunes
+        // identifer
+        SKStoreProductParameters parameters = new SKStoreProductParameters().setITunesItemIdentifier(item
+                .getProductID());
 
-        // Attempt to load the selected product from the App Store, display the store product view controller if success
+        // Attempt to load the selected product from the App Store, display the
+        // store product view controller if success
         // and print an error message, otherwise.
         storeProductViewController.loadProduct(parameters, new VoidBlock2<Boolean, NSError>() {
             @Override
-            public void invoke (Boolean result, NSError error) {
+            public void invoke(Boolean result, NSError error) {
                 if (result) {
                     presentViewController(storeProductViewController, true, null);
                 } else {
@@ -139,10 +149,13 @@ public class IAPStoreProductViewController extends UITableViewController impleme
         });
     }
 
-    /** Used to dismiss the store view controller
-     * @param viewController */
+    /**
+     * Used to dismiss the store view controller
+     * 
+     * @param viewController
+     */
     @Override
-    public void didFinish (SKStoreProductViewController viewController) {
+    public void didFinish(SKStoreProductViewController viewController) {
         viewController.getPresentingViewController().dismissViewController(true, null);
     }
 

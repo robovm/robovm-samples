@@ -26,7 +26,6 @@ import org.robovm.apple.uikit.UIAlertView;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIImageView;
-import org.robovm.apple.uikit.UIInterfaceOrientation;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIStatusBarStyle;
 import org.robovm.apple.uikit.UIViewController;
@@ -53,7 +52,7 @@ public class PAPLoginViewController extends UIViewController implements FBSDKLog
         super.viewDidLoad();
 
         UIImageView backgroundImageView = new UIImageView(UIScreen.getMainScreen().getApplicationFrame());
-        backgroundImageView.setImage(UIImage.create("BackgroundLogin"));
+        backgroundImageView.setImage(UIImage.getImage("BackgroundLogin"));
         getView().addSubview(backgroundImageView);
 
         // Position of the Facebook button
@@ -70,11 +69,6 @@ public class PAPLoginViewController extends UIViewController implements FBSDKLog
         facebookLoginButton.setDelegate(this);
         facebookLoginButton.setTooltipBehavior(FBSDKLoginButtonTooltipBehavior.Disable);
         getView().addSubview(facebookLoginButton);
-    }
-
-    @Override
-    public boolean shouldAutorotate(UIInterfaceOrientation toInterfaceOrientation) {
-        return toInterfaceOrientation == UIInterfaceOrientation.Portrait;
     }
 
     @Override

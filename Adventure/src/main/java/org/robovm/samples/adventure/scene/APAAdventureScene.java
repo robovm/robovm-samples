@@ -23,7 +23,6 @@ import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.coregraphics.CGVector;
-import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDate;
 import org.robovm.apple.foundation.NSMutableArray;
@@ -37,7 +36,6 @@ import org.robovm.apple.spritekit.SKPhysicsContactDelegate;
 import org.robovm.apple.spritekit.SKPhysicsWorld;
 import org.robovm.apple.spritekit.SKSpriteNode;
 import org.robovm.apple.spritekit.SKTextureAtlas;
-import org.robovm.objc.ObjCRuntime;
 import org.robovm.samples.adventure.sprites.APAArcher;
 import org.robovm.samples.adventure.sprites.APABoss;
 import org.robovm.samples.adventure.sprites.APACave;
@@ -513,19 +511,19 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
 
     @Override
     void loadSceneAssets() {
-        SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
+        SKTextureAtlas atlas = new SKTextureAtlas("Environment");
 
         // Load archived emitters and create copyable sprites.
         sharedProjectileSparkEmitter = APAUtils.getEmitterNodeByName("ProjectileSplat");
         sharedSpawnEmitter = APAUtils.getEmitterNodeByName("Spawn");
 
-        sharedSmallTree = new APATree(new NSArray<SKSpriteNode>(SKSpriteNode.create(atlas
+        sharedSmallTree = new APATree(new NSArray<SKSpriteNode>(new SKSpriteNode(atlas
                 .getTexture("small_tree_base.png")),
-                SKSpriteNode.create(atlas.getTexture("small_tree_middle.png")), SKSpriteNode.create(atlas
+                new SKSpriteNode(atlas.getTexture("small_tree_middle.png")), new SKSpriteNode(atlas
                         .getTexture("small_tree_top.png"))), 25.0);
         sharedBigTree = new APATree(new NSArray<SKSpriteNode>(
-                SKSpriteNode.create(atlas.getTexture("big_tree_base.png")),
-                SKSpriteNode.create(atlas.getTexture("big_tree_middle.png")), SKSpriteNode.create(atlas
+                new SKSpriteNode(atlas.getTexture("big_tree_base.png")),
+                new SKSpriteNode(atlas.getTexture("big_tree_middle.png")), new SKSpriteNode(atlas
                         .getTexture("big_tree_top.png"))), 150.0);
         sharedBigTree.setFadesAlpha(true);
         sharedLeafEmitterA = APAUtils.getEmitterNodeByName("Leaves_01");
@@ -547,14 +545,14 @@ public class APAAdventureScene extends APAMultiplayerLayeredCharacterScene imple
         System.out.println("Loading world tiles");
         NSDate startDate = new NSDate();
 
-        SKTextureAtlas tileAtlas = SKTextureAtlas.create("Tiles");
+        SKTextureAtlas tileAtlas = new SKTextureAtlas("Tiles");
 
         sharedBackgroundTiles = new NSMutableArray<>(1024);
         System.out.println("A");
         for (int y = 0; y < WORLD_TILE_DIVISOR; y++) {
             for (int x = 0; x < WORLD_TILE_DIVISOR; x++) {
                 int tileNumber = (y * WORLD_TILE_DIVISOR) + x;
-                SKSpriteNode tileNode = SKSpriteNode.create(tileAtlas.getTexture(String
+                SKSpriteNode tileNode = new SKSpriteNode(tileAtlas.getTexture(String
                         .format("tile%d.png", tileNumber)));
                 CGPoint position = new CGPoint((x * WORLD_TILE_SIZE) - WORLD_CENTER,
                         (WORLD_SIZE - (y * WORLD_TILE_SIZE))

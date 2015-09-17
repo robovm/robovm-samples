@@ -63,13 +63,13 @@ public class PAPFindFriendsCell extends PFTableViewCell {
         avatarImageView.getLayer().setMasksToBounds(true);
         getContentView().addSubview(avatarImageView);
 
-        avatarImageButton = UIButton.create(UIButtonType.Custom);
+        avatarImageButton = new UIButton(UIButtonType.Custom);
         avatarImageButton.setBackgroundColor(UIColor.clear());
         avatarImageButton.setFrame(new CGRect(10, 14, 40, 40));
         avatarImageButton.addOnTouchUpInsideListener(didTapUserButton);
         getContentView().addSubview(avatarImageButton);
 
-        nameButton = UIButton.create(UIButtonType.Custom);
+        nameButton = new UIButton(UIButtonType.Custom);
         nameButton.setBackgroundColor(UIColor.clear());
         nameButton.getTitleLabel().setFont(UIFont.getBoldSystemFont(16));
         nameButton.getTitleLabel().setLineBreakMode(NSLineBreakMode.TruncatingTail);
@@ -85,12 +85,12 @@ public class PAPFindFriendsCell extends PFTableViewCell {
         photoLabel.setBackgroundColor(UIColor.clear());
         getContentView().addSubview(photoLabel);
 
-        followButton = UIButton.create(UIButtonType.Custom);
+        followButton = new UIButton(UIButtonType.Custom);
         followButton.getTitleLabel().setFont(UIFont.getBoldSystemFont(15));
         followButton.setTitleEdgeInsets(new UIEdgeInsets(0, 10, 0, 0));
-        followButton.setBackgroundImage(UIImage.create("ButtonFollow"), UIControlState.Normal);
-        followButton.setBackgroundImage(UIImage.create("ButtonFollowing"), UIControlState.Selected);
-        followButton.setImage(UIImage.create("IconTick"), UIControlState.Selected);
+        followButton.setBackgroundImage(UIImage.getImage("ButtonFollow"), UIControlState.Normal);
+        followButton.setBackgroundImage(UIImage.getImage("ButtonFollowing"), UIControlState.Selected);
+        followButton.setImage(UIImage.getImage("IconTick"), UIControlState.Selected);
         followButton.setTitle("Follow  ", UIControlState.Normal);
         followButton.setTitle("Following", UIControlState.Selected);
         followButton.setTitleColor(UIColor.fromRGBA(254f / 255f, 149f / 255f, 50f / 255f, 1), UIControlState.Normal);

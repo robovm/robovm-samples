@@ -37,11 +37,11 @@ public class AAPLImageViewController extends UIViewController {
         // UIImageView.
         UIImageView imageView = (UIImageView) getView();
 
-        imageView.setAnimationImages(new NSArray<UIImage>(UIImage.create("image_animal_1"),
-                UIImage.create("image_animal_2"),
-                UIImage.create("image_animal_3"),
-                UIImage.create("image_animal_4"),
-                UIImage.create("image_animal_5")));
+        imageView.setAnimationImages(new NSArray<UIImage>(UIImage.getImage("image_animal_1"),
+                UIImage.getImage("image_animal_2"),
+                UIImage.getImage("image_animal_3"),
+                UIImage.getImage("image_animal_4"),
+                UIImage.getImage("image_animal_5")));
 
         // We want the image to be scaled to the correct aspect ratio within
         // imageView's bounds.

@@ -292,7 +292,7 @@ public class ImageScrollView extends UIScrollView {
     private static UIImage getImage(int index) {
         String imageName = getImageName(index);
         String path = NSBundle.getMainBundle().findResourcePath(String.format("Full Images/%s", imageName), "jpg");
-        return UIImage.create(new File(path));
+        return new UIImage(new File(path));
     }
 
     @SuppressWarnings("unchecked")
@@ -304,7 +304,7 @@ public class ImageScrollView extends UIScrollView {
     }
 
     private static UIImage getPlaceholderImage(String name) {
-        return UIImage.create(String.format("Placeholder Images/%s_Placeholder", name));
+        return UIImage.getImage(String.format("Placeholder Images/%s_Placeholder", name));
     }
 
     public int getPageIndex() {

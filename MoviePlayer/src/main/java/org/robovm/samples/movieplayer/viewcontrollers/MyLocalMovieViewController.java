@@ -41,7 +41,7 @@ public class MyLocalMovieViewController extends MyMovieViewController {
     private final MyImageView imageView;
     private final UIButton playButton;
 
-    public MyLocalMovieViewController () {
+    public MyLocalMovieViewController() {
         super();
 
         UIView view = getView();
@@ -50,28 +50,28 @@ public class MyLocalMovieViewController extends MyMovieViewController {
         imageView = new MyImageView(new CGRect(57, 59, 205, 135));
         imageView.setMovieViewController(this);
         imageView.setUserInteractionEnabled(true);
-        imageView.setImage(UIImage.create("images/preview.jpg"));
+        imageView.setImage(UIImage.getImage("images/preview.jpg"));
         imageView.setContentMode(UIViewContentMode.ScaleAspectFit);
         view.addSubview(imageView);
 
-        playButton = UIButton.create(UIButtonType.RoundedRect);
+        playButton = new UIButton(UIButtonType.RoundedRect);
         playButton.setFrame(new CGRect(106, 201, 108, 44));
         playButton.setBackgroundColor(UIColor.fromWhiteAlpha(0.66, 0.5));
         playButton.setTitle("Play Movie", UIControlState.Normal);
         playButton.getTitleLabel().setFont(UIFont.getSystemFont(18));
         playButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 playLocalMovieFile();
             }
         });
         view.addSubview(playButton);
 
-        setTabBarItem(new UITabBarItem("Local", UIImage.create("images/local.png"), 0));
+        setTabBarItem(new UITabBarItem("Local", UIImage.getImage("images/local.png"), 0));
     }
 
     /** Returns a URL to a local movie in the app bundle. */
-    private NSURL getLocalMovieURL () {
+    private NSURL getLocalMovieURL() {
         NSURL theMovieURL = null;
         NSBundle bundle = NSBundle.getMainBundle();
         if (bundle != null) {
@@ -84,7 +84,7 @@ public class MyLocalMovieViewController extends MyMovieViewController {
     }
 
     /** Play the movie at the specified URL. */
-    public void playLocalMovieFile () {
+    public void playLocalMovieFile() {
         playMovieFile(getLocalMovieURL());
     }
 }

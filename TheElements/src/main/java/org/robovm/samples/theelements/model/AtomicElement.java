@@ -23,7 +23,6 @@ import org.robovm.apple.coregraphics.CGPoint;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSDictionary;
-import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
@@ -48,25 +47,18 @@ public class AtomicElement extends NSObject {
 
     public AtomicElement() {}
 
-    public AtomicElement(NSDictionary<NSString, NSObject> data) { // TODO use
-                                                                  // auto-wrapped
-                                                                  // strings and
-                                                                  // numbers
-        atomicNumber = ((NSNumber) data.get(key("atomicNumber"))).intValue();
-        atomicWeight = ((NSString) data.get(key("atomicWeight"))).toString();
-        discoveryYear = ((NSString) data.get(key("discoveryYear"))).toString();
-        radioactive = Boolean.valueOf(((NSString) data.get(key("radioactive"))).toString());
-        name = ((NSString) data.get(key("name"))).toString();
-        symbol = ((NSString) data.get(key("symbol"))).toString();
-        state = ((NSString) data.get(key("state"))).toString();
-        group = ((NSNumber) data.get(key("group"))).intValue();
-        period = ((NSNumber) data.get(key("period"))).intValue();
-        vertPos = ((NSNumber) data.get(key("vertPos"))).intValue();
-        horizPos = ((NSNumber) data.get(key("horizPos"))).intValue();
-    }
-
-    private static NSString key(String key) {
-        return new NSString(key);
+    public AtomicElement(NSDictionary<NSString, NSObject> data) {
+        atomicNumber = data.getInt("atomicNumber");
+        atomicWeight = data.getString("atomicWeight");
+        discoveryYear = data.getString("discoveryYear");
+        radioactive = Boolean.valueOf(data.getString("radioactive"));
+        name = data.getString("name");
+        symbol = data.getString("symbol");
+        state = data.getString("state");
+        group = data.getInt("group");
+        period = data.getInt("period");
+        vertPos = data.getInt("vertPos");
+        horizPos = data.getInt("horizPos");
     }
 
     /**
@@ -78,15 +70,15 @@ public class AtomicElement extends NSObject {
     }
 
     public UIImage getStateImageForAtomicElementTileView() {
-        return UIImage.create(String.format("%s_37.png", state));
+        return UIImage.getImage(String.format("%s_37.png", state));
     }
 
     public UIImage getStateImageForAtomicElementView() {
-        return UIImage.create(String.format("%s_256.png", state));
+        return UIImage.getImage(String.format("%s_256.png", state));
     }
 
     public UIImage getStateImageForPeriodicTableView() {
-        return UIImage.create(String.format("%s_24.png", state));
+        return UIImage.getImage(String.format("%s_24.png", state));
     }
 
     /**
@@ -98,7 +90,7 @@ public class AtomicElement extends NSObject {
         CGSize itemSize = new CGSize(30, 30);
         UIGraphics.beginImageContext(itemSize);
 
-        UIImage backgroundImage = UIImage.create(String.format("%s_30.png", state));
+        UIImage backgroundImage = UIImage.getImage(String.format("%s_30.png", state));
         CGRect elementSymbolRectangle = new CGRect(0, 0, itemSize.getWidth(), itemSize.getHeight());
         backgroundImage.draw(elementSymbolRectangle);
 

@@ -60,7 +60,7 @@ public class AppPrefs extends UIApplicationDelegateAdapter {
          * Invoke loadDefaults() on the property list file for the root settings
          * page (always named Root.plist).
          */
-        NSDictionary<?, ?> appDefaults = loadDefaults("Root.plist", settingsBundleURL);
+        NSDictionary<NSString, ?> appDefaults = loadDefaults("Root.plist", settingsBundleURL);
 
         /*
          * appDefaults is now populated with the preferences and their default
@@ -81,7 +81,7 @@ public class AppPrefs extends UIApplicationDelegateAdapter {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private NSDictionary<?, ?> loadDefaults(String plistName, NSURL settingsBundleURL) {
+    private NSDictionary<NSString, ?> loadDefaults(String plistName, NSURL settingsBundleURL) {
         /*
          * Each page of settings is represented by a property-list file that
          * follows the Settings Application Schema:

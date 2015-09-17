@@ -67,8 +67,8 @@ public class PAPWelcomeViewController extends UIViewController implements PAPLog
 
     @Override
     public void loadView() {
-        UIImageView backgroundImageView = new UIImageView(UIScreen.getMainScreen().getApplicationFrame());
-        backgroundImageView.setImage(UIImage.create("Default.png"));
+        UIImageView backgroundImageView = new UIImageView(UIScreen.getMainScreen().getBounds());
+        backgroundImageView.setImage(UIImage.getImage("Default.png"));
         setView(backgroundImageView);
     }
 
@@ -241,7 +241,7 @@ public class PAPWelcomeViewController extends UIViewController implements PAPLog
                     "https://graph.facebook.com/%s/picture?type=large&return_ssl_resources=1", facebookId));
             NSURLRequest profilePictureURLRequest = new NSURLRequest(profilePictureURL,
                     NSURLRequestCachePolicy.UseProtocolCachePolicy, 10);
-            NSURLConnection.create(profilePictureURLRequest, profilePictureRequestDelegate).start();
+            new NSURLConnection(profilePictureURLRequest, profilePictureRequestDelegate).start();
 
             if (permissions.contains("user_friends")) {
                 // Fetch FB Friends + me
@@ -280,7 +280,7 @@ public class PAPWelcomeViewController extends UIViewController implements PAPLog
             }
             connection.start();
         } else {
-            NSData profilePictureData = UIImage.create("AvatarPlaceholder").toPNGData();
+            NSData profilePictureData = UIImage.getImage("AvatarPlaceholder").toPNGData();
             PAPUtility.processFacebookProfilePictureData(profilePictureData);
 
             PAPCache.getSharedCache().clear();

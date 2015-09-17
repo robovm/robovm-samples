@@ -50,7 +50,7 @@ public class TwoViewController extends UITableViewController {
         String cellID = "cellIDTwo";
 
         UITableViewCell cell = tableView.dequeueReusableCell(cellID);
-        cell.getTextLabel().setText(dataList.get((int) indexPath.getRow()));
+        cell.getTextLabel().setText(dataList.get(indexPath.getRow()));
 
         return cell;
     }
@@ -63,9 +63,9 @@ public class TwoViewController extends UITableViewController {
             UITableViewCell cell = (UITableViewCell) sender;
             UIImage image = null;
             if (cell.getTextLabel().getText().equals("Cherry Lake")) {
-                image = UIImage.create("cherrylake");
+                image = UIImage.getImage("cherrylake");
             } else if (cell.getTextLabel().getText().equals("Lake Don Pedro")) {
-                image = UIImage.create("lakedonpedro");
+                image = UIImage.getImage("lakedonpedro");
             }
             landscapeViewController.setImage(image);
         }

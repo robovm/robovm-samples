@@ -49,7 +49,7 @@ public class APABoss extends APAEnemyCharacter {
     private static NSArray<SKTexture> sharedDeathAnimationFrames;
 
     public APABoss(CGPoint position) {
-        super(SKTextureAtlas.create("Boss/Boss_Idle").getTexture("boss_idle_0001.png"), position);
+        super(new SKTextureAtlas("Boss/Boss_Idle").getTexture("boss_idle_0001.png"), position);
 
         movementSpeed = MOVEMENT_SPEED * 0.35f;
         animationSpeed = 1.0 / 35.0;

@@ -43,11 +43,11 @@ public class PAPPhotoDetailsFooterView extends UIView {
         mainView.setBackgroundColor(UIColor.white());
         addSubview(mainView);
 
-        UIImageView messageIcon = new UIImageView(UIImage.create("IconAddComment"));
+        UIImageView messageIcon = new UIImageView(UIImage.getImage("IconAddComment"));
         messageIcon.setFrame(new CGRect(20, 15, 22, 22));
         mainView.addSubview(messageIcon);
 
-        UIImageView commentBox = new UIImageView(UIImage.create("TextFieldComment").createResizable(
+        UIImageView commentBox = new UIImageView(UIImage.getImage("TextFieldComment").newResizableImage(
                 new UIEdgeInsets(10, 10, 10, 10)));
         commentBox.setFrame(new CGRect(55, 8, 237, 34));
         mainView.addSubview(commentBox);

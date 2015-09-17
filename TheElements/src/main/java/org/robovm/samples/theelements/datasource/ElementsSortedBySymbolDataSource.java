@@ -41,7 +41,7 @@ public class ElementsSortedBySymbolDataSource extends ElementsDataSource {
 
     @Override
     public UIImage getTabBarImage() {
-        return UIImage.create("symbol_gray.png");
+        return UIImage.getImage("symbol_gray.png");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ElementsSortedBySymbolDataSource extends ElementsDataSource {
     @Override
     public AtomicElement getAtomicElement(NSIndexPath indexPath) {
         // return the atomic element at the index in the sorted by symbol array
-        return PeriodicElements.getSharedPeriodicElements().getElementsSortedBySymbol().get((int) indexPath.getRow());
+        return PeriodicElements.getSharedPeriodicElements().getElementsSortedBySymbol().get(indexPath.getRow());
     }
 
     @Override

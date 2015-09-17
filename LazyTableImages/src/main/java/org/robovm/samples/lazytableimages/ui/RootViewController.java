@@ -141,7 +141,7 @@ public class RootViewController extends UITableViewController {
             // Leave cells empty if there's no data yet
             if (nodeCount > 0) {
                 // Set up the cell representing the app
-                AppRecord appRecord = entries.get((int) indexPath.getRow());
+                AppRecord appRecord = entries.get(indexPath.getRow());
 
                 cell.getTextLabel().setText(appRecord.appName);
                 cell.getDetailTextLabel().setText(appRecord.artist);
@@ -154,7 +154,7 @@ public class RootViewController extends UITableViewController {
                     }
                     // if a download is deferred or in progress, return a
                     // placeholder image
-                    cell.getImageView().setImage(UIImage.create("Placeholder.png"));
+                    cell.getImageView().setImage(UIImage.getImage("Placeholder.png"));
                 } else {
                     cell.getImageView().setImage(appRecord.appIcon);
                 }
@@ -164,7 +164,7 @@ public class RootViewController extends UITableViewController {
     }
 
     private void startIconDownload(AppRecord appRecord, final NSIndexPath indexPath) {
-        IconDownloader iconDownloader = imageDownloadsInProgress.get((int) indexPath.getRow());
+        IconDownloader iconDownloader = imageDownloadsInProgress.get(indexPath.getRow());
         if (iconDownloader == null) {
             iconDownloader = new IconDownloader(appRecord, new VoidBlock1<AppRecord>() {
                 @Override
@@ -175,10 +175,10 @@ public class RootViewController extends UITableViewController {
                     cell.getImageView().setImage(a.appIcon);
                     // Remove the IconDownloader from the in progress list.
                     // This will result in it being deallocated.
-                    imageDownloadsInProgress.remove((int) indexPath.getRow());
+                    imageDownloadsInProgress.remove(indexPath.getRow());
                 }
             });
-            imageDownloadsInProgress.put((int) indexPath.getRow(), iconDownloader);
+            imageDownloadsInProgress.put(indexPath.getRow(), iconDownloader);
             iconDownloader.startDownload();
         }
     }
@@ -191,7 +191,7 @@ public class RootViewController extends UITableViewController {
         if (entries.size() > 0) {
             NSArray<NSIndexPath> visiblePaths = getTableView().getIndexPathsForVisibleRows();
             for (NSIndexPath indexPath : visiblePaths) {
-                AppRecord appRecord = entries.get((int) indexPath.getRow());
+                AppRecord appRecord = entries.get(indexPath.getRow());
 
                 // Avoid the app icon download if the app already has an icon
                 if (appRecord.appIcon == null) {

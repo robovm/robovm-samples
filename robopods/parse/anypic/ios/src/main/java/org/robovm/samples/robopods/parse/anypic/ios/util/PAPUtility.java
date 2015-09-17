@@ -205,11 +205,7 @@ public class PAPUtility {
             return;
         }
 
-        UIImage image = UIImage.create(newProfilePictureData);
-        if (image == null) {
-            Log.e("Image data corrupt!");
-            return;
-        }
+        UIImage image = new UIImage(newProfilePictureData);
 
         UIImage mediumImage = UIImageUtility.createThumbnail(image, 280, 0, 0, CGInterpolationQuality.High);
         UIImage smallRoundedImage = UIImageUtility.createThumbnail(image, 64, 0, 0, CGInterpolationQuality.Low);
@@ -261,7 +257,7 @@ public class PAPUtility {
     }
 
     public static UIImage getDefaultProfilePicture() {
-        return UIImage.create("AvatarPlaceholderBig");
+        return UIImage.getImage("AvatarPlaceholderBig");
     }
 
     public static String getFirstNameOfDisplayName(String displayName) {

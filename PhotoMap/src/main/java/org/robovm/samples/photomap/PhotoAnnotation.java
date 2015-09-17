@@ -49,7 +49,7 @@ public class PhotoAnnotation extends MKAnnotationAdapter {
 
     public UIImage getImage() {
         if (image == null && imagePath != null) {
-            image = UIImage.create(new File(imagePath));
+            image = new UIImage(new File(imagePath));
         }
         return image;
     }

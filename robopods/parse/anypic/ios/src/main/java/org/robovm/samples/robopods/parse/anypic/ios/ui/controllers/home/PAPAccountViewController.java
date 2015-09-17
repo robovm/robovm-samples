@@ -94,7 +94,7 @@ public class PAPAccountViewController extends PAPPhotoTimelineViewController {
             }
         }
 
-        getNavigationItem().setTitleView(new UIImageView(UIImage.create("LogoNavigationBar")));
+        getNavigationItem().setTitleView(new UIImageView(UIImage.getImage("LogoNavigationBar")));
 
         if (getNavigationController().getViewControllers().first() == this) {
             UIBarButtonItem dismissLeftBarButtonItem = new UIBarButtonItem("Back", UIBarButtonItemStyle.Plain,
@@ -187,7 +187,7 @@ public class PAPAccountViewController extends PAPPhotoTimelineViewController {
             });
         }
 
-        UIImageView photoCountIconImageView = new UIImageView(UIImage.create("IconPics"));
+        UIImageView photoCountIconImageView = new UIImageView(UIImage.getImage("IconPics"));
         photoCountIconImageView.setFrame(new CGRect(26, 50, 45, 37));
         headerView.addSubview(photoCountIconImageView);
 
@@ -200,7 +200,7 @@ public class PAPAccountViewController extends PAPPhotoTimelineViewController {
         photoCountLabel.setFont(UIFont.getBoldSystemFont(14));
         headerView.addSubview(photoCountLabel);
 
-        UIImageView followersIconImageView = new UIImageView(UIImage.create("IconFollowers"));
+        UIImageView followersIconImageView = new UIImageView(UIImage.getImage("IconFollowers"));
         followersIconImageView.setFrame(new CGRect(247, 50, 52, 37));
         headerView.addSubview(followersIconImageView);
 

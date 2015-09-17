@@ -72,7 +72,7 @@ public class UIImageUtility {
         // will now have an alpha layer
         offscreenContext.drawImage(new CGRect(0, 0, width, height), i);
         CGImage ia = offscreenContext.toImage();
-        UIImage alphaImage = UIImage.create(ia);
+        UIImage alphaImage = new UIImage(ia);
 
         return alphaImage;
     }
@@ -108,7 +108,7 @@ public class UIImageUtility {
         // image
         CGImage maskImage = newBorderMask(borderSize, newRect.getSize());
         CGImage tbi = CGImage.createWithMask(borderImage, maskImage);
-        UIImage transparentBorderImage = UIImage.create(tbi);
+        UIImage transparentBorderImage = new UIImage(tbi);
 
         return transparentBorderImage;
     }
@@ -154,7 +154,7 @@ public class UIImageUtility {
      */
     public static UIImage crop(UIImage image, CGRect bounds) {
         CGImage i = CGImage.createWithImageInRect(image.getCGImage(), bounds);
-        UIImage croppedImage = UIImage.create(i);
+        UIImage croppedImage = new UIImage(i);
         return croppedImage;
     }
 
@@ -283,7 +283,7 @@ public class UIImageUtility {
 
         // Get the resized image from the context and a UIImage
         CGImage ni = bitmap.toImage();
-        UIImage newImage = UIImage.create(ni);
+        UIImage newImage = new UIImage(ni);
 
         return newImage;
     }
@@ -371,7 +371,7 @@ public class UIImageUtility {
         CGImage clippedImage = context.toImage();
 
         // Create a UIImage from the CGImage
-        UIImage roundedImage = UIImage.create(clippedImage);
+        UIImage roundedImage = new UIImage(clippedImage);
         return roundedImage;
     }
 

@@ -54,7 +54,7 @@ public class AtomicElementFlippedView extends AtomicElementView {
         CGRect buttonFrame = new CGRect(10, 209, 234, 37);
 
         // create the button
-        wikipediaButton = UIButton.create(UIButtonType.RoundedRect);
+        wikipediaButton = new UIButton(UIButtonType.RoundedRect);
         wikipediaButton.setFrame(buttonFrame);
 
         wikipediaButton.setTitle("View at Wikipedia", UIControlState.Normal);

@@ -71,11 +71,11 @@ public class PAPTabBarController extends UITabBarController {
     public void setViewControllers(NSArray<UIViewController> viewControllers, boolean animated) {
         super.setViewControllers(viewControllers, animated);
 
-        UIButton cameraButton = UIButton.create(UIButtonType.Custom);
+        UIButton cameraButton = new UIButton(UIButtonType.Custom);
         cameraButton.setFrame(new CGRect((getTabBar().getBounds().getSize().getWidth() - 131) / 2, 0, 131, getTabBar()
                 .getBounds().getSize().getHeight()));
-        cameraButton.setImage(UIImage.create("ButtonCamera"), UIControlState.Normal);
-        cameraButton.setImage(UIImage.create("ButtonCameraSelected"), UIControlState.Highlighted);
+        cameraButton.setImage(UIImage.getImage("ButtonCamera"), UIControlState.Normal);
+        cameraButton.setImage(UIImage.getImage("ButtonCameraSelected"), UIControlState.Highlighted);
         cameraButton.addOnTouchUpInsideListener(photoCaptureButtonAction);
         getTabBar().addSubview(cameraButton);
 

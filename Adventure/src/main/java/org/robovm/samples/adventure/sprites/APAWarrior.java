@@ -47,15 +47,15 @@ public class APAWarrior extends APAHeroCharacter {
     private static SKAction sharedDamageAction;
 
     public APAWarrior(CGPoint position, APAPlayer player) {
-        super(SKTextureAtlas.create("Warrior/Warrior_Idle").getTexture("warrior_idle_0001.png"), position, player);
+        super(new SKTextureAtlas("Warrior/Warrior_Idle").getTexture("warrior_idle_0001.png"), position, player);
     }
 
     public static void loadSharedAssets() {
         // Load only once
         if (sharedProjectile == null) {
-            SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
+            SKTextureAtlas atlas = new SKTextureAtlas("Environment");
 
-            sharedProjectile = SKSpriteNode.create(atlas.getTexture("warrior_throw_hammer.png"));
+            sharedProjectile = new SKSpriteNode(atlas.getTexture("warrior_throw_hammer.png"));
             sharedProjectile.setPhysicsBody(SKPhysicsBody.createCircle(PROJECTILE_COLLISION_RADIUS));
             sharedProjectile.setName("Projectile");
             sharedProjectile.getPhysicsBody().setCategoryBitMask(APAColliderType.Projectile);

@@ -100,12 +100,12 @@ public class AAPLTextFieldViewController extends UITableViewController implement
         // Text fields with custom image backgrounds must have no border.
         customTextField.setBorderStyle(UITextBorderStyle.None);
 
-        customTextField.setBackground(UIImage.create("text_field_background"));
+        customTextField.setBackground(UIImage.getImage("text_field_background"));
 
         // Create a purple button that, when selected, turns the custom text
         // field's text color to purple.
-        UIImage purpleImage = UIImage.create("text_field_purple_right_view");
-        UIButton purpleImageButton = UIButton.create(UIButtonType.Custom);
+        UIImage purpleImage = UIImage.getImage("text_field_purple_right_view");
+        UIButton purpleImageButton = new UIButton(UIButtonType.Custom);
         purpleImageButton.setBounds(new CGRect(0, 0, purpleImage.getSize().getWidth(), purpleImage.getSize()
                 .getHeight()));
         purpleImageButton.setImageEdgeInsets(new UIEdgeInsets(0, 0, 0, 5));
