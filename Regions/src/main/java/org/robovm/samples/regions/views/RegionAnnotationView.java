@@ -34,7 +34,7 @@ public class RegionAnnotationView extends MKPinAnnotationView {
     private MKMapView map;
     private RegionAnnotation annotation;
 
-    public RegionAnnotationView (RegionAnnotation annotation) {
+    public RegionAnnotationView(RegionAnnotation annotation) {
         super(annotation, annotation.getTitle());
 
         setCanShowCallout(true);
@@ -45,19 +45,20 @@ public class RegionAnnotationView extends MKPinAnnotationView {
         setPinColor(MKPinAnnotationColor.Purple);
 
         if (annotation.getCoordinate() != null) {
-            radiusOverlay = MKCircle.create(annotation.getCoordinate(), annotation.getRadius());
+            radiusOverlay = new MKCircle(annotation.getCoordinate(), annotation.getRadius());
         }
     }
 
-    public void removeRadiusOverlay () {
-        // Find the overlay for this annotation view and remove it if it has the same coordinates.
+    public void removeRadiusOverlay() {
+        // Find the overlay for this annotation view and remove it if it has the
+        // same coordinates.
         for (MKOverlay overlay : map.getOverlays()) {
             if (overlay instanceof MKCircle) {
-                MKCircle circleOverlay = (MKCircle)overlay;
+                MKCircle circleOverlay = (MKCircle) overlay;
                 CLLocationCoordinate2D coord = circleOverlay.getCoordinate();
 
                 if (coord.getLatitude() == annotation.getCoordinate().getLatitude()
-                    && coord.getLongitude() == annotation.getCoordinate().getLongitude()) {
+                        && coord.getLongitude() == annotation.getCoordinate().getLongitude()) {
                     map.removeOverlay(overlay);
                 }
             }
@@ -66,26 +67,26 @@ public class RegionAnnotationView extends MKPinAnnotationView {
         isRadiusUpdated = false;
     }
 
-    public void updateRadiusOverlay () {
+    public void updateRadiusOverlay() {
         if (!isRadiusUpdated) {
             isRadiusUpdated = true;
 
             removeRadiusOverlay();
 
             setCanShowCallout(false);
-            map.addOverlay(MKCircle.create(annotation.getCoordinate(), annotation.getRadius()));
+            map.addOverlay(new MKCircle(annotation.getCoordinate(), annotation.getRadius()));
             setCanShowCallout(true);
         }
     }
 
-    public void setMap (MKMapView map) {
+    public void setMap(MKMapView map) {
         this.map = map;
         map.addOverlay(radiusOverlay);
     }
 
     @Override
-    public void setAnnotation (MKAnnotation v) {
+    public void setAnnotation(MKAnnotation v) {
         super.setAnnotation(v);
-        annotation = (RegionAnnotation)v;
+        annotation = (RegionAnnotation) v;
     }
 }

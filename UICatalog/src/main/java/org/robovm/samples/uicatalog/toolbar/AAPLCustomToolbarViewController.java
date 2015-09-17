@@ -45,7 +45,7 @@ public class AAPLCustomToolbarViewController extends UIViewController implements
     }
 
     private void configureToolbar() {
-        UIImage toolbarBackgroundImage = UIImage.create("toolbar_background");
+        UIImage toolbarBackgroundImage = UIImage.getImage("toolbar_background");
         toolbar.setBackgroundImage(toolbarBackgroundImage, UIBarPosition.Bottom, UIBarMetrics.Default);
 
         NSArray<UIBarButtonItem> toolbarButtonItems = new NSArray<UIBarButtonItem>(getCustomImageBarButtonItem(),
@@ -54,7 +54,7 @@ public class AAPLCustomToolbarViewController extends UIViewController implements
     }
 
     private UIBarButtonItem getCustomImageBarButtonItem() {
-        UIImage customBarButtonItemImage = UIImage.create("tools_icon");
+        UIImage customBarButtonItemImage = UIImage.getImage("tools_icon");
         UIBarButtonItem customImageBarButtonItem = new UIBarButtonItem(customBarButtonItemImage,
                 UIBarButtonItemStyle.Plain, this);
 

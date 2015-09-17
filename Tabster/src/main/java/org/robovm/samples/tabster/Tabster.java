@@ -61,7 +61,7 @@ public class Tabster extends UIApplicationDelegateAdapter {
         NSArray<UIViewController> classController = tabBarController.getViewControllers();
         NSMutableArray<UIViewController> controllerArray = new NSMutableArray<>(classController);
 
-        UIStoryboard storyboard = UIStoryboard.create("Four", null);
+        UIStoryboard storyboard = new UIStoryboard("Four", null);
         UIViewController four = storyboard.instantiateInitialViewController();
 
         controllerArray.add(3, four);

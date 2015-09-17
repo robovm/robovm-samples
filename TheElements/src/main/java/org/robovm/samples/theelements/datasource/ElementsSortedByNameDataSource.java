@@ -43,7 +43,7 @@ public class ElementsSortedByNameDataSource extends ElementsDataSource {
 
     @Override
     public UIImage getTabBarImage() {
-        return UIImage.create("name_gray.png");
+        return UIImage.getImage("name_gray.png");
     }
 
     @Override
@@ -57,8 +57,8 @@ public class ElementsSortedByNameDataSource extends ElementsDataSource {
                 .getSharedPeriodicElements()
                 .getElementsWithInitialLetter(
                         PeriodicElements.getSharedPeriodicElements().getElementNameIndexes()
-                                .get((int) indexPath.getSection()))
-                .get((int) indexPath.getRow());
+                                .get(indexPath.getSection()))
+                .get(indexPath.getRow());
     }
 
     @Override

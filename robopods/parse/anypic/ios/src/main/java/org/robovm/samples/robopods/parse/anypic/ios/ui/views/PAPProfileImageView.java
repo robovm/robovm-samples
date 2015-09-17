@@ -48,7 +48,7 @@ public class PAPProfileImageView extends UIView {
         profileImageView = new PFImageView(frame);
         addSubview(profileImageView);
 
-        profileButton = UIButton.create(UIButtonType.Custom);
+        profileButton = new UIButton(UIButtonType.Custom);
         addSubview(profileButton);
 
         addSubview(borderImageview);

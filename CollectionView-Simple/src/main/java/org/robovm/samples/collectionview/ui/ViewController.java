@@ -42,14 +42,14 @@ public class ViewController extends UICollectionViewController {
         // we're going to use a custom UICollectionViewCell, which will hold an
         // image and its label
         Cell cell = (Cell) collectionView.dequeueReusableCell(CELL_ID, indexPath);
-        
+
         // cell.setBackgroundColor(UIColor.blue());
 
         // make the cell's title the actual NSIndexPath value
         cell.getLabel().setText(String.format("{%d,%d}", indexPath.getRow(), indexPath.getSection()));
 
         // load the image for this cell
-        cell.getImage().setImage(UIImage.create(String.valueOf(indexPath.getRow()) + ".jpg"));
+        cell.getImage().setImage(UIImage.getImage(String.valueOf(indexPath.getRow()) + ".jpg"));
 
         return cell;
     }
@@ -58,7 +58,7 @@ public class ViewController extends UICollectionViewController {
     public void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath) {
         // the user tapped a collection item, load and set the image on the
         // detail view controller
-        UIImage image = UIImage.create(String.format("%d_full.jpg", indexPath.getRow()));
+        UIImage image = UIImage.getImage(String.format("%d_full.jpg", indexPath.getRow()));
         detailViewController.setImage(image);
         getNavigationController().pushViewController(detailViewController, true);
     }

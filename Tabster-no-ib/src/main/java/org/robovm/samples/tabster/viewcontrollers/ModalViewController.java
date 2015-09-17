@@ -40,7 +40,7 @@ public class ModalViewController extends UIViewController {
     private SubLevelViewController owningViewController;
     private final UILabel titleLabel;
 
-    public ModalViewController () {
+    public ModalViewController() {
         UIView view = getView();
         view.setBackgroundColor(UIColor.white());
 
@@ -49,13 +49,13 @@ public class ModalViewController extends UIViewController {
         titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
         view.addSubview(titleLabel);
 
-        UIButton button = UIButton.create(UIButtonType.RoundedRect);
+        UIButton button = new UIButton(UIButtonType.RoundedRect);
         button.setTitle("Done", UIControlState.Normal);
         button.setTitleShadowColor(UIColor.fromWhiteAlpha(0.5, 1), UIControlState.Normal);
         button.setTranslatesAutoresizingMaskIntoConstraints(false);
         button.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 dismissViewController(true, null);
             }
         });
@@ -67,20 +67,20 @@ public class ModalViewController extends UIViewController {
         views.put("title", titleLabel);
         views.put("done", button);
 
-        view.addConstraints(NSLayoutConstraint.create("H:[parent]-(<=1)-[title]", NSLayoutFormatOptions.AlignAllCenterY, null,
-            views));
-        view.addConstraints(NSLayoutConstraint.create("V:[parent]-(<=1)-[title]-33-[done]",
-            NSLayoutFormatOptions.AlignAllCenterX, null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("H:[parent]-(<=1)-[title]",
+                NSLayoutFormatOptions.AlignAllCenterY, null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("V:[parent]-(<=1)-[title]-33-[done]",
+                NSLayoutFormatOptions.AlignAllCenterX, null, views));
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
 
         titleLabel.setText(owningViewController.getCurrentSelectionTitle());
     }
 
-    public void setOwningViewController (SubLevelViewController owningViewController) {
+    public void setOwningViewController(SubLevelViewController owningViewController) {
         this.owningViewController = owningViewController;
     }
 }

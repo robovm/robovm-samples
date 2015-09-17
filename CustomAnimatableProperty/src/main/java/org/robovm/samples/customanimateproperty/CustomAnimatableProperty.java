@@ -29,7 +29,7 @@ import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.customanimateproperty.viewcontrollers.ViewController;
+import org.robovm.samples.customanimatableproperty.ui.ViewController;
 
 /** Main class */
 public class CustomAnimatableProperty extends UIApplicationDelegateAdapter {

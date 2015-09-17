@@ -38,20 +38,20 @@ public class MyOverlayViewController extends UIViewController {
     private final UILabel moviePlaybackStateText;
     private final UILabel movieLoadStateText;
 
-    public MyOverlayViewController (final MyMovieViewController movieViewController) {
+    public MyOverlayViewController(final MyMovieViewController movieViewController) {
         UIView view = getView();
         view.setFrame(new CGRect(0, 0, 123, 57));
         view.setAlpha(0.8);
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.33, 1));
 
-        closeButton = UIButton.create(UIButtonType.RoundedRect);
+        closeButton = new UIButton(UIButtonType.RoundedRect);
         closeButton.setFrame(new CGRect(26, 32, 74, 18));
         closeButton.setTitle("Close Movie", UIControlState.Normal);
         closeButton.setTitleColor(UIColor.white(), UIControlState.Highlighted);
         closeButton.getTitleLabel().setFont(UIFont.getSystemFont(11));
         closeButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
-            public void onTouchUpInside (UIControl control, UIEvent event) {
+            public void onTouchUpInside(UIControl control, UIEvent event) {
                 movieViewController.closeOverlay();
             }
         });
@@ -84,11 +84,11 @@ public class MyOverlayViewController extends UIViewController {
         view.addSubview(movieLoadStateText);
     }
 
-    public void setPlaybackStateDisplayString (String playBackText) {
+    public void setPlaybackStateDisplayString(String playBackText) {
         moviePlaybackStateText.setText(playBackText);
     }
 
-    public void setLoadStateDisplayString (String loadStateText) {
+    public void setLoadStateDisplayString(String loadStateText) {
         movieLoadStateText.setText(loadStateText);
     }
 }

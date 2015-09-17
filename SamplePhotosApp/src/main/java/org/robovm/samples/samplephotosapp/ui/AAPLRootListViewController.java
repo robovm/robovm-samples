@@ -65,14 +65,16 @@ public class AAPLRootListViewController extends UITableViewController implements
     private static final String AllPhotosSegue = "showAllPhotos";
     private static final String CollectionSegue = "showCollection";
 
-    private NSArray<PHFetchResult> collectionsFetchResults;
+    private NSArray<PHFetchResult<? extends PHCollection>> collectionsFetchResults;
     private List<String> collectionsLocalizedTitles;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void awakeFromNib() {
-        PHFetchResult smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum,
+        PHFetchResult<PHAssetCollection> smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(
+                PHAssetCollectionType.SmartAlbum,
                 PHAssetCollectionSubtype.AlbumRegular, null);
-        PHFetchResult topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollections(null);
+        PHFetchResult<PHCollection> topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollections(null);
 
         collectionsFetchResults = new NSArray<>(smartAlbums, topLevelUserCollections);
         collectionsLocalizedTitles = Arrays.asList(NSString.getLocalizedString("Smart Albums"),
@@ -101,11 +103,11 @@ public class AAPLRootListViewController extends UITableViewController implements
                     .getDestinationViewController();
 
             NSIndexPath indexPath = getTableView().getIndexPathForCell((UITableViewCell) sender);
-            PHFetchResult fetchResult = collectionsFetchResults.get(indexPath.getSection() - 1);
-            PHCollection collection = (PHCollection) fetchResult.get(indexPath.getRow());
+            PHFetchResult<? extends PHCollection> fetchResult = collectionsFetchResults.get(indexPath.getSection() - 1);
+            PHCollection collection = fetchResult.get(indexPath.getRow());
             if (collection instanceof PHAssetCollection) {
                 PHAssetCollection assetCollection = (PHAssetCollection) collection;
-                PHFetchResult assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(assetCollection, null);
+                PHFetchResult<PHAsset> assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(assetCollection, null);
                 assetGridViewController.setAssetsFetchResults(assetsFetchResult);
                 assetGridViewController.setAssetCollection(assetCollection);
             }
@@ -123,7 +125,7 @@ public class AAPLRootListViewController extends UITableViewController implements
         if (section == 0) {
             numberOfRows = 1; // "All Photos" section
         } else {
-            PHFetchResult fetchResult = collectionsFetchResults.get((int) section - 1);
+            PHFetchResult<? extends PHCollection> fetchResult = collectionsFetchResults.get((int) section - 1);
             numberOfRows = (int) fetchResult.size();
         }
         return numberOfRows;
@@ -139,8 +141,8 @@ public class AAPLRootListViewController extends UITableViewController implements
             localizedTitle = NSString.getLocalizedString("All Photos");
         } else {
             cell = tableView.dequeueReusableCell(CollectionCellReuseIdentifier, indexPath);
-            PHFetchResult fetchResult = collectionsFetchResults.get(indexPath.getSection() - 1);
-            PHCollection collection = (PHCollection) fetchResult.get(indexPath.getRow());
+            PHFetchResult<? extends PHCollection> fetchResult = collectionsFetchResults.get(indexPath.getSection() - 1);
+            PHCollection collection = fetchResult.get(indexPath.getRow());
             localizedTitle = collection.getLocalizedTitle();
         }
         cell.getTextLabel().setText(localizedTitle);
@@ -166,15 +168,15 @@ public class AAPLRootListViewController extends UITableViewController implements
             @SuppressWarnings("unchecked")
             @Override
             public void run() {
-                NSMutableArray<PHFetchResult> updatedCollectionsFetchResults = null;
+                NSMutableArray<PHFetchResult<? extends PHCollection>> updatedCollectionsFetchResults = null;
 
-                for (PHFetchResult collectionsFetchResult : collectionsFetchResults) {
-                    PHFetchResultChangeDetails changeDetails = changeInstance
+                for (PHFetchResult<? extends PHCollection> collectionsFetchResult : collectionsFetchResults) {
+                    PHFetchResultChangeDetails<? extends PHCollection> changeDetails = changeInstance
                             .getChangeDetailsForFetchResult(collectionsFetchResult);
 
                     if (changeDetails != null) {
                         if (updatedCollectionsFetchResults == null) {
-                            updatedCollectionsFetchResults = (NSMutableArray<PHFetchResult>) collectionsFetchResults
+                            updatedCollectionsFetchResults = (NSMutableArray<PHFetchResult<? extends PHCollection>>) collectionsFetchResults
                                     .mutableCopy();
                         }
                         updatedCollectionsFetchResults.set(collectionsFetchResults.indexOf(collectionsFetchResult),
@@ -193,10 +195,9 @@ public class AAPLRootListViewController extends UITableViewController implements
     @IBAction
     private void handleAddButtonItem(NSObject sender) {
         // Prompt user from new album title.
-        final UIAlertController alertController = UIAlertController.create(NSString.getLocalizedString("New Album"),
-                null,
-                UIAlertControllerStyle.Alert);
-        alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Cancel"),
+        final UIAlertController alertController = new UIAlertController(NSString.getLocalizedString("New Album"),
+                null, UIAlertControllerStyle.Alert);
+        alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Cancel"),
                 UIAlertActionStyle.Cancel, null));
         alertController.addTextField(new VoidBlock1<UITextField>() {
             @Override
@@ -204,7 +205,7 @@ public class AAPLRootListViewController extends UITableViewController implements
                 textField.setPlaceholder(NSString.getLocalizedString("Album Name"));
             }
         });
-        alertController.addAction(UIAlertAction.create(NSString.getLocalizedString("Create"),
+        alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Create"),
                 UIAlertActionStyle.Default,
                 new VoidBlock1<UIAlertAction>() {
                     @Override

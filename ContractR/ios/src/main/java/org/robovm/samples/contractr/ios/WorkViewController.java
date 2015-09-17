@@ -38,22 +38,23 @@ import org.robovm.samples.contractr.core.TaskModel;
 public class WorkViewController extends UIViewController {
 
     private static final UIColor START_COLOR = ContractRApp.HIGHLIGHT_COLOR;
-    private static final UIColor STOP_COLOR = 
+    private static final UIColor STOP_COLOR =
             UIColor.fromRGBA(1.0, 0, 0, 1.0);
-    
+
     private final TaskModel taskModel;
-    private SelectTaskViewController selectTaskViewController;
-    private UINavigationController selectTaskNavigationController;
-    
+    private final SelectTaskViewController selectTaskViewController;
+    private final UINavigationController selectTaskNavigationController;
+
     private UIButton startStopButton;
     private UILabel currentTaskLabel;
     private UILabel earnedLabel;
     private UILabel timerLabel;
     private boolean showing = true;
-    
+
     public WorkViewController(ClientModel clientModel, TaskModel taskModel) {
         this.taskModel = taskModel;
-        this.selectTaskViewController = new SelectTaskViewController(clientModel, taskModel, () -> start(selectTaskViewController.getSelectedTask()));
+        this.selectTaskViewController = new SelectTaskViewController(clientModel, taskModel,
+                () -> start(this.selectTaskViewController.getSelectedTask()));
         this.selectTaskNavigationController = new UINavigationController(this.selectTaskViewController);
         this.selectTaskViewController.getNavigationItem().setTitle("Task to work on");
     }
@@ -61,29 +62,29 @@ public class WorkViewController extends UIViewController {
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        
+
         UIView rootView = getView();
         rootView.setBackgroundColor(UIColor.white());
 
-        startStopButton = UIButton.create(UIButtonType.RoundedRect);
+        startStopButton = new UIButton(UIButtonType.RoundedRect);
         startStopButton.setContentEdgeInsets(new UIEdgeInsets(12, 30, 12, 30));
         startStopButton.getTitleLabel().setFont(UIFont.getSystemFont(25));
         startStopButton.addOnTouchUpInsideListener((c, e) -> startStopClicked());
         startStopButton.setTranslatesAutoresizingMaskIntoConstraints(false);
-        
+
         UILabel currentTaskTitleLabel = new UILabel();
         currentTaskTitleLabel.setText("Current Task");
         currentTaskTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
-        
+
         currentTaskLabel = new UILabel();
         currentTaskLabel.setText("None");
         currentTaskLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
         currentTaskLabel.setFont(UIFont.getBoldSystemFont(25));
-        
+
         UILabel timerTitleLabel = new UILabel();
         timerTitleLabel.setText("Time Elapsed");
         timerTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
-        
+
         timerLabel = new UILabel();
         timerLabel.setText("00:00:00");
         timerLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
@@ -92,7 +93,7 @@ public class WorkViewController extends UIViewController {
         UILabel earnedTitleLabel = new UILabel();
         earnedTitleLabel.setText("Amount Earned");
         earnedTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
-        
+
         earnedLabel = new UILabel();
         earnedLabel.setText("0");
         earnedLabel.setTranslatesAutoresizingMaskIntoConstraints(false);
@@ -122,7 +123,7 @@ public class WorkViewController extends UIViewController {
         rootView.addConstraint(NSLayoutConstraintUtil.centerHorizontally(startStopButton, rootView, 1.0, 0));
         rootView.addConstraint(NSLayoutConstraintUtil.centerVertically(startStopButton, rootView, 1.6, -10));
     }
-    
+
     @Override
     public void viewWillAppear(boolean animated) {
         super.viewWillAppear(animated);
@@ -130,13 +131,13 @@ public class WorkViewController extends UIViewController {
         updateUIComponents();
         tick();
     }
-    
+
     @Override
     public void viewWillDisappear(boolean animated) {
         showing = false;
         super.viewWillDisappear(animated);
     }
-    
+
     private void startStopClicked() {
         Task workingTask = taskModel.getWorkingTask();
         if (workingTask == null) {
@@ -145,7 +146,7 @@ public class WorkViewController extends UIViewController {
             stop();
         }
     }
-    
+
     private void updateUIComponents() {
         Task task = taskModel.getWorkingTask();
         UIColor startStopColor = null;
@@ -167,7 +168,7 @@ public class WorkViewController extends UIViewController {
         layer.setBorderColor(startStopColor.getCGColor());
         currentTaskLabel.setText(currentTaskText);
     }
-    
+
     private void start(Task task) {
         taskModel.startWork(task);
         updateUIComponents();

@@ -118,7 +118,7 @@ public class TilingView extends UIView {
     private UIImage getTile(double scale, int row, int col) {
         String tileName = String.format("Image Tiles/%s_%d_%d_%d", imageName, (int) (scale * 1000), col, row);
         String path = NSBundle.getMainBundle().findResourcePath(tileName, "png");
-        UIImage image = UIImage.create(new File(path));
+        UIImage image = new UIImage(new File(path));
         return image;
     }
 }

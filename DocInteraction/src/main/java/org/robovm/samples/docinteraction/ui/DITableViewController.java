@@ -74,7 +74,7 @@ public class DITableViewController extends UITableViewController implements UIGe
     private void setupDocumentController(NSURL url) {
         // checks if docInteractionController has been initialized with the URL
         if (docInteractionController == null) {
-            docInteractionController = UIDocumentInteractionController.create(url);
+            docInteractionController = new UIDocumentInteractionController(url);
             docInteractionController.setDelegate(new UIDocumentInteractionControllerDelegateAdapter() {
                 @Override
                 public UIViewController getViewControllerForPreview(UIDocumentInteractionController controller) {

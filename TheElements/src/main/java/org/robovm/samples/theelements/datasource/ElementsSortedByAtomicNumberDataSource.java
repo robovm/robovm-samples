@@ -41,7 +41,7 @@ public class ElementsSortedByAtomicNumberDataSource extends ElementsDataSource {
 
     @Override
     public UIImage getTabBarImage() {
-        return UIImage.create("number_gray.png");
+        return UIImage.getImage("number_gray.png");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ElementsSortedByAtomicNumberDataSource extends ElementsDataSource {
 
     @Override
     public AtomicElement getAtomicElement(NSIndexPath indexPath) {
-        return PeriodicElements.getSharedPeriodicElements().getElementsSortedByNumber().get((int) indexPath.getRow());
+        return PeriodicElements.getSharedPeriodicElements().getElementsSortedByNumber().get(indexPath.getRow());
     }
 
     @Override

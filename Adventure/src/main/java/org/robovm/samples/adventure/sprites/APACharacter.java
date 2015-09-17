@@ -86,9 +86,9 @@ public abstract class APACharacter extends APAParallaxSprite {
     }
 
     private void init (CGPoint position) {
-        SKTextureAtlas atlas = SKTextureAtlas.create("Environment");
+        SKTextureAtlas atlas = new SKTextureAtlas("Environment");
 
-        shadowBlob = SKSpriteNode.create(atlas.getTexture("blobShadow.png"));
+        shadowBlob = new SKSpriteNode(atlas.getTexture("blobShadow.png"));
         shadowBlob.setZPosition(-1.0);
 
         setPosition(position);
@@ -240,7 +240,7 @@ public abstract class APACharacter extends APAParallaxSprite {
 
         activeAnimationKey = key;
 
-        runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.animate(frames, animationSpeed, true, false), SKAction
+        runAction(SKAction.sequence(new NSArray<SKAction>(SKAction.animateFrames(frames, animationSpeed, true, false), SKAction
             .run(new Runnable() {
                 @Override
                 public void run () {

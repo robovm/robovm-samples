@@ -64,8 +64,8 @@ public class AAPLCoordinateConverter {
         // first need to
         // convert to MapKit co-ordinates...
         fromAnchorFloorplanPoint = anchors.fromAnchor.pixel;
-        fromAnchorMKPoint = MKMapPoint.create(anchors.fromAnchor.latitudeLongitude);
-        MKMapPoint toAnchorMapkitPoint = MKMapPoint.create(anchors.toAnchor.latitudeLongitude);
+        fromAnchorMKPoint = new MKMapPoint(anchors.fromAnchor.latitudeLongitude);
+        MKMapPoint toAnchorMapkitPoint = new MKMapPoint(anchors.toAnchor.latitudeLongitude);
 
         double xDistance = anchors.toAnchor.pixel.getX() - anchors.fromAnchor.pixel.getX();
         double yDistance = anchors.toAnchor.pixel.getY() - anchors.fromAnchor.pixel.getY();
@@ -135,7 +135,7 @@ public class AAPLCoordinateConverter {
     public CGPoint getPointFromCoordinate(CLLocationCoordinate2D coordinate) {
         // Get the distance east & south with respect to the first anchor point
         // in meters
-        AAPLEastSouthDistance toFix = convertPoint(fromAnchorMKPoint, MKMapPoint.create(coordinate));
+        AAPLEastSouthDistance toFix = convertPoint(fromAnchorMKPoint, new MKMapPoint(coordinate));
 
         // Convert the east-south anchor point distance to pixels (still in
         // east-south)

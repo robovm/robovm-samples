@@ -41,12 +41,17 @@ import org.robovm.apple.uikit.UIView;
 import org.robovm.apple.uikit.UIViewController;
 
 public class ThreeViewController extends UIViewController {
-    private static final String BADGE_VALUE_PREF_KEY = "BadgeValue"; // badge value key for storing to NSUserDefaults
+    private static final String BADGE_VALUE_PREF_KEY = "BadgeValue"; // badge
+                                                                     // value
+                                                                     // key for
+                                                                     // storing
+                                                                     // to
+                                                                     // NSUserDefaults
 
     private UIBarButtonItem doneButton;
     private final UITextField badgeField;
 
-    public ThreeViewController () {
+    public ThreeViewController() {
         UIView view = getView();
         view.setBackgroundColor(UIColor.fromWhiteAlpha(0.66, 1));
 
@@ -57,19 +62,21 @@ public class ThreeViewController extends UIViewController {
         badgeField.setTranslatesAutoresizingMaskIntoConstraints(false);
         badgeField.setDelegate(new UITextFieldDelegateAdapter() {
             @Override
-            public void didBeginEditing (UITextField textField) {
-                // user is starting to edit, add the done button to the navigation bar
+            public void didBeginEditing(UITextField textField) {
+                // user is starting to edit, add the done button to the
+                // navigation bar
                 getNavigationItem().setRightBarButtonItem(doneButton);
             }
 
             @Override
-            public void didEndEditing (UITextField textField) {
-                // user is done editing, remove the done button from the navigation bar
+            public void didEndEditing(UITextField textField) {
+                // user is done editing, remove the done button from the
+                // navigation bar
                 getNavigationItem().setRightBarButtonItem(null);
             }
 
             @Override
-            public boolean shouldChangeCharacters (UITextField textField, NSRange range, String string) {
+            public boolean shouldChangeCharacters(UITextField textField, NSRange range, String string) {
                 boolean result = true;
 
                 // restrict the maximum number of characters to 5
@@ -95,17 +102,22 @@ public class ThreeViewController extends UIViewController {
         views.put("badge", badgeField);
         views.put("top", getTopLayoutGuide());
 
-        view.addConstraints(NSLayoutConstraint.create("H:|-20-[value(48)]-[badge]-20-|", NSLayoutFormatOptions.None, null, views));
-        view.addConstraints(NSLayoutConstraint.create("V:[top]-58-[value]", NSLayoutFormatOptions.None, null, views));
-        view.addConstraints(NSLayoutConstraint.create("V:[top]-54-[badge]", NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("H:|-20-[value(48)]-[badge]-20-|",
+                NSLayoutFormatOptions.None, null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("V:[top]-58-[value]", NSLayoutFormatOptions.None,
+                null, views));
+        view.addConstraints(NSLayoutConstraint.createConstraints("V:[top]-54-[badge]", NSLayoutFormatOptions.None,
+                null, views));
 
         doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done, new UIBarButtonItem.OnClickListener() {
             @Override
-            public void onClick (UIBarButtonItem barButtonItem) {
-                // dismiss the keyboard by resigning our badge edit field as first responder
+            public void onClick(UIBarButtonItem barButtonItem) {
+                // dismiss the keyboard by resigning our badge edit field as
+                // first responder
                 badgeField.resignFirstResponder();
 
-                // set the badge value to our tab item (but only if a valid string)
+                // set the badge value to our tab item (but only if a valid
+                // string)
                 if (badgeField.getText().length() > 0) {
                     // a value was entered,
                     // because we are inside a navigation controller,
@@ -122,14 +134,14 @@ public class ThreeViewController extends UIViewController {
     }
 
     @Override
-    public void viewDidLoad () {
+    public void viewDidLoad() {
         super.viewDidLoad();
 
         getNavigationItem().setTitle("Three");
     }
 
     @Override
-    public void viewWillAppear (boolean animated) {
+    public void viewWillAppear(boolean animated) {
         // set the badge value in our test field and tabbar item
         String badgeValue = NSUserDefaults.getStandardUserDefaults().getString(BADGE_VALUE_PREF_KEY);
         if (badgeValue != null && badgeValue.length() != 0) {

@@ -87,17 +87,17 @@ public class Tabster extends UIApplicationDelegateAdapter {
 
         oneViewController = new OneViewController();
         oneNavController = new UINavigationController(oneViewController);
-        oneNavController.setTabBarItem(new UITabBarItem("One", UIImage.create("tab1"), 0));
+        oneNavController.setTabBarItem(new UITabBarItem("One", UIImage.getImage("tab1"), 0));
         viewControllers.add(oneNavController);
 
         twoViewController = new TwoViewController();
         twoNavController = new UINavigationController(twoViewController);
-        twoNavController.setTabBarItem(new UITabBarItem("Two", UIImage.create("tab2"), 0));
+        twoNavController.setTabBarItem(new UITabBarItem("Two", UIImage.getImage("tab2"), 0));
         viewControllers.add(twoNavController);
 
         threeViewController = new ThreeViewController();
         threeNavController = new UINavigationController(threeViewController);
-        threeNavController.setTabBarItem(new UITabBarItem("Three", UIImage.create("tab3"), 0));
+        threeNavController.setTabBarItem(new UITabBarItem("Three", UIImage.getImage("tab3"), 0));
         viewControllers.add(threeNavController);
 
         fourViewController = new FourViewController();

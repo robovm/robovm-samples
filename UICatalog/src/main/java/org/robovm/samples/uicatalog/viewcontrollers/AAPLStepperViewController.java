@@ -68,26 +68,26 @@ public class AAPLStepperViewController extends UITableViewController implements 
 
     private void configureCustomStepper() {
         // Set the background image states.
-        UIImage stepperBackgroundImage = UIImage.create("stepper_and_segment_background");
+        UIImage stepperBackgroundImage = UIImage.getImage("stepper_and_segment_background");
         customStepper.setBackgroundImage(stepperBackgroundImage, UIControlState.Normal);
 
-        UIImage stepperHighlightedBackgroundImage = UIImage.create("stepper_and_segment_background_highlighted");
+        UIImage stepperHighlightedBackgroundImage = UIImage.getImage("stepper_and_segment_background_highlighted");
         customStepper.setBackgroundImage(stepperHighlightedBackgroundImage, UIControlState.Highlighted);
 
-        UIImage stepperDisabledBackgroundImage = UIImage.create("stepper_and_segment_background_disabled");
+        UIImage stepperDisabledBackgroundImage = UIImage.getImage("stepper_and_segment_background_disabled");
         customStepper.setBackgroundImage(stepperDisabledBackgroundImage, UIControlState.Disabled);
 
         // Set the image which will be painted in between the two stepper
         // segments (depends on the states of both segments).
-        customStepper.setDividerImage(UIImage.create("stepper_and_segment_divider"), UIControlState.Normal,
+        customStepper.setDividerImage(UIImage.getImage("stepper_and_segment_divider"), UIControlState.Normal,
                 UIControlState.Normal);
 
         // Set the image for the + button.
-        UIImage stepperIncrementImage = UIImage.create("stepper_increment");
+        UIImage stepperIncrementImage = UIImage.getImage("stepper_increment");
         customStepper.setIncrementImage(stepperIncrementImage, UIControlState.Normal);
 
         // Set the image for the - button.
-        UIImage stepperDecrementImage = UIImage.create("stepper_decrement");
+        UIImage stepperDecrementImage = UIImage.getImage("stepper_decrement");
         customStepper.setDecrementImage(stepperDecrementImage, UIControlState.Normal);
 
         customStepperLabel.setText(String.valueOf((int) customStepper.getValue()));

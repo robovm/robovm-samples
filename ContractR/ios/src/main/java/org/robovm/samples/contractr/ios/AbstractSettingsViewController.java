@@ -77,26 +77,26 @@ public abstract class AbstractSettingsViewController extends UITableViewControll
         view.setTranslatesAutoresizingMaskIntoConstraints(false);
 
         // labelView.left = contentView.left + 15
-        contentView.addConstraint(NSLayoutConstraint.create(
+        contentView.addConstraint(new NSLayoutConstraint(
                 labelView, NSLayoutAttribute.Left,
                 NSLayoutRelation.Equal,
                 contentView, NSLayoutAttribute.Left,
                 1, 15));
         // view.right = contentView.right - 15
-        contentView.addConstraint(NSLayoutConstraint.create(
+        contentView.addConstraint(new NSLayoutConstraint(
                 view, NSLayoutAttribute.Right,
                 NSLayoutRelation.Equal,
                 contentView, NSLayoutAttribute.Right,
                 1, -15));
         // view.centerY = contentView.centerY
-        contentView.addConstraint(NSLayoutConstraint.create(
+        contentView.addConstraint(new NSLayoutConstraint(
                 view, NSLayoutAttribute.CenterY,
                 NSLayoutRelation.Equal,
                 contentView, NSLayoutAttribute.CenterY,
                 1, 0));
         if (view instanceof UITextField) {
             // view.left = labelView.right + 15
-            contentView.addConstraint(NSLayoutConstraint.create(
+            contentView.addConstraint(new NSLayoutConstraint(
                     view, NSLayoutAttribute.Left,
                     NSLayoutRelation.Equal,
                     labelView, NSLayoutAttribute.Right,

@@ -206,7 +206,7 @@ public class PhotoViewController extends UIViewController implements VoidBlock1<
         delayedPhotoButton.setEnabled(false);
         takePictureButton.setEnabled(false);
 
-        cameraTimer = NSTimer.createScheduled(1.5, this, true);
+        cameraTimer = new NSTimer(1.5, this, null, true, true);
         cameraTimer.fire(); // Start taking pictures right away.
     }
 

@@ -76,8 +76,8 @@ public class RootViewController extends UIViewController {
         cameraOverlayView = new UIView(getView().getFrame());
 
         cameraSelectionButton = new UIButton(new CGRect(20, 10, 72, 37));
-        cameraSelectionButton.setImage(UIImage.create("camera-toggle.png"), UIControlState.Normal);
-        cameraSelectionButton.setImage(UIImage.create("camera-toggle-pressed.png"), UIControlState.Highlighted);
+        cameraSelectionButton.setImage(UIImage.getImage("camera-toggle.png"), UIControlState.Normal);
+        cameraSelectionButton.setImage(UIImage.getImage("camera-toggle-pressed.png"), UIControlState.Highlighted);
         cameraSelectionButton.setAlpha(0);
         cameraSelectionButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
@@ -88,7 +88,7 @@ public class RootViewController extends UIViewController {
         cameraOverlayView.addSubview(cameraSelectionButton);
 
         flashModeButton = new UIButton(new CGRect(100, 10, 72, 37));
-        flashModeButton.setImage(UIImage.create("flash-off.png"), UIControlState.Normal);
+        flashModeButton.setImage(UIImage.getImage("flash-off.png"), UIControlState.Normal);
         flashModeButton.setAlpha(0);
         flashModeButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
@@ -99,8 +99,8 @@ public class RootViewController extends UIViewController {
         cameraOverlayView.addSubview(flashModeButton);
 
         videoQualitySelectionButton = new UIButton(new CGRect(228, 10, 72, 37));
-        videoQualitySelectionButton.setImage(UIImage.create("sd-selected.png"), UIControlState.Normal);
-        videoQualitySelectionButton.setImage(UIImage.create("hd-selected.png"), UIControlState.Highlighted);
+        videoQualitySelectionButton.setImage(UIImage.getImage("sd-selected.png"), UIControlState.Normal);
+        videoQualitySelectionButton.setImage(UIImage.getImage("hd-selected.png"), UIControlState.Highlighted);
         videoQualitySelectionButton.addOnTouchUpInsideListener(new UIControl.OnTouchUpInsideListener() {
             @Override
             public void onTouchUpInside(UIControl control, UIEvent event) {
@@ -110,7 +110,7 @@ public class RootViewController extends UIViewController {
         cameraOverlayView.addSubview(videoQualitySelectionButton);
 
         recordIndicatorView = new UIImageView(new CGRect(247, 15, 35, 26));
-        recordIndicatorView.setImage(UIImage.create("record-indicator.png"));
+        recordIndicatorView.setImage(UIImage.getImage("record-indicator.png"));
         recordIndicatorView.setAlpha(0);
         cameraOverlayView.addSubview(recordIndicatorView);
 
@@ -214,20 +214,20 @@ public class RootViewController extends UIViewController {
     private void changeVideoQuality() {
         if (imagePicker.getVideoQuality() == UIImagePickerControllerQualityType._640x480) {
             imagePicker.setVideoQuality(UIImagePickerControllerQualityType.High);
-            videoQualitySelectionButton.setImage(UIImage.create("hd-selected.png"), UIControlState.Normal);
+            videoQualitySelectionButton.setImage(UIImage.getImage("hd-selected.png"), UIControlState.Normal);
         } else {
             imagePicker.setVideoQuality(UIImagePickerControllerQualityType._640x480);
-            videoQualitySelectionButton.setImage(UIImage.create("sd-selected.png"), UIControlState.Normal);
+            videoQualitySelectionButton.setImage(UIImage.getImage("sd-selected.png"), UIControlState.Normal);
         }
     }
 
     private void changeFlashMode() {
         if (imagePicker.getCameraFlashMode() == UIImagePickerControllerCameraFlashMode.Off) {
             imagePicker.setCameraFlashMode(UIImagePickerControllerCameraFlashMode.On);
-            flashModeButton.setImage(UIImage.create("flash-on.png"), UIControlState.Normal);
+            flashModeButton.setImage(UIImage.getImage("flash-on.png"), UIControlState.Normal);
         } else {
             imagePicker.setCameraFlashMode(UIImagePickerControllerCameraFlashMode.Off);
-            flashModeButton.setImage(UIImage.create("flash-off.png"), UIControlState.Normal);
+            flashModeButton.setImage(UIImage.getImage("flash-off.png"), UIControlState.Normal);
         }
     }
 

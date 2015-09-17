@@ -39,7 +39,7 @@ public class APLBaseTableViewController extends UITableViewController {
 
         // we use a nib which contains the cell's view and this class as the
         // files owner
-        getTableView().registerReusableCellNib(UINib.create(TABLE_CELL_NIB_NAME, null), CELL_IDENTIFIER);
+        getTableView().registerReusableCellNib(new UINib(TABLE_CELL_NIB_NAME, null), CELL_IDENTIFIER);
     }
 
     public void configureCell(UITableViewCell cell, APLProduct product) {

@@ -48,7 +48,7 @@ public class TheElements extends UIApplicationDelegateAdapter {
 
         ElementsDataSource dataSource;
 
-        UIStoryboard storyboard = UIStoryboard.create("Main", null);
+        UIStoryboard storyboard = new UIStoryboard("Main", null);
 
         NSMutableArray<UIViewController> viewControllers = new NSMutableArray<>(4);
 

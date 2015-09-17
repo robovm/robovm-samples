@@ -58,15 +58,15 @@ public class APAViewController extends UIViewController {
         view.setBackgroundColor(UIColor.white());
 
         skView = new SKView();
-        skView.setFrame(UIScreen.getMainScreen().getApplicationFrame());
+        skView.setFrame(UIScreen.getMainScreen().getBounds());
         view.addSubview(skView);
 
         gameLogo = new UIImageView(new CGRect(97, -10, 375, 220));
-        gameLogo.setImage(UIImage.create("logo.png"));
+        gameLogo.setImage(UIImage.getImage("logo.png"));
         skView.addSubview(gameLogo);
 
         archerButton = new UIButton(new CGRect(29, 238, 186, 38));
-        archerButton.setImage(UIImage.create("button_archer.png"), UIControlState.Normal);
+        archerButton.setImage(UIImage.getImage("button_archer.png"), UIControlState.Normal);
         archerButton.setTitleColor(UIColor.fromRGBA(0.196, 0.309, 0.521, 1), UIControlState.Normal);
         archerButton.setTitleShadowColor(UIColor.fromWhiteAlpha(0.5, 1), UIControlState.Normal);
         archerButton.setTitleColor(UIColor.white(), UIControlState.Highlighted);
@@ -79,7 +79,7 @@ public class APAViewController extends UIViewController {
         skView.addSubview(archerButton);
 
         warriorButton = new UIButton(new CGRect(353, 238, 186, 38));
-        warriorButton.setImage(UIImage.create("button_warrior.png"), UIControlState.Normal);
+        warriorButton.setImage(UIImage.getImage("button_warrior.png"), UIControlState.Normal);
         warriorButton.setTitleColor(UIColor.fromRGBA(0.196, 0.31, 0.522, 1), UIControlState.Normal);
         warriorButton.setTitleShadowColor(UIColor.fromWhiteAlpha(0.5, 1), UIControlState.Normal);
         warriorButton.setTitleColor(UIColor.white(), UIControlState.Highlighted);

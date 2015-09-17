@@ -57,7 +57,7 @@ public class PhotosViewController extends UIViewController implements UIPageView
 
         modelController.setPageData(photosToShow);
 
-        UIStoryboard storyboard = UIStoryboard.create("Main", null);
+        UIStoryboard storyboard = new UIStoryboard("Main", null);
         DataViewController startingViewController = modelController.getViewControllerAtIndex(0, storyboard);
 
         NSArray<UIViewController> viewControllers = new NSArray<UIViewController>(startingViewController);

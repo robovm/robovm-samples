@@ -104,7 +104,7 @@ public class PAPEditPhotoViewController extends UIViewController {
 
     @Override
     public void loadView() {
-        scrollView = new UIScrollView(UIScreen.getMainScreen().getApplicationFrame());
+        scrollView = new UIScrollView(UIScreen.getMainScreen().getBounds());
         scrollView.setDelegate(new UIScrollViewDelegateAdapter() {
             @Override
             public void willBeginDragging(UIScrollView scrollView) {
@@ -150,7 +150,7 @@ public class PAPEditPhotoViewController extends UIViewController {
 
         navigationItem.setHidesBackButton(true);
 
-        navigationItem.setTitleView(new UIImageView(UIImage.create("LogoNavigationBar")));
+        navigationItem.setTitleView(new UIImageView(UIImage.getImage("LogoNavigationBar")));
         navigationItem.setLeftBarButtonItem(new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain,
                 cancelButtonAction));
         navigationItem
