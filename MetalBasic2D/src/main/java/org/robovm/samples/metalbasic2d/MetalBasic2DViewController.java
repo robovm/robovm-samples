@@ -16,13 +16,13 @@ import java.nio.ByteOrder;
 
 public class MetalBasic2DViewController extends UIViewController {
     float quadVertexData[] = {
-            0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
 
-            0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
     };
 
     CAMetalLayer metalLayer;
@@ -120,10 +120,10 @@ public class MetalBasic2DViewController extends UIViewController {
         float cos = (float) Math.cos(rotationAngle);
         float sin = (float) Math.sin(rotationAngle);
         float matrix[] = {
-                cos, sin, 0, 0,
-                -sin, cos, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1
+            cos, sin, 0, 0,
+            -sin, cos, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
         };
         ByteBuffer buffer = uniformBuffer.getContents();
         buffer.order(ByteOrder.nativeOrder());
