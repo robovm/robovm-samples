@@ -1,5 +1,5 @@
 buildscript {
-    project.ext.roboVMVersion = "1.7.1-SNAPSHOT"    
+    project.ext.roboVMVersion = "1.8.1-SNAPSHOT"    
 
     repositories {
         jcenter()
@@ -46,7 +46,7 @@ project(":android") {
 
     android {
         compileSdkVersion 23
-        buildToolsVersion "22.0.1"
+        buildToolsVersion "23.0.1"
 
         defaultConfig {
             applicationId "org.robovm.samples.contractr.android"
