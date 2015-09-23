@@ -9,4 +9,5 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    <treeShaker>aggressive</treeShaker>
 </config>
