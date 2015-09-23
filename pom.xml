@@ -114,6 +114,7 @@
         <module>Quiz</module>
         <module>Regions</module>
         <module>SamplePhotosApp</module>
+        <module>StackView</module>
         <module>StreetScroller</module>
         <module>TableSearch</module>
         <module>Tabster</module>

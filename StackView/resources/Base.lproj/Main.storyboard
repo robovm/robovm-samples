@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15B17c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rw5-ns-KcI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <scenes>
+        <!--MyViewController-->
+        <scene sceneID="HF5-hW-DZA">
+            <objects>
+                <viewController title="MyViewController" id="Rw5-ns-KcI" customClass="MyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WrT-94-kTm"/>
+                        <viewControllerLayoutGuide type="bottom" id="GRf-jy-2iC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xOT-TG-81E">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="VmL-bI-aXz">
+                                <rect key="frame" x="172" y="32.5" width="256" height="535"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please rate this app!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DH5-4f-BQN">
+                                        <rect key="frame" x="20" y="0.0" width="216.5" height="29"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="robovmIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="nHL-eK-3N1">
+                                        <rect key="frame" x="0.0" y="59" width="256" height="256"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="256" id="5wH-JY-DO8"/>
+                                            <constraint firstAttribute="width" constant="256" id="RXs-Rc-fyz"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RJ4-JD-0oH">
+                                        <rect key="frame" x="75" y="345" width="106" height="30"/>
+                                        <animations/>
+                                        <state key="normal" title="Increase Rating"/>
+                                        <connections>
+                                            <action selector="increaseRating" destination="Rw5-ns-KcI" eventType="touchUpInside" id="Mv1-di-3WL"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fSl-HJ-wFd" userLabel="Rating View">
+                                        <rect key="frame" x="0.0" y="405" width="256" height="70"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="oV8-1i-P9G"/>
+                                        </constraints>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6WK-0H-Jkt">
+                                        <rect key="frame" x="71" y="505" width="113" height="30"/>
+                                        <animations/>
+                                        <state key="normal" title="Decrease Rating"/>
+                                        <connections>
+                                            <action selector="decreaseRating" destination="Rw5-ns-KcI" eventType="touchUpInside" id="74I-Wf-Aup"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstItem="fSl-HJ-wFd" firstAttribute="leading" secondItem="VmL-bI-aXz" secondAttribute="leading" id="DBM-FF-Uae"/>
+                                    <constraint firstAttribute="trailing" secondItem="fSl-HJ-wFd" secondAttribute="trailing" id="r6b-0m-TDM"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VmL-bI-aXz" firstAttribute="centerY" secondItem="xOT-TG-81E" secondAttribute="centerY" id="35v-mK-Zy9"/>
+                            <constraint firstItem="VmL-bI-aXz" firstAttribute="centerX" secondItem="xOT-TG-81E" secondAttribute="centerX" id="TJV-Y2-tAS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="ratingsStack" destination="fSl-HJ-wFd" id="hjR-Rk-5ju"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-Qu-SKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="620" y="320"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="robovmIcon.png" width="512" height="512"/>
+    </resources>
+</document>
