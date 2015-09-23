@@ -14,9 +14,9 @@
     <version>1.0</version>
 
     <properties>
-        <robovm.version>1.8.1-SNAPSHOT</robovm.version>
-        <robovm.maven.version>1.8.1-SNAPSHOT</robovm.maven.version>
-        <robopods.version>1.8.1-SNAPSHOT</robopods.version>
+        <robovm.version>1.8.0</robovm.version>
+        <robovm.maven.version>1.8.0</robovm.maven.version>
+        <robopods.version>1.8.0</robopods.version>
     </properties>
 
     <pluginRepositories>
