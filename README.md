@@ -60,6 +60,18 @@ To run in the iPad simulator: Right-click the project. Choose *Run As -> iOS Sim
 
 To run on a connected device: Right-click the project. Choose *Run As -> iOS Device App*.
 
+## Adding a new sample
+
+1. Checkout the repo and switch to the 'snapshot' branch.
+1. Create a new project in RoboVM Studio, saving it as a sub-directory of robovm-samples.
+1. During project creation, make sure all properties are correct (e.g. _package name_: org.robovm.samples.yoursample).
+1. Replace the build.gradle in your project with a build.gradle from another sample.
+1. Edit the build.gradle file by changing the main class to your own.
+1. Replace the pom.xml in your project with a pom.xml from another sample.
+1. Change the _artifactId_ and _name_ tags in the pom.xml file to match your own.
+1. Add the sample in __both__ the root/settings.gradle and root/pom.xml files.
+1. Insert a row about your sample into the table below.
+
 ## Short description of each sample
 
 
