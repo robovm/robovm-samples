@@ -1,5 +1,16 @@
+import groovy.json.JsonSlurper
+
 buildscript {
-    project.ext.roboVMVersion = "1.8.0"
+    def versionFile = file('versions.json')
+    def json = new JsonSlurper().parseText(versionFile.text)
+
+    ext {
+        gdxVersion = json.libGDXVersion
+        roboVMVersion = json.roboVMVersion
+        androidGradleToolsVersion = json.androidGradleToolsVersion
+        androidBuildToolsVersion = json.androidBuildToolsVersion
+        androidSDKVersion = Integer.parseInt(json.androidSDKVersion)
+    }    
 
     repositories {
         jcenter()
@@ -8,8 +19,8 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.1'
-        classpath group: 'org.robovm', name: 'robovm-gradle-plugin', version: project.roboVMVersion
+        classpath 'com.android.tools.build:gradle:' + androidGradleToolsVersion
+        classpath 'org.robovm:robovm-gradle-plugin:' + roboVMVersion
     }
 }
 
@@ -45,8 +56,8 @@ project(":android") {
     targetCompatibility = 1.7
 
     android {
-        compileSdkVersion 23
-        buildToolsVersion "23.0.1"
+        buildToolsVersion androidBuildToolsVersion
+        compileSdkVersion androidSDKVersion
 
         defaultConfig {
             applicationId "org.robovm.samples.contractr.android"
@@ -91,8 +102,8 @@ project(":ios") {
     
     dependencies {        
         compile project(":core")
-        compile group: 'org.robovm', name: 'robovm-rt', version: project.roboVMVersion
-        compile group: 'org.robovm', name: 'robovm-cocoatouch', version: project.roboVMVersion
+        compile group: 'org.robovm', name: 'robovm-rt', version: roboVMVersion
+        compile group: 'org.robovm', name: 'robovm-cocoatouch', version: roboVMVersion
     }
 }
 
