@@ -49,7 +49,7 @@ public class MetalBasic3DViewController extends UIViewController {
     public double getTimeSinceLastDraw() {
         return timeSinceLastDraw;
     }
-    
+
     private void initCommon() {
         renderer = new MetalBasic3DRenderer();
         delegate = renderer;
@@ -59,29 +59,21 @@ public class MetalBasic3DViewController extends UIViewController {
     }
 
     // called when loaded from nib
-    @Override
-    protected long init(String nibNameOrNil, NSBundle nibBundleOrNil) {
-        long self = super.init(nibNameOrNil, nibBundleOrNil);
-        if (self != 0) {
-            initCommon();
-        }
-        return self;
+    public MetalBasic3DViewController(String nibName, NSBundle nibBundle) {
+        super(nibName, nibBundle);
+        initCommon();
     }
 
     // called when loaded from storyboard
-    @Override
-    protected long init(NSCoder aDecoder) {
-        long self = super.init(aDecoder);
-        if (self != 0) {
-            initCommon();
-        }
-        return self;
+    public MetalBasic3DViewController(NSCoder decoder) {
+        super(decoder);
+        initCommon();
     }
 
     public void setDelegate(MetalBasic3DViewControllerDelegate delegate) {
         this.delegate = delegate;
     }
-    
+
     private void dispatchGameLoop() {
         // create a game loop timer using a display link
         timer = UIScreen.getMainScreen().getDisplayLink(this, Selector.register("gameloop"));
@@ -163,7 +155,7 @@ public class MetalBasic3DViewController extends UIViewController {
         super.viewDidLoad();
 
         MetalBasic3DView renderView = (MetalBasic3DView) this.getView();
-        renderView.setDelegate(renderer);;
+        renderView.setDelegate(renderer);
 
         // load all renderer assets before starting game loop
         renderer.configure(renderView);

@@ -45,12 +45,10 @@ public class RootViewController extends UITableViewController {
     private static final String PLACEHOLDER_CELL_IDENTIFIER = "PlaceholderCell";
 
     public class MyTableViewCell extends UITableViewCell {
-        @Override
-        protected long init(UITableViewCellStyle style, String reuseIdentifier) {
-            // TODO use constructor when fixed
+        public MyTableViewCell(UITableViewCellStyle style, String reuseIdentifier) {
             // ignore the style argument and force the creation with style
             // UITableViewCellStyleSubtitle
-            return super.init(UITableViewCellStyle.Subtitle, reuseIdentifier);
+            super(UITableViewCellStyle.Subtitle, reuseIdentifier);
         }
     }
 

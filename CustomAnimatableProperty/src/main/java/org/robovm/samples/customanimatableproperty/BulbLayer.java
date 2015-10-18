@@ -32,37 +32,45 @@ import org.robovm.apple.foundation.NSNumber;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.objc.annotation.Method;
 
-/** The custom CALayer subclass which implements a custom implicitly animatable property. */
+/**
+ * The custom CALayer subclass which implements a custom implicitly animatable
+ * property.
+ */
 public class BulbLayer extends CALayer {
-
     private float brightness;
 
-    /** For CALayer subclasses, always support initWithLayer: by copying over custom properties. */
-    @Override
-    protected long init (CALayer layer) {
-        System.err.println("ujujuj");
+    /**
+     * For CALayer subclasses, always support initWithLayer: by copying over
+     * custom properties.
+     */
+    public BulbLayer(CALayer layer) {
+        super(layer);
         if (layer instanceof BulbLayer) {
-            this.brightness = ((BulbLayer)layer).brightness;
+            this.brightness = ((BulbLayer) layer).brightness;
         }
-        return super.init(layer);
     }
 
-    /** Instruct to Core Animation that a change in the custom "brightness" property should automatically trigger a redraw of the
-     * layer
+    /**
+     * Instruct to Core Animation that a change in the custom "brightness"
+     * property should automatically trigger a redraw of the layer
+     * 
      * @param key
-     * @return */
+     * @return
+     */
     @Method(selector = "needsDisplayForKey:")
-    public static boolean needsDisplay (String key) {
-        System.err.println("needs display");
+    public static boolean needsDisplay(String key) {
         if (key.equals("brightness")) {
             return true;
         }
         return CALayer.needsDisplay(key);
     }
 
-    /** Needed to support implicit animation of this property. Return the basic animation the implicit animation will leverage. */
+    /**
+     * Needed to support implicit animation of this property. Return the basic
+     * animation the implicit animation will leverage.
+     */
     @Override
-    public CAAction getAction (String event) {
+    public CAAction getAction(String event) {
         System.err.printf("event: %@", event);
 
         if (event.equals("brightness")) {
@@ -72,8 +80,10 @@ public class BulbLayer extends CALayer {
                 CAKeyframeAnimation theAnimation = new CAKeyframeAnimation();
                 theAnimation.setKeyPath(event);
 
-                // Hint: the previous value of the property is stored in the presentationLayer
-                // Since for implicit animations, the model property is already set to the new value.
+                // Hint: the previous value of the property is stored in the
+                // presentationLayer
+                // Since for implicit animations, the model property is already
+                // set to the new value.
                 theAnimation.setCalculationMode(CAAnimationCalculationMode.Discrete);
                 NSArray<NSObject> animationValues = new NSMutableArray<>();
 
@@ -100,8 +110,10 @@ public class BulbLayer extends CALayer {
 
                 // Create a basic interpolation for "brightness" animation
                 CABasicAnimation theAnimation = new CABasicAnimation();
-                // Hint: the previous value of the property is stored in the presentationLayer
-                // Since for implicit animations, the model property is already set to the new value.
+                // Hint: the previous value of the property is stored in the
+                // presentationLayer
+                // Since for implicit animations, the model property is already
+                // set to the new value.
                 theAnimation.setFromValue(getPresentationLayer().getKeyValueCoder().getValue(event));
                 return theAnimation;
 
@@ -111,11 +123,11 @@ public class BulbLayer extends CALayer {
         return super.getAction(event);
     }
 
-    public float getBrightness () {
+    public float getBrightness() {
         return brightness;
     }
 
-    public void setBrightness (float brightness) {
+    public void setBrightness(float brightness) {
         this.brightness = brightness;
     }
 

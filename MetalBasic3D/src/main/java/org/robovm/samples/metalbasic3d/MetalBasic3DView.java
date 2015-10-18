@@ -39,17 +39,10 @@ import org.robovm.apple.metal.MTLStoreAction;
 import org.robovm.apple.metal.MTLTexture;
 import org.robovm.apple.metal.MTLTextureDescriptor;
 import org.robovm.apple.metal.MTLTextureType;
-import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIView;
-import org.robovm.apple.uikit.UIWindow;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.Method;
-import org.robovm.rt.bro.annotation.ByVal;
-import org.robovm.rt.bro.annotation.Pointer;
 
-/**
- * 
- */
 @CustomClass("MetalBasic3DView")
 public class MetalBasic3DView extends UIView {
     private MetalBasic3DViewDelegate delegate;
@@ -87,31 +80,31 @@ public class MetalBasic3DView extends UIView {
     public MTLDevice getDevice() {
         return device;
     }
-    
+
     public long getSampleCount() {
         return sampleCount;
     }
-    
+
     public MTLPixelFormat getDepthPixelFormat() {
         return depthPixelFormat;
     }
-    
+
     public void setDepthPixelFormat(MTLPixelFormat depthPixelFormat) {
         this.depthPixelFormat = depthPixelFormat;
     }
-    
+
     public void setStencilPixelFormat(MTLPixelFormat stencilPixelFormat) {
         this.stencilPixelFormat = stencilPixelFormat;
     }
-    
+
     public void setSampleCount(long sampleCount) {
         this.sampleCount = sampleCount;
     }
-    
+
     public void setDelegate(MetalBasic3DViewDelegate delegate) {
         this.delegate = delegate;
     }
-    
+
     private void initCommon() {
         setOpaque(true);
         setBackgroundColor(null);
@@ -130,22 +123,14 @@ public class MetalBasic3DView extends UIView {
         setContentScaleFactor(getWindow().getScreen().getNativeScale());
     }
 
-    @Override
-    public @Pointer long init(@ByVal CGRect frame) {
-        long self = super.init(frame);
-        if (self != 0) {
-            initCommon();
-        }
-        return self;
+    public MetalBasic3DView(CGRect frame) {
+        super(frame);
+        initCommon();
     }
 
-    @Override
-    protected long init(NSCoder aDecoder) {
-        long self = super.init(aDecoder);
-        if (self != 0) {
-            initCommon();
-        }
-        return self;
+    public MetalBasic3DView(NSCoder decoder) {
+        super(decoder);
+        initCommon();
     }
 
     public void releaseTextures() {
