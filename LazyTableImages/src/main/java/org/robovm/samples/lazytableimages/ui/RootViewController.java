@@ -44,7 +44,7 @@ public class RootViewController extends UITableViewController {
     private static final String CELL_IDENTIFIER = "LazyTableCell";
     private static final String PLACEHOLDER_CELL_IDENTIFIER = "PlaceholderCell";
 
-    public class MyTableViewCell extends UITableViewCell {
+    public static class MyTableViewCell extends UITableViewCell {
         public MyTableViewCell(UITableViewCellStyle style, String reuseIdentifier) {
             // ignore the style argument and force the creation with style
             // UITableViewCellStyleSubtitle
