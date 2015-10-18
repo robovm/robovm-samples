@@ -28,6 +28,7 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("AAPLDefaultSearchBarViewController")
 public class AAPLDefaultSearchBarViewController extends UIViewController {
+    @IBOutlet
     private UISearchBar searchBar;
 
     @Override
@@ -65,10 +66,5 @@ public class AAPLDefaultSearchBarViewController extends UIViewController {
         searchBar.setShowsScopeBar(true);
 
         searchBar.setScopeButtonTitles(Arrays.asList("Scope One", "Scope Two"));
-    }
-
-    @IBOutlet
-    private void setSearchBar(UISearchBar searchBar) {
-        this.searchBar = searchBar;
     }
 }

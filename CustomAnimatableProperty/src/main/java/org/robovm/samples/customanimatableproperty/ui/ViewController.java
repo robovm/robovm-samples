@@ -28,7 +28,7 @@ import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.samples.customanimateproperty.BulbView;
+import org.robovm.samples.customanimatableproperty.BulbView;
 
 /**
  * The view controller creates a few blub views which host the custom layer

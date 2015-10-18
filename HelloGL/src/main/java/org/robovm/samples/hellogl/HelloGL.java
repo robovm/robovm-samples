@@ -26,12 +26,11 @@ import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
 
 public class HelloGL extends UIApplicationDelegateAdapter {
-
     private UIWindow window;
 
     @Override
-    public boolean didFinishLaunching (UIApplication application,
-                                       UIApplicationLaunchOptions launchOptions) {
+    public boolean didFinishLaunching(UIApplication application,
+            UIApplicationLaunchOptions launchOptions) {
         // create our EAGLContext
         EAGLContext ctx = new EAGLContext(EAGLRenderingAPI.OpenGLES2);
 
@@ -42,14 +41,15 @@ public class HelloGL extends UIApplicationDelegateAdapter {
         // Make the window visible.
         window.makeKeyAndVisible();
 
-        // Retains the window object until the application is deallocated. Prevents Java GC from
+        // Retains the window object until the application is deallocated.
+        // Prevents Java GC from
         // collecting the window object too early.
         addStrongRef(window);
 
         return true;
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, HelloGL.class);
         pool.close();

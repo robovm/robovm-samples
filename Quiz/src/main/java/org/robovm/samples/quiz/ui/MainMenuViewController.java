@@ -44,11 +44,16 @@ import org.robovm.samples.quiz.model.Quiz;
 @CustomClass("MainMenuViewController")
 public class MainMenuViewController extends UIViewController implements UITableViewDataSource {
     private float highScore;
+    @IBOutlet
     private UITableView tableView;
 
-    @IBOutlet
-    public void setTableView(UITableView tableView) {
-        this.tableView = tableView;
+    @Override
+    public void viewDidLoad() {
+        super.viewDidLoad();
+
+        // No highscrore when the view first loads.
+        highScore = -1;
+
         tableView.setDelegate(new UITableViewDelegateAdapter() {
             /**
              * This delegate method is implemented because the height of the
@@ -84,14 +89,6 @@ public class MainMenuViewController extends UIViewController implements UITableV
                 return tableView.getRowHeight();
             }
         });
-    }
-
-    @Override
-    public void viewDidLoad() {
-        super.viewDidLoad();
-
-        // No highscrore when the view first loads.
-        highScore = -1;
     }
 
     @Override

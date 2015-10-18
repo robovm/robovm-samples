@@ -29,6 +29,7 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("AAPLDefaultToolbarViewController")
 public class AAPLDefaultToolbarViewController extends UIViewController implements UIBarButtonItem.OnClickListener {
+    @IBOutlet
     private UIToolbar toolbar;
 
     @Override
@@ -61,10 +62,5 @@ public class AAPLDefaultToolbarViewController extends UIViewController implement
     @Override
     public void onClick(UIBarButtonItem barButtonItem) {
         System.out.println(String.format("A bar button item on the default toolbar was clicked: %s.", barButtonItem));
-    }
-
-    @IBOutlet
-    private void setToolbar(UIToolbar toolbar) {
-        this.toolbar = toolbar;
     }
 }

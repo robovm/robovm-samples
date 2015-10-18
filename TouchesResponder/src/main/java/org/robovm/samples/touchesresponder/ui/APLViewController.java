@@ -41,18 +41,25 @@ public class APLViewController extends UIViewController {
                                 // on top of each other.
 
     // Views the user can move
+    @IBOutlet
     private UIImageView firstPieceView;
+    @IBOutlet
     private UIImageView secondPieceView;
+    @IBOutlet
     private UIImageView thirdPieceView;
 
     // Displays the touch phase.
+    @IBOutlet
     private UILabel touchPhaseText;
     // Displays touch information for multiple taps.
+    @IBOutlet
     private UILabel touchInfoText;
     // Displays touch tracking information.
+    @IBOutlet
     private UILabel touchTrackingText;
     // Displays instructions for how to split apart pieces that are on top of
     // each other.
+    @IBOutlet
     private UILabel touchInstructionsText;
 
     /**
@@ -234,40 +241,5 @@ public class APLViewController extends UIViewController {
         // scaling effect.
         view.setTransform(CGAffineTransform.Identity());
         UIView.commitAnimations();
-    }
-
-    @IBOutlet
-    private void setFirstPieceView(UIImageView firstPieceView) {
-        this.firstPieceView = firstPieceView;
-    }
-
-    @IBOutlet
-    private void setSecondPieceView(UIImageView secondPieceView) {
-        this.secondPieceView = secondPieceView;
-    }
-
-    @IBOutlet
-    private void setThirdPieceView(UIImageView thirdPieceView) {
-        this.thirdPieceView = thirdPieceView;
-    }
-
-    @IBOutlet
-    private void setTouchPhaseText(UILabel touchPhaseText) {
-        this.touchPhaseText = touchPhaseText;
-    }
-
-    @IBOutlet
-    private void setTouchInfoText(UILabel touchInfoText) {
-        this.touchInfoText = touchInfoText;
-    }
-
-    @IBOutlet
-    private void setTouchTrackingText(UILabel touchTrackingText) {
-        this.touchTrackingText = touchTrackingText;
-    }
-
-    @IBOutlet
-    private void setTouchInstructionsText(UILabel touchInstructionsText) {
-        this.touchInstructionsText = touchInstructionsText;
     }
 }

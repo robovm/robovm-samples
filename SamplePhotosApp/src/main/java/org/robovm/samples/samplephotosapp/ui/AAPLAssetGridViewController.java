@@ -71,6 +71,7 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
     private PHFetchResult<PHAsset> assetsFetchResults;
     private PHAssetCollection assetCollection;
 
+    @IBOutlet
     private UIBarButtonItem addButton;
     private PHCachingImageManager imageManager = new PHCachingImageManager();
     private CGRect previousPreheatRect;
@@ -364,10 +365,5 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
 
     public void setAssetCollection(PHAssetCollection assetCollection) {
         this.assetCollection = assetCollection;
-    }
-
-    @IBOutlet
-    private void setAddButton(UIBarButtonItem addButton) {
-        this.addButton = addButton;
     }
 }

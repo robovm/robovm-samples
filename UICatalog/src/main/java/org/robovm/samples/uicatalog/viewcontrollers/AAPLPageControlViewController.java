@@ -29,7 +29,9 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLPageControlViewController")
 public class AAPLPageControlViewController extends UIViewController implements UIControl.OnValueChangedListener {
+    @IBOutlet
     private UIPageControl pageControl;
+    @IBOutlet
     private UIView colorView;
     private UIColor[] colors;
 
@@ -56,16 +58,6 @@ public class AAPLPageControlViewController extends UIViewController implements U
         pageControl.setCurrentPageIndicatorTintColor(Colors.PURPLE);
 
         pageControl.addOnValueChangedListener(this);
-    }
-
-    @IBOutlet
-    private void setPageControl(UIPageControl pageControl) {
-        this.pageControl = pageControl;
-    }
-
-    @IBOutlet
-    private void setColorView(UIView colorView) {
-        this.colorView = colorView;
     }
 
     @Override

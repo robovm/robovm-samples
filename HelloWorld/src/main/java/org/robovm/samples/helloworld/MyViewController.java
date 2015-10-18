@@ -30,7 +30,9 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("MyViewController")
 public class MyViewController extends UIViewController {
+    @IBOutlet
     private UITextField textField;
+    @IBOutlet
     private UILabel label;
     private String string;
 
@@ -71,15 +73,5 @@ public class MyViewController extends UIViewController {
         // Revert the text field to the previous value.
         textField.setText(string);
         super.touchesBegan(touches, event);
-    }
-
-    @IBOutlet
-    public void setTextField(UITextField textField) {
-        this.textField = textField;
-    }
-
-    @IBOutlet
-    public void setLabel(UILabel label) {
-        this.label = label;
     }
 }

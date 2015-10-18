@@ -42,8 +42,11 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("APLViewController")
 public class APLViewController extends UIViewController implements UIGestureRecognizerDelegate {
+    @IBOutlet
     private UIImageView firstPieceView;
+    @IBOutlet
     private UIImageView secondPieceView;
+    @IBOutlet
     private UIImageView thirdPieceView;
 
     private UIView pieceForReset;
@@ -208,21 +211,6 @@ public class APLViewController extends UIViewController implements UIGestureReco
         }
 
         return true;
-    }
-
-    @IBOutlet
-    private void setFirstPieceView(UIImageView firstPieceView) {
-        this.firstPieceView = firstPieceView;
-    }
-
-    @IBOutlet
-    private void setSecondPieceView(UIImageView secondPieceView) {
-        this.secondPieceView = secondPieceView;
-    }
-
-    @IBOutlet
-    private void setThirdPieceView(UIImageView thirdPieceView) {
-        this.thirdPieceView = thirdPieceView;
     }
 
     @Override

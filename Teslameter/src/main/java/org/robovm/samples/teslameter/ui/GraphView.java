@@ -27,7 +27,9 @@ import org.robovm.objc.annotation.CustomClass;
 @CustomClass("GraphView")
 public class GraphView extends UIView {
     private int nextIndex;
-    private double[][] history;
+    private final double[][] history = new double[150][3];
+
+    public GraphView() {}
 
     public void updateHistory(double x, double y, double z) {
         // Add to history.
@@ -109,11 +111,6 @@ public class GraphView extends UIView {
     @Override
     public void draw(CGRect rect) {
         int index = nextIndex;
-
-        if (history == null) {
-            // TODO move to constructor when #894 is fixed
-            history = new double[150][3];
-        }
 
         CGContext context = UIGraphics.getCurrentContext();
         CGRect bounds = new CGRect(0, 0, getBounds().getSize().getWidth(), getBounds().getSize().getHeight());

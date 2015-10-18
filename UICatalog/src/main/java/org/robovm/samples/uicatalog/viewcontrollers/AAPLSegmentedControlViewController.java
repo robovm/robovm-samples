@@ -38,9 +38,13 @@ import org.robovm.samples.uicatalog.Colors;
 @CustomClass("AAPLSegmentedControlViewController")
 public class AAPLSegmentedControlViewController extends UITableViewController implements
         UIControl.OnValueChangedListener {
+    @IBOutlet
     private UISegmentedControl defaultSegmentedControl;
+    @IBOutlet
     private UISegmentedControl tintedSegmentedControl;
+    @IBOutlet
     private UISegmentedControl customSegmentsSegmentedControl;
+    @IBOutlet
     private UISegmentedControl customBackgroundSegmentedControl;
 
     @Override
@@ -129,25 +133,5 @@ public class AAPLSegmentedControlViewController extends UITableViewController im
     @Override
     public void onValueChanged(UIControl control) {
         System.out.println(String.format("The selected segment changed for: %s.", control));
-    }
-
-    @IBOutlet
-    private void setDefaultSegmentedControl(UISegmentedControl defaultSegmentedControl) {
-        this.defaultSegmentedControl = defaultSegmentedControl;
-    }
-
-    @IBOutlet
-    private void setTintedSegmentedControl(UISegmentedControl tintedSegmentedControl) {
-        this.tintedSegmentedControl = tintedSegmentedControl;
-    }
-
-    @IBOutlet
-    private void setCustomSegmentsSegmentedControl(UISegmentedControl customSegmentsSegmentedControl) {
-        this.customSegmentsSegmentedControl = customSegmentsSegmentedControl;
-    }
-
-    @IBOutlet
-    private void setCustomBackgroundSegmentedControl(UISegmentedControl customBackgroundSegmentedControl) {
-        this.customBackgroundSegmentedControl = customBackgroundSegmentedControl;
     }
 }

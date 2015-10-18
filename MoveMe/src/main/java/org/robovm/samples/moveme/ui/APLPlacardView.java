@@ -25,14 +25,10 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("APLPlacardView")
 public class APLPlacardView extends UIView {
+    @IBOutlet
     private UILabel textLabel;
 
     public void setDisplayString(String displayString) {
         textLabel.setText(displayString);
-    }
-
-    @IBOutlet
-    private void setTextLabel(UILabel textLabel) {
-        this.textLabel = textLabel;
     }
 }

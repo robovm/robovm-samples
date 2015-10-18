@@ -34,7 +34,9 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("AAPLDatePickerController")
 public class AAPLDatePickerController extends UIViewController implements UIControl.OnValueChangedListener {
+    @IBOutlet
     private UIDatePicker datePicker;
+    @IBOutlet
     private UILabel dateLabel;
 
     private NSDateFormatter dateFormatter;
@@ -76,16 +78,6 @@ public class AAPLDatePickerController extends UIViewController implements UICont
         datePicker.addOnValueChangedListener(this);
 
         onValueChanged(null);
-    }
-
-    @IBOutlet
-    private void setDatePicker(UIDatePicker datePicker) {
-        this.datePicker = datePicker;
-    }
-
-    @IBOutlet
-    private void setDateLabel(UILabel dateLabel) {
-        this.dateLabel = dateLabel;
     }
 
     @Override

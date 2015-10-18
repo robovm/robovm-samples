@@ -36,7 +36,9 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("AAPLWebViewController")
 public class AAPLWebViewController extends UIViewController implements UIWebViewDelegate, UITextFieldDelegate {
+    @IBOutlet
     private UIWebView webView;
+    @IBOutlet
     private UITextField addressTextField;
 
     @Override
@@ -127,15 +129,5 @@ public class AAPLWebViewController extends UIViewController implements UIWebView
     @Override
     public boolean shouldClear(UITextField textField) {
         return true;
-    }
-
-    @IBOutlet
-    private void setWebView(UIWebView webView) {
-        this.webView = webView;
-    }
-
-    @IBOutlet
-    private void setAddressTextField(UITextField addressTextField) {
-        this.addressTextField = addressTextField;
     }
 }

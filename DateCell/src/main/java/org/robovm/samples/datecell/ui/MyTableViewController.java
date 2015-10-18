@@ -92,10 +92,12 @@ public class MyTableViewController extends UITableViewController {
 
     private double pickerCellRowHeight;
 
+    @IBOutlet
     private UIDatePicker pickerView;
 
     // this button appears only when the date picker is shown (iOS 6.1.x or
     // earlier)
+    @IBOutlet
     private UIBarButtonItem doneButton;
 
     private NSObject localeNotif;
@@ -465,15 +467,5 @@ public class MyTableViewController extends UITableViewController {
         // deselect the current table cell
         NSIndexPath indexPath = getTableView().getIndexPathForSelectedRow();
         getTableView().deselectRow(indexPath, true);
-    }
-
-    @IBOutlet
-    private void setPickerView(UIDatePicker pickerView) {
-        this.pickerView = pickerView;
-    }
-
-    @IBOutlet
-    private void setDoneButton(UIBarButtonItem doneButton) {
-        this.doneButton = doneButton;
     }
 }

@@ -40,6 +40,7 @@ import org.robovm.objc.annotation.IBOutlet;
 public class MessageComposerViewController extends UIViewController implements MFMailComposeViewControllerDelegate,
         MFMessageComposeViewControllerDelegate {
     /* UILabel for displaying the result of sending the message. */
+    @IBOutlet
     private UILabel feedbackMsg;
 
     @IBAction
@@ -122,11 +123,6 @@ public class MessageComposerViewController extends UIViewController implements M
         picker.setBody("Hello from California!");
 
         presentViewController(picker, true, null);
-    }
-
-    @IBOutlet
-    private void setFeedbackMsg(UILabel feedbackMsg) {
-        this.feedbackMsg = feedbackMsg;
     }
 
     /**

@@ -39,7 +39,9 @@ import org.robovm.objc.block.VoidBlock2;
 
 @CustomClass("MapViewController")
 public class MapViewController extends UIViewController {
+    @IBOutlet
     private MKMapView mapView;
+    @IBOutlet
     private UIBarButtonItem getAddressButton;
 
     private CLGeocoder geocoder;
@@ -101,15 +103,5 @@ public class MapViewController extends UIViewController {
             PlacemarkViewController viewController = (PlacemarkViewController) segue.getDestinationViewController();
             viewController.setPlacemark(placemark);
         }
-    }
-
-    @IBOutlet
-    private void setMapView(MKMapView mapView) {
-        this.mapView = mapView;
-    }
-
-    @IBOutlet
-    private void setGetAddressButton(UIBarButtonItem getAddressButton) {
-        this.getAddressButton = getAddressButton;
     }
 }

@@ -35,6 +35,7 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLCustomToolbarViewController")
 public class AAPLCustomToolbarViewController extends UIViewController implements UIBarButtonItem.OnClickListener {
+    @IBOutlet
     private UIToolbar toolbar;
 
     @Override
@@ -79,10 +80,5 @@ public class AAPLCustomToolbarViewController extends UIViewController implements
     @Override
     public void onClick(UIBarButtonItem barButtonItem) {
         System.out.println(String.format("A bar button item on the custom toolbar was clicked: %s.", barButtonItem));
-    }
-
-    @IBOutlet
-    private void setToolbar(UIToolbar toolbar) {
-        this.toolbar = toolbar;
     }
 }

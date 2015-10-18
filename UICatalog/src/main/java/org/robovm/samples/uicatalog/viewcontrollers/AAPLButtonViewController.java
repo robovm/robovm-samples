@@ -34,10 +34,15 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLButtonViewController")
 public class AAPLButtonViewController extends UITableViewController implements UIControl.OnTouchUpInsideListener {
+    @IBOutlet
     private UIButton systemTextButton;
+    @IBOutlet
     private UIButton systemContactAddButton;
+    @IBOutlet
     private UIButton systemDetailDisclosureButton;
+    @IBOutlet
     private UIButton imageButton;
+    @IBOutlet
     private UIButton attributedTextButton;
 
     @Override
@@ -107,30 +112,5 @@ public class AAPLButtonViewController extends UITableViewController implements U
     @Override
     public void onTouchUpInside(UIControl control, UIEvent event) {
         System.out.println(String.format("A button was clicked: %s", control));
-    }
-
-    @IBOutlet
-    private void setSystemTextButton(UIButton systemTextButton) {
-        this.systemTextButton = systemTextButton;
-    }
-
-    @IBOutlet
-    private void setSystemContactAddButton(UIButton systemContactAddButton) {
-        this.systemContactAddButton = systemContactAddButton;
-    }
-
-    @IBOutlet
-    private void setSystemDetailDisclosureButton(UIButton systemDetailDisclosureButton) {
-        this.systemDetailDisclosureButton = systemDetailDisclosureButton;
-    }
-
-    @IBOutlet
-    private void setImageButton(UIButton imageButton) {
-        this.imageButton = imageButton;
-    }
-
-    @IBOutlet
-    private void setAttributedTextButton(UIButton attributedTextButton) {
-        this.attributedTextButton = attributedTextButton;
     }
 }

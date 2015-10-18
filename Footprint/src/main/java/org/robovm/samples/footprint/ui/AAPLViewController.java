@@ -41,8 +41,11 @@ import org.robovm.samples.footprint.ui.AAPLCoordinateConverter.AAPLGeoAnchorPair
 
 @CustomClass("AAPLViewController")
 public class AAPLViewController extends UIViewController {
+    @IBOutlet
     private UIImageView imageView;
+    @IBOutlet
     private UIImageView pinView;
+    @IBOutlet
     private UIImageView radiusView;
 
     private CLLocationManager locationManager;
@@ -180,20 +183,5 @@ public class AAPLViewController extends UIViewController {
         // Upon rotation, we want to resize the image and center it
         // appropriately.
         setScaleAndOffset();
-    }
-
-    @IBOutlet
-    private void setImageView(UIImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    @IBOutlet
-    private void setPinView(UIImageView pinView) {
-        this.pinView = pinView;
-    }
-
-    @IBOutlet
-    private void setRadiusView(UIImageView radiusView) {
-        this.radiusView = radiusView;
     }
 }

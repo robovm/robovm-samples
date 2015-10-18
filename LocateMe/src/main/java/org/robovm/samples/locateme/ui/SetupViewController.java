@@ -57,7 +57,9 @@ public class SetupViewController extends UIViewController {
     private List<AccuracyOption> accuracyOptions;
     private boolean configureForTracking;
 
+    @IBOutlet
     private UIPickerView accuracyPicker;
+    @IBOutlet
     private UISlider slider;
 
     @Override
@@ -130,15 +132,5 @@ public class SetupViewController extends UIViewController {
 
     public void configure(boolean tracking) {
         configureForTracking = tracking;
-    }
-
-    @IBOutlet
-    private void setAccuracyPicker(UIPickerView accuracyPicker) {
-        this.accuracyPicker = accuracyPicker;
-    }
-
-    @IBOutlet
-    private void setSlider(UISlider slider) {
-        this.slider = slider;
     }
 }

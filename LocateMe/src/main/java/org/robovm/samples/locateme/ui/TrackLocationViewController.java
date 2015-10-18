@@ -63,9 +63,14 @@ import org.robovm.samples.locateme.util.Str;
 @CustomClass("TrackLocationViewController")
 public class TrackLocationViewController extends UIViewController implements SetupViewControllerDelegate {
     private SetupViewController setupViewController;
+
+    @IBOutlet
     private UIButton startButton;
+    @IBOutlet
     private UILabel descriptionLabel;
+    @IBOutlet
     private UITableView tableView;
+
     private CLLocationManager locationManager;
     private List<CLLocation> locationMeasurements;
     private NSDateFormatter dateFormatter;
@@ -339,20 +344,5 @@ public class TrackLocationViewController extends UIViewController implements Set
                     }
                 });
         getNavigationItem().setLeftBarButtonItem(resetItem, true);
-    }
-
-    @IBOutlet
-    private void setStartButton(UIButton startButton) {
-        this.startButton = startButton;
-    }
-
-    @IBOutlet
-    private void setDescriptionLabel(UILabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
-    }
-
-    @IBOutlet
-    private void setTableView(UITableView tableView) {
-        this.tableView = tableView;
     }
 }

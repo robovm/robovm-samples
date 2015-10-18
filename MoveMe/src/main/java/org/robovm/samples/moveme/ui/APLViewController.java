@@ -28,6 +28,7 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("APLViewController")
 public class APLViewController extends UIViewController {
+    @IBOutlet
     private APLMoveMeView moveMeView;
 
     @Override
@@ -47,10 +48,5 @@ public class APLViewController extends UIViewController {
         } catch (NSErrorException e) {
             throw new Error(e);
         }
-    }
-
-    @IBOutlet
-    private void setMoveMeView(APLMoveMeView moveMeView) {
-        this.moveMeView = moveMeView;
     }
 }

@@ -27,7 +27,9 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLSwitchViewController")
 public class AAPLSwitchViewController extends UITableViewController implements UIControl.OnValueChangedListener {
+    @IBOutlet
     private UISwitch defaultSwitch;
+    @IBOutlet
     private UISwitch tintedSwitch;
 
     @Override
@@ -54,15 +56,5 @@ public class AAPLSwitchViewController extends UITableViewController implements U
     @Override
     public void onValueChanged(UIControl control) {
         System.out.println(String.format("A switch changed its value: %s.", control));
-    }
-
-    @IBOutlet
-    private void setDefaultSwitch(UISwitch defaultSwitch) {
-        this.defaultSwitch = defaultSwitch;
-    }
-
-    @IBOutlet
-    private void setTintedSwitch(UISwitch tintedSwitch) {
-        this.tintedSwitch = tintedSwitch;
     }
 }

@@ -30,6 +30,7 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLTintedToolbarViewController")
 public class AAPLTintedToolbarViewController extends UIViewController implements UIBarButtonItem.OnClickListener {
+    @IBOutlet
     private UIToolbar toolbar;
 
     @Override
@@ -67,10 +68,5 @@ public class AAPLTintedToolbarViewController extends UIViewController implements
     @Override
     public void onClick(UIBarButtonItem barButtonItem) {
         System.out.println(String.format("A bar button item on the tinted toolbar was clicked: %s.", barButtonItem));
-    }
-
-    @IBOutlet
-    private void setToolbar(UIToolbar toolbar) {
-        this.toolbar = toolbar;
     }
 }

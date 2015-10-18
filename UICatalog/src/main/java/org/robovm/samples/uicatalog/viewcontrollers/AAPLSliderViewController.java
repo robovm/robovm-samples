@@ -30,8 +30,11 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLSliderViewController")
 public class AAPLSliderViewController extends UITableViewController implements OnValueChangedListener {
+    @IBOutlet
     private UISlider defaultSlider;
+    @IBOutlet
     private UISlider tintedSlider;
+    @IBOutlet
     private UISlider customSlider;
 
     @Override
@@ -75,21 +78,6 @@ public class AAPLSliderViewController extends UITableViewController implements O
         customSlider.setValue(84);
 
         customSlider.addOnValueChangedListener(this);
-    }
-
-    @IBOutlet
-    private void setDefaultSlider(UISlider defaultSlider) {
-        this.defaultSlider = defaultSlider;
-    }
-
-    @IBOutlet
-    private void setTintedSlider(UISlider tintedSlider) {
-        this.tintedSlider = tintedSlider;
-    }
-
-    @IBOutlet
-    private void setCustomSlider(UISlider customSlider) {
-        this.customSlider = customSlider;
     }
 
     @Override

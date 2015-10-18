@@ -64,8 +64,11 @@ import org.robovm.samples.locateme.util.Str;
 
 @CustomClass("GetLocationViewController")
 public class GetLocationViewController extends UIViewController implements SetupViewControllerDelegate {
+    @IBOutlet
     private UIButton startButton;
+    @IBOutlet
     private UILabel descriptionLabel;
+    @IBOutlet
     private UITableView tableView;
 
     private SetupViewController setupViewController;
@@ -408,20 +411,5 @@ public class GetLocationViewController extends UIViewController implements Setup
         stateString = Str.getLocalizedString("Updating");
 
         tableView.reloadData();
-    }
-
-    @IBOutlet
-    private void setStartButton(UIButton startButton) {
-        this.startButton = startButton;
-    }
-
-    @IBOutlet
-    private void setDescriptionLabel(UILabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
-    }
-
-    @IBOutlet
-    private void setTableView(UITableView tableView) {
-        this.tableView = tableView;
     }
 }

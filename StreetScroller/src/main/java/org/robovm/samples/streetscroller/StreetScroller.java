@@ -25,7 +25,7 @@ import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.streetscroller.viewcontrollers.StreetScrollerViewController;
+import org.robovm.samples.streetscroller.ui.StreetScrollerViewController;
 
 public class StreetScroller extends UIApplicationDelegateAdapter {
     private UIWindow window;
