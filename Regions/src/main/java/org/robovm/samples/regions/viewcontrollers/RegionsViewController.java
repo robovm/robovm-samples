@@ -30,6 +30,7 @@ import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.corelocation.CLRegion;
 import org.robovm.apple.foundation.Foundation;
+import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDate;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
@@ -225,7 +226,7 @@ public class RegionsViewController extends UIViewController {
                         regionAnnotation.setRegion(newRegion);
                         newRegion.release();
 
-                        locationManager.startMonitoring(regionAnnotation.getRegion(), CLLocationAccuracy.Best);
+                        locationManager.startMonitoring(regionAnnotation.getRegion());
                     }
                 }
             }
@@ -261,13 +262,16 @@ public class RegionsViewController extends UIViewController {
             locationManager.requestAlwaysAuthorization();
         }
         locationManager.setDelegate(new CLLocationManagerDelegateAdapter() {
+            private CLLocation oldLocation;
+
             @Override
             public void didFail(CLLocationManager manager, NSError error) {
                 System.err.println("didFail: " + error);
             }
 
             @Override
-            public void didUpdateToLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
+            public void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations) {
+                CLLocation newLocation = locations.last();
                 System.err.println(String.format("didUpdateToLocation %s from %s", newLocation, oldLocation));
 
                 // Work around a bug in MapKit where user location is not
@@ -365,7 +369,7 @@ public class RegionsViewController extends UIViewController {
             regionsMapView.addAnnotation(regionAnnotation);
 
             // Start monitoring the newly created region.
-            locationManager.startMonitoring(newRegion, CLLocationAccuracy.Best);
+            locationManager.startMonitoring(newRegion);
 
             newRegion.release();
         } else {

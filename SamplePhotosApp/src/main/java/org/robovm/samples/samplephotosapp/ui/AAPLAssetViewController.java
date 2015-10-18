@@ -231,7 +231,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                         // Add filter
                         CIFilterInputParameters inputParameters = new CIFilterInputParameters()
                                 .setInputImage(inputImage);
-                        CIFilter filter = CIFilter.create(filterName, inputParameters);
+                        CIFilter filter = new CIFilter(filterName, inputParameters);
                         filter.setDefaults();
                         CIImage outputImage = filter.getOutputImage();
 

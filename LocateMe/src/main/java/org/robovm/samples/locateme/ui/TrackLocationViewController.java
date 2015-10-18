@@ -30,6 +30,7 @@ import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.foundation.Foundation;
+import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSError;
@@ -271,7 +272,9 @@ public class TrackLocationViewController extends UIViewController implements Set
              * may wish to use vertical accuracy, or both together.
              */
             @Override
-            public void didUpdateToLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
+            public void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations) {
+                CLLocation newLocation = locations.last();
+
                 // test that the horizontal accuracy does not indicate an
                 // invalid measurement
                 if (newLocation.getHorizontalAccuracy() < 0)
