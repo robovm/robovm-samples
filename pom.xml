@@ -81,11 +81,10 @@
     
         <module>Adventure</module>
         <module>AppPrefs</module>
-       <!-- <module>AQTapDemo</module> -->
+        <!-- <module>AQTapDemo</module> -->
         <module>AudioRecorder</module>
         <module>BatteryStatus</module>
         <module>CollectionView-Simple</module>
-        <module>ContractR</module>
         <module>CurrentAddress</module>
         <module>CustomAnimatableProperty</module>
         <module>CustomFrameworks</module>
@@ -93,17 +92,17 @@
         <module>DocInteraction</module>
         <module>Footprint</module>
         <module>HelloGL</module>
-        <module>HelloWorld</module>
         <module>HelloWorld-console</module>
         <module>HelloWorld-no-ib</module>
+        <module>HelloWorld</module>
         <module>IAPStoreProductViewController</module>
         <module>InAppPurchases</module>
         <module>LaunchMe</module>
         <module>LazyTableImages</module>
         <module>LocateMe</module>
         <module>MessageComposer</module>
-        <module>MetalBasic3D</module>
         <module>MetalBasic2D</module>
+        <module>MetalBasic3D</module>
         <module>MoveMe</module>
         <module>MoviePlayer</module>
         <module>MyJavaFramework</module>
@@ -117,8 +116,8 @@
         <module>StackView</module>
         <module>StreetScroller</module>
         <module>TableSearch</module>
-        <module>Tabster</module>
         <module>Tabster-no-ib</module>
+        <module>Tabster</module>
         <module>Teslameter</module>
         <module>TheElements</module>
         <module>TouchesGesture</module>
