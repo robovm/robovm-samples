@@ -34,19 +34,14 @@ import org.robovm.objc.annotation.CustomClass;
 @CustomClass("CircleImageView")
 public class CircleImageView extends UIImageView {
 
-    @Override
-    protected long init(CGRect frame) {
-        long handle = super.init(frame);
-        sharedInit(); // TODO we need a fix, so we can use the constructor
-                      // instead.
-        return handle;
+    public CircleImageView(CGRect frame) {
+        super(frame);
+        sharedInit();
     }
 
-    @Override
-    protected long init(NSCoder aDecoder) {
-        long handle = super.init(aDecoder);
+    public CircleImageView(NSCoder decoder) {
+        super(decoder);
         sharedInit();
-        return handle;
     }
 
     private void sharedInit() {
