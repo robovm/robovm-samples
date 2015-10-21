@@ -32,10 +32,15 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("TeslameterViewController")
 public class TeslameterViewController extends UIViewController {
+    @IBOutlet
     private UILabel magnitudeLabel;
+    @IBOutlet
     private UILabel xLabel;
+    @IBOutlet
     private UILabel yLabel;
+    @IBOutlet
     private UILabel zLabel;
+    @IBOutlet
     private GraphView graphView;
 
     private CLLocationManager locationManager;
@@ -122,30 +127,5 @@ public class TeslameterViewController extends UIViewController {
     public UIStatusBarStyle getPreferredStatusBarStyle() {
         // Status bar text should be white.
         return UIStatusBarStyle.LightContent;
-    }
-
-    @IBOutlet
-    private void setMagnitudeLabel(UILabel magnitudeLabel) {
-        this.magnitudeLabel = magnitudeLabel;
-    }
-
-    @IBOutlet
-    private void setXLabel(UILabel xLabel) {
-        this.xLabel = xLabel;
-    }
-
-    @IBOutlet
-    private void setYLabel(UILabel yLabel) {
-        this.yLabel = yLabel;
-    }
-
-    @IBOutlet
-    private void setZLabel(UILabel zLabel) {
-        this.zLabel = zLabel;
-    }
-
-    @IBOutlet
-    private void setGraphView(GraphView graphView) {
-        this.graphView = graphView;
     }
 }

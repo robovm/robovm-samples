@@ -92,11 +92,17 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
     private PHAsset asset;
     private PHAssetCollection assetCollection;
 
+    @IBOutlet
     private UIImageView imageView;
+    @IBOutlet
     private UIBarButtonItem playButton;
+    @IBOutlet
     private UIBarButtonItem space;
+    @IBOutlet
     private UIBarButtonItem trashButton;
+    @IBOutlet
     private UIBarButtonItem editButton;
+    @IBOutlet
     private UIProgressView progressView;
     private AVPlayerLayer playerLayer;
     private CGSize lastImageViewSize;
@@ -231,7 +237,7 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                         // Add filter
                         CIFilterInputParameters inputParameters = new CIFilterInputParameters()
                                 .setInputImage(inputImage);
-                        CIFilter filter = CIFilter.create(filterName, inputParameters);
+                        CIFilter filter = new CIFilter(filterName, inputParameters);
                         filter.setDefaults();
                         CIImage outputImage = filter.getOutputImage();
 
@@ -427,35 +433,5 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
     public void setAssetCollection(PHAssetCollection assetCollection) {
         this.assetCollection = assetCollection;
-    }
-
-    @IBOutlet
-    private void setImageView(UIImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    @IBOutlet
-    private void setPlayButton(UIBarButtonItem playButton) {
-        this.playButton = playButton;
-    }
-
-    @IBOutlet
-    private void setSpace(UIBarButtonItem space) {
-        this.space = space;
-    }
-
-    @IBOutlet
-    private void setTrashButton(UIBarButtonItem trashButton) {
-        this.trashButton = trashButton;
-    }
-
-    @IBOutlet
-    private void setEditButton(UIBarButtonItem editButton) {
-        this.editButton = editButton;
-    }
-
-    @IBOutlet
-    private void setProgressView(UIProgressView progressView) {
-        this.progressView = progressView;
     }
 }

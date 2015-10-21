@@ -30,12 +30,8 @@ public class ResultsViewController extends UITableViewController {
     /**
      * Table view cell that displays the user's percentage quiz score.
      */
-    private UITableViewCell resultsCell;
-
     @IBOutlet
-    private void setResultsCell(UITableViewCell resultsCell) {
-        this.resultsCell = resultsCell;
-    }
+    private UITableViewCell resultsCell;
 
     @Override
     public void viewDidLoad() {

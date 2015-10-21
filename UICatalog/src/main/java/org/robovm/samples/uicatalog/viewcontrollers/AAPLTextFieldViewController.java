@@ -43,10 +43,15 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLTextFieldViewController")
 public class AAPLTextFieldViewController extends UITableViewController implements UITextFieldDelegate {
+    @IBOutlet
     private UITextField textField;
+    @IBOutlet
     private UITextField tintedTextField;
+    @IBOutlet
     private UITextField secureTextField;
+    @IBOutlet
     private UITextField specificKeyboardTextField;
+    @IBOutlet
     private UITextField customTextField;
 
     @Override
@@ -163,30 +168,5 @@ public class AAPLTextFieldViewController extends UITableViewController implement
     @Override
     public boolean shouldClear(UITextField textField) {
         return true;
-    }
-
-    @IBOutlet
-    private void setTextField(UITextField textField) {
-        this.textField = textField;
-    }
-
-    @IBOutlet
-    private void setTintedTextField(UITextField tintedTextField) {
-        this.tintedTextField = tintedTextField;
-    }
-
-    @IBOutlet
-    private void setSecureTextField(UITextField secureTextField) {
-        this.secureTextField = secureTextField;
-    }
-
-    @IBOutlet
-    private void setSpecificKeyboardTextField(UITextField specificKeyboardTextField) {
-        this.specificKeyboardTextField = specificKeyboardTextField;
-    }
-
-    @IBOutlet
-    private void setCustomTextField(UITextField customTextField) {
-        this.customTextField = customTextField;
     }
 }

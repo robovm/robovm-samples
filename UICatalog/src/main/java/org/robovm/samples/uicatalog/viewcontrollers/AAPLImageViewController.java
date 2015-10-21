@@ -28,7 +28,6 @@ import org.robovm.objc.annotation.CustomClass;
 
 @CustomClass("AAPLImageViewController")
 public class AAPLImageViewController extends UIViewController {
-
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();

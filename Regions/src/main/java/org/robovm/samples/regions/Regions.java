@@ -27,7 +27,7 @@ import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.regions.viewcontrollers.RegionsViewController;
+import org.robovm.samples.regions.ui.RegionsViewController;
 
 public class Regions extends UIApplicationDelegateAdapter {
     private UIWindow window;

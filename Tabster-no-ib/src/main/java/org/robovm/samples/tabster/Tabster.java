@@ -41,12 +41,12 @@ import org.robovm.apple.uikit.UITabBarController;
 import org.robovm.apple.uikit.UITabBarItem;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.tabster.viewcontrollers.FavoritesViewController;
-import org.robovm.samples.tabster.viewcontrollers.FeaturedViewController;
-import org.robovm.samples.tabster.viewcontrollers.FourViewController;
-import org.robovm.samples.tabster.viewcontrollers.OneViewController;
-import org.robovm.samples.tabster.viewcontrollers.ThreeViewController;
-import org.robovm.samples.tabster.viewcontrollers.TwoViewController;
+import org.robovm.samples.tabster.ui.FavoritesViewController;
+import org.robovm.samples.tabster.ui.FeaturedViewController;
+import org.robovm.samples.tabster.ui.FourViewController;
+import org.robovm.samples.tabster.ui.OneViewController;
+import org.robovm.samples.tabster.ui.ThreeViewController;
+import org.robovm.samples.tabster.ui.TwoViewController;
 
 public class Tabster extends UIApplicationDelegateAdapter {
     private static final boolean CUSTOMIZE_TAB_BAR = false; // Turn on/off

@@ -26,7 +26,7 @@ import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.videorecorder.viewcontrollers.RootViewController;
+import org.robovm.samples.videorecorder.ui.RootViewController;
 
 public class VideoRecorder extends UIApplicationDelegateAdapter {
     private UIWindow window;

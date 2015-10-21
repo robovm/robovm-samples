@@ -162,18 +162,16 @@ public class QuickContactsViewController extends UITableViewController implement
             // Display descriptions for the Edit Unknown Contact and Display and
             // Edit Contact rows
             cell.getDetailTextLabel().setText(
-                    menuArray.get((int)indexPath.getSection()).get(new NSString("description")).toString());
-            // TODO change this when we support out-wrapping of Strings within
-            // arrays and dictionaries.
+                    menuArray.get(indexPath.getSection()).getString("description"));
         }
         cell.getTextLabel().setText(
-                menuArray.get((int)indexPath.getSection()).get(new NSString("title")).toString());
+                menuArray.get(indexPath.getSection()).getString("title"));
         return cell;
     }
 
     @Override
     public void didSelectRow(UITableView tableView, NSIndexPath indexPath) {
-        switch ((int)indexPath.getSection()) {
+        switch (indexPath.getSection()) {
         case 0:
             showPeoplePickerController();
             break;

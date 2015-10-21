@@ -30,12 +30,18 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLStepperViewController")
 public class AAPLStepperViewController extends UITableViewController implements UIControl.OnValueChangedListener {
+    @IBOutlet
     private UIStepper defaultStepper;
+    @IBOutlet
     private UIStepper tintedStepper;
+    @IBOutlet
     private UIStepper customStepper;
 
+    @IBOutlet
     private UILabel defaultStepperLabel;
+    @IBOutlet
     private UILabel tintedStepperLabel;
+    @IBOutlet
     private UILabel customStepperLabel;
 
     @Override
@@ -114,35 +120,5 @@ public class AAPLStepperViewController extends UITableViewController implements 
         if (stepperLabel != null) {
             stepperLabel.setText(String.valueOf((int) stepper.getValue()));
         }
-    }
-
-    @IBOutlet
-    private void setDefaultStepper(UIStepper defaultStepper) {
-        this.defaultStepper = defaultStepper;
-    }
-
-    @IBOutlet
-    private void setTintedStepper(UIStepper tintedStepper) {
-        this.tintedStepper = tintedStepper;
-    }
-
-    @IBOutlet
-    private void setCustomStepper(UIStepper customStepper) {
-        this.customStepper = customStepper;
-    }
-
-    @IBOutlet
-    private void setDefaultStepperLabel(UILabel defaultStepperLabel) {
-        this.defaultStepperLabel = defaultStepperLabel;
-    }
-
-    @IBOutlet
-    private void setTintedStepperLabel(UILabel tintedStepperLabel) {
-        this.tintedStepperLabel = tintedStepperLabel;
-    }
-
-    @IBOutlet
-    private void setCustomStepperLabel(UILabel customStepperLabel) {
-        this.customStepperLabel = customStepperLabel;
     }
 }

@@ -29,6 +29,7 @@ import org.robovm.samples.photomap.PhotoAnnotation;
 @CustomClass("DataViewController")
 public class DataViewController extends UIViewController {
     private PhotoAnnotation dataObject;
+    @IBOutlet
     private UIImageView imageView;
 
     @Override
@@ -49,10 +50,5 @@ public class DataViewController extends UIViewController {
 
     public PhotoAnnotation getDataObject() {
         return dataObject;
-    }
-
-    @IBOutlet
-    private void setImageView(UIImageView imageView) {
-        this.imageView = imageView;
     }
 }

@@ -9,12 +9,12 @@ import org.robovm.apple.uikit.UIImageView;
 import org.robovm.apple.uikit.UILabel;
 
 public class Cell extends UICollectionViewCell {
-    private UIImageView image;
-    private UILabel label;
+    private final UIImageView image;
+    private final UILabel label;
 
-    @Override
-    protected long init(CGRect frame) {
-        long res = super.init(frame);
+    public Cell(CGRect frame) {
+        super(frame);
+
         // change to our custom selected background view
         CustomCellBackground backgroundView = new CustomCellBackground(CGRect.Zero());
         setSelectedBackgroundView(backgroundView);
@@ -26,8 +26,6 @@ public class Cell extends UICollectionViewCell {
         label.setTextColor(UIColor.white());
         label.setTextAlignment(NSTextAlignment.Center);
         addSubview(label);
-
-        return res;
     }
 
     public UIImageView getImage() {

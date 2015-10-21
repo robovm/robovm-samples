@@ -27,7 +27,7 @@ import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.inapppurchases.viewcontrollers.ParentViewController;
+import org.robovm.samples.inapppurchases.ui.ParentViewController;
 
 public class InAppPurchases extends UIApplicationDelegateAdapter {
     private UIWindow window;

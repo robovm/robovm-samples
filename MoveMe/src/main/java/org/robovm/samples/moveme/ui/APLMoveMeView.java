@@ -49,6 +49,8 @@ public class APLMoveMeView extends UIView {
 
     private String[] displayStrings;
     private int nextDisplayStringIndex;
+
+    @IBOutlet
     private APLPlacardView placardView;
 
     @Override
@@ -244,10 +246,5 @@ public class APLMoveMeView extends UIView {
 
     public void setDisplayStrings(String[] displayStrings) {
         this.displayStrings = displayStrings;
-    }
-
-    @IBOutlet
-    private void setPlacardView(APLPlacardView placardView) {
-        this.placardView = placardView;
     }
 }

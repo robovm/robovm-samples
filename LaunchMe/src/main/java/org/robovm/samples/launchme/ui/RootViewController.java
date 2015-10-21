@@ -38,11 +38,17 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("RootViewController")
 public class RootViewController extends UIViewController {
+    @IBOutlet
     private UISlider redSlider;
+    @IBOutlet
     private UISlider greenSlider;
+    @IBOutlet
     private UISlider blueSlider;
+    @IBOutlet
     private UITextView urlField;
+    @IBOutlet
     private UILabel urlFieldHeader;
+    @IBOutlet
     private UIView colorView;
 
     private UIColor selectedColor;
@@ -159,35 +165,5 @@ public class RootViewController extends UIViewController {
 
     public UILabel getUrlFieldHeader() {
         return urlFieldHeader;
-    }
-
-    @IBOutlet
-    private void setRedSlider(UISlider redSlider) {
-        this.redSlider = redSlider;
-    }
-
-    @IBOutlet
-    private void setGreenSlider(UISlider greenSlider) {
-        this.greenSlider = greenSlider;
-    }
-
-    @IBOutlet
-    private void setBlueSlider(UISlider blueSlider) {
-        this.blueSlider = blueSlider;
-    }
-
-    @IBOutlet
-    private void setUrlField(UITextView urlField) {
-        this.urlField = urlField;
-    }
-
-    @IBOutlet
-    private void setUrlFieldHeader(UILabel urlFieldHeader) {
-        this.urlFieldHeader = urlFieldHeader;
-    }
-
-    @IBOutlet
-    private void setColorView(UIView colorView) {
-        this.colorView = colorView;
     }
 }

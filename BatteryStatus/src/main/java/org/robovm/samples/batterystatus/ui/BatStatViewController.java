@@ -35,11 +35,17 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("BatStatViewController")
 public class BatStatViewController extends UITableViewController {
+    @IBOutlet
     private UISwitch monitorSwitch;
+    @IBOutlet
     private UILabel levelLabel;
+    @IBOutlet
     private UITableViewCell unknownCell;
+    @IBOutlet
     private UITableViewCell unpluggedCell;
+    @IBOutlet
     private UITableViewCell chargingCell;
+    @IBOutlet
     private UITableViewCell fullCell;
 
     private void updateBatteryLevel() {
@@ -110,35 +116,5 @@ public class BatStatViewController extends UITableViewController {
         UIDevice.getCurrentDevice().setBatteryMonitoringEnabled(sender.isOn());
         updateBatteryLevel();
         updateBatteryState();
-    }
-
-    @IBOutlet
-    private void setMonitorSwitch(UISwitch monitorSwitch) {
-        this.monitorSwitch = monitorSwitch;
-    }
-
-    @IBOutlet
-    private void setLevelLabel(UILabel levelLabel) {
-        this.levelLabel = levelLabel;
-    }
-
-    @IBOutlet
-    private void setUnknownCell(UITableViewCell unknownCell) {
-        this.unknownCell = unknownCell;
-    }
-
-    @IBOutlet
-    private void setUnpluggedCell(UITableViewCell unpluggedCell) {
-        this.unpluggedCell = unpluggedCell;
-    }
-
-    @IBOutlet
-    private void setChargingCell(UITableViewCell chargingCell) {
-        this.chargingCell = chargingCell;
-    }
-
-    @IBOutlet
-    private void setFullCell(UITableViewCell fullCell) {
-        this.fullCell = fullCell;
     }
 }

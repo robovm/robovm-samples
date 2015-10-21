@@ -30,6 +30,7 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLCustomSearchBarViewController")
 public class AAPLCustomSearchBarViewController extends UIViewController {
+    @IBOutlet
     private UISearchBar searchBar;
 
     @Override
@@ -76,10 +77,5 @@ public class AAPLCustomSearchBarViewController extends UIViewController {
         UIImage bookmarkHighlightedImage = UIImage.getImage("bookmark_icon_highlighted");
         searchBar.setImageForSearchBarIcon(bookmarkHighlightedImage, UISearchBarIcon.Bookmark,
                 UIControlState.Highlighted);
-    }
-
-    @IBOutlet
-    private void setSearchBar(UISearchBar searchBar) {
-        this.searchBar = searchBar;
     }
 }

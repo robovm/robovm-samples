@@ -52,9 +52,11 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLTextViewController")
 public class AAPLTextViewController extends UIViewController implements UIBarButtonItem.OnClickListener {
+    @IBOutlet
     private UITextView textView;
 
     // Used to adjust the text view's height when the keyboard hides and shows.
+    @IBOutlet
     private NSLayoutConstraint textViewBottomLayoutGuideConstraint;
 
     private NSObject keyboardWillShowNotification;
@@ -195,15 +197,5 @@ public class AAPLTextViewController extends UIViewController implements UIBarBut
         textView.resignFirstResponder();
 
         getNavigationItem().setRightBarButtonItem(null, true);
-    }
-
-    @IBOutlet
-    private void setTextView(UITextView textView) {
-        this.textView = textView;
-    }
-
-    @IBOutlet
-    private void setTextViewBottomLayoutGuideConstraint(NSLayoutConstraint textViewBottomLayoutGuideConstraint) {
-        this.textViewBottomLayoutGuideConstraint = textViewBottomLayoutGuideConstraint;
     }
 }

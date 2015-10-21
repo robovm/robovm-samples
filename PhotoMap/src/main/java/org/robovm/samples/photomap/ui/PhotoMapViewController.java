@@ -65,6 +65,7 @@ public class PhotoMapViewController extends UIViewController {
 
     private List<MKAnnotation> photos;
     private MKMapView allAnnotationsMapView;
+    @IBOutlet
     private MKMapView mapView;
 
     @Override
@@ -408,10 +409,5 @@ public class PhotoMapViewController extends UIViewController {
         MKCoordinateRegion newRegion = new MKCoordinateRegion(CherryLakeLocation, new MKCoordinateSpan(0.05, 0.05));
 
         mapView.setRegion(newRegion, true);
-    }
-
-    @IBOutlet
-    private void setMapView(MKMapView mapView) {
-        this.mapView = mapView;
     }
 }

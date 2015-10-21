@@ -30,8 +30,11 @@ import org.robovm.samples.uicatalog.Colors;
 public class AAPLProgressViewController extends UITableViewController {
     private static final int MAX_PROGRESS = 100;
 
+    @IBOutlet
     private UIProgressView defaultStyleProgressView;
+    @IBOutlet
     private UIProgressView barStyleProgressView;
+    @IBOutlet
     private UIProgressView tintedProgressView;
 
     private NSOperationQueue operationQueue;
@@ -109,20 +112,5 @@ public class AAPLProgressViewController extends UITableViewController {
                 }
             });
         }
-    }
-
-    @IBOutlet
-    private void setDefaultStyleProgressView(UIProgressView defaultStyleProgressView) {
-        this.defaultStyleProgressView = defaultStyleProgressView;
-    }
-
-    @IBOutlet
-    private void setBarStyleProgressView(UIProgressView barStyleProgressView) {
-        this.barStyleProgressView = barStyleProgressView;
-    }
-
-    @IBOutlet
-    private void setTintedProgressView(UIProgressView tintedProgressView) {
-        this.tintedProgressView = tintedProgressView;
     }
 }

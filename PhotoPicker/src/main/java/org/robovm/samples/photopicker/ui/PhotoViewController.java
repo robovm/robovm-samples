@@ -47,13 +47,19 @@ import org.robovm.objc.block.VoidBlock1;
 
 @CustomClass("PhotoViewController")
 public class PhotoViewController extends UIViewController implements VoidBlock1<NSTimer> {
+    @IBOutlet
     private UIImageView imageView;
+    @IBOutlet
     private UIToolbar toolBar;
+    @IBOutlet
     private UIView overlayView;
-
+    @IBOutlet
     private UIBarButtonItem takePictureButton;
+    @IBOutlet
     private UIBarButtonItem startStopButton;
+    @IBOutlet
     private UIBarButtonItem delayedPhotoButton;
+    @IBOutlet
     private UIBarButtonItem doneButton;
 
     private UIImagePickerController imagePickerController;
@@ -144,7 +150,7 @@ public class PhotoViewController extends UIViewController implements VoidBlock1<
             NSBundle.getMainBundle().loadNib("OverlayView", this, null);
             overlayView.setFrame(imagePickerController.getCameraOverlayView().getFrame());
             imagePickerController.setCameraOverlayView(overlayView);
-            setOverlayView(null);
+            overlayView = null;
         }
 
         this.imagePickerController = imagePickerController;
@@ -241,41 +247,6 @@ public class PhotoViewController extends UIViewController implements VoidBlock1<
         }
 
         imagePickerController = null;
-    }
-
-    @IBOutlet
-    public void setImageView(UIImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    @IBOutlet
-    public void setToolBar(UIToolbar toolBar) {
-        this.toolBar = toolBar;
-    }
-
-    @IBOutlet
-    public void setOverlayView(UIView overlayView) {
-        this.overlayView = overlayView;
-    }
-
-    @IBOutlet
-    public void setTakePictureButton(UIBarButtonItem takePictureButton) {
-        this.takePictureButton = takePictureButton;
-    }
-
-    @IBOutlet
-    public void setStartStopButton(UIBarButtonItem startStopButton) {
-        this.startStopButton = startStopButton;
-    }
-
-    @IBOutlet
-    public void setDelayedPhotoButton(UIBarButtonItem delayedPhotoButton) {
-        this.delayedPhotoButton = delayedPhotoButton;
-    }
-
-    @IBOutlet
-    public void setDoneButton(UIBarButtonItem doneButton) {
-        this.doneButton = doneButton;
     }
 
     @Override

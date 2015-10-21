@@ -28,6 +28,7 @@ import org.robovm.objc.annotation.IBOutlet;
 @CustomClass("AAPLGridViewCell")
 public class AAPLGridViewCell extends UICollectionViewCell {
     private UIImage thumbnailImage;
+    @IBOutlet
     private UIImageView imageView;
 
     public void setThumbnailImage(UIImage thumbnailImage) {
@@ -37,10 +38,5 @@ public class AAPLGridViewCell extends UICollectionViewCell {
 
     public UIImage getThumbnailImage() {
         return thumbnailImage;
-    }
-
-    @IBOutlet
-    private void setImageView(UIImageView imageView) {
-        this.imageView = imageView;
     }
 }

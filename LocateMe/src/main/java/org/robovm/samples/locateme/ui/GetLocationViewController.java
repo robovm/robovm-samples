@@ -32,6 +32,7 @@ import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.Foundation;
+import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSError;
@@ -63,8 +64,11 @@ import org.robovm.samples.locateme.util.Str;
 
 @CustomClass("GetLocationViewController")
 public class GetLocationViewController extends UIViewController implements SetupViewControllerDelegate {
+    @IBOutlet
     private UIButton startButton;
+    @IBOutlet
     private UILabel descriptionLabel;
+    @IBOutlet
     private UITableView tableView;
 
     private SetupViewController setupViewController;
@@ -310,7 +314,9 @@ public class GetLocationViewController extends UIViewController implements Setup
              * may wish to use vertical accuracy, or both together.
              */
             @Override
-            public void didUpdateToLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
+            public void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations) {
+                CLLocation newLocation = locations.last();
+
                 // store all of the measurements, just so we can see what kind
                 // of data we might receive
                 locationMeasurements.add(newLocation);
@@ -405,20 +411,5 @@ public class GetLocationViewController extends UIViewController implements Setup
         stateString = Str.getLocalizedString("Updating");
 
         tableView.reloadData();
-    }
-
-    @IBOutlet
-    private void setStartButton(UIButton startButton) {
-        this.startButton = startButton;
-    }
-
-    @IBOutlet
-    private void setDescriptionLabel(UILabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
-    }
-
-    @IBOutlet
-    private void setTableView(UITableView tableView) {
-        this.tableView = tableView;
     }
 }

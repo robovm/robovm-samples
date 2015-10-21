@@ -38,7 +38,9 @@ public class AAPLPickerViewController extends UIViewController implements UIPick
     // The number of colors within a color component.
     private static final int NUMBER_OF_COLOR_VALUES_PER_COMPONENT = (int) (Math.ceil(RGB_MAX / COLOR_VALUE_OFFSET) + 1);
 
+    @IBOutlet
     private UIPickerView pickerView;
+    @IBOutlet
     private UIView colorSwatchView;
 
     private double redColorComponent;
@@ -171,15 +173,5 @@ public class AAPLPickerViewController extends UIViewController implements UIPick
             break;
         }
         updateColorSwatchViewBackgroundColor();
-    }
-
-    @IBOutlet
-    private void setPickerView(UIPickerView pickerView) {
-        this.pickerView = pickerView;
-    }
-
-    @IBOutlet
-    private void setColorSwatchView(UIView colorSwatchView) {
-        this.colorSwatchView = colorSwatchView;
     }
 }

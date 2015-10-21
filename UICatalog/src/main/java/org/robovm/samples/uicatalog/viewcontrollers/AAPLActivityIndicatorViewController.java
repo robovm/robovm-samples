@@ -27,7 +27,9 @@ import org.robovm.samples.uicatalog.Colors;
 
 @CustomClass("AAPLActivityIndicatorViewController")
 public class AAPLActivityIndicatorViewController extends UITableViewController {
+    @IBOutlet
     private UIActivityIndicatorView grayStyleActivityIndicatorView;
+    @IBOutlet
     private UIActivityIndicatorView tintedActivityIndicatorView;
 
     @Override
@@ -50,15 +52,5 @@ public class AAPLActivityIndicatorViewController extends UITableViewController {
         tintedActivityIndicatorView.setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle.Gray);
         tintedActivityIndicatorView.setColor(Colors.PURPLE);
         tintedActivityIndicatorView.startAnimating();
-    }
-
-    @IBOutlet
-    private void setGrayStyleActivityIndicatorView(UIActivityIndicatorView grayStyleActivityIndicatorView) {
-        this.grayStyleActivityIndicatorView = grayStyleActivityIndicatorView;
-    }
-
-    @IBOutlet
-    private void setTintedActivityIndicatorView(UIActivityIndicatorView tintedActivityIndicatorView) {
-        this.tintedActivityIndicatorView = tintedActivityIndicatorView;
     }
 }

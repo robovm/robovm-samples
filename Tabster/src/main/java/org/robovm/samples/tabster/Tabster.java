@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.UINavigationControllerDelegateAdapter;
 import org.robovm.apple.uikit.UIStoryboard;
 import org.robovm.apple.uikit.UITabBarController;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.samples.tabster.viewcontrollers.FeaturedViewController;
+import org.robovm.samples.tabster.ui.FeaturedViewController;
 
 public class Tabster extends UIApplicationDelegateAdapter {
     // Turn on/off custom tab bar appearance

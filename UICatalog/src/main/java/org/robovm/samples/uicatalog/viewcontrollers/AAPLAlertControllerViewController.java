@@ -36,7 +36,6 @@ import org.robovm.objc.block.VoidBlock1;
 
 @CustomClass("AAPLAlertControllerViewController")
 public class AAPLAlertControllerViewController extends UITableViewController {
-
     // Corresponds to the section index of the table view (whether we want to
     // show an alert or action sheet style).
     private enum Section {

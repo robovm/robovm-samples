@@ -34,7 +34,9 @@ public class APLDetailViewController extends UIViewController {
     private static final String VIEW_CONTROLLER_PRODUCT_KEY = "ViewControllerProductKey";
 
     private APLProduct product;
+    @IBOutlet
     private UILabel yearLabel;
+    @IBOutlet
     private UILabel priceLabel;
 
     @Override
@@ -67,17 +69,6 @@ public class APLDetailViewController extends UIViewController {
         super.decodeRestorableState(coder);
 
         // restore the product
-//        product = (APLProduct) coder.decodeObject(VIEW_CONTROLLER_PRODUCT_KEY, APLProduct.class); 
-        // TODO does only work when constructors get called
-    }
-
-    @IBOutlet
-    private void setYearLabel(UILabel yearLabel) {
-        this.yearLabel = yearLabel;
-    }
-
-    @IBOutlet
-    private void setPriceLabel(UILabel priceLabel) {
-        this.priceLabel = priceLabel;
+        product = coder.decodeObject(VIEW_CONTROLLER_PRODUCT_KEY, APLProduct.class);
     }
 }

@@ -30,6 +30,7 @@ import org.robovm.apple.corelocation.CLLocation;
 import org.robovm.apple.corelocation.CLLocationManager;
 import org.robovm.apple.corelocation.CLLocationManagerDelegateAdapter;
 import org.robovm.apple.foundation.Foundation;
+import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSDateFormatter;
 import org.robovm.apple.foundation.NSDateFormatterStyle;
 import org.robovm.apple.foundation.NSError;
@@ -62,9 +63,14 @@ import org.robovm.samples.locateme.util.Str;
 @CustomClass("TrackLocationViewController")
 public class TrackLocationViewController extends UIViewController implements SetupViewControllerDelegate {
     private SetupViewController setupViewController;
+
+    @IBOutlet
     private UIButton startButton;
+    @IBOutlet
     private UILabel descriptionLabel;
+    @IBOutlet
     private UITableView tableView;
+
     private CLLocationManager locationManager;
     private List<CLLocation> locationMeasurements;
     private NSDateFormatter dateFormatter;
@@ -271,7 +277,9 @@ public class TrackLocationViewController extends UIViewController implements Set
              * may wish to use vertical accuracy, or both together.
              */
             @Override
-            public void didUpdateToLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation) {
+            public void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations) {
+                CLLocation newLocation = locations.last();
+
                 // test that the horizontal accuracy does not indicate an
                 // invalid measurement
                 if (newLocation.getHorizontalAccuracy() < 0)
@@ -336,20 +344,5 @@ public class TrackLocationViewController extends UIViewController implements Set
                     }
                 });
         getNavigationItem().setLeftBarButtonItem(resetItem, true);
-    }
-
-    @IBOutlet
-    private void setStartButton(UIButton startButton) {
-        this.startButton = startButton;
-    }
-
-    @IBOutlet
-    private void setDescriptionLabel(UILabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
-    }
-
-    @IBOutlet
-    private void setTableView(UITableView tableView) {
-        this.tableView = tableView;
     }
 }

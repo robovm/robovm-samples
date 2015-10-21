@@ -26,7 +26,7 @@ import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIScreen;
 import org.robovm.apple.uikit.UIWindow;
-import org.robovm.samples.iap.viewcontrollers.IAPStoreProductViewController;
+import org.robovm.samples.iap.ui.IAPStoreProductViewController;
 
 public class Main extends UIApplicationDelegateAdapter {
     private UIWindow window;
