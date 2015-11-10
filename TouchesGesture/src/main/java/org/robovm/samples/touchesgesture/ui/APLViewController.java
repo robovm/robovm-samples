@@ -32,6 +32,7 @@ import org.robovm.apple.uikit.UIMenuItem;
 import org.robovm.apple.uikit.UIMenuItem.OnActionListener;
 import org.robovm.apple.uikit.UIPanGestureRecognizer;
 import org.robovm.apple.uikit.UIPinchGestureRecognizer;
+import org.robovm.apple.uikit.UIPress;
 import org.robovm.apple.uikit.UIRotationGestureRecognizer;
 import org.robovm.apple.uikit.UITouch;
 import org.robovm.apple.uikit.UIView;
@@ -232,6 +233,11 @@ public class APLViewController extends UIViewController implements UIGestureReco
 
     @Override
     public boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldReceivePress(UIGestureRecognizer gestureRecognizer, UIPress press) {
         return true;
     }
 }
