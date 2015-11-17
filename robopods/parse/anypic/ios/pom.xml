@@ -38,5 +38,10 @@
             <artifactId>robopods-facebook-ios</artifactId>
             <version>${robopods.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robopods-reachability-ios</artifactId>
+            <version>${robopods.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -28,6 +28,7 @@ import org.robovm.apple.foundation.NSPropertyList;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.foundation.NSTimer;
 import org.robovm.apple.foundation.NSURL;
+import org.robovm.apple.systemconfiguration.SCNetworkReachabilityFlags;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIAppearance;
 import org.robovm.apple.uikit.UIApplication;
@@ -71,6 +72,9 @@ import org.robovm.pods.parse.PFQuery;
 import org.robovm.pods.parse.PFUser;
 import org.robovm.pods.parse.Parse;
 import org.robovm.pods.parse.ParseCrashReporting;
+import org.robovm.pods.reachability.NetworkReachability;
+import org.robovm.pods.reachability.NetworkReachabilityListener;
+import org.robovm.pods.reachability.NetworkStatus;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPActivity;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPCache;
 import org.robovm.samples.robopods.parse.anypic.ios.model.PAPPhoto;
@@ -98,7 +102,7 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
 //    private MBProgressHUD hud; TODO
     private NSTimer autoFollowTimer;
 
-    private int networkStatus;
+    private NetworkStatus networkStatus;
     private boolean firstLaunch;
 
     @Override
@@ -228,8 +232,7 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
     }
 
     public boolean isParseReachable() {
-        return true;
-//        return networkStatus != NotReachable; TODO
+        return networkStatus != NetworkStatus.NotReachable;
     }
 
     private void presentLoginViewController() {
@@ -349,24 +352,34 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
     }
 
     private void monitorReachability() {
-        //
-//      Reachability *hostReach = [Reachability reachabilityWithHostname:@"api.parse.com"];
-        //
-//      hostReach.reachableBlock = ^(Reachability*reach) {
-//          _networkStatus = [reach currentReachabilityStatus];
-//          
-//          if ([self isParseReachable] && [PFUser currentUser] && self.homeViewController.objects.count == 0) {
-//              // Refresh home timeline on network restoration. Takes care of a freshly installed app that failed to load the main timeline under bad network conditions.
-//              // In this case, they'd see the empty timeline placeholder and have no way of refreshing the timeline unless they followed someone.
-//              [self.homeViewController loadObjects];
-//          }
-//      };
-        //
-//      hostReach.unreachableBlock = ^(Reachability*reach) {
-//          _networkStatus = [reach currentReachabilityStatus];
-//      };
-        //
-//      [hostReach startNotifier]; TODO
+        NetworkReachability hostReach = NetworkReachability.forHostname("api.parse.com");
+        hostReach.setListener(new NetworkReachabilityListener() {
+            @Override
+            public void onReachable(NetworkReachability reachability) {
+                networkStatus = reachability.getCurrentReachabilityStatus();
+
+                if (isParseReachable() && PFUser.getCurrentUser() != null
+                        && homeViewController.getObjects().size() == 0) {
+                    // Refresh home timeline on network restoration. Takes care
+                    // of a freshly installed app that failed to load the main
+                    // timeline under bad network conditions.
+                    // In this case, they'd see the empty timeline placeholder
+                    // and have no way of refreshing the timeline unless they
+                    // followed someone.
+                    homeViewController.loadObjects();
+                }
+            }
+
+            @Override
+            public void onUnreachable(NetworkReachability reachability) {
+                networkStatus = reachability.getCurrentReachabilityStatus();
+            }
+
+            @Override
+            public void onChange(NetworkReachability reachability, SCNetworkReachabilityFlags flags) {}
+        });
+
+        hostReach.startNotifier();
     }
 
     private void handlePush(UIApplicationLaunchOptions launchOptions) {
