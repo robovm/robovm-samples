@@ -80,6 +80,7 @@
         <module>robopods</module>
     
         <module>Adventure</module>
+        <module>ApplicationShortcuts</module>
         <module>AppPrefs</module>
        <!-- <module>AQTapDemo</module> -->
         <module>AudioRecorder</module>
