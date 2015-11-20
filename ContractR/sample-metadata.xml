@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sample>  
+	<title>ContractR</title>
+	<description>A cross-platform time tracking app for iOS and Android.</description>      
+	<isCrossPlatform>true</isCrossPlatform>
+	<featured>true</featured>
+	<url>https://github.com/robovm/robovm-samples</url>
+	<subdir>ContractR</subdir>
+</sample>

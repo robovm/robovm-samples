@@ -158,7 +158,7 @@ public class PAPLoginViewController extends UIViewController implements FBSDKLog
     }
 
     @Override
-    public boolean willLogin(FBSDKLoginButton loginButton) {
+    public boolean willLogin(FBSDKLoginButton button) {
         return true;
     }
 }

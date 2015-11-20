@@ -19,6 +19,8 @@
 
 package org.robovm.samples.samplephotosapp.ui;
 
+import org.robovm.apple.avfoundation.AVAsset;
+import org.robovm.apple.avfoundation.AVAudioMix;
 import org.robovm.apple.avfoundation.AVLayerVideoGravity;
 import org.robovm.apple.avfoundation.AVPlayer;
 import org.robovm.apple.avfoundation.AVPlayerItem;
@@ -33,6 +35,7 @@ import org.robovm.apple.coreimage.CIImage;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSData;
+import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
@@ -50,11 +53,14 @@ import org.robovm.apple.photos.PHAssetEditOperation;
 import org.robovm.apple.photos.PHAssetMediaType;
 import org.robovm.apple.photos.PHChange;
 import org.robovm.apple.photos.PHCollectionEditOperation;
+import org.robovm.apple.photos.PHContentEditingInput;
 import org.robovm.apple.photos.PHContentEditingInputRequestOptions;
+import org.robovm.apple.photos.PHContentEditingInputRequestResult;
 import org.robovm.apple.photos.PHContentEditingOutput;
 import org.robovm.apple.photos.PHImageContentMode;
 import org.robovm.apple.photos.PHImageManager;
 import org.robovm.apple.photos.PHImageRequestOptions;
+import org.robovm.apple.photos.PHImageRequestResult;
 import org.robovm.apple.photos.PHObjectChangeDetails;
 import org.robovm.apple.photos.PHPhotoLibrary;
 import org.robovm.apple.photos.PHPhotoLibraryChangeObserver;
@@ -74,7 +80,12 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
 import org.robovm.objc.annotation.IBOutlet;
+import org.robovm.objc.block.Block1;
+import org.robovm.objc.block.VoidBlock1;
 import org.robovm.objc.block.VoidBlock2;
+import org.robovm.objc.block.VoidBlock3;
+import org.robovm.objc.block.VoidBlock4;
+import org.robovm.rt.bro.ptr.BooleanPtr;
 
 @CustomClass("AAPLAssetViewController")
 public class AAPLAssetViewController extends UIViewController implements PHPhotoLibraryChangeObserver {
@@ -115,9 +126,9 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
         super.viewWillAppear(animated);
 
         if (asset.getMediaType() == PHAssetMediaType.Video) {
-            setToolbarItems(new NSArray<>(playButton, space, trashButton));
+            setToolbarItems(new NSArray<UIBarButtonItem>(playButton, space, trashButton));
         } else {
-            setToolbarItems(new NSArray<>(space, trashButton));
+            setToolbarItems(new NSArray<UIBarButtonItem>(space, trashButton));
         }
 
         boolean isEditable = asset.canPerformEditOperation(PHAssetEditOperation.Properties)
@@ -156,16 +167,26 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
         // Download from cloud if necessary
         options.setNetworkAccessAllowed(true);
-        options.setProgressHandler((progress, error, c, d) -> {
-            DispatchQueue.getMainQueue().async(() -> {
-                progressView.setProgress(progress.floatValue());
-                progressView.setHidden(progress <= 0 || progress >= 1);
-            });
+        options.setProgressHandler(new VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<?, ?>>() {
+            @Override
+            public void invoke(final Double progress, NSError error, BooleanPtr c, NSDictionary<?, ?> d) {
+                DispatchQueue.getMainQueue().async(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressView.setProgress(progress.floatValue());
+                        progressView.setHidden(progress <= 0 || progress >= 1);
+                    };
+                });
+            }
         });
         PHImageManager.getDefaultManager().requestImageForAsset(asset, targetSize, PHImageContentMode.AspectFill,
-                options, (image, result) -> {
-                    if (image != null) {
-                        imageView.setImage(image);
+                options,
+                new VoidBlock2<UIImage, PHImageRequestResult>() {
+                    @Override
+                    public void invoke(final UIImage result, PHImageRequestResult info) {
+                        if (result != null) {
+                            imageView.setImage(result);
+                        }
                     }
                 });
     }
@@ -174,9 +195,11 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
     public void didChange(final PHChange changeInstance) {
         // Call might come on any background queue. Re-dispatch to the main
         // queue to handle it.
-        DispatchQueue.getMainQueue().async(() -> {
-            // check if there are changes to the album we're interested on
-            // (to its metadata, not to its collection of assets)
+        DispatchQueue.getMainQueue().async(new Runnable() {
+            @Override
+            public void run() {
+                // check if there are changes to the album we're interested on
+                // (to its metadata, not to its collection of assets)
                 PHObjectChangeDetails<PHAsset> changeDetails = changeInstance.getChangeDetailsForObject(asset);
                 if (changeDetails != null) {
                     // it changed, we need to fetch a new one
@@ -190,48 +213,64 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
                         }
                     }
                 }
-            });
+            }
+        });
     }
 
     private void applyFilter(final String filterName) {
         PHContentEditingInputRequestOptions options = new PHContentEditingInputRequestOptions();
-        options.setCanHandleAdjustmentData((data) -> {
-            return data.getFormatIdentifier().equals(AdjustmentFormatIdentifier)
-                    && data.getFormatVersion().equals("1.0");
+        options.setCanHandleAdjustmentData(new Block1<PHAdjustmentData, Boolean>() {
+            @Override
+            public Boolean invoke(PHAdjustmentData adjustmentData) {
+                return adjustmentData.getFormatIdentifier().equals(AdjustmentFormatIdentifier)
+                        && adjustmentData.getFormatVersion().equals("1.0");
+            }
         });
-        asset.requestContentEditingInput(options, (input, result) -> {
-            // Get full image
-                NSURL url = input.getFullSizeImageURL();
-                CGImagePropertyOrientation orientation = input.getFullSizeImageOrientation();
-                CIImage inputImage = new CIImage(url, null);
-                inputImage = inputImage.newImageByApplyingOrientation(orientation);
+        asset.requestContentEditingInput(options,
+                new VoidBlock2<PHContentEditingInput, PHContentEditingInputRequestResult>() {
+                    @Override
+                    public void invoke(PHContentEditingInput contentEditingInput,
+                            PHContentEditingInputRequestResult info) {
+                        // Get full image
+                        NSURL url = contentEditingInput.getFullSizeImageURL();
+                        CGImagePropertyOrientation orientation = contentEditingInput.getFullSizeImageOrientation();
+                        CIImage inputImage = new CIImage(url, null);
+                        inputImage = inputImage.newImageByApplyingOrientation(orientation);
 
-                // Add filter
-                CIFilterInputParameters inputParameters = new CIFilterInputParameters()
-                        .setInputImage(inputImage);
-                CIFilter filter = new CIFilter(filterName, inputParameters);
-                filter.setDefaults();
-                CIImage outputImage = filter.getOutputImage();
+                        // Add filter
+                        CIFilterInputParameters inputParameters = new CIFilterInputParameters()
+                                .setInputImage(inputImage);
+                        CIFilter filter = new CIFilter(filterName, inputParameters);
+                        filter.setDefaults();
+                        CIImage outputImage = filter.getOutputImage();
 
-                // Create editing output
-                NSData jpegData = getJPEGRepresentationWithCompressionQuality(outputImage, 0.9);
-                PHAdjustmentData adjustmentData = null;
-                adjustmentData = new PHAdjustmentData(AdjustmentFormatIdentifier, "1.0", NSString.toData(
-                        filterName, NSStringEncoding.UTF8));
+                        // Create editing output
+                        NSData jpegData = getJPEGRepresentationWithCompressionQuality(outputImage, 0.9);
+                        PHAdjustmentData adjustmentData = null;
+                        adjustmentData = new PHAdjustmentData(AdjustmentFormatIdentifier, "1.0", NSString.toData(
+                                filterName, NSStringEncoding.UTF8));
 
-                final PHContentEditingOutput contentEditingOutput = new PHContentEditingOutput(input);
-                jpegData.write(contentEditingOutput.getRenderedContentURL(), true);
-                contentEditingOutput.setAdjustmentData(adjustmentData);
+                        final PHContentEditingOutput contentEditingOutput = new PHContentEditingOutput(
+                                contentEditingInput);
+                        jpegData.write(contentEditingOutput.getRenderedContentURL(), true);
+                        contentEditingOutput.setAdjustmentData(adjustmentData);
 
-                PHPhotoLibrary.getSharedPhotoLibrary().performChanges(() -> {
-                    PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
-                    request.setContentEditingOutput(contentEditingOutput);
-                }, (success, error) -> {
-                    if (!success) {
-                        System.err.println("Error: " + error);
+                        PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
+                            @Override
+                            public void run() {
+                                PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
+                                request.setContentEditingOutput(contentEditingOutput);
+                            }
+                        }, new VoidBlock2<Boolean, NSError>() {
+                            @Override
+                            public void invoke(Boolean success, NSError error) {
+                                if (!success) {
+                                    System.err.println("Error: " + error);
+                                }
+                            }
+                        });
                     }
                 });
-            });
     }
 
     @IBAction
@@ -244,37 +283,65 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
             String favoriteActionTitle = !asset.isFavorite() ? NSString.getLocalizedString("Favorite") : NSString
                     .getLocalizedString("Unfavorite");
             alertController.addAction(new UIAlertAction(favoriteActionTitle, UIAlertActionStyle.Default,
-                    (action) -> {
-                        PHPhotoLibrary.getSharedPhotoLibrary().performChanges(() -> {
-                            PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
-                            request.setFavorite(!asset.isFavorite());
-                        }, (success, error) -> {
-                            if (!success) {
-                                System.err.println("Error: " + error);
-                            }
-                        });
+                    new VoidBlock1<UIAlertAction>() {
+                        @Override
+                        public void invoke(UIAlertAction a) {
+                            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
+                                    request.setFavorite(!asset.isFavorite());
+                                }
+                            }, new VoidBlock2<Boolean, NSError>() {
+                                @Override
+                                public void invoke(Boolean success, NSError error) {
+                                    if (!success) {
+                                        System.err.println("Error: " + error);
+                                    }
+                                }
+                            });
+                        }
                     }));
         }
         if (asset.canPerformEditOperation(PHAssetEditOperation.Content)) {
             if (asset.getMediaType() == PHAssetMediaType.Image) {
                 alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Sepia"),
                         UIAlertActionStyle.Default,
-                        (action) -> applyFilter("CISepiaTone")));
+                        new VoidBlock1<UIAlertAction>() {
+                            @Override
+                            public void invoke(UIAlertAction a) {
+                                applyFilter("CISepiaTone");
+                            }
+                        }));
                 alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Chrome"),
                         UIAlertActionStyle.Default,
-                        (action) -> applyFilter("CIPhotoEffectChrome")));
+                        new VoidBlock1<UIAlertAction>() {
+                            @Override
+                            public void invoke(UIAlertAction a) {
+                                applyFilter("CIPhotoEffectChrome");
+                            }
+                        }));
             }
             alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Revert"),
                     UIAlertActionStyle.Default,
-                    (action) -> {
-                        PHPhotoLibrary.getSharedPhotoLibrary().performChanges(() -> {
-                            PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
-                            request.revertAssetContentToOriginal();
-                        }, (success, error) -> {
-                            if (!success) {
-                                System.err.println("Error: " + error);
-                            }
-                        });
+                    new VoidBlock1<UIAlertAction>() {
+                        @Override
+                        public void invoke(UIAlertAction a) {
+                            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PHAssetChangeRequest request = new PHAssetChangeRequest(asset);
+                                    request.revertAssetContentToOriginal();
+                                }
+                            }, new VoidBlock2<Boolean, NSError>() {
+                                @Override
+                                public void invoke(Boolean success, NSError error) {
+                                    if (!success) {
+                                        System.err.println("Error: " + error);
+                                    }
+                                }
+                            });
+                        }
                     }));
         }
         alertController.setModalPresentationStyle(UIModalPresentationStyle.Popover);
@@ -287,23 +354,38 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
 
     @IBAction
     private void handleTrashButtonItem(NSObject sender) {
-        VoidBlock2<Boolean, NSError> completionHandler = (success, error) -> {
-            if (success) {
-                DispatchQueue.getMainQueue().async(() -> getNavigationController().popViewController(true));
-            } else {
-                System.err.println("Error: " + error);
+        VoidBlock2<Boolean, NSError> completionHandler = new VoidBlock2<Boolean, NSError>() {
+            @Override
+            public void invoke(Boolean success, NSError error) {
+                if (success) {
+                    DispatchQueue.getMainQueue().async(new Runnable() {
+                        @Override
+                        public void run() {
+                            getNavigationController().popViewController(true);
+                        }
+                    });
+                } else {
+                    System.err.println("Error: " + error);
+                }
             }
         };
         if (assetCollection != null) {
             // Remove asset from album
-            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(() -> {
-                PHAssetCollectionChangeRequest changeRequest = new PHAssetCollectionChangeRequest(assetCollection);
-                changeRequest.removeAssets(new NSArray<>(asset));
+            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
+                @Override
+                public void run() {
+                    PHAssetCollectionChangeRequest changeRequest = new PHAssetCollectionChangeRequest(assetCollection);
+                    changeRequest.removeAssets(new NSArray<PHAsset>(asset));
+                }
             }, completionHandler);
         } else {
             // Delete asset from library
-            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(
-                    () -> PHAssetChangeRequest.deleteAssets(new NSArray<>(asset)), completionHandler);
+            PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
+                @Override
+                public void run() {
+                    PHAssetChangeRequest.deleteAssets(new NSArray<PHAsset>(asset));
+                }
+            }, completionHandler);
         }
     }
 
@@ -311,21 +393,28 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
     private void handlePlayButtonItem(NSObject sender) {
         if (playerLayer == null) {
             PHImageManager.getDefaultManager().requestAVAssetForVideo(asset, null,
-                    (asset, mix, result) -> {
-                        DispatchQueue.getMainQueue().async(() -> {
-                            if (playerLayer == null) {
-                                AVPlayerItem playerItem = new AVPlayerItem(asset);
-                                playerItem.setAudioMix(mix);
-                                AVPlayer player = new AVPlayer(playerItem);
-                                AVPlayerLayer playerLayer = new AVPlayerLayer(player);
-                                playerLayer.setVideoGravity(AVLayerVideoGravity.ResizeAspect);
+                    new VoidBlock3<AVAsset, AVAudioMix, PHImageRequestResult>() {
+                        @Override
+                        public void invoke(final AVAsset avAsset, final AVAudioMix audioMix,
+                                PHImageRequestResult info) {
+                            DispatchQueue.getMainQueue().async(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (playerLayer == null) {
+                                        AVPlayerItem playerItem = new AVPlayerItem(avAsset);
+                                        playerItem.setAudioMix(audioMix);
+                                        AVPlayer player = new AVPlayer(playerItem);
+                                        AVPlayerLayer playerLayer = new AVPlayerLayer(player);
+                                        playerLayer.setVideoGravity(AVLayerVideoGravity.ResizeAspect);
 
-                                CALayer layer = getView().getLayer();
-                                layer.addSublayer(playerLayer);
-                                playerLayer.setFrame(layer.getBounds());
-                                player.play();
-                            }
-                        });
+                                        CALayer layer = getView().getLayer();
+                                        layer.addSublayer(playerLayer);
+                                        playerLayer.setFrame(layer.getBounds());
+                                        player.play();
+                                    }
+                                }
+                            });
+                        }
                     });
         } else {
             playerLayer.getPlayer().play();
