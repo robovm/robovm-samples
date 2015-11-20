@@ -55,10 +55,12 @@ import org.robovm.apple.photos.PHChange;
 import org.robovm.apple.photos.PHCollectionEditOperation;
 import org.robovm.apple.photos.PHContentEditingInput;
 import org.robovm.apple.photos.PHContentEditingInputRequestOptions;
+import org.robovm.apple.photos.PHContentEditingInputRequestResult;
 import org.robovm.apple.photos.PHContentEditingOutput;
 import org.robovm.apple.photos.PHImageContentMode;
 import org.robovm.apple.photos.PHImageManager;
 import org.robovm.apple.photos.PHImageRequestOptions;
+import org.robovm.apple.photos.PHImageRequestResult;
 import org.robovm.apple.photos.PHObjectChangeDetails;
 import org.robovm.apple.photos.PHPhotoLibrary;
 import org.robovm.apple.photos.PHPhotoLibraryChangeObserver;
@@ -179,9 +181,9 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
         });
         PHImageManager.getDefaultManager().requestImageForAsset(asset, targetSize, PHImageContentMode.AspectFill,
                 options,
-                new VoidBlock2<UIImage, NSDictionary<NSString, NSObject>>() {
+                new VoidBlock2<UIImage, PHImageRequestResult>() {
                     @Override
-                    public void invoke(final UIImage result, NSDictionary<NSString, NSObject> info) {
+                    public void invoke(final UIImage result, PHImageRequestResult info) {
                         if (result != null) {
                             imageView.setImage(result);
                         }
@@ -225,9 +227,10 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
             }
         });
         asset.requestContentEditingInput(options,
-                new VoidBlock2<PHContentEditingInput, NSDictionary<NSString, NSObject>>() {
+                new VoidBlock2<PHContentEditingInput, PHContentEditingInputRequestResult>() {
                     @Override
-                    public void invoke(PHContentEditingInput contentEditingInput, NSDictionary<NSString, NSObject> info) {
+                    public void invoke(PHContentEditingInput contentEditingInput,
+                            PHContentEditingInputRequestResult info) {
                         // Get full image
                         NSURL url = contentEditingInput.getFullSizeImageURL();
                         CGImagePropertyOrientation orientation = contentEditingInput.getFullSizeImageOrientation();
@@ -390,10 +393,10 @@ public class AAPLAssetViewController extends UIViewController implements PHPhoto
     private void handlePlayButtonItem(NSObject sender) {
         if (playerLayer == null) {
             PHImageManager.getDefaultManager().requestAVAssetForVideo(asset, null,
-                    new VoidBlock3<AVAsset, AVAudioMix, NSDictionary<NSString, NSObject>>() {
+                    new VoidBlock3<AVAsset, AVAudioMix, PHImageRequestResult>() {
                         @Override
                         public void invoke(final AVAsset avAsset, final AVAudioMix audioMix,
-                                NSDictionary<NSString, NSObject> info) {
+                                PHImageRequestResult info) {
                             DispatchQueue.getMainQueue().async(new Runnable() {
                                 @Override
                                 public void run() {

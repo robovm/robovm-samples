@@ -24,13 +24,11 @@ import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
-import org.robovm.apple.foundation.NSDictionary;
 import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSIndexSet;
 import org.robovm.apple.foundation.NSMutableArray;
 import org.robovm.apple.foundation.NSObject;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.photos.PHAsset;
 import org.robovm.apple.photos.PHAssetChangeRequest;
 import org.robovm.apple.photos.PHAssetCollection;
@@ -41,6 +39,7 @@ import org.robovm.apple.photos.PHCollectionEditOperation;
 import org.robovm.apple.photos.PHFetchResult;
 import org.robovm.apple.photos.PHFetchResultChangeDetails;
 import org.robovm.apple.photos.PHImageContentMode;
+import org.robovm.apple.photos.PHImageRequestResult;
 import org.robovm.apple.photos.PHPhotoLibrary;
 import org.robovm.apple.photos.PHPhotoLibraryChangeObserver;
 import org.robovm.apple.uikit.UIBarButtonItem;
@@ -182,9 +181,9 @@ public class AAPLAssetGridViewController extends UICollectionViewController impl
 
         PHAsset asset = assetsFetchResults.get(indexPath.getItem());
         imageManager.requestImageForAsset(asset, assetGridThumbnailSize, PHImageContentMode.AspectFill, null,
-                new VoidBlock2<UIImage, NSDictionary<NSString, NSObject>>() {
+                new VoidBlock2<UIImage, PHImageRequestResult>() {
                     @Override
-                    public void invoke(UIImage result, NSDictionary<NSString, NSObject> b) {
+                    public void invoke(UIImage result, PHImageRequestResult b) {
                         // Only update the thumbnail if the cell tag hasn't
                         // changed. Otherwise, the cell has been re-used.
                         if (cell.getTag() == currentTag) {

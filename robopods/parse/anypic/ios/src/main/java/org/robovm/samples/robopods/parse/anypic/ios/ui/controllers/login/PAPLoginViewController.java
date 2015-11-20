@@ -156,4 +156,9 @@ public class PAPLoginViewController extends UIViewController implements FBSDKLog
     public void setDelegate(PAPLogInViewControllerDelegate delegate) {
         this.delegate = delegate;
     }
+
+    @Override
+    public boolean willLogin(FBSDKLoginButton button) {
+        return true;
+    }
 }
