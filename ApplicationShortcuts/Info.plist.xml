@@ -24,6 +24,39 @@
         <string>${app.build}</string>
         <key>LSRequiresIPhoneOS</key>
         <true />
+        <key>UIApplicationShortcutItems</key>
+        <array>
+            <dict>
+                <key>UIApplicationShortcutItemIconType</key>
+                <string>UIApplicationShortcutIconTypeSearch</string>
+                <key>UIApplicationShortcutItemSubtitle</key>
+                <string>shortcutSubtitle1</string>
+                <key>UIApplicationShortcutItemTitle</key>
+                <string>shortcutTitle1</string>
+                <key>UIApplicationShortcutItemType</key>
+                <string>${app.id}.first</string>
+                <key>UIApplicationShortcutItemUserInfo</key>
+                <dict>
+                    <key>firstShorcutKey1</key>
+                    <string>firstShortcutKeyValue1</string>
+                </dict>
+            </dict>
+            <dict>
+                <key>UIApplicationShortcutItemIconType</key>
+                <string>UIApplicationShortcutIconTypeShare</string>
+                <key>UIApplicationShortcutItemSubtitle</key>
+                <string>shortcutSubtitle2</string>
+                <key>UIApplicationShortcutItemTitle</key>
+                <string>shortcutTitle2</string>
+                <key>UIApplicationShortcutItemType</key>
+                <string>${app.id}.second</string>
+                <key>UIApplicationShortcutItemUserInfo</key>
+                <dict>
+                    <key>secondShortcutKey1</key>
+                    <string>secondShortcutValue1</string>
+                </dict>
+            </dict>
+        </array>
         <key>UIMainStoryboardFile</key>
         <string>Main</string>
         <key>MinimumOSVersion</key>
@@ -37,6 +70,16 @@
         <array>
             <string>armv7</string>
         </array>
+        <key>UIStatusBarTintParameters</key>
+        <dict>
+            <key>UINavigationBar</key>
+            <dict>
+                <key>Style</key>
+                <string>UIBarStyleDefault</string>
+                <key>Translucent</key>
+                <false />
+            </dict>
+        </dict>
         <key>UISupportedInterfaceOrientations</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
@@ -49,53 +92,6 @@
             <string>UIInterfaceOrientationPortraitUpsideDown</string>
             <string>UIInterfaceOrientationLandscapeLeft</string>
             <string>UIInterfaceOrientationLandscapeRight</string>
-        </array>
-        <key>FacebookAppID</key>
-        <string>${fb.id}</string>
-        <key>FacebookDisplayName</key>
-        <string>${fb.name}</string>
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>fb${fb.id}</string>
-                </array>
-            </dict>
-        </array>
-        <key>NSAppTransportSecurity</key>
-        <dict>
-            <key>NSExceptionDomains</key>
-            <dict>
-                <key>facebook.com</key>
-                <dict>
-                    <key>NSIncludesSubdomains</key>
-                    <true />
-                    <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                    <false />
-                </dict>
-                <key>fbcdn.net</key>
-                <dict>
-                    <key>NSIncludesSubdomains</key>
-                    <true />
-                    <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                    <false />
-                </dict>
-                <key>akamaihd.net</key>
-                <dict>
-                    <key>NSIncludesSubdomains</key>
-                    <true />
-                    <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                    <false />
-                </dict>
-            </dict>
-        </dict>
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-api</string>
-            <string>fbauth2</string>
-            <string>fbshareextension</string>
         </array>
     </dict>
 </plist>

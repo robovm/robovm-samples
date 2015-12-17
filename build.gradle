@@ -1,7 +1,7 @@
 // Pull the plugin from Maven Central
 buildscript {
-    project.ext.roboVMVersion = "1.9.0"
-    project.ext.roboVMGradleVersion = "1.9.0"
+    project.ext.roboVMVersion = "1.11.1-SNAPSHOT"
+    project.ext.roboVMGradleVersion = "1.11.1-SNAPSHOT"
 
     repositories {
         mavenLocal()
@@ -48,5 +48,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.6'
+    gradleVersion = '2.8'
 }

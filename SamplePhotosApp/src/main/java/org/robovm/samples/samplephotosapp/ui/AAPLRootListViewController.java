@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.robovm.apple.dispatch.DispatchQueue;
 import org.robovm.apple.foundation.NSArray;
-import org.robovm.apple.foundation.NSError;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.foundation.NSMutableArray;
 import org.robovm.apple.foundation.NSObject;
@@ -54,8 +53,6 @@ import org.robovm.apple.uikit.UITableViewController;
 import org.robovm.apple.uikit.UITextField;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
-import org.robovm.objc.block.VoidBlock1;
-import org.robovm.objc.block.VoidBlock2;
 
 @CustomClass("AAPLRootListViewController")
 public class AAPLRootListViewController extends UITableViewController implements PHPhotoLibraryChangeObserver {
@@ -159,37 +156,36 @@ public class AAPLRootListViewController extends UITableViewController implements
         return title;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void didChange(final PHChange changeInstance) {
         // Call might come on any background queue. Re-dispatch to the main
         // queue to handle it.
 
-        DispatchQueue.getMainQueue().async(new Runnable() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public void run() {
-                NSMutableArray<PHFetchResult<? extends PHCollection>> updatedCollectionsFetchResults = null;
+        DispatchQueue
+                .getMainQueue()
+                .async(() -> {
+                    NSMutableArray<PHFetchResult<? extends PHCollection>> updatedCollectionsFetchResults = null;
 
-                for (PHFetchResult<? extends PHCollection> collectionsFetchResult : collectionsFetchResults) {
-                    PHFetchResultChangeDetails<? extends PHCollection> changeDetails = changeInstance
-                            .getChangeDetailsForFetchResult(collectionsFetchResult);
+                    for (PHFetchResult<? extends PHCollection> collectionsFetchResult : collectionsFetchResults) {
+                        PHFetchResultChangeDetails<? extends PHCollection> changeDetails = changeInstance
+                                .getChangeDetailsForFetchResult(collectionsFetchResult);
 
-                    if (changeDetails != null) {
-                        if (updatedCollectionsFetchResults == null) {
-                            updatedCollectionsFetchResults = (NSMutableArray<PHFetchResult<? extends PHCollection>>) collectionsFetchResults
-                                    .mutableCopy();
+                        if (changeDetails != null) {
+                            if (updatedCollectionsFetchResults == null) {
+                                updatedCollectionsFetchResults = (NSMutableArray<PHFetchResult<? extends PHCollection>>) collectionsFetchResults
+                                        .mutableCopy();
+                            }
+                            updatedCollectionsFetchResults.set(collectionsFetchResults.indexOf(collectionsFetchResult),
+                                    changeDetails.getFetchResultAfterChanges());
                         }
-                        updatedCollectionsFetchResults.set(collectionsFetchResults.indexOf(collectionsFetchResult),
-                                changeDetails.getFetchResultAfterChanges());
                     }
-                }
 
-                if (updatedCollectionsFetchResults != null) {
-                    collectionsFetchResults = updatedCollectionsFetchResults;
-                    getTableView().reloadData();
-                }
-            }
-        });
+                    if (updatedCollectionsFetchResults != null) {
+                        collectionsFetchResults = updatedCollectionsFetchResults;
+                        getTableView().reloadData();
+                    }
+                });
     }
 
     @IBAction
@@ -199,36 +195,23 @@ public class AAPLRootListViewController extends UITableViewController implements
                 null, UIAlertControllerStyle.Alert);
         alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Cancel"),
                 UIAlertActionStyle.Cancel, null));
-        alertController.addTextField(new VoidBlock1<UITextField>() {
-            @Override
-            public void invoke(UITextField textField) {
-                textField.setPlaceholder(NSString.getLocalizedString("Album Name"));
-            }
-        });
+        alertController
+                .addTextField((textField) -> textField.setPlaceholder(NSString.getLocalizedString("Album Name")));
         alertController.addAction(new UIAlertAction(NSString.getLocalizedString("Create"),
                 UIAlertActionStyle.Default,
-                new VoidBlock1<UIAlertAction>() {
-                    @Override
-                    public void invoke(UIAlertAction a) {
-                        UITextField textField = alertController.getTextFields().first();
-                        final String title = textField.getText();
+                (action) -> {
+                    UITextField textField = alertController.getTextFields().first();
+                    final String title = textField.getText();
 
-                        // Create new album.
-                        PHPhotoLibrary.getSharedPhotoLibrary().performChanges(new Runnable() {
-                            @Override
-                            public void run() {
-                                PHAssetCollectionChangeRequest.createAssetCollectionCreationRequest(title);
-                            }
-                        }, new VoidBlock2<Boolean, NSError>() {
-                            @Override
-                            public void invoke(Boolean success, NSError error) {
-                                if (!success) {
-                                    System.err.println("Error creating album: " + error);
-                                }
+                    // Create new album.
+                PHPhotoLibrary.getSharedPhotoLibrary().performChanges(
+                        () -> PHAssetCollectionChangeRequest.createAssetCollectionCreationRequest(title),
+                        (success, error) -> {
+                            if (!success) {
+                                System.err.println("Error creating album: " + error);
                             }
                         });
-                    }
-                }));
+            }));
 
         presentViewController(alertController, true, null);
     }

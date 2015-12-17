@@ -7,11 +7,11 @@ native Objective-C app.
 
 The first step to run this sample is to build the framework via Maven or Gradle. Either run
 ```
-../gradlew build robovmInstall
+../gradlew -Probovm.enableBitcode=true build robovmInstall
 ```
 or
 ```
-mvn compile robovm:install
+mvn -Drobovm.enableBitcode=true compile robovm:install
 ```
 
 This will create the framework in `target/robovm/MyJavaFramework.framework`.

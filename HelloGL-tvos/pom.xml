@@ -6,12 +6,12 @@
 
     <parent>
         <groupId>org.robovm</groupId>
-        <artifactId>robopods-samples-parse-anypic-parent</artifactId>
+        <artifactId>robovm-samples-parent</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>robopods-samples-parse-anypic-ios</artifactId>
-    <name>RoboPods iOS sample for Parse Anypic</name>
+    <artifactId>robovm-samples-hellogl-tvos</artifactId>
+    <name>Demonstrates a basic OpenGL view on tvOS devices</name>
 
     <packaging>jar</packaging>
 
@@ -27,21 +27,6 @@
         <dependency>
             <groupId>org.robovm</groupId>
             <artifactId>robovm-cocoatouch</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.robovm</groupId>
-            <artifactId>robopods-parse-ios</artifactId>
-            <version>${robopods.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.robovm</groupId>
-            <artifactId>robopods-facebook-ios</artifactId>
-            <version>${robopods.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.robovm</groupId>
-            <artifactId>robopods-reachability-ios</artifactId>
-            <version>${robopods.version}</version>
         </dependency>
     </dependencies>
 </project>
