@@ -19,8 +19,10 @@ This sample consists of a number of modules and sub-projects:
 * The Xcode project in `sdk/AnswerMeObjC/` demonstrates how to use the SDK
   from Objective-C.
 
-The first step to run any code in this sample is to compile the core:
+The first step to run any code in this sample is to install the root POM and
+compile and install the core module:
 ```
+mvn -N install
 mvn -f core/pom.xml install
 ```
 
