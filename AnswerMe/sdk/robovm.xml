@@ -1,0 +1,63 @@
+<config>
+    <!-- The framework targets iOS. -->
+    <os>ios</os>
+
+    <!-- Build a fat binary containing 32-bit and 64-bit machine code for both
+    devices and the simulator. -->
+    <arch>arm64</arch>
+    <arch>thumbv7</arch>
+    <arch>x86</arch>
+    <arch>x86_64</arch>
+
+    <!-- We're building a framework. -->
+    <target>framework</target>
+
+    <!-- The framework name is defined in robovm.properties. -->
+    <imageName>${framework.name}</imageName>
+
+    <!-- The Info.plist.xml file will be copied into the framework. -->
+    <infoPList>Info.plist.xml</infoPList>
+
+    <!-- Copies the header files in headers/ to a directory named Headers in
+    the root of the .framework folder structure. -->    
+    <resources>
+        <resource>
+            <directory>headers</directory>
+            <targetPath>../Headers</targetPath>
+        </resource>
+    </resources>
+    <treeShaker>aggressive</treeShaker>
+
+    <!-- Link in the object file compiled from src/main/native/init.m. This
+    contains the JNI initialization code and the Objective-C "abstract"
+    classes which are implemented in Java. -->    
+    <libs>
+        <lib>target/native/init.o</lib>
+    </libs>
+
+    <!-- Make sure the Objective-C classes defined in src/main/native/init.m
+    are exported and visible to the client code when linking against the
+    framework. -->
+    <exportedSymbols>
+        <symbol>OBJC_CLASS_$_AM*</symbol>
+        <symbol>OBJC_METACLASS_$_AM*</symbol>
+    </exportedSymbols>
+
+    <!-- Force link all classes in the SDK packages. Also force link classes
+    needed by the code in the core module to do HTTP/HTTPS requests. -->
+    <forceLinkClasses>
+        <pattern>org.robovm.answerme.**</pattern>
+        <pattern>java.util.logging.**</pattern>
+        <pattern>com.android.okhttp.HttpHandler</pattern>
+        <pattern>com.android.okhttp.HttpsHandler</pattern>
+        <pattern>com.android.org.conscrypt.**</pattern>
+        <pattern>com.android.org.bouncycastle.jce.provider.BouncyCastleProvider</pattern>
+        <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.BC$Mappings</pattern>
+        <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.bc.BcKeyStoreSpi</pattern>
+        <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.bc.BcKeyStoreSpi$Std</pattern>
+        <pattern>com.android.org.bouncycastle.jce.provider.PKIXCertPathValidatorSpi</pattern>
+        <pattern>com.android.org.bouncycastle.jce.provider.RFC3280CertPathUtilities</pattern>
+        <pattern>com.android.org.bouncycastle.crypto.digests.AndroidDigestFactoryOpenSSL</pattern>
+        <pattern>org.apache.harmony.security.provider.**</pattern>
+    </forceLinkClasses>
+</config>

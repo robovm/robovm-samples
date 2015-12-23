@@ -1,0 +1,336 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8588B6831C297CBD000B4B73 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8588B6821C297CBC000B4B73 /* main.m */; };
+		8588B6861C297CBD000B4B73 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8588B6851C297CBD000B4B73 /* AppDelegate.m */; };
+		8588B6891C297CBD000B4B73 /* AnswerMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8588B6881C297CBD000B4B73 /* AnswerMeViewController.m */; };
+		8588B68C1C297CBD000B4B73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8588B68A1C297CBD000B4B73 /* Main.storyboard */; };
+		8588B68E1C297CBD000B4B73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8588B68D1C297CBD000B4B73 /* Assets.xcassets */; };
+		8588B6A81C298F5A000B4B73 /* AnswerMeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8588B6A71C298F5A000B4B73 /* AnswerMeSDK.framework */; };
+		8588B6C01C2A97AB000B4B73 /* TopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8588B6BF1C2A97AB000B4B73 /* TopicCell.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8588B67E1C297CBC000B4B73 /* AnswerMeObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnswerMeObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8588B6821C297CBC000B4B73 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8588B6841C297CBD000B4B73 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8588B6851C297CBD000B4B73 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8588B6871C297CBD000B4B73 /* AnswerMeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerMeViewController.h; sourceTree = "<group>"; };
+		8588B6881C297CBD000B4B73 /* AnswerMeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerMeViewController.m; sourceTree = "<group>"; };
+		8588B68B1C297CBD000B4B73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8588B68D1C297CBD000B4B73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8588B6921C297CBD000B4B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8588B6A71C298F5A000B4B73 /* AnswerMeSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AnswerMeSDK.framework; path = ../target/robovm/AnswerMeSDK.framework; sourceTree = "<group>"; };
+		8588B6BE1C2A97AB000B4B73 /* TopicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicCell.h; sourceTree = "<group>"; };
+		8588B6BF1C2A97AB000B4B73 /* TopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicCell.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8588B67B1C297CBC000B4B73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8588B6A81C298F5A000B4B73 /* AnswerMeSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8588B6751C297CBC000B4B73 = {
+			isa = PBXGroup;
+			children = (
+				8588B6A71C298F5A000B4B73 /* AnswerMeSDK.framework */,
+				8588B6801C297CBC000B4B73 /* AnswerMeObjC */,
+				8588B67F1C297CBC000B4B73 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8588B67F1C297CBC000B4B73 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8588B67E1C297CBC000B4B73 /* AnswerMeObjC.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8588B6801C297CBC000B4B73 /* AnswerMeObjC */ = {
+			isa = PBXGroup;
+			children = (
+				8588B6871C297CBD000B4B73 /* AnswerMeViewController.h */,
+				8588B6881C297CBD000B4B73 /* AnswerMeViewController.m */,
+				8588B6841C297CBD000B4B73 /* AppDelegate.h */,
+				8588B6851C297CBD000B4B73 /* AppDelegate.m */,
+				8588B68D1C297CBD000B4B73 /* Assets.xcassets */,
+				8588B6921C297CBD000B4B73 /* Info.plist */,
+				8588B68A1C297CBD000B4B73 /* Main.storyboard */,
+				8588B6811C297CBC000B4B73 /* Supporting Files */,
+				8588B6BE1C2A97AB000B4B73 /* TopicCell.h */,
+				8588B6BF1C2A97AB000B4B73 /* TopicCell.m */,
+			);
+			path = AnswerMeObjC;
+			sourceTree = "<group>";
+		};
+		8588B6811C297CBC000B4B73 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8588B6821C297CBC000B4B73 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8588B67D1C297CBC000B4B73 /* AnswerMeObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8588B6951C297CBD000B4B73 /* Build configuration list for PBXNativeTarget "AnswerMeObjC" */;
+			buildPhases = (
+				8588B67A1C297CBC000B4B73 /* Sources */,
+				8588B67B1C297CBC000B4B73 /* Frameworks */,
+				8588B67C1C297CBC000B4B73 /* Resources */,
+				8588B69E1C2981E6000B4B73 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AnswerMeObjC;
+			productName = AnswerMeObjC;
+			productReference = 8588B67E1C297CBC000B4B73 /* AnswerMeObjC.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8588B6761C297CBC000B4B73 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = RoboVM;
+				TargetAttributes = {
+					8588B67D1C297CBC000B4B73 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 8588B6791C297CBC000B4B73 /* Build configuration list for PBXProject "AnswerMeObjC" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8588B6751C297CBC000B4B73;
+			productRefGroup = 8588B67F1C297CBC000B4B73 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8588B67D1C297CBC000B4B73 /* AnswerMeObjC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8588B67C1C297CBC000B4B73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8588B68E1C297CBD000B4B73 /* Assets.xcassets in Resources */,
+				8588B68C1C297CBD000B4B73 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8588B69E1C2981E6000B4B73 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../target/robovm/AnswerMeSDK.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8588B67A1C297CBC000B4B73 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8588B6891C297CBD000B4B73 /* AnswerMeViewController.m in Sources */,
+				8588B6C01C2A97AB000B4B73 /* TopicCell.m in Sources */,
+				8588B6861C297CBD000B4B73 /* AppDelegate.m in Sources */,
+				8588B6831C297CBD000B4B73 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8588B68A1C297CBD000B4B73 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8588B68B1C297CBD000B4B73 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8588B6931C297CBD000B4B73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8588B6941C297CBD000B4B73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8588B6961C297CBD000B4B73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					../target/robovm,
+				);
+				INFOPLIST_FILE = AnswerMeObjC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.robovm.AnswerMeObjC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8588B6971C297CBD000B4B73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					../target/robovm,
+				);
+				INFOPLIST_FILE = AnswerMeObjC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.robovm.AnswerMeObjC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8588B6791C297CBC000B4B73 /* Build configuration list for PBXProject "AnswerMeObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8588B6931C297CBD000B4B73 /* Debug */,
+				8588B6941C297CBD000B4B73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8588B6951C297CBD000B4B73 /* Build configuration list for PBXNativeTarget "AnswerMeObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8588B6961C297CBD000B4B73 /* Debug */,
+				8588B6971C297CBD000B4B73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8588B6761C297CBC000B4B73 /* Project object */;
+}
