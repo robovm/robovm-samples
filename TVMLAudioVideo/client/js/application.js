@@ -25,8 +25,7 @@ App.onLaunch = function(options) {
      * In this example we are passing the server BASEURL as a property
      * on the options object.
      */
-     var BASEURL = "http://localhost:9001/";
-    //var BASEURL = options.BASEURL; TODO
+    var BASEURL = options.BASEURL;
 
     /**
      * evaluateScripts is responsible for loading the JavaScript files neccessary

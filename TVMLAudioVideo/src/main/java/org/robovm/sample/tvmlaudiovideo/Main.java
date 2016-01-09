@@ -42,7 +42,6 @@ public class Main extends UIApplicationDelegateAdapter implements TVApplicationC
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
 
-        // Override point for customization after application launch.
         /*
          * Create the TVApplicationControllerContext for this application and
          * set the properties that will be passed to the `App.onLaunch` function
@@ -61,9 +60,13 @@ public class Main extends UIApplicationDelegateAdapter implements TVApplicationC
         NSURL javaScriptURL = new NSURL(TV_BOOT_URL);
         appControllerContext.setJavaScriptApplicationURL(javaScriptURL);
 
-//        appControllerContext.getLaunchOptions().getDictionary().put("BASEURL", TV_BASE_URL);
-        // TODO we should make UIApplicationLaunchOptions mutable!
-//        appControllerContext.getLaunchOptions().getDictionary().putAll(launchOptions.getDictionary());
+        UIApplicationLaunchOptions tvLaunchOptions = new UIApplicationLaunchOptions();
+        tvLaunchOptions.getDictionary().put("BASEURL", TV_BASE_URL);
+
+        if (launchOptions != null) {
+            tvLaunchOptions.getDictionary().putAll(launchOptions.getDictionary());
+        }
+        appControllerContext.setLaunchOptions(tvLaunchOptions);
 
         appController = new TVApplicationController(appControllerContext, window, this);
 

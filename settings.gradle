@@ -43,6 +43,7 @@ include 'Teslameter'
 include 'TheElements'
 include 'TouchesGesture'
 include 'TouchesResponder'
+include 'TVMLAudioVideo'
 include 'UICatalog'
 include 'VideoRecorder'
 
