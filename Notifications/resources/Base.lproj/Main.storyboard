@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rw5-ns-KcI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--MyViewController-->
+        <scene sceneID="HF5-hW-DZA">
+            <objects>
+                <viewController title="MyViewController" id="Rw5-ns-KcI" customClass="MyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WrT-94-kTm"/>
+                        <viewControllerLayoutGuide type="bottom" id="GRf-jy-2iC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xOT-TG-81E">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JAJ-Gw-8zl">
+                                <rect key="frame" x="144" y="280" width="313" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="WHQ-Y9-R4e"/>
+                                    <constraint firstAttribute="width" constant="313" id="wuc-nD-XY0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Schedule local notification">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="300" y="311" width="200" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="scheduleLocalNotification" destination="Rw5-ns-KcI" eventType="touchUpInside" id="ga1-Sd-MOR"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eT-2n-aTU">
+                                <rect key="frame" x="149" y="74" width="303" height="109"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="303" id="FGA-h8-tHG"/>
+                                    <constraint firstAttribute="height" constant="109" id="KAs-B5-4BP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCq-6q-xbE">
+                                <rect key="frame" x="118" y="344" width="366" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Schedule local actionable notification"/>
+                                <connections>
+                                    <action selector="scheduleLocalActionableNotification" destination="Rw5-ns-KcI" eventType="touchUpInside" id="ar9-ES-J5J"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEL-6K-5tN">
+                                <rect key="frame" x="181" y="213" width="239" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Register for notifications"/>
+                                <connections>
+                                    <action selector="registerForNotifications" destination="Rw5-ns-KcI" eventType="touchUpInside" id="1Fp-43-oPo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="BEL-6K-5tN" firstAttribute="centerX" secondItem="JAJ-Gw-8zl" secondAttribute="centerX" id="2sZ-ic-DJK"/>
+                            <constraint firstItem="aCq-6q-xbE" firstAttribute="centerX" secondItem="JAJ-Gw-8zl" secondAttribute="centerX" id="4tV-2n-Sfx"/>
+                            <constraint firstItem="aCq-6q-xbE" firstAttribute="top" secondItem="JAJ-Gw-8zl" secondAttribute="bottom" constant="24" id="Ap1-Yc-SYq"/>
+                            <constraint firstAttribute="centerY" secondItem="JAJ-Gw-8zl" secondAttribute="centerY" id="Azx-fk-TQ9"/>
+                            <constraint firstAttribute="centerY" secondItem="6eT-2n-aTU" secondAttribute="centerY" multiplier="2" constant="43" id="ZYa-tH-0dQ"/>
+                            <constraint firstItem="JAJ-Gw-8zl" firstAttribute="top" secondItem="BEL-6K-5tN" secondAttribute="bottom" constant="28" id="ajJ-ma-Upq"/>
+                            <constraint firstAttribute="centerX" secondItem="JAJ-Gw-8zl" secondAttribute="centerX" id="hqe-pz-zAk"/>
+                            <constraint firstAttribute="centerX" secondItem="6eT-2n-aTU" secondAttribute="centerX" id="ll8-9H-VGW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="label" destination="6eT-2n-aTU" id="BRp-KC-rUI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-Qu-SKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="625" y="507"/>
+        </scene>
+    </scenes>
+</document>

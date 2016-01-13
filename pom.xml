@@ -108,6 +108,7 @@
         <module>MoveMe</module>
         <module>MoviePlayer</module>
         <module>MyJavaFramework</module>
+        <module>Notifications</module>
         <module>PhotoMap</module>
         <module>PhotoPicker</module>
         <module>PhotoScroller</module>
