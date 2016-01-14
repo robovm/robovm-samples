@@ -55,17 +55,16 @@ public class AppDelegate extends UIApplicationDelegateAdapter {
 
                 // Get and print our id parameter.
                 String id = localNotification.getUserInfo().getString(LOCAL_NOTIFICATION_ID_KEY);
-                getMyViewController().setLabelText("App was started by local notification: " + id);
+                getMyViewController().setStartText("App was started by local notification: " + id);
             }
             UIRemoteNotification remoteNotification = launchOptions.getRemoteNotification();
             if (remoteNotification != null) {
                 // The application has been started from a remote/push
                 // notification.
 
-                getMyViewController().setLabelText("App was started by remote notification!");
+                getMyViewController().setStartText("App was started by remote notification!");
             }
         }
-
         return true;
     }
 

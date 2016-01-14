@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.robovm.apple.foundation.NSDataBase64EncodingOptions;
+import org.robovm.apple.uikit.UIApplication;
+import org.robovm.apple.uikit.UIApplicationDelegate;
+import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.CustomClass;
@@ -12,6 +15,8 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("MyViewController")
 public class MyViewController extends UIViewController {
+    private String startText;
+
     @IBOutlet
     private UILabel label;
 
@@ -84,5 +89,24 @@ public class MyViewController extends UIViewController {
 
     public void setLabelText(String text) {
         label.setText(text);
+    }
+
+    /**
+     * We cannot access UI elements in
+     * {@link UIApplicationDelegate#didFinishLaunching(UIApplication, UIApplicationLaunchOptions)}
+     * so let's cache the start text.
+     * 
+     * @param startText
+     */
+    public void setStartText(String startText) {
+        this.startText = startText;
+    }
+
+    @Override
+    public void viewWillAppear(boolean animated) {
+        super.viewWillAppear(animated);
+
+        setLabelText(startText);
+        startText = null;
     }
 }
