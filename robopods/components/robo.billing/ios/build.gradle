@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'org.robovm:robovm-gradle-plugin:1.13.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'robovm'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+robovm {
+}
+
+dependencies {
+    compile "org.robovm:robovm-rt:${roboVMVersion}"
+    compile "org.robovm:robovm-cocoatouch:${roboVMVersion}"
+    compile "org.robovm:robopods-billing-ios:${roboVMVersion}"
+    compile "org.robovm:robopods-dialog-ios:${roboVMVersion}"
+    testCompile "junit:junit:4.12"
+    compile project(':core')
+}
