@@ -1,0 +1,4 @@
+ext {
+    mainClassName = "org.robovm.samples.robopods.heyzap.ios.HeyzapApp"
+}
+
