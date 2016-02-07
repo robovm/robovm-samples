@@ -2,6 +2,7 @@
 buildscript {
     project.ext.roboVMVersion = "1.13.1-SNAPSHOT"
     project.ext.roboVMGradleVersion = "1.13.1-SNAPSHOT"
+    project.ext.roboPodsVersion = "1.13.1-SNAPSHOT"
 
     repositories {
         mavenLocal()

@@ -1,4 +1,4 @@
-ext {
-    mainClassName = "org.robovm.samples.robopods.heyzap.ios.HeyzapApp"
+dependencies {
+    compile "org.robovm:robopods-heyzap-ios:$roboPodsVersion"
+    compile "org.robovm:robopods-dialog-ios:$roboPodsVersion"
 }
-
