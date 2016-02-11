@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>org.robovm</groupId>
-        <artifactId>robovm-samples-parent</artifactId>
+        <artifactId>robopods-samples-parent</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>robopods-samples-parent</artifactId>
-    <name>RoboVM RoboPods Samples Parent</name>
+    <artifactId>robopods-samples-reachability-parent</artifactId>
+    <name>RoboPods Samples for Reachability Parent</name>
     <packaging>pom</packaging>
 
     <licenses>
@@ -35,15 +35,6 @@
     </build>
 
     <modules>
-        <module>components</module>
-        <module>chartboost</module>
-        <module>facebook</module>
-        <module>flurry</module>
-        <module>google-analytics</module>
-        <module>google-mobile-ads</module>
-        <module>google-play-games</module>
-        <module>heyzap</module>
-        <module>parse</module>
-        <module>reachability</module>
+        <module>ios</module>
     </modules>
 </project>
