@@ -56,8 +56,8 @@ include 'robopods:heyzap:ios'
 include 'robopods:parse:anypic:ios'
 include 'robopods:reachability:ios'
 
-include 'robopods:components:robo.billing'
-include 'robopods:components:robo.dialog'
+include 'robopods:plugins:robo.billing'
+include 'robopods:plugins:robo.dialog'
 
 include 'tvos:hellogl-tvos'
 include 'tvos:tvmlaudiovideo'

@@ -9,8 +9,8 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>robopods-components-samples-parent</artifactId>
-    <name>RoboVM RoboPods Components Samples Parent</name>
+    <artifactId>robopods-plugins-samples-parent</artifactId>
+    <name>RoboVM RoboPods Plugins Samples Parent</name>
     <packaging>pom</packaging>
 
     <licenses>

@@ -35,7 +35,8 @@
     </build>
 
     <modules>
-        <module>components</module>
+        <module>plugins</module>
+        
         <module>chartboost</module>
         <module>facebook</module>
         <module>flurry</module>
