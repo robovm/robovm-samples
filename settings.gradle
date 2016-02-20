@@ -58,6 +58,7 @@ include 'robopods:reachability:ios'
 
 include 'robopods:plugins:robo.billing'
 include 'robopods:plugins:robo.dialog'
+include 'robopods:plugins:robo.settings'
 
 include 'tvos:hellogl-tvos'
 include 'tvos:tvmlaudiovideo'
