@@ -34,8 +34,7 @@
         </plugins>
     </build>
 
-    <modules>
-        <module>hellogl-tvos</module>
+    <modules>        
         <module>tvmlaudiovideo</module>
     </modules>
 </project>

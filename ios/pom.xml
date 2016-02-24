@@ -46,8 +46,7 @@
         <module>customanimatableproperty</module>
         <module>datecell</module>
         <module>docinteraction</module>
-        <module>footprint</module>
-        <module>hellogl</module>
+        <module>footprint</module>        
         <module>helloworld</module>
         <module>iapstoreproductviewcontroller</module>
         <module>inapppurchases</module>
