@@ -92,9 +92,7 @@
         <module>CustomFrameworks</module>
         <module>DateCell</module>
         <module>DocInteraction</module>
-        <module>Footprint</module>
-        <module>HelloGL</module>
-        <module>HelloGL-tvos</module>
+        <module>Footprint</module>        
         <module>HelloWorld</module>
         <module>HelloWorld-console</module>
         <module>HelloWorld-no-ib</module>
