@@ -10,4 +10,8 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    <libs>
+        <lib>libs/libGoogleAnalyticsServices.a</lib>
+        <lib>libs/libAdIdAccess.a</lib>
+    </libs>
 </config>
