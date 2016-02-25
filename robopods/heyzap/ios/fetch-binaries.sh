@@ -10,6 +10,7 @@ rm -rf heyzap-ads-sdk-$VERSION
 curl -O https://hz-sdk.s3.amazonaws.com/sdk/heyzap-ads-sdk-$VERSION.zip
 unzip heyzap-ads-sdk-$VERSION.zip
 rm -rf libs/
-cp -r heyzap-ads-sdk-$VERSION/ios-sdk/ libs/
+mkdir libs
+cp -r heyzap-ads-sdk-$VERSION/ios-sdk/HeyzapAds.framework libs/
 rm heyzap-ads-sdk-$VERSION.zip
 rm -r heyzap-ads-sdk-$VERSION
