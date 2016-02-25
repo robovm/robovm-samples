@@ -1,7 +1,7 @@
 #/bin/sh
 
-# This script fetches the HeyZap SDK for development purposes
-# You need to agree to HeyZap's Terms of Services before
+# This script fetches the Chartboost SDK for development purposes
+# You need to agree to Chartboost's Terms of Services before
 # being allowed to use the SDK
 set -e
 VERSION=6.1.1
