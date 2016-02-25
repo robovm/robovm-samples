@@ -11,4 +11,8 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    <libs>
+        <lib>libs/libFlurry_7.3.0.a</lib>
+        <lib>libs/libFlurryAds_7.3.0.a</lib>
+    </libs>
 </config>
