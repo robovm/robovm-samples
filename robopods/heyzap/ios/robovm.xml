@@ -11,4 +11,11 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    
+    <frameworkPaths>
+    	<frameworkPath>libs</frameworkPath>
+    </frameworkPaths>
+    <frameworks>
+    	<framework>HeyzapAds</framework>
+    </frameworks>
 </config>
