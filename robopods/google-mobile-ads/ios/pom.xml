@@ -28,10 +28,5 @@
             <groupId>org.robovm</groupId>
             <artifactId>robovm-cocoatouch</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.robovm</groupId>
-            <artifactId>robopods-google-mobile-ads-ios</artifactId>
-            <version>${robopods.version}</version>
-        </dependency>
     </dependencies>
 </project>
