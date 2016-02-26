@@ -9,9 +9,9 @@ rm -f googlemobileadssdkios-$VERSION.zip
 rm -rf admob
 mkdir admob
 curl -O https://dl.google.com/googleadmobadssdk/googlemobileadssdkios-$VERSION.zip
-tar xzf googlemobileadssdkios-$VERSION.zip -C admob
+unzip googlemobileadssdkios-$VERSION.zip -d admob/
 rm -rf libs/
 mkdir libs
 cp -r admob/GoogleMobileAdsSdkiOS-$VERSION/GoogleMobileAds.framework libs/
 rm googlemobileadssdkios-$VERSION.zip
-rm -r admob
+rm -rf admob
