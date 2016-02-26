@@ -42,7 +42,7 @@
         <module>flurry</module>
         <module>google-analytics</module>
         <module>google-mobile-ads</module>
-        <module>google-play-games</module>
+     <!--   <module>google-play-games</module> -->
         <module>heyzap</module>
         <module>parse</module>
         <module>reachability</module>
