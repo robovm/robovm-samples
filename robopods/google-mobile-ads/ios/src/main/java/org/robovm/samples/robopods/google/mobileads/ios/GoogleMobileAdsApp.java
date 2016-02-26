@@ -19,22 +19,13 @@
 package org.robovm.samples.robopods.google.mobileads.ios;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
-import org.robovm.pods.google.GGLContextMobileAds;
 
 public class GoogleMobileAdsApp extends UIApplicationDelegateAdapter {
-
     @Override
     public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) {
-        try {
-            GGLContextMobileAds.getSharedInstance().configure();
-        } catch (NSErrorException e) {
-            System.err.println("Error configuring the Google context: " + e);
-        }
-
         return true;
     }
 

@@ -16,6 +16,7 @@
  * Portions of this code is based on Google Inc's Google Analytics sample
  * which is copyright (C) 2015 Google Inc.
  */
+
 package org.robovm.samples.robopods.google.analytics.ios.ui;
 
 import org.robovm.apple.foundation.NSMutableDictionary;
@@ -27,6 +28,7 @@ import org.robovm.objc.annotation.IBAction;
 import org.robovm.pods.google.analytics.GAI;
 import org.robovm.pods.google.analytics.GAIDictionaryBuilder;
 import org.robovm.pods.google.analytics.GAITracker;
+import org.robovm.samples.robopods.google.analytics.ios.GoogleAnalyticsApp;
 
 /**
  * PatternTabBarController exists as a subclass of UITabBarConttroller that
@@ -38,13 +40,12 @@ public class PatternTabBarController extends UITabBarController {
 
     @IBAction
     private void didTapShare(UIBarButtonItem sender) {
-        GAITracker tracker = GAI.getSharedInstance().getDefaultTracker();
+        GAITracker tracker = GAI.getSharedInstance().getTracker(GoogleAnalyticsApp.TRACKER_ID);
         NSMutableDictionary<?, ?> event = GAIDictionaryBuilder.createEvent("Action", "Share", null, null).build();
         tracker.send(event);
 
         String title = String.format("Share: %s", getSelectedViewController().getTitle());
         String message = "Share is not implemented in this quickstart";
-        UIAlertView alert = new UIAlertView(title, message, null, "OK");
-        alert.show();
+        new UIAlertView(title, message, null, "OK").show();
     }
 }

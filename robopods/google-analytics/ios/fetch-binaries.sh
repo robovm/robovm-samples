@@ -15,4 +15,4 @@ mkdir libs
 cp -r analytics/GoogleAnalyticsServicesiOS_$VERSION/libGoogleAnalyticsServices.a libs/
 cp -r analytics/GoogleAnalyticsServicesiOS_$VERSION/libAdIdAccess.a libs/
 rm GoogleAnalyticsServicesiOS_$VERSION.zip
-rm -r analytics
+rm -rf analytics
