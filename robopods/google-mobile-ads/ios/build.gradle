@@ -1,0 +1,3 @@
+dependencies {
+    compile "org.robovm:robopods-google-mobile-ads-ios:$roboPodsVersion"
+}
