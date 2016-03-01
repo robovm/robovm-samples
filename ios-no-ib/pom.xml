@@ -36,6 +36,7 @@
 
     <modules>
         <module>helloworld-no-ib</module>
+        <module>samplewebapp-no-ib</module>
         <module>tabster-no-ib</module>
     </modules>
 </project>

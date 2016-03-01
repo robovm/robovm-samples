@@ -43,6 +43,7 @@ include 'ios:uicatalog'
 include 'ios:videorecorder'
 
 include 'ios-no-ib:helloworld-no-ib'
+include 'ios-no-ib:samplewebapp-no-ib'
 include 'ios-no-ib:tabster-no-ib'
 
 include 'robopods:chartboost:ios'
