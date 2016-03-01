@@ -11,4 +11,11 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    
+    <frameworkPaths>
+    	<path>libs</path>
+    </frameworkPaths>
+    <frameworks>
+    	<framework>Chartboost</framework>
+    </frameworks>
 </config>

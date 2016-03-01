@@ -1,3 +1,0 @@
-ext {
-    mainClassName = "org.robovm.samples.iap.Main"
-}

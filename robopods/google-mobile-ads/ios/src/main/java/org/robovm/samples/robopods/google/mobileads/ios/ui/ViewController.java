@@ -25,7 +25,6 @@ import org.robovm.apple.uikit.UIViewController;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
 import org.robovm.objc.annotation.IBOutlet;
-import org.robovm.pods.google.GGLContextMobileAds;
 import org.robovm.pods.google.mobileads.GADBannerView;
 import org.robovm.pods.google.mobileads.GADInterstitial;
 import org.robovm.pods.google.mobileads.GADInterstitialDelegateAdapter;
@@ -40,7 +39,7 @@ public class ViewController extends UIViewController {
     public void viewDidLoad() {
         super.viewDidLoad();
 
-        bannerView.setAdUnitID(GGLContextMobileAds.getSharedInstance().getConfiguration().getBannerAdUnitID());
+        bannerView.setAdUnitID("ca-app-pub-3940256099942544/2934735716");
         bannerView.setRootViewController(this);
         bannerView.loadRequest(createRequest());
 
@@ -48,8 +47,7 @@ public class ViewController extends UIViewController {
     }
 
     private GADInterstitial createAndLoadInterstitial() {
-        GADInterstitial interstitial = new GADInterstitial(GGLContextMobileAds.getSharedInstance().getConfiguration()
-                .getInterstitialAdUnitID());
+        GADInterstitial interstitial = new GADInterstitial("ca-app-pub-3940256099942544/4411468910");
         interstitial.setDelegate(new GADInterstitialDelegateAdapter() {
             @Override
             public void didDismissScreen(GADInterstitial ad) {

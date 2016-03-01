@@ -1,0 +1,5 @@
+dependencies {
+    compile "org.robovm:robopods-parse-ios:$roboPodsVersion"
+    compile "org.robovm:robopods-facebook-ios:$roboPodsVersion"
+    compile "org.robovm:robopods-reachability-ios:$roboPodsVersion"
+}

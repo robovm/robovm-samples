@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MyActivity">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Request products"
+        android:id="@+id/requestProductsButton"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Purchase consumable"
+        android:id="@+id/purchaseConsumableButton"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Purchase non-consumable"
+        android:id="@+id/purchaseNonConsumableButton"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Restore transactions"
+        android:id="@+id/restoreTransactionsButton"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+</LinearLayout>

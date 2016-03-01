@@ -14,9 +14,9 @@
     <version>1.0</version>
 
     <properties>
-        <robovm.version>1.13.0</robovm.version>
-        <robovm.maven.version>1.13.0</robovm.maven.version>
-        <robopods.version>1.13.0</robopods.version>
+        <robovm.version>1.14.0</robovm.version>
+        <robovm.maven.version>1.14.0</robovm.maven.version>
+        <robopods.version>1.14.0</robopods.version>
     </properties>
 
     <pluginRepositories>
@@ -44,6 +44,27 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                    <configuration>
+                        <additionalparam>${javadoc.opts}</additionalparam>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.1</version>
@@ -77,55 +98,14 @@
     </dependencyManagement>
 
     <modules>
+        <module>console</module>
+        <module>ios</module>
+        <module>ios-no-ib</module>
         <module>robopods</module>
+        <module>tvos</module>
     
-        <module>Adventure</module>
         <module>AnswerMe</module>
-        <module>ApplicationShortcuts</module>
-        <module>AppPrefs</module>
-       <!-- <module>AQTapDemo</module> -->
-        <module>AudioRecorder</module>
-        <module>BatteryStatus</module>
-        <module>CollectionView-Simple</module>
-        <module>CurrentAddress</module>
-        <module>CustomAnimatableProperty</module>
         <module>CustomFrameworks</module>
-        <module>DateCell</module>
-        <module>DocInteraction</module>
-        <module>Footprint</module>        
-        <module>HelloWorld</module>
-        <module>HelloWorld-console</module>
-        <module>HelloWorld-no-ib</module>
-        <module>IAPStoreProductViewController</module>
-        <module>InAppPurchases</module>
-        <module>LaunchMe</module>
-        <module>LazyTableImages</module>
-        <module>LocateMe</module>
-        <module>MessageComposer</module>
-        <module>MetalBasic3D</module>
-        <module>MetalBasic2D</module>
-        <module>MoveMe</module>
-        <module>MoviePlayer</module>
         <module>MyJavaFramework</module>
-        <module>Notifications</module>
-        <module>PhotoMap</module>
-        <module>PhotoPicker</module>
-        <module>PhotoScroller</module>
-        <module>QuickContacts</module>
-        <module>Quiz</module>
-        <module>Regions</module>
-        <module>SamplePhotosApp</module>
-        <module>StackView</module>
-        <module>StreetScroller</module>
-        <module>TableSearch</module>
-        <module>Tabster</module>
-        <module>Tabster-no-ib</module>
-        <module>Teslameter</module>
-        <module>TheElements</module>
-        <module>TouchesGesture</module>
-        <module>TouchesResponder</module>
-        <module>TVMLAudioVideo</module>
-        <module>UICatalog</module>
-        <module>VideoRecorder</module>
     </modules>
 </project>

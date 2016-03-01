@@ -1,0 +1,5 @@
+dependencies {
+	compile "com.badlogicgames.gdx:gdx:1.9.1"
+	compile "com.badlogicgames.gdx:gdx-backend-robovm:1.9.1"
+	compile "com.badlogicgames.gdx:gdx-platform:1.9.1:natives-ios"
+}

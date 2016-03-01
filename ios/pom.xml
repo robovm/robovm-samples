@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-samples-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>robovm-samples-ios-parent</artifactId>
+    <name>RoboVM iOS Samples Parent</name>
+    <packaging>pom</packaging>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>adventure</module>
+        <module>applicationshortcuts</module>
+        <module>appprefs</module>
+    <!--    <module>aqtapDemo</module>   -->
+        <module>audiorecorder</module>
+        <module>batterystatus</module>
+        <module>collectionview-simple</module>
+        <module>currentaddress</module>
+        <module>customanimatableproperty</module>
+        <module>datecell</module>
+        <module>docinteraction</module>
+        <module>footprint</module>        
+        <module>helloworld</module>
+        <module>iapstoreproductviewcontroller</module>
+        <module>inapppurchases</module>
+        <module>launchme</module>
+        <module>lazytableimages</module>
+        <module>locateme</module>
+        <module>messagecomposer</module>
+        <module>metalbasic3d</module>
+        <module>metalbasic2d</module>
+        <module>moveme</module>
+        <module>movieplayer</module>
+        <module>notifications</module>
+        <module>photomap</module>
+        <module>photopicker</module>
+        <module>photoscroller</module>
+        <module>quickcontacts</module>
+        <module>quiz</module>
+        <module>regions</module>
+        <module>samplephotosapp</module>
+        <module>stackview</module>
+        <module>streetscroller</module>
+        <module>tablesearch</module>
+        <module>tabster</module>
+        <module>teslameter</module>
+        <module>theelements</module>
+        <module>touchesgesture</module>
+        <module>touchesresponder</module>
+        <module>uicatalog</module>
+        <module>videorecorder</module>
+    </modules>
+</project>

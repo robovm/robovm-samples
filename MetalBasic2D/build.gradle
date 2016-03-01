@@ -1,3 +1,0 @@
-ext {
-    mainClassName = "org.robovm.samples.metalbasic2d.MetalBasic2D"
-}

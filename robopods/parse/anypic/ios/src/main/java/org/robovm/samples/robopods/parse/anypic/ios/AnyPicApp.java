@@ -71,7 +71,6 @@ import org.robovm.pods.parse.PFObject;
 import org.robovm.pods.parse.PFQuery;
 import org.robovm.pods.parse.PFUser;
 import org.robovm.pods.parse.Parse;
-import org.robovm.pods.parse.ParseCrashReporting;
 import org.robovm.pods.reachability.NetworkReachability;
 import org.robovm.pods.reachability.NetworkReachabilityListener;
 import org.robovm.pods.reachability.NetworkStatus;
@@ -115,7 +114,6 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
         PFObject.registerSubclass(PAPPhoto.class);
         PFObject.registerSubclass(PAPActivity.class);
 
-        ParseCrashReporting.enable();
         Parse.initialize(APPLICATION_ID, CLIENT_KEY);
         FBSDKProfile.enableUpdatesOnAccessTokenChange(true);
         PFFacebookUtils.initializeFacebook(launchOptions);
@@ -256,26 +254,28 @@ public class AnyPicApp extends UIApplicationDelegateAdapter {
 
         UITabBarItem homeTabBarItem = new UITabBarItem(NSString.getLocalizedString("Home"), UIImage.getImage(
                 "IconHome").newImage(UIImageRenderingMode.AlwaysOriginal), UIImage.getImage("IconHomeSelected")
-                .newImage(UIImageRenderingMode.AlwaysOriginal));
+                        .newImage(UIImageRenderingMode.AlwaysOriginal));
         homeTabBarItem.setTitleTextAttributes(new NSAttributedStringAttributes().setForegroundColor(UIColor.white())
                 .setFont(UIFont.getBoldSystemFont(13)), UIControlState.Selected);
         homeTabBarItem.setTitleTextAttributes(
                 new NSAttributedStringAttributes().setForegroundColor(
                         UIColor.fromRGBA(114f / 255f, 114f / 255f, 114f / 255f, 1)).setFont(
-                        UIFont.getBoldSystemFont(13)),
+                                UIFont.getBoldSystemFont(13)),
                 UIControlState.Normal);
 
         UITabBarItem activityFeedTabBarItem = new UITabBarItem(NSString.getLocalizedString("Activity"), UIImage
                 .getImage(
-                        "IconTimeline").newImage(UIImageRenderingMode.AlwaysOriginal), UIImage.getImage(
-                "IconTimelineSelected").newImage(UIImageRenderingMode.AlwaysOriginal));
+                        "IconTimeline")
+                .newImage(UIImageRenderingMode.AlwaysOriginal), UIImage.getImage(
+                        "IconTimelineSelected").newImage(UIImageRenderingMode.AlwaysOriginal));
         activityFeedTabBarItem.setTitleTextAttributes(
                 new NSAttributedStringAttributes().setForegroundColor(UIColor.white()).setFont(
-                        UIFont.getBoldSystemFont(13)), UIControlState.Selected);
+                        UIFont.getBoldSystemFont(13)),
+                UIControlState.Selected);
         activityFeedTabBarItem.setTitleTextAttributes(
                 new NSAttributedStringAttributes().setForegroundColor(
                         UIColor.fromRGBA(114f / 255f, 114f / 255f, 114f / 255f, 1)).setFont(
-                        UIFont.getBoldSystemFont(13)),
+                                UIFont.getBoldSystemFont(13)),
                 UIControlState.Normal);
 
         homeNavigationController.setTabBarItem(homeTabBarItem);

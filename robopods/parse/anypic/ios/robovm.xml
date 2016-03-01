@@ -11,4 +11,13 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    <frameworkPaths>
+        <path>libs</path>
+    </frameworkPaths>
+    <frameworks>
+        <framework>Parse</framework>
+        <framework>ParseFacebookUtilsV4</framework>
+        <framework>ParseTwitterUtils</framework>
+        <framework>ParseUI</framework>
+    </frameworks>
 </config>

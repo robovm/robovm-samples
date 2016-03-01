@@ -1,0 +1,4 @@
+dependencies {
+    compile "org.robovm:robopods-reachability-ios:$roboPodsVersion"
+    compile "org.robovm:robopods-plugins-core:$roboPodsVersion"
+}

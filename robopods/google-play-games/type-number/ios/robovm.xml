@@ -10,4 +10,10 @@
             <directory>resources</directory>
         </resource>
     </resources>
+    <frameworkPaths>
+        <path>libs</path>
+    </frameworkPaths>
+    <frameworks>
+        <framework>gpg</framework>
+    </frameworks>
 </config>

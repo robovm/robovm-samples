@@ -16,6 +16,7 @@
  * Portions of this code is based on Google Inc's Google Analytics sample
  * which is copyright (C) 2015 Google Inc.
  */
+
 package org.robovm.samples.robopods.google.analytics.ios.ui;
 
 import org.robovm.apple.uikit.UIViewController;
@@ -24,6 +25,7 @@ import org.robovm.pods.google.analytics.GAI;
 import org.robovm.pods.google.analytics.GAIDictionaryBuilder;
 import org.robovm.pods.google.analytics.GAIFields;
 import org.robovm.pods.google.analytics.GAITracker;
+import org.robovm.samples.robopods.google.analytics.ios.GoogleAnalyticsApp;
 
 @CustomClass("ViewController")
 public class ViewController extends UIViewController {
@@ -33,12 +35,7 @@ public class ViewController extends UIViewController {
 
         String name = String.format("Pattern~%s", getTitle());
 
-        // The UA-XXXXX-Y tracker ID is loaded automatically from the
-        // GoogleService-Info.plist by the GGLContext in the AppDelegate.
-        // If you're copying this to an app just using Analytics, you'll
-        // need to configure your tracking ID here.
-
-        GAITracker tracker = GAI.getSharedInstance().getDefaultTracker();
+        GAITracker tracker = GAI.getSharedInstance().getTracker(GoogleAnalyticsApp.TRACKER_ID);
         tracker.put(GAIFields.ScreenName(), name);
         tracker.send(GAIDictionaryBuilder.createScreenView().build());
     }
