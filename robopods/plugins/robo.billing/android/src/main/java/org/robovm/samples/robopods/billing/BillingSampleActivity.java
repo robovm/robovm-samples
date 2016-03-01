@@ -19,14 +19,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import org.robovm.pods.Platform;
-import org.robovm.pods.Platform.AndroidPlatform;
+import org.robovm.pods.android.AndroidConfig;
 
 public class BillingSampleActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AndroidConfig.setLaunchActivity(this);
 
         // Setup the store as early as possible, ideally when the app is launched.
         AppStore.getInstance().setup();
@@ -59,6 +60,6 @@ public class BillingSampleActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // This is necessary to make the library work. Will most likely change in future versions to be more configurable.
-        ((AndroidPlatform) Platform.getPlatform()).onActivityResult(requestCode, resultCode, data);
+        AndroidConfig.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import org.robovm.pods.Platform;
-import org.robovm.pods.Platform.AndroidPlatform;
+import org.robovm.pods.android.AndroidConfig;
 
 public class MainActivity extends Activity {
 
@@ -16,8 +15,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        // *NOTE* We have to set the launch activity atm in order to use android settings in onCreate.
-        ((AndroidPlatform) Platform.getPlatform()).setLaunchActivity(this);
+        AndroidConfig.setLaunchActivity(this);
 
         AppPreferences prefs = AppPreferences.getInstance();
 

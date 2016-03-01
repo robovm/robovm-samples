@@ -18,6 +18,7 @@ package org.robovm.samples.robopods.dialog;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
+import org.robovm.pods.android.AndroidConfig;
 
 public class DialogAppActivity extends Activity {
     @Override
@@ -25,18 +26,14 @@ public class DialogAppActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
+        AndroidConfig.setLaunchActivity(this);
+
         final Button alertButton = (Button) findViewById(R.id.alertButton);
         final Button inputButton = (Button) findViewById(R.id.inputButton);
         final Button progressButton = (Button) findViewById(R.id.progressButton);
 
-        alertButton.setOnClickListener(v -> {
-            DialogHandler.getInstance().showAlertDialogSample();
-        });
-        inputButton.setOnClickListener(v -> {
-            DialogHandler.getInstance().showInputDialogSample();
-        });
-        progressButton.setOnClickListener(v -> {
-            DialogHandler.getInstance().showProgressDialogSample();
-        });
+        alertButton.setOnClickListener(v -> DialogHandler.getInstance().showAlertDialogSample());
+        inputButton.setOnClickListener(v -> DialogHandler.getInstance().showInputDialogSample());
+        progressButton.setOnClickListener(v -> DialogHandler.getInstance().showProgressDialogSample());
     }
 }
