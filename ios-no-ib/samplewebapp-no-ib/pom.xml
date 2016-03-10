@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>org.robovm</groupId>
-        <artifactId>robovm-samples-ios-parent</artifactId>
+        <artifactId>robovm-samples-ios-no-ib-parent</artifactId>
         <version>1.0</version>
     </parent>
 
